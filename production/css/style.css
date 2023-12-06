@@ -1,0 +1,12 @@
+.selectable-button .dot {
+    height: 10px;
+    width: 10px;
+    background-color: grey;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.selectable-button.selected .dot {
+    background-color: blue;
+}
