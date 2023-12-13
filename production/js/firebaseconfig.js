@@ -22,9 +22,19 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
   const analytics = getAnalytics(app);
   const database = getDatabase(app);
 
-  document.querySelectorAll('.selectable-button').forEach(button => {
-    button.addEventListener('click', () => {
-        button.classList.toggle('selected');
+  document.addEventListener('DOMContentLoaded', () => {
+    // Event listener for the first set of buttons
+    document.querySelectorAll('.selectable-button').forEach(button => {
+        button.addEventListener('click', () => {
+            button.classList.toggle('selected');
+        });
+    });
+
+    // Event listener for the second set of buttons
+    document.querySelectorAll('.selectable-button-2').forEach(button => {
+        button.addEventListener('click', () => {
+            button.classList.toggle('selected');
+        });
     });
 });
 
@@ -34,12 +44,6 @@ function getSelectedButtons() {
                 .map(button => button.id);
 }
 
-// Event listener for the submit button
-document.getElementById('submit-button').addEventListener('click', () => {
-    const selectedButtons = getSelectedButtons();
-    saveSelectedButtonsToFirebase(selectedButtons);
-});
-
 // Function to save selected button IDs to Firebase
 function saveSelectedButtonsToFirebase(selectedButtons) {
     const dbRef = ref(database, 'selectedButtons');
@@ -47,3 +51,15 @@ function saveSelectedButtonsToFirebase(selectedButtons) {
         .then(() => console.log('Data saved successfully'))
         .catch(error => console.error('Error saving data:', error));
 }
+
+// Event listener for the submit button
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.getElementById('submit-button').addEventListener('click', () => {
+      const selectedButtons = getSelectedButtons();
+      saveSelectedButtonsToFirebase(selectedButtons);
+      const step1 = document.getElementById("etape1");
+      const step2 = document.getElementById("etape2");
+      step1.style.display = "none";
+      step2.style.display = "block";
+  });
+});
