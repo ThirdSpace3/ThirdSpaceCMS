@@ -3,33 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>ThirdSpace - No Code Builder for Web3</title>
 </head>
 <body>
+
+    <nav class="navbar__padding">
+        <div class="navbar__pc">
+            <a href="index.html" class="nav__logo"><img src="img/3s-logo.png" alt="thirdspace logo"></a>
+            <ul class="nav__links">
+                <li><a href="#" class="nav__links-btn">Home</a></li>
+                <li><a href="#" class="nav__links-btn">About</a></li>
+                <li><a href="#" class="nav__links-btn">Ressources</a></li>
+                <li><a href="#" class="nav__links-btn">Pricing</a></li>
+
+            </ul>
+            <a href="#" class="nav__cta">Get started</a>
+            <a href="#" class="nav__cta"><span class="material-symbols-outlined">wallet</span>Connexion</a>
+
+        </div>
+
+        <div class="navbar__mobile animate__fadeInLeft">
+            <div class="navbar__mobile-head ">
+                <li class="nav__logo"><a href="index.html"><img src="img/logo-white.png" alt="">Third Space</a></li>
+
+                <img class="" src="img/logo.png" alt="">
+                <img class="navbar__mobile-menuIcon" id="menuIcon" src="img/navbar-burger.png" width="24px" height="21px" alt="" onclick="toggleMenu()">
+            </div>
+    
+            <div class="navbar__mobile-content" id="mobileMenu">
+                <ul class="nav__links">
+                    <li><a href="#steps" class="nav__links-btn">How does it work ?</a></li>
+                    <li><a href="#socials" class="nav__links-btn">Follow Us</a></li>
+                    <a href="#socials" class="nav__cta">Get early acces now</a>
+
+                </ul>
+            </div>
+        </div>
+      </nav>   
+
+
 <button id="phantom">Phantom</button>
-<div id="etape1">
-    <button class="selectable-button" id="button1"><span class="dot"></span>Button 1</button>
-    <button class="selectable-button" id="button2"><span class="dot"></span>Button 2</button>
-    <button class="selectable-button" id="button3"><span class="dot"></span>Button 3</button>
-    <button class="selectable-button" id="button4"><span class="dot"></span>Button 4</button>
-    <button class="selectable-button" id="button5"><span class="dot"></span>Button 5</button>
-    <button class="selectable-button" id="button6"><span class="dot"></span>Button 6</button>
-</div>
-<div id="etape2">
-    <button class="selectable-button-2" id="button7"><span class="dot"></span>Button 1</button>
-    <button class="selectable-button-2" id="button8"><span class="dot"></span>Button 2</button>
-    <button class="selectable-button-2" id="button9"><span class="dot"></span>Button 3</button>
-    <button class="selectable-button-2" id="button10"><span class="dot"></span>Button 4</button>
-    <button class="selectable-button-2" id="button11"><span class="dot"></span>Button 5</button>
-    <button class="selectable-button-2" id="button12"><span class="dot"></span>Button 6</button>
-</div>
-<button id="submit-button">Submit</button>
+
 
 </body>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script type="module" src="js/firebaseconfig.js"></script>
 <script src="js/script.js"></script>
+
+<script>
+    window.addEventListener('scroll', function() {
+        var navbar = document.querySelector('nav');
+        navbar.classList.toggle('sticky-navbar', window.scrollY > 0);
+        
+    });
+</script>
 
 </html>
