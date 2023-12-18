@@ -4,29 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-    <div id="etape1">
-        <button class="selectable-button" id="button1"><span class="dot"></span>Button 1</button>
-        <button class="selectable-button" id="button2"><span class="dot"></span>Button 2</button>
-        <button class="selectable-button" id="button3"><span class="dot"></span>Button 3</button>
-        <button class="selectable-button" id="button4"><span class="dot"></span>Button 4</button>
-        <button class="selectable-button" id="button5"><span class="dot"></span>Button 5</button>
-        <button class="selectable-button" id="button6"><span class="dot"></span>Button 6</button>
-    </div>
-    <div id="etape2">
-        <button class="selectable-button-2" id="button7"><span class="dot"></span>Button 1</button>
-        <button class="selectable-button-2" id="button8"><span class="dot"></span>Button 2</button>
-        <button class="selectable-button-2" id="button9"><span class="dot"></span>Button 3</button>
-        <button class="selectable-button-2" id="button10"><span class="dot"></span>Button 4</button>
-        <button class="selectable-button-2" id="button11"><span class="dot"></span>Button 5</button>
-        <button class="selectable-button-2" id="button12"><span class="dot"></span>Button 6</button>
-    </div>
-    <button id="submit-button">Submit</button>
-
-
+    <nav class="navbar__padding">
+        <div class="navbar__pc">
+            <a href="index.html" class="nav__logo"><img src="img/3s-logo.png" alt="thirdspace logo"></a>
+            <div class="navbar__right" style="display: none;">
+                <ul class="nav__links nav-bg">
+                    <li><a href="#" class="nav__links-btn">Home</a></li>
+                    <li><a href="#" class="nav__links-btn">About</a></li>
+                    <li><a href="#" class="nav__links-btn">Ressources</a></li>
+                    <li><a href="#" class="nav__links-btn">Pricing</a></li>
     
+                </ul>
+                <a href="#" class="nav__cta nav-bg" onclick="openPopup()">Get started</a>
+                <a href="#" class="nav__cta nav-bg" onclick="openPopup()"><span class="material-symbols-outlined">wallet</span>Connexion</a>
+                <a href="#" class="nav__cta nav-bg" style="display: none;"><span class="material-symbols-outlined">account_circle</span></a>
+
+            </div>
+         
+        </div>
+
+        <div class="navbar__mobile animate__fadeInLeft">
+            <div class="navbar__mobile-head ">
+                <a href="index.html" class="nav__logo"><img src="img/3s-logo.png" alt="thirdspace logo"></a>
+
+                <img class="navbar__mobile-menuIcon" id="menuIcon" src="img/navbar-burger.png" width="24px" height="21px" alt="" onclick="toggleMenu()"  style="display: none;">
+            </div>
+    
+            <div class="navbar__mobile-content" id="mobileMenu"  style="display: none;">
+                <ul class="nav__links">
+                    <li><a href="#" class="nav__links-btn">Home</a></li>
+                    <li><a href="#" class="nav__links-btn">About</a></li>
+                    <li><a href="#" class="nav__links-btn">Ressources</a></li>
+                    <li><a href="#" class="nav__links-btn">Pricing</a></li>
+                    <a href="#" class="nav__cta nav-bg" onclick="openPopup()">Get started</a>
+                <a href="#" class="nav__cta nav-bg" onclick="openPopup()"><span class="material-symbols-outlined">wallet</span>Connexion</a>
+
+                </ul>
+            </div>
+        </div>
+      </nav>
+    <div class="template-content">
+        <div  id="etape1" >
+            <div class="step-box">
+                <h2 class="template-title">What is your site about?</h2>
+                <p class="template-subtitle">This will enable us to give you some initial ideas and examples.</p>
+                <div class="template-label-box">
+                    <button class="selectable-button" id="design">Design</button>
+                    <button class="selectable-button" id="crypto">Crypto</button>
+                    <button class="selectable-button" id="nft">NFT</button>
+                    <button class="selectable-button" id="portfolio">Portfolio</button>
+                    <button class="selectable-button" id="collections">Collections</button>
+                    <button class="selectable-button" id="3dmodels">3D Models</button>
+                    <button class="selectable-button" id="games">Games</button>
+                    <button class="selectable-button" id="blogs">Blogs</button>
+                    <button class="selectable-button" id="marketing">Marketing</button>
+                    <button class="selectable-button" id="mode">Mode</button>
+                    <button class="selectable-button" id="marketplace">Marketplace</button>
+                    <button class="selectable-button" id="dapps">DApps</button>
+                    <button class="selectable-button" id="defi">DeFi</button>
+                    <button class="selectable-button" id="dex">DEX</button>
+                    <button class="selectable-button" id="dao">DAO</button>
+                    <button class="selectable-button" id="education">Education</button>
+                    <button class="selectable-button" id="security">Security</button>
+                    <button class="selectable-button" id="storage">Storage</button>
+                    <button class="selectable-button" id="library">Library</button>
+                    <button class="selectable-button" id="socialmedias">Social Medias</button>
+                    <button class="selectable-button" id="crowdraising">Crowd Raising</button>
+                </div>
+                <div class="template-input-box">
+                    <p class="template-subtitle">Can't find what you're looking for?</p>
+                    <input type="text" placeholder="Describe your website...">
+                </div>
+            </div>
+        </div>
+        
+        <div  id="etape2" >
+            <div class="step-box">
+                <h2 class="template-title">What are your main objectives?</h2>
+                <p class="template-subtitle">Select all the items that apply. If something interests you but isn't a top priority, don't worry. You can add all our features to the template of your choice.</p>
+                <div class="template-label-box-2">
+                    <div class="template-label-row">
+                        <button class="selectable-button-2" id="design">Upsells my collections </button>
+                        <button class="selectable-button-2" id="crypto">Boost my visibility </button>    
+                    </div>
+                    <div class="template-label-row">
+                        <button class="selectable-button-2" id="design">Deploy my market</button>
+                        <button class="selectable-button-2" id="crypto">Organize my work</button>    
+                    </div>
+                    <div class="template-label-row">
+                        <button class="selectable-button-2" id="design">Share a subject </button>
+                        <button class="selectable-button-2" id="crypto">Communication</button>    
+                    </div>
+                    <div class="template-label-row">
+                        <button class="selectable-button-2" id="design">Contact form</button>
+                        <button class="selectable-button-2" id="crypto">Communautary fidelisation</button>    
+                    </div>
+                    <div class="template-label-row">
+                        <button class="selectable-button-2" id="design">Marketplace </button>
+                        <button class="selectable-button-2" id="crypto">Learning plateform</button>    
+                    </div>
+                </div>
+                <div class="template-input-box">
+                    <p class="template-subtitle">Looking for a feature we don't provide yet ? Ask it and we will make it happen</p>
+                    <input type="text" placeholder="Describe your feature...">
+                </div>
+            </div>
+        </div>
+
+        <div id="etape3">
+            <div class="step-box">
+
+            </div>
+        </div>
+
+        <div id="etape4">
+            <div class="step-box">
+                <h2 class="template-title">Choose a name for your projet</h2>
+                <p class="template-subtitle">You can always change your mind later.</p>
+                <div class="template-input-box">
+                    <input type="text" placeholder="Choose a name ...">
+                </div>
+            </div>
+           
+
+        </div>
+        <div class="btn-box">
+            <button id="ignore-button" class="ignore-btn">Ignore</button>
+            <button id="submit-button" class="purple-light-btn disabled">Next</button>
+        </div>
+        <div class="final-btn-box">
+            <button id="submit-button" class="purple-light-btn disabled">Done</button>
+        </div>
+    </div>
+
+
+<img src="img/template-deco-1.png" alt="" class="template-deco-bot">
+<img src="img/template-deco-2.png" alt="" class="template-deco-top">
+
 </body>
 
 

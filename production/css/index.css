@@ -59,12 +59,30 @@ overflow-x: hidden;}
 .section {
     padding: 80px 10%;
 }
+.section-title {
+  color: var(--white);
+  font-family: Montserrat;
+  font-size: 3vw;
+  font-weight: 800;
+  text-align: center;
+}
 .section__text {
   color: #797979;
   font-family: var(--inter);
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
+}
+.section-label {
+  display: inline-flex;
+  padding: 15px 30px;
+  color: var(--white);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  border-radius: 28px;
+  background: var(--purple);
 }
 .purple-btn {
   display: flex;
@@ -79,6 +97,7 @@ overflow-x: hidden;}
   line-height: normal;
   border-radius: 28px;
   background: var(--purple);
+  border: none;
 }
 .purple-light-btn {
   display: flex;
@@ -94,9 +113,10 @@ overflow-x: hidden;}
   border-radius: 28px;
   background: rgba(150, 0, 250, 0.40);
   gap: 10px;
+  border: none;
 }
 .cta-icon {
-  width: 23px;
+  width: 27px;
 }
 
 
@@ -108,9 +128,13 @@ overflow-x: hidden;}
       text-align: center;
       font-size: 16px;
     }
+    .section-label,
     .purple-btn,
     .purple-light-btn {
       font-size: 16px;
+    }
+    .section-title {
+      font-size: 5vw;
     }
 }
 
@@ -186,7 +210,7 @@ ul.nav__links  li.nav__logo {
     transition: 0.3s ease;
 }
 .sticky-navbar {
-    background-color: var(--purple);
+    background-color: var(--body-purple);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -499,3 +523,30 @@ ul.nav__links  li.nav__logo {
   }
 }
 
+/*==================== SOLUTIONS ====================*/
+.solutions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/*==================== HOW IT WORK ====================*/
+.functionnement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/*==================== ROADMAP ====================*/
+.roadmap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*==================== GET IN TOUCH ====================*/
+
+
+/*==================== FOOTER ====================*/
