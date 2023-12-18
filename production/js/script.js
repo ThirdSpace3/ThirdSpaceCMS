@@ -18,6 +18,42 @@ function toggleMenu() {
   }
   //#endregion
 
+//POPUP WALLET
+
+  function openPopup() {
+    document.getElementById("popup").style.display = "block";
+}
+
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+
+document.querySelector('.popup .popup-more-btn').addEventListener('click', function(event) {
+  event.preventDefault();
+
+  // Sélectionnez seulement les boutons avec les classes '.wallet-btn' et '.wallet-more'
+  var walletMoreButtons = document.querySelectorAll('.popup .wallet-btn.wallet-more');
+
+  if (this.textContent === 'Show More') {
+      // Si le texte est "Show More", changez-le en "Show Less" et retirez '.wallet-hide'
+      walletMoreButtons.forEach(function(button) {
+          button.classList.remove('wallet-hide');
+      });
+      this.textContent = 'Show Less';
+  } else {
+      // Si le texte est "Show Less", changez-le en "Show More" et ajoutez '.wallet-hide'
+      walletMoreButtons.forEach(function(button) {
+          button.classList.add('wallet-hide');
+      });
+      this.textContent = 'Show More';
+  }
+});
+
+
+
+
+
 
 
 
