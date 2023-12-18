@@ -131,7 +131,14 @@ body {
     padding: 15px 20px;
     width: 250px;
 }
-
+.solutions-card:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.card-selected {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.50);
+}
 
 #etape1{
     display: block;
@@ -158,3 +165,4 @@ body {
     top: 45px;
     right: -50px;
 }
+

@@ -31,8 +31,6 @@ html {
 
 h1,h2, h3, h4 {
     font-family: var(--montserrat);
-    margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 ul {
@@ -62,9 +60,10 @@ overflow-x: hidden;}
 .section-title {
   color: var(--white);
   font-family: Montserrat;
-  font-size: 3vw;
+  font-size: 2vw;
   font-weight: 800;
   text-align: center;
+  max-width: 500px;
 }
 .section__text {
   color: #797979;
@@ -528,6 +527,66 @@ ul.nav__links  li.nav__logo {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
+}
+.solutions-row {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+.solutions-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.10);
+  width: 30%;
+  padding: 2%;
+  align-items: center;
+}
+.solutions-img-box {
+  height: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.solutions-img {
+width: 90%;
+}
+.solutions-card-title {
+  color: var(--white, #FFF);
+  text-align: center;
+  font-family:  var(--montserrat);
+  font-size: 1.65vw;
+  font-style: normal;
+  font-weight: 700;
+}
+.solutions-card-text {
+  color: var(--white);
+  text-align: center;
+  font-family: var(--inter);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@media screen and (max-width: 850px) {
+.solutions-row {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+.solutions-card {
+  width: 85%;
+  padding: 15px;
+}
+.solutions-card-title {
+  font-size: 18px;
+}
+.solutions-card-text {
+  font-size: 15px;
+}
 }
 
 
