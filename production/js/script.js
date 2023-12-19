@@ -114,7 +114,11 @@ async function signInwithphantom() {
         if (provider.publicKey) {
             const walletId = provider.publicKey.toString();
             console.log("Wallet ID:", walletId);
-            window.location.href = "templates.html";
+            // window.location.href = "templates.html";
+
+            document.getElementById("account-btn").style.display ="block";
+            document.getElementById("wallet-btn").style.display ="none";
+
         } else {
             console.error("Unable to retrieve wallet ID.");
         }
@@ -125,9 +129,6 @@ async function signInwithphantom() {
         // Handle errors (e.g., user refused to sign the message or wallet not connected)
     }
   }
-
-
-
 
 
 async function signInWithMetaMask() {

@@ -106,6 +106,7 @@ document.getElementById('submit-button').addEventListener('click', () => {
 document.querySelectorAll('.selectable-button').forEach(button => {
     button.addEventListener('click', () => {
       button.classList.toggle('selected'); // 'selected' is a class that indicates the button is selected
+      updateSubmitButtonState();
     });
   });
 
@@ -129,6 +130,24 @@ document.querySelectorAll('#etape3 .solutions-card').forEach(card => {
   
 
 showStep(1);
+
+function updateSubmitButtonState() {
+  const submitButton = document.getElementById('submit-button');
+  const isAnyOptionSelected = document.querySelectorAll('#etape1 .selectable-button.selected').length > 0;
+
+  if (isAnyOptionSelected) {
+    submitButton.disabled = false;
+    submitButton.classList.remove('disabled'); // Remove the 'disabled' class when the button is enabled
+    submitButton.classList.remove('purple-light-btn');
+    submitButton.classList.add('purple-btn');
+
+  } else {
+    submitButton.disabled = true;
+    submitButton.classList.add('disabled'); // Add the 'disabled' class when the button is disabled
+    submitButton.classList.add('purple-light-btn');
+    submitButton.classList.remove('purple-btn');
+  }
+}
 
 
 export async function saveWalletId(walletId) {
