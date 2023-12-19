@@ -72,32 +72,50 @@ function getProvider() {
   return null;
 }
 
+
 // Sign in function
 async function signInwithphantom() {
-  const provider = getProvider();
-  if (!provider) {
-      console.error("No provider found.");
-      return;
+    const provider = getProvider();
+    if (!provider) {
+        console.error("No provider found.");
+        return;
+    }
+  
+    try {
+        // Check if the wallet is connected
+        if (!provider.isConnected) {
+            // Connect the wallet if not already connected
+            await provider.connect();
+        }
+  
+        const message = `Your custom sign-in message`;
+        const encodedMessage = new TextEncoder().encode(message);
+  
+        if (typeof provider.signMessage !== "function") {
+            console.error("signMessage method is not available on the provider.");
+            return;
+        }
+  
+        const signedMessage = await provider.signMessage(encodedMessage, "utf8");
+        console.log("Signed Message:", signedMessage);
+  
+        // Now retrieve the wallet ID and log it to the console
+        if (provider.publicKey) {
+            const walletId = provider.publicKey.toString();
+            console.log("Wallet ID:", walletId);
+            window.location.href = "templates.html";
+        } else {
+            console.error("Unable to retrieve wallet ID.");
+        }
+  
+        // Handle the signed message and wallet ID here (e.g., send it to your server for verification)
+    } catch (error) {
+        console.error("Error in signing message:", error);
+        // Handle errors (e.g., user refused to sign the message or wallet not connected)
+    }
   }
 
-  try {
-      const message = `Your custom sign-in message`;
-      const encodedMessage = new TextEncoder().encode(message);
 
-      // Check if the 'signMessage' method is available
-      if (typeof provider.signMessage !== "function") {
-          console.error("signMessage method is not available on the provider.");
-          return;
-      }
-
-      const signedMessage = await provider.signMessage(encodedMessage, "utf8");
-      console.log("Signed Message:", signedMessage);
-      // Handle the signed message here (e.g., send it to your server for verification)
-  } catch (error) {
-      console.error("Error in signing message:", error);
-      // Handle errors (e.g., user refused to sign the message)
-  }
-}
 
 
 
@@ -144,26 +162,26 @@ async function signInWithOpera() {
   }
 }
 
-// Ledger integration is more complex due to its hardware nature
-// This is a basic outline; refer to Ledger's documentation for complete integration
-async function signInWithLedger() {
-  const transport = await Transport.create();
-  const eth = new Eth(transport);
-  const path = "44'/60'/0'/0"; // Standard Ethereum HD path
-  const account = await eth.getAddress(path);
+// // Ledger integration is more complex due to its hardware nature
+// // This is a basic outline; refer to Ledger's documentation for complete integration
+// async function signInWithLedger() {
+//   const transport = await Transport.create();
+//   const eth = new Eth(transport);
+//   const path = "44'/60'/0'/0"; // Standard Ethereum HD path
+//   const account = await eth.getAddress(path);
 
-  try {
-      const message = `Sign in with Ledger to the app. Address: ${account.address}`;
-      // Convert message to hex format for Ledger
-      const hexMessage = Buffer.from(message).toString("hex");
-      const signature = await eth.signPersonalMessage(path, hexMessage);
+//   try {
+//       const message = `Sign in with Ledger to the app. Address: ${account.address}`;
+//       // Convert message to hex format for Ledger
+//       const hexMessage = Buffer.from(message).toString("hex");
+//       const signature = await eth.signPersonalMessage(path, hexMessage);
 
-      console.log("Signed Message:", signature);
-      // Handle the signature here
-  } catch (error) {
-      console.error("Error in Ledger sign-in:", error);
-  }
-}
+//       console.log("Signed Message:", signature);
+//       // Handle the signature here
+//   } catch (error) {
+//       console.error("Error in Ledger sign-in:", error);
+//   }
+// }
 
 
 // Add event listener to the metamask button
@@ -171,7 +189,7 @@ document.getElementById("metamask").addEventListener("click",signInWithMetaMask)
 // Add event listener to the phantom button
 document.getElementById("phantom").addEventListener("click", signInwithphantom);
 // Add event listener to the coinbase button
-document.getElementById("ledger").addEventListener("click", signInWithLedger);
+// document.getElementById("ledger").addEventListener("click", signInWithLedger);
 // Add event listener to the walletcoin button
 document.getElementById("operatouch").addEventListener("click", signInWithOpera);
 

@@ -1,7 +1,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-  import { getFirestore, collection, addDoc, updateDoc, doc} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  
+  import { getFirestore, collection, addDoc, setDoc ,updateDoc, doc} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
   // Required for side-effects
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
@@ -24,79 +24,123 @@
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-let savedDocId = null; // Variable to store the document ID
-let isSecondSetSaved = false; // Flag to indicate if the second set is saved
+let currentStep = 1;
+const sessionId = Date.now().toString(); // Simple example, consider using a more robust method for production
 
-// Function to toggle button selection
-const toggleButtonSelection = (button) => {
-    if (!isSecondSetSaved) { // Allow toggle only if second set is not saved
-        button.classList.toggle('selected');
+function showStep(stepNumber) {
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById(`etape${i}`).style.display = i === stepNumber ? 'block' : 'none';
+  }
+}
+
+async function saveData(step, data) {
+    const stepKey = `step${step}`; // Key for the step data
+    const docRef = doc(db, 'userSessions', sessionId); // Reference to the document
+    const timestamp = new Date(); // Get the current timestamp
+    const newData = {
+      [stepKey]: data,
+      timestamp: timestamp.toISOString(), // Convert the timestamp to ISO string format
+    };
+    try {
+        await setDoc(docRef, newData, { merge: true }); // Merge new data with existing document
+      console.log("Document updated with ID: ", sessionId);
+    } catch (e) {
+      console.error("Error updating document: ", e);
     }
-};
+  }
 
-// Add event listeners to buttons
-const buttons = document.querySelectorAll('.selectable-button, .selectable-button-2');
-buttons.forEach(button => {
-    button.addEventListener('click', () => toggleButtonSelection(button));
+
+function captureData(step) {
+    let data = {};
+    if (step === 1) {
+      // Capture selected options from buttons
+      const selectedOptions = [];
+      document.querySelectorAll('#etape1 .selectable-button.selected').forEach(button => {
+        selectedOptions.push(button.id);
+      });
+      data.selectedOptions = selectedOptions;
+  
+      // Capture text from the input field
+      const inputText = document.querySelector('#etape1 input[type="text"]').value;
+      if (inputText) data.customOption = inputText;
+    }
+    if (step === 2) {
+        const selectedObjectives = [];
+        document.querySelectorAll('#etape2 .selectable-button-2.selected').forEach(button => {
+          selectedObjectives.push(button.id);
+        });
+        data.selectedObjectives = selectedObjectives;
+    
+        // Capture text from the input field in step 2
+        const inputText = document.querySelector('#etape2 input[type="text"]').value;
+        if (inputText) data.customObjective = inputText;
+    }
+
+    if (step === 3) {
+        // Capture selected solution card
+        const selectedCard = document.querySelector('#etape3 .solutions-card.selected');
+        data.selectedSolution = selectedCard ? selectedCard.id : null;
+      } 
+    if (step === 4) {
+        // Capture project name from input field
+        const projectName = document.querySelector('#etape4 input[type="text"]').value;
+        data.projectName = projectName;
+      }
+    // Add logic for other steps if needed
+    return data;
+  }
+    
+
+document.getElementById('submit-button').addEventListener('click', () => {
+    const data = captureData(currentStep);
+    saveData(currentStep, data);
+  
+    currentStep++;
+    if (currentStep <= 4) {
+      showStep(currentStep);
+    } else {
+        window.location.href = "index.html";    
+    }
 });
 
-// Function to get the state of each button
-const getButtonStates = (selector) => {
-    const states = {};
-    const selectedButtons = document.querySelectorAll(selector);
-    selectedButtons.forEach(button => {
-        states[button.id] = button.classList.contains('selected');
+document.querySelectorAll('.selectable-button').forEach(button => {
+    button.addEventListener('click', () => {
+      button.classList.toggle('selected'); // 'selected' is a class that indicates the button is selected
     });
-    return states;
-};
+  });
 
-// Combined function to handle submit button click
-const handleSubmitButtonClick = async () => {
-    if (!savedDocId) {
-        // Save the initial button states
-        await saveInitialButtonStates();
-        displayEtape2(); // Move to the next step
-    } else if (!isSecondSetSaved) {
-        // Update the document with the second set of button states
-        await updateButtonStatesInFirestore();
-    } else {
-        console.log("Both sets of buttons have already been saved.");
-    }
-};
+document.querySelectorAll('#etape2 .selectable-button-2').forEach(button => {
+    button.addEventListener('click', () => {
+      button.classList.toggle('selected');
+    });
+  });
+  
 
-// Function to save initial button states to Firestore
-const saveInitialButtonStates = async () => {
-    const buttonStates = getButtonStates('.selectable-button');
+document.querySelectorAll('#etape3 .solutions-card').forEach(card => {
+    card.addEventListener('click', () => {
+      // Deselect other cards
+      document.querySelectorAll('#etape3 .solutions-card').forEach(otherCard => {
+        otherCard.classList.remove('selected');
+      });
+      // Select this card
+      card.classList.add('selected');
+    });
+  });
+  
 
+showStep(1);
+
+
+export async function saveWalletId(walletId) {
     try {
-        const docRef = await addDoc(collection(db, "Etapes Buttons"), {
-            firstSetButtons: buttonStates
-        });
-        console.log("Document written with ID: ", docRef.id);
-        savedDocId = docRef.id; // Save the document ID
-    } catch (e) {
-        console.error("Error adding document: ", e);
+        // Define the document reference (e.g., users collection, document named after wallet ID)
+        const docRef = doc(db, "users", walletId);
+
+        // Set the document data
+        await setDoc(docRef, { walletId: walletId });
+
+        console.log("Wallet ID saved successfully");
+    } catch (error) {
+        console.error("Error saving wallet ID:", error);
     }
-};
-
-// Function to update the document with the second set of button states
-const updateButtonStatesInFirestore = async () => {
-    if (!savedDocId) {
-        console.error("No document ID found. First set of buttons must be saved first.");
-        return;
-    }
-
-    const buttonStates = getButtonStates('.selectable-button-2');
-
-    try {
-        await updateDoc(doc(db, "Etapes Buttons", savedDocId), {
-            secondSetButtons: buttonStates
-        });
-        console.log("Document updated with second set of buttons");
-        isSecondSetSaved = true; // Set the flag to true
-        disableButtons(); // Disable all buttons
-    } catch (e) {
-        console.error("Error updating document: ", e);
-    }
-};
-
+}

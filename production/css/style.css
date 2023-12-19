@@ -58,9 +58,7 @@ body {
     background: rgba(255, 255, 255, 0.60);
 
 }
-.selected {
-    background: rgba(255, 255, 255, 0.60);
-}
+
 .template-input-box {
     display: flex;
     flex-direction: column;
@@ -166,3 +164,6 @@ body {
     right: -50px;
 }
 
+.selected {
+    background: rgba(255, 255, 255, 0.60);
+}
