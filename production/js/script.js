@@ -17,15 +17,18 @@ function toggleMenu() {
     }
   }
   //#endregion
+
 //#region POPUP WALLET
 
   function openPopup() {
     document.getElementById("popup").style.display = "block";
+    menu.classList.remove('menu-open');
 }
 
 
 function closePopup() {
     document.getElementById("popup").style.display = "none";
+    menu.classList.remove('menu-open');
 }
 
 document.querySelector('.popup .popup-more-btn').addEventListener('click', function(event) {
