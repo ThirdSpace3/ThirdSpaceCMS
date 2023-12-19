@@ -20,11 +20,22 @@ function toggleMenu() {
 
 //#region POPUP WALLET
 
-  function openPopup() {
-    document.getElementById("popup").style.display = "block";
-    menu.classList.remove('menu-open');
-}
+function openPopup() {
 
+    const menuIcon = document.getElementById('menuIcon');
+    const burgerIconSrc = 'img/navbar-burger.png';
+
+    const menu = document.getElementById('mobileMenu');
+    document.getElementById("popup").style.display = "block";
+    
+    if (menu.classList.contains('menu-open')) {
+        menu.classList.remove('menu-open');
+        document.body.classList.remove('no-scroll');
+        menuIcon.src = burgerIconSrc;
+
+        // You can optionally change the menu icon here if needed
+    }
+}
 
 function closePopup() {
     document.getElementById("popup").style.display = "none";
