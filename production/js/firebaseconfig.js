@@ -34,16 +34,17 @@ function showStep(stepNumber) {
 }
 
 async function saveData(step, data) {
+    const walletid = sessionStorage.getItem("walletID");
     const stepKey = `step${step}`; // Key for the step data
-    const docRef = doc(db, 'userSessions', sessionId); // Reference to the document
+    const docRef = doc(db, 'userSessions', walletid); // Reference to the document
     const timestamp = new Date(); // Get the current timestamp
     const newData = {
       [stepKey]: data,
       timestamp: timestamp.toISOString(), // Convert the timestamp to ISO string format
     };
     try {
+      const walletid = sessionStorage.getItem("walletID");
         await setDoc(docRef, newData, { merge: true }); // Merge new data with existing document
-      console.log("Document updated with ID: ", sessionId);
     } catch (e) {
       console.error("Error updating document: ", e);
     }

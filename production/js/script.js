@@ -113,11 +113,12 @@ async function signInwithphantom() {
         // Now retrieve the wallet ID and log it to the console
         if (provider.publicKey) {
             const walletId = provider.publicKey.toString();
-            console.log("Wallet ID:", walletId);
-            // window.location.href = "templates.html";
+
+            sessionStorage.setItem("walletID", walletId);
 
             document.getElementById("account-btn").style.display ="block";
             document.getElementById("wallet-btn").style.display ="none";
+            window.location.href = "templates.html";
 
         } else {
             console.error("Unable to retrieve wallet ID.");
@@ -208,24 +209,17 @@ document.getElementById("operatouch").addEventListener("click", signInWithOpera)
 
 //#endregion
 
-
-// document.querySelectorAll('.selectable-button').forEach(function(button) {
-//     button.addEventListener('click', function() {
-//         this.classList.toggle('selected');
-//         console.log(getSelectedButtons()); // Log the selected buttons
-//     });
-// });
-
-// function getSelectedButtons() {
-//     var selectedButtons = [];
-//     var buttons = document.querySelectorAll('.selectable-button');
-
-//     buttons.forEach(function(button) {
-//         if (button.classList.contains('selected')) {
-//             selectedButtons.push(button.id);
-//         }
-//     });
-
-//     return selectedButtons;
-// }
-
+//#region EDIT HOME PAGE AFTER CONNECTION
+function EditWalletButton() {
+    var walletId = sessionStorage.getItem("walletID");
+    if (walletId !== null) {
+        document.getElementById("account-btn").style.display ="block";
+        document.getElementById("wallet-btn").style.display ="none";
+        document.getElementById("account-btn").href = "#";
+        document.getElementById("getstarted-btn").onclick = "#";
+    }
+}
+document.addEventListener('DOMContentLoaded', (event) => {
+    EditWalletButton();
+});
+//#endregion
