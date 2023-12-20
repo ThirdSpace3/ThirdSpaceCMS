@@ -1,6 +1,6 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-  import { getFirestore, collection, addDoc, setDoc ,updateDoc, doc} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  // import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+  import { getFirestore, setDoc , doc} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
   // Required for side-effects
   // TODO: Add SDKs for Firebase products that you want to use
