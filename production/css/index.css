@@ -595,6 +595,40 @@ width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 25px;
+}
+.tab {
+  display: flex;
+  gap: 30px;
+}
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 15px 30px;
+  transition: 0.3s;
+  font-size: 17px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.10);
+  color: var(--white, #FFF);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 110%; /* 33px */
+}
+
+.tab button:hover {
+  background: var(--purple, #9600FA);}
+
+.tab button.active {
+  background: var(--purple, #9600FA);}
+
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
 }
 
 
@@ -611,6 +645,8 @@ width: 90%;
   align-items: center;
   justify-content: center;
   position: relative;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .getintouch-content {
   display: flex;
