@@ -224,31 +224,43 @@ async function signInwithphantom() {
       // Handle errors (e.g., user refused to sign the message or other errors)
     }
   }
+
+  async function signInWithOpera() {
+    // Check if the Ethereum provider injected by Opera is available
+    if (window.ethereum && window.ethereum.isOpera) {
+        try {
+            // Request account access from the user
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const account = accounts[0]; // Take the first account
   
+            // Define the message the user will sign
+            const message = `Sign in with Opera to the app. Address: ${account}`;
+            
+            // Request the user to sign the message with their account
+            const signature = await window.ethereum.request({ 
+                method: 'personal_sign', 
+                params: [message, account] 
+            });
+  
+            console.log("Signed Message:", signature);
+            // Here you would typically handle the signature, such as sending it to your backend for verification
+            sessionStorage.setItem("walletID", account);
+            sessionStorage.setItem("walletType", "operatouch");
+            // Update UI: Hide 'Sign in with Coinbase' button and show account related information
+            document.getElementById("account-btn").style.display = "block";
+            document.getElementById("wallet-btn").style.display = "none";
+            window.location.href = "templates.html"; // Change 'dashboard.html' to the path of your choice
 
-async function signInWithOpera() {
-  if (window.ethereum && window.ethereum.isOpera) {
-      try {
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          const account = accounts[0];
-          const message = `Sign in with Opera to the app. Address: ${account}`;
-          const signature = await window.ethereum.request({ 
-              method: 'personal_sign', 
-              params: [message, account] 
-          });
-
-          console.log("Signed Message:", signature);
-          // Handle the signature here
-      } catch (error) {
-          console.error("Error in Opera sign-in:", error);
-      }
-  } else {
-      console.error("Opera Wallet not detected");
+        } catch (error) {
+            // Log any errors that occur during the sign-in process
+            console.error("Error in Opera sign-in:", error);
+        }
+    } else {
+        // If the Opera wallet is not detected, log an error
+        console.error("Opera Wallet not detected or the browser does not support Ethereum.");
+    }
   }
-}
-
-// This function can now be part of a traditional script, without module syntax
-
+  
 
 async function signInWithWalletConnect() {
     console.log("WalletConnect sign-in triggered");
@@ -280,19 +292,62 @@ async function signInWithWalletConnect() {
     }
 }
 
-// Other functions or event listeners
+async function signInWithLedger() {
+    console.log("Ledger sign-in triggered");
 
-document.getElementById("Walletconnect").addEventListener("click",signInWithWalletConnect);
+    // Assuming you have a Ledger-specific Ethereum provider or a way to connect to Ledger devices
+    if (!window.ledgerEthereum) {
+        console.error("Ledger Wallet is not installed or not detected");
+        return;
+    }
+    try {
+      // Establish a connection with the Ledger device
+      await ledgerEthereum.connect();
+
+      // Request account access. This might involve user interaction with their Ledger device.
+      const accounts = await ledgerEthereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0]; // Get the first account
+  
+      // Define the message to sign
+      const message = `Sign in with Ethereum to the app. Address: ${account}`;
+      // Request the user to sign the message. This will likely involve user interaction with the Ledger device.
+      const signature = await ledgerEthereum.request({
+        method: 'personal_sign',
+        params: [message, account]
+      });
+  
+      console.log("Signed Message:", signature);
+  
+      // Save the account to session storage for later use
+      sessionStorage.setItem("walletID", account);
+      sessionStorage.setItem("walletType", "ledger");
+      // Update UI: Hide 'Sign in with Ledger' button and show account related information
+      document.getElementById("account-btn").style.display = "block";
+      document.getElementById("wallet-btn").style.display = "none";
+  
+      // Redirect to a new page after successful sign in
+      window.location.href = "templates.html"; // Change to the path of your choice
+  
+      // You might also want to handle the signature here (e.g., send it to your server for verification)
+  
+    } catch (error) {
+      console.error("Error in Ledger Wallet sign-in:", error);
+      // Handle errors (e.g., user refused to sign the message, connection issues, or other errors)
+    }
+  }
 
 // Add event listener to the metamask button
 document.getElementById("metamask").addEventListener("click",signInWithMetaMask);
 // Add event listener to the phantom button
 document.getElementById("phantom").addEventListener("click", signInwithphantom);
+// Other functions or event listeners
+document.getElementById("ledger").addEventListener("click",signInWithLedger);
 // Add event listener to the coinbase button
- document.getElementById("coinbase").addEventListener("click", signInWithCoinbase);
+document.getElementById("coinbase").addEventListener("click", signInWithCoinbase);
 // Add event listener to the walletcoin button
- document.getElementById("operatouch").addEventListener("click", signInWithOpera);
-
+document.getElementById("operatouch").addEventListener("click", signInWithOpera);
+// Other functions or event listeners
+document.getElementById("Walletconnect").addEventListener("click",signInWithWalletConnect);
 
 
 //#region TAB HTML
@@ -347,7 +402,6 @@ function openTab(evt, tabName) {
 
 
 //#endregion
-
 //#region EDIT HOME PAGE AFTER CONNECTION
 function EditWalletButton() {
     var walletId = sessionStorage.getItem("walletID");
