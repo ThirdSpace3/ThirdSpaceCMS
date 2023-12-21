@@ -151,16 +151,19 @@ function updateSubmitButtonState() {
 }
 
 
-export async function saveWalletId(walletId) {
-    try {
-        // Define the document reference (e.g., users collection, document named after wallet ID)
-        const docRef = doc(db, "users", walletId);
+export async function saveWalletId(walletId, walletType) {
+  try {
+      // Define the document reference
+      // Use both walletId and walletType to organize the data
+      const docRef = doc(db, "users", walletType, "wallets", walletId);
 
-        // Set the document data
-        await setDoc(docRef, { walletId: walletId });
+      // Set the document data with an additional field for walletType
+      await setDoc(docRef, { walletId: walletId, walletType: walletType });
 
-        console.log("Wallet ID saved successfully");
-    } catch (error) {
-        console.error("Error saving wallet ID:", error);
-    }
+      console.log(`${walletType} Wallet ID saved successfully`);
+  } catch (error) {
+      console.error(`Error saving ${walletType} wallet ID:`, error);
+  }
 }
+
+
