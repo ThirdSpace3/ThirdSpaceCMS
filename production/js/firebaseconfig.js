@@ -34,21 +34,24 @@ function showStep(stepNumber) {
 }
 
 async function saveData(step, data) {
-    const walletid = sessionStorage.getItem("walletID");
-    const stepKey = `step${step}`; // Key for the step data
-    const docRef = doc(db, 'userSessions', walletid); // Reference to the document
-    const timestamp = new Date(); // Get the current timestamp
-    const newData = {
-      [stepKey]: data,
-      timestamp: timestamp.toISOString(), // Convert the timestamp to ISO string format
-    };
-    try {
-      const walletid = sessionStorage.getItem("walletID");
-        await setDoc(docRef, newData, { merge: true }); // Merge new data with existing document
-    } catch (e) {
-      console.error("Error updating document: ", e);
+  const walletId = sessionStorage.getItem("walletID"); // Retrieve the wallet ID
+  const walletType = sessionStorage.getItem("walletType"); // Retrieve the wallet type
+  const stepKey = `step${step}`; // Key for the step data
+  const docRef = doc(db, 'userSessions', walletId); // Reference to the document
+  const timestamp = new Date(); // Get the current timestamp
+  const newData = {
+    [stepKey]: data,
+    timestamp: timestamp.toISOString(), // Convert the timestamp to ISO string format
+  };
+  try {
+    await setDoc(docRef, newData, { merge: true }); // Merge new data with existing document
+    if(walletId && walletType) {
+      await saveWalletId(walletId, walletType); // Save or update the wallet info
     }
+  } catch (e) {
+    console.error("Error updating document: ", e);
   }
+}
 
 
 function captureData(step) {
@@ -150,19 +153,17 @@ function updateSubmitButtonState() {
   }
 }
 
-
 export async function saveWalletId(walletId, walletType) {
   try {
-      // Define the document reference
-      // Use both walletId and walletType to organize the data
-      const docRef = doc(db, "users", walletType, "wallets", walletId);
+      // Define the document reference in the 'wallets' collection
+      const docRef = doc(db, "wallets", walletId);
 
-      // Set the document data with an additional field for walletType
+      // Set the document data with walletId and walletType
       await setDoc(docRef, { walletId: walletId, walletType: walletType });
 
-      console.log(`${walletType} Wallet ID saved successfully`);
+      console.log(`${walletType} Wallet ID (${walletId}) saved successfully`);
   } catch (error) {
-      console.error(`Error saving ${walletType} wallet ID:`, error);
+      console.error(`Error saving ${walletType} wallet ID (${walletId}):`, error);
   }
 }
 
