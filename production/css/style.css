@@ -9,6 +9,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0 10%;
 }
 .template-title {
     color: #FFF;
@@ -27,7 +28,7 @@ body {
     text-align: center;
 }
 .step-box {
-    width: 50vw;
+    max-width: 900px;
     height: 65vh;
     display: flex;
     flex-direction: column;
@@ -157,13 +158,45 @@ body {
     position: absolute;
     bottom: -400px;
     left: -390px;
+    z-index: -1;
 }
 .template-deco-top {
     position: absolute;
     top: 45px;
     right: -50px;
+    z-index: -1;
 }
 
 .selected {
     background: rgba(255, 255, 255, 0.60);
+}
+.template-mobile {
+    display: none;
+}
+
+
+/*==================== ETAPE 2 ====================*/
+@media only screen and (max-width: 650px) {
+    .template-mobile {
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5%;
+    }
+    .template-content {
+        display: none;
+    }
+    .template-deco-bot {
+        max-width: 350px;
+        bottom: -150px;
+        left: -190px;
+    }
+    .template-deco-top {
+        max-width: 160px;
+        top: 45px;
+        right: -60px;
+    }
 }

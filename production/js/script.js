@@ -2,20 +2,32 @@
 function toggleMenu() {
     const menu = document.getElementById('mobileMenu');
     const menuIcon = document.getElementById('menuIcon');
+    const navbar = document.querySelector('nav'); // ou tout autre sélecteur pour votre navbar
     const burgerIconSrc = 'img/navbar-burger.png';
     const closeIconSrc = 'img/navbar-close.png';
     const body = document.body;
-  
+
     if (menu.classList.contains('menu-open')) {
-      menu.classList.remove('menu-open');
-      body.classList.remove('no-scroll');
-      menuIcon.src = burgerIconSrc;
+        menu.classList.remove('menu-open');
+        body.classList.remove('no-scroll');
+        menuIcon.src = burgerIconSrc;
+
+        // Restaurer la couleur d'origine si la page n'a pas été défilée
+        if (window.scrollY === 0) {
+            navbar.style.backgroundColor = ""; // ou votre couleur d'origine
+        }
     } else {
-      menu.classList.add('menu-open');
-      body.classList.add('no-scroll');
-      menuIcon.src = closeIconSrc;
+        menu.classList.add('menu-open');
+        body.classList.add('no-scroll');
+        menuIcon.src = closeIconSrc;
+
+        // Changer la couleur de fond si la page n'a pas été défilée
+        if (window.scrollY === 0) {
+            navbar.style.backgroundColor = "#131313";
+        }
     }
-  }
+}
+
   //#endregion
 
 //#region POPUP WALLET
@@ -307,6 +319,8 @@ function openTab(evt, tabName) {
   window.onload = openDefaultTab;
   
  //#endregion 
+
+
 
 // // Ledger integration is more complex due to its hardware nature
 // // This is a basic outline; refer to Ledger's documentation for complete integration
