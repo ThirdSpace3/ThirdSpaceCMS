@@ -91,7 +91,8 @@ async function signInwithphantom() {
         console.error("No provider found.");
         return;
     }
-  
+    console.log("Phantom sign-in triggered");
+
     try {
         // Check if the wallet is connected
         if (!provider.isConnected) {
@@ -115,6 +116,7 @@ async function signInwithphantom() {
             const walletId = provider.publicKey.toString();
 
             sessionStorage.setItem("walletID", walletId);
+            sessionStorage.setItem("walletType", "phantom");
 
             document.getElementById("account-btn").style.display ="block";
             document.getElementById("wallet-btn").style.display ="none";
@@ -132,27 +134,85 @@ async function signInwithphantom() {
   }
 
 
-async function signInWithMetaMask() {
-  if (typeof window.ethereum === 'undefined') {
+  async function signInWithMetaMask() {
+    if (typeof window.ethereum === 'undefined') {
       console.error("MetaMask is not installed");
       return;
-  }
-
-  try {
+    }
+  
+    try {
+      // Request account access
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-      const account = accounts[0];
-      const message = `Sign in with Ethereum to the app. Address: ${account}`;
-      const signature = await ethereum.request({ 
-          method: 'personal_sign', 
-          params: [message, account] 
+      const walletId = accounts[0]; // Get the first account
+  
+      // Define the message to sign
+      const message = `Sign in with Ethereum to the app. Address: ${walletId}`;
+      // Request the user to sign the message
+      const signature = await ethereum.request({
+        method: 'personal_sign',
+        params: [message, walletId]
       });
-
+  
       console.log("Signed Message:", signature);
-      // Handle the signature here (e.g., send it to your server for verification)
-  } catch (error) {
+  
+      // Save the account to session storage for later use
+      sessionStorage.setItem("walletID", walletId);
+      sessionStorage.setItem("walletType", "metamask");
+      // Update UI: Hide 'Sign in with MetaMask' button and show account related information
+      document.getElementById("account-btn").style.display = "block";
+      document.getElementById("wallet-btn").style.display = "none";
+  
+      // Redirect to a new page after successful sign in
+      window.location.href = "templates.html"; // Change 'dashboard.html' to the path of your choice
+  
+      // You might also want to handle the signature here (e.g., send it to your server for verification)
+  
+    } catch (error) {
       console.error("Error in MetaMask sign-in:", error);
+      // Handle errors (e.g., user refused to sign the message)
+    }
   }
-}
+  
+  async function signInWithCoinbase() {
+    console.log("Coinbase sign-in triggered");
+
+    if (!window.ethereum) {
+        console.error("Coinbase Wallet is not installed or not detected");
+        return;
+    }
+    try {
+      // Request account access
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      const account = accounts[0]; // Get the first account
+  
+      // Define the message to sign
+      const message = `Sign in with Ethereum to the app. Address: ${account}`;
+      // Request the user to sign the message
+      const signature = await ethereum.request({
+        method: 'personal_sign',
+        params: [message, account]
+      });
+  
+      console.log("Signed Message:", signature);
+  
+      // Save the account to session storage for later use
+      sessionStorage.setItem("walletID", account);
+      sessionStorage.setItem("walletType", "coinbase");
+      // Update UI: Hide 'Sign in with Coinbase' button and show account related information
+      document.getElementById("account-btn").style.display = "block";
+      document.getElementById("wallet-btn").style.display = "none";
+  
+      // Redirect to a new page after successful sign in
+      window.location.href = "templates.html"; // Change 'dashboard.html' to the path of your choice
+  
+      // You might also want to handle the signature here (e.g., send it to your server for verification)
+  
+    } catch (error) {
+      console.error("Error in Coinbase Wallet sign-in:", error);
+      // Handle errors (e.g., user refused to sign the message or other errors)
+    }
+  }
+  
 
 async function signInWithOpera() {
   if (window.ethereum && window.ethereum.isOpera) {
@@ -174,6 +234,52 @@ async function signInWithOpera() {
       console.error("Opera Wallet not detected");
   }
 }
+
+// This function can now be part of a traditional script, without module syntax
+
+
+async function signInWithWalletConnect() {
+    console.log("WalletConnect sign-in triggered");
+
+    // Create WalletConnect Provider using the global variable
+    const provider = new WalletConnectProvider.default({
+        infuraId: "065dcf3394a94a4cab29ac97be680697", // Replace with your Infura Project ID
+    });
+
+    try {
+        await provider.enable();
+        const web3 = new Web3(provider);
+        const accounts = await web3.eth.getAccounts();
+        const account = accounts[0];
+
+        const message = `Sign in with Ethereum to the app. Address: ${account}`;
+        const signature = await web3.eth.personal.sign(message, account);
+
+        console.log("Signed Message:", signature);
+        sessionStorage.setItem("walletID", account);
+        sessionStorage.setItem("walletType", "walletconnect");
+
+        document.getElementById("account-btn").style.display = "block";
+        document.getElementById("wallet-btn").style.display = "none";
+        window.location.href = "dashboard.html";
+
+    } catch (error) {
+        console.error("Error in WalletConnect sign-in:", error);
+    }
+}
+
+// Other functions or event listeners
+
+document.getElementById("Walletconnect").addEventListener("click",signInWithWalletConnect);
+
+// Add event listener to the metamask button
+document.getElementById("metamask").addEventListener("click",signInWithMetaMask);
+// Add event listener to the phantom button
+document.getElementById("phantom").addEventListener("click", signInwithphantom);
+// Add event listener to the coinbase button
+ document.getElementById("coinbase").addEventListener("click", signInWithCoinbase);
+// Add event listener to the walletcoin button
+ document.getElementById("operatouch").addEventListener("click", signInWithOpera);
 
 
 
@@ -224,14 +330,6 @@ function openTab(evt, tabName) {
 // }
 
 
-// Add event listener to the metamask button
-document.getElementById("metamask").addEventListener("click",signInWithMetaMask);
-// Add event listener to the phantom button
-document.getElementById("phantom").addEventListener("click", signInwithphantom);
-// Add event listener to the coinbase button
-// document.getElementById("ledger").addEventListener("click", signInWithLedger);
-// Add event listener to the walletcoin button
-document.getElementById("operatouch").addEventListener("click", signInWithOpera);
 
 
 //#endregion
