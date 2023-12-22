@@ -32,8 +32,25 @@ function toggleMenu() {
 
 //#region POPUP WALLET
 
+
+// Function to determine if an element is visible
+function isElementVisible(elem) {
+  return !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+}
+
+  // Utility function to detect mobile devices
+function isMobileDevice() {
+  return /Mobi|Android/i.test(navigator.userAgent);
+}
+
 function openPopup() {
 
+  justOpened = true; // Set the flag to true when opening the popup
+  var popup = document.getElementById("popup");
+  popup.style.display = "block";
+
+  // Reset the justOpened flag after a short delay
+  setTimeout(() => { justOpened = false; }, 10);
     const menuIcon = document.getElementById('menuIcon');
     const burgerIconSrc = 'img/navbar-burger.png';
 
@@ -49,15 +66,52 @@ function openPopup() {
     }
 }
 
-// Function to determine if an element is visible
-function isElementVisible(elem) {
-  return !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+
+
+
+// Ensure you have defined openPopup() and any other necessary functions elsewhere.
+document.querySelector('.popup .popup-more-btn').addEventListener('click', function(event) {
+  event.preventDefault();
+
+  // Sélectionnez seulement les boutons avec les classes '.wallet-btn' et '.wallet-more'
+  var walletMoreButtons = document.querySelectorAll('.popup .wallet-btn.wallet-more');
+
+  if (this.textContent === 'Show More') {
+      // Si le texte est "Show More", changez-le en "Show Less" et retirez '.wallet-hide'
+      walletMoreButtons.forEach(function(button) {
+          button.classList.remove('wallet-hide');
+      });
+      this.textContent = 'Show Less';
+  } else {
+      // Si le texte est "Show Less", changez-le en "Show More" et ajoutez '.wallet-hide'
+      walletMoreButtons.forEach(function(button) {
+          button.classList.add('wallet-hide');
+      });
+      this.textContent = 'Show More';
+  }
+});
+
+function closePopup() {
+  var popup = document.getElementById("popup");
+  popup.style.display = "none";
+  // ... Any additional cleanup ...
 }
 
-  // Utility function to detect mobile devices
-function isMobileDevice() {
-  return /Mobi|Android/i.test(navigator.userAgent);
-}
+document.addEventListener("click", function(event) {
+  var popup = document.getElementById("popup");
+  var popupContent = document.querySelector(".popup-content");
+
+  // Ensure the popup is open and the click was outside the popup content, and the popup wasn't just opened
+  if (popup.style.display === "block" && !justOpened && !popupContent.contains(event.target)) {
+    closePopup();
+  }
+});
+
+// Existing click handler for the close button inside the popup
+document.querySelector('.close-button').addEventListener('click', function() {
+  closePopup();
+});
+
 
 
 // Execute this script after the DOM has fully loaded
@@ -105,36 +159,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-// Ensure you have defined openPopup() and any other necessary functions elsewhere.
-
-
-
-document.querySelector('.popup .popup-more-btn').addEventListener('click', function(event) {
-  event.preventDefault();
-
-  // Sélectionnez seulement les boutons avec les classes '.wallet-btn' et '.wallet-more'
-  var walletMoreButtons = document.querySelectorAll('.popup .wallet-btn.wallet-more');
-
-  if (this.textContent === 'Show More') {
-      // Si le texte est "Show More", changez-le en "Show Less" et retirez '.wallet-hide'
-      walletMoreButtons.forEach(function(button) {
-          button.classList.remove('wallet-hide');
-      });
-      this.textContent = 'Show Less';
-  } else {
-      // Si le texte est "Show Less", changez-le en "Show More" et ajoutez '.wallet-hide'
-      walletMoreButtons.forEach(function(button) {
-          button.classList.add('wallet-hide');
-      });
-      this.textContent = 'Show More';
-  }
-});
-
-
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
-  menu.classList.remove('menu-open');
-}
 
 //#endregion
 
