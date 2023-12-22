@@ -51,8 +51,9 @@ img {
 
 
 body {
-    background-color: var(--body-purple);
-overflow-x: hidden;}
+  background-color: var(--body-purple);
+overflow-x: hidden;
+}
 
 .section {
     padding: 80px 10%;
@@ -547,9 +548,23 @@ ul.nav__links  li.nav__logo {
     transform: translate(-50%, 0%);
     top: auto;
     box-shadow: 0 -4px 26px -1.3px rgba(150, 0, 250, 0.50);
+    border-radius: 15px 15px 0 0;
+    gap: 15px;
   }
   .wallet-list {
     scale: 0.9;
+  }
+  .wallet-btn {
+    font-size: 15px;
+  }
+  .wallet-btn img {
+    max-width: 30px;
+  }
+  .popup-more-btn {
+    font-size: 14px;
+  }
+  .popup h2 {
+    font-size: 27px;
   }
 }
 
@@ -737,7 +752,6 @@ width: 90%;
   background-size: contain;
   background-repeat: no-repeat;
   position: relative;
-  overflow-x: none;
 }
 .roadmap-content {
   position: relative;
@@ -1079,6 +1093,7 @@ footer {
   .body-deco-2 {
     max-width: 300px;
     right: -180px;
+    display: none;
   }
   .body-deco-3 {
     max-width: 250px;
@@ -1088,5 +1103,7 @@ footer {
     max-width: 200px;
     right: -100px;
     bottom: -30px;
+    display: none;
   }
+
 }

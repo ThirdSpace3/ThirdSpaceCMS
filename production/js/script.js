@@ -352,26 +352,27 @@ document.getElementById("Walletconnect").addEventListener("click",signInWithWall
 
 //#region TAB HTML
 function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
   }
-  
-  // Fonction pour ouvrir l'onglet par défaut
-  function openDefaultTab() {
-    document.getElementById("defaultOpen").click();
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
-  
-  // Ajouter l'écouteur d'événement pour charger l'onglet par défaut au chargement de la page
-  window.onload = openDefaultTab;
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Fonction pour ouvrir l'onglet par défaut
+function openDefaultTab() {
+  document.getElementById("defaultOpen").click();
+}
+
+// Ajouter l'écouteur d'événement pour charger l'onglet par défaut au chargement de la page
+window.onload = openDefaultTab;
+
   
  //#endregion 
 
