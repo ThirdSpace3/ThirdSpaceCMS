@@ -112,7 +112,7 @@ async function signInwithphantom() {
             await provider.connect();
         }
   
-        const message = `Your custom sign-in message`;
+        const message = `Welcome to Third Space! You're currently navigating on our alpha version.`;
         const encodedMessage = new TextEncoder().encode(message);
   
         if (typeof provider.signMessage !== "function") {
@@ -158,7 +158,7 @@ async function signInwithphantom() {
       const walletId = accounts[0]; // Get the first account
   
       // Define the message to sign
-      const message = `Sign in with Ethereum to the app. Address: ${walletId}`;
+      const message = `Welcome to Third Space! You're currently navigating on our alpha version. Address: ${walletId}`;
       // Request the user to sign the message
       const signature = await ethereum.request({
         method: 'personal_sign',
@@ -198,7 +198,7 @@ async function signInwithphantom() {
       const account = accounts[0]; // Get the first account
   
       // Define the message to sign
-      const message = `Sign in with Ethereum to the app. Address: ${account}`;
+      const message = `Welcome to Third Space! You're currently navigating on our alpha version. Address: ${account}`;
       // Request the user to sign the message
       const signature = await ethereum.request({
         method: 'personal_sign',
@@ -234,7 +234,7 @@ async function signInwithphantom() {
             const account = accounts[0]; // Take the first account
   
             // Define the message the user will sign
-            const message = `Sign in with Opera to the app. Address: ${account}`;
+            const message = `Welcome to Third Space! You're currently navigating on our alpha version. Address: ${account}`;
             
             // Request the user to sign the message with their account
             const signature = await window.ethereum.request({ 
@@ -276,7 +276,7 @@ async function signInWithWalletConnect() {
         const accounts = await web3.eth.getAccounts();
         const account = accounts[0];
 
-        const message = `Sign in with Ethereum to the app. Address: ${account}`;
+        const message = `Welcome to Third Space! You're currently navigating on our alpha version. Address: ${account}`;
         const signature = await web3.eth.personal.sign(message, account);
 
         console.log("Signed Message:", signature);
@@ -309,7 +309,7 @@ async function signInWithLedger() {
       const account = accounts[0]; // Get the first account
   
       // Define the message to sign
-      const message = `Sign in with Ethereum to the app. Address: ${account}`;
+      const message = `Welcome to Third Space! You're currently navigating on our alpha version. Address: ${account}`;
       // Request the user to sign the message. This will likely involve user interaction with the Ledger device.
       const signature = await ledgerEthereum.request({
         method: 'personal_sign',
