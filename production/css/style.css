@@ -77,9 +77,7 @@ body {
     display: flex;
     gap: 10px;
 }
-.disabled {
-    cursor: not-allowed;
-}
+
 .ignore-btn {
     display: flex;
   padding: 15px 30px;
@@ -96,11 +94,14 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.50);
     background: rgba(255, 255, 255, 0.20);
 }
-.ignore-btn:hover {
+.ignore-button:not(.disabled):hover {
     cursor: pointer;
     background: rgba(255, 255, 255, 0.60);
 }
 
+.disabled {
+    cursor: not-allowed;
+}
 
 /*==================== ETAPE 2 ====================*/
 

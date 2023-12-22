@@ -27,10 +27,13 @@ const db = getFirestore(app);
 let currentStep = 1;
 const sessionId = Date.now().toString(); // Simple example, consider using a more robust method for production
 
+// Call updateSubmitButtonState when showing a new step
 function showStep(stepNumber) {
   for (let i = 1; i <= 4; i++) {
     document.getElementById(`etape${i}`).style.display = i === stepNumber ? 'block' : 'none';
   }
+  // Ensure the submit button is in the correct state for the new step
+  updateSubmitButtonState();
 }
 
 async function saveData(step, data) {
@@ -132,26 +135,57 @@ document.querySelectorAll('#etape3 .solutions-card').forEach(card => {
     });
   });
   
+// Call updateSubmitButtonState after each interaction
+document.querySelectorAll('.selectable-button, .selectable-button-2, .solutions-card').forEach(element => {
+  element.addEventListener('click', updateSubmitButtonState);
+});
 
+// If there's input in step 4, you might want to check its state as well:
+document.querySelector('#etape4 input[type="text"]').addEventListener('input', updateSubmitButtonState);
+
+// Initialize the first step
 showStep(1);
 
 function updateSubmitButtonState() {
   const submitButton = document.getElementById('submit-button');
-  const isAnyOptionSelected = document.querySelectorAll('#etape1 .selectable-button.selected').length > 0;
+  const nextButton = document.getElementById('ignore-button');
 
+  let isAnyOptionSelected = false;
+
+  // Check for selected options based on the current step
+  switch (currentStep) {
+    case 1:
+      isAnyOptionSelected = document.querySelectorAll('#etape1 .selectable-button.selected').length > 0;
+      break;
+    case 2:
+      isAnyOptionSelected = document.querySelectorAll('#etape2 .selectable-button-2.selected').length > 0;
+      break;
+    case 3:
+      isAnyOptionSelected = document.querySelector('#etape3 .solutions-card.selected') !== null;
+      break;
+    case 4:
+      // Assuming you want to check if the input field is not empty
+      const projectName = document.querySelector('#etape4 input[type="text"]').value.trim();
+      isAnyOptionSelected = projectName.length > 0;
+      break;
+    // Add conditions for other steps if necessary
+  }
+
+  // Enable or disable the submit button based on the selection
+  submitButton.disabled = !isAnyOptionSelected;
+  nextButton.disabled = !isAnyOptionSelected; 
   if (isAnyOptionSelected) {
-    submitButton.disabled = false;
-    submitButton.classList.remove('disabled'); // Remove the 'disabled' class when the button is enabled
-    submitButton.classList.remove('purple-light-btn');
+    submitButton.classList.remove('disabled', 'purple-light-btn');
     submitButton.classList.add('purple-btn');
-
+    nextButton.classList.remove('disabled');
+    
   } else {
-    submitButton.disabled = true;
-    submitButton.classList.add('disabled'); // Add the 'disabled' class when the button is disabled
-    submitButton.classList.add('purple-light-btn');
+    submitButton.classList.add('disabled', 'purple-light-btn');
     submitButton.classList.remove('purple-btn');
+    nextButton.classList.add('disabled');
   }
 }
+
 
 export async function saveWalletId(walletId, walletType) {
   try {
