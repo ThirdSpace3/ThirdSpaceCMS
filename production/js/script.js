@@ -80,6 +80,11 @@ document.querySelector('.popup .popup-more-btn').addEventListener('click', funct
 
 //#region CONNECT WALLET 
 
+// Utility function to detect mobile devices
+function isMobileDevice() {
+  return /Mobi|Android/i.test(navigator.userAgent);
+}
+
 // Provider Phantom
 function getProvider() {
   if ("solana" in window) {
@@ -99,6 +104,13 @@ function getProvider() {
 // Sign in function
 async function signInwithphantom() {
     const provider = getProvider();
+
+    if (isMobileDevice()) {
+      // Redirect or inform the user
+      window.location.href = "templates.html"; // Change to your mobile-specific URL
+      return;
+  }
+
     if (!provider) {
         console.error("No provider found.");
         return;
@@ -151,7 +163,12 @@ async function signInwithphantom() {
       console.error("MetaMask is not installed");
       return;
     }
-  
+    if (isMobileDevice()) {
+      // Redirect or inform the user
+      window.location.href = "templates.html"; // Change to your mobile-specific URL
+      return;
+  }
+
     try {
       // Request account access
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
@@ -192,6 +209,12 @@ async function signInwithphantom() {
         console.error("Coinbase Wallet is not installed or not detected");
         return;
     }
+    if (isMobileDevice()) {
+      // Redirect or inform the user
+      window.location.href = "templates.html"; // Change to your mobile-specific URL
+      return;
+  }
+
     try {
       // Request account access
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
@@ -227,6 +250,12 @@ async function signInwithphantom() {
 
   async function signInWithOpera() {
     // Check if the Ethereum provider injected by Opera is available
+    if (isMobileDevice()) {
+      // Redirect or inform the user
+      window.location.href = "templates.html"; // Change to your mobile-specific URL
+      return;
+  }
+
     if (window.ethereum && window.ethereum.isOpera) {
         try {
             // Request account access from the user
@@ -264,6 +293,11 @@ async function signInwithphantom() {
 
 async function signInWithWalletConnect() {
     console.log("WalletConnect sign-in triggered");
+    if (isMobileDevice()) {
+      // Redirect or inform the user
+      window.location.href = "templates.html"; // Change to your mobile-specific URL
+      return;
+  }
 
     // Create WalletConnect Provider using the global variable
     const provider = new WalletConnectProvider.default({
@@ -294,6 +328,11 @@ async function signInWithWalletConnect() {
 
 async function signInWithLedger() {
     console.log("Ledger sign-in triggered");
+    if (isMobileDevice()) {
+      // Redirect or inform the user
+      window.location.href = "templates.html"; // Change to your mobile-specific URL
+      return;
+  }
 
     // Assuming you have a Ledger-specific Ethereum provider or a way to connect to Ledger devices
     if (!window.ledgerEthereum) {
@@ -403,6 +442,8 @@ window.onload = openDefaultTab;
 
 
 //#endregion
+
+
 //#region EDIT HOME PAGE AFTER CONNECTION
 function EditWalletButton() {
     var walletId = sessionStorage.getItem("walletID");
