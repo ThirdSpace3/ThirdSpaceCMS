@@ -182,7 +182,6 @@ function updateSubmitButtonState() {
   } else {
     submitButton.classList.add('disabled', 'purple-light-btn');
     submitButton.classList.remove('purple-btn');
-    nextButton.classList.add('disabled');
   }
 }
 
