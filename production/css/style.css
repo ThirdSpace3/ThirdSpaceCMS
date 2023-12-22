@@ -57,7 +57,6 @@ body {
 .selectable-button:hover {
     cursor: pointer;
     background: rgba(255, 255, 255, 0.60);
-
 }
 
 .template-input-box {
@@ -80,25 +79,27 @@ body {
 
 .ignore-btn {
     display: flex;
-  padding: 15px 30px;
-  justify-content: center;
-  align-items: center;
-  color: var(--white);
-  font-family: Montserrat;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  border-radius: 28px;
-  gap: 10px;
+    padding: 15px 30px;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border-radius: 28px;
+    gap: 10px;
     border: 1px solid rgba(255, 255, 255, 0.50);
     background: rgba(255, 255, 255, 0.20);
 }
-.ignore-button:not(.disabled):hover {
+.ignore-btn:hover {
     cursor: pointer;
     background: rgba(255, 255, 255, 0.60);
 }
-
+.purple-btn:hover {
+    cursor: pointer;
+}
 .disabled {
     cursor: not-allowed;
 }
@@ -131,13 +132,33 @@ body {
     padding: 15px 20px;
     width: 250px;
 }
+.selectable-button-2:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.60);
+}
+@media only screen and (max-height: 800px) {
+    .selectable-button,
+    .selectable-button-2,
+    .template-input-box input {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    .btn-box button {
+        padding: 10px 20px;
+    }
+    .template-content {
+        justify-content: space-around;
+    }
+}
+
+/*==================== ETAPE 3 ====================*/
+
 .solutions-card:hover {
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.2);
 }
 .card-selected {
     background-color: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.50);
 }
 
 #etape1{
@@ -178,7 +199,7 @@ body {
 
 
 /*==================== MOBILE ====================*/
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 700px) {
     .template-mobile {
         height: 80vh;
         display: flex;
