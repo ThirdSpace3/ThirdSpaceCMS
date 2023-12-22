@@ -1,3 +1,5 @@
+  
+//#region FIREBASE CONFIG
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   // import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
   import { getFirestore, setDoc , doc} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -26,10 +28,75 @@ const db = getFirestore(app);
 
 let currentStep = 1;
 const sessionId = Date.now().toString(); // Simple example, consider using a more robust method for production
+//#endregion
+//#region DOCUMENT ACTIONS
+
+document.getElementById('submit-button').addEventListener('click', () => {
+  const data = captureData(currentStep);
+  saveData(currentStep, data); // This function now correctly handles the 5th step data
+
+  currentStep++;
+  if (currentStep <= 5) {
+    showStep(currentStep);
+  } else {
+    // window.location.href = "index.html";
+  }
+});
+
+
+document.getElementById('ignore-button').addEventListener('click', () => {
+currentStep++;
+if (currentStep <= 4) {
+  showStep(currentStep);
+} else {
+    window.location.href = "index.html";    
+}
+});
+
+document.querySelectorAll('.selectable-button').forEach(button => {
+  button.addEventListener('click', () => {
+    button.classList.toggle('selected'); // 'selected' is a class that indicates the button is selected
+    updateSubmitButtonState();
+  });
+});
+
+document.querySelectorAll('#etape2 .selectable-button-2').forEach(button => {
+  button.addEventListener('click', () => {
+    button.classList.toggle('selected');
+  });
+});
+
+
+document.querySelectorAll('#etape3 .solutions-card').forEach(card => {
+  card.addEventListener('click', () => {
+    // Deselect other cards
+    document.querySelectorAll('#etape3 .solutions-card').forEach(otherCard => {
+      otherCard.classList.remove('selected');
+    });
+    // Select this card
+    card.classList.add('selected');
+  });
+});
+
+// Call updateSubmitButtonState after each interaction
+document.querySelectorAll('.selectable-button, .selectable-button-2, .solutions-card').forEach(element => {
+element.addEventListener('click', updateSubmitButtonState);
+});
+
+// If there's input in step 4, you might want to check its state as well:
+document.querySelector('#etape4 input[type="text"]').addEventListener('input', updateSubmitButtonState);
+
+// Initialize the first step
+showStep(1);
+
+
+//#endregion 
+//#region FUNCIONS AND 
+
 
 // Call updateSubmitButtonState when showing a new step
 function showStep(stepNumber) {
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 5; i++) {
     document.getElementById(`etape${i}`).style.display = i === stepNumber ? 'block' : 'none';
   }
   // Ensure the submit button is in the correct state for the new step
@@ -41,13 +108,14 @@ async function saveData(step, data) {
   const walletType = sessionStorage.getItem("walletType"); // Retrieve the wallet type
   const stepKey = `step${step}`; // Key for the step data
   const docRef = doc(db, 'userSessions', walletId); // Reference to the document
-  const timestamp = new Date(); // Get the current timestamp
   const newData = {
     [stepKey]: data,
-    timestamp: timestamp.toISOString(), // Convert the timestamp to ISO string format
+    timestamp: new Date().toISOString(),
   };
+
   try {
-    await setDoc(docRef, newData, { merge: true }); // Merge new data with existing document
+    // Save the data to Firebase under the correct step key
+    await setDoc(docRef, newData, { merge: true });
     if(walletId && walletType) {
       await saveWalletId(walletId, walletType); // Save or update the wallet info
     }
@@ -93,99 +161,73 @@ function captureData(step) {
         const projectName = document.querySelector('#etape4 input[type="text"]').value;
         data.projectName = projectName;
       }
-    // Add logic for other steps if needed
-    return data;
-  }
-    
-
-document.getElementById('submit-button').addEventListener('click', () => {
-    const data = captureData(currentStep);
-    saveData(currentStep, data);
-  
-    currentStep++;
-    if (currentStep <= 4) {
-      showStep(currentStep);
-    } else {
-        window.location.href = "index.html";    
+      if (step === 5) {
+        // Capture feedback text from the input field in step 5
+        const feedbackText = document.querySelector('#etape5 input[type="text"]').value.trim();
+        if (feedbackText) data.feedback = feedbackText;
+      }
+      return data;
     }
-});
-
-document.querySelectorAll('.selectable-button').forEach(button => {
-    button.addEventListener('click', () => {
-      button.classList.toggle('selected'); // 'selected' is a class that indicates the button is selected
-      updateSubmitButtonState();
-    });
-  });
-
-document.querySelectorAll('#etape2 .selectable-button-2').forEach(button => {
-    button.addEventListener('click', () => {
-      button.classList.toggle('selected');
-    });
-  });
+  document.getElementById('feedback-button').addEventListener('click', async (event) => {
+    event.preventDefault(); // Prevent the default anchor action
   
-
-document.querySelectorAll('#etape3 .solutions-card').forEach(card => {
-    card.addEventListener('click', () => {
-      // Deselect other cards
-      document.querySelectorAll('#etape3 .solutions-card').forEach(otherCard => {
-        otherCard.classList.remove('selected');
-      });
-      // Select this card
-      card.classList.add('selected');
-    });
-  });
+    const data = captureData(5); // Assuming this captures the feedback
+    await saveData(5, data); // Save the data for step 5
   
-// Call updateSubmitButtonState after each interaction
-document.querySelectorAll('.selectable-button, .selectable-button-2, .solutions-card').forEach(element => {
-  element.addEventListener('click', updateSubmitButtonState);
-});
+    // Redirect or perform other actions after saving data
+    window.location.href = "index.html"; // Redirect to a thank you page or back to the home page
+  });
+  function updateSubmitButtonState() {
+    const submitButton = document.getElementById('submit-button');
+    const nextButton = document.getElementById('ignore-button');
+  
+    let isAnyOptionSelected = false;
+  
+    // Check for selected options based on the current step
+    switch (currentStep) {
+      case 1:
+        isAnyOptionSelected = document.querySelectorAll('#etape1 .selectable-button.selected').length > 0;
+        break;
+      case 2:
+        isAnyOptionSelected = document.querySelectorAll('#etape2 .selectable-button-2.selected').length > 0;
+        break;
+      case 3:
+        isAnyOptionSelected = document.querySelector('#etape3 .solutions-card.selected') !== null;
+        break;
+      case 4:
+        const projectName = document.querySelector('#etape4 input[type="text"]').value.trim();
+        isAnyOptionSelected = projectName.length > 0;
+        break;
+      case 5: 
+        const feedbackText = document.querySelector('#etape5 input[type="text"]').value.trim();
+        isAnyOptionSelected = feedbackText.length > 0;
+        // Hide the submit and ignore buttons on the final step
+        submitButton.style.display = 'none';
+        nextButton.style.display = 'none';
+        break;
+      // Add conditions for other steps if necessary
+    }
 
-// If there's input in step 4, you might want to check its state as well:
-document.querySelector('#etape4 input[type="text"]').addEventListener('input', updateSubmitButtonState);
-
-// Initialize the first step
-showStep(1);
-
-function updateSubmitButtonState() {
-  const submitButton = document.getElementById('submit-button');
-  const nextButton = document.getElementById('ignore-button');
-
-  let isAnyOptionSelected = false;
-
-  // Check for selected options based on the current step
-  switch (currentStep) {
-    case 1:
-      isAnyOptionSelected = document.querySelectorAll('#etape1 .selectable-button.selected').length > 0;
-      break;
-    case 2:
-      isAnyOptionSelected = document.querySelectorAll('#etape2 .selectable-button-2.selected').length > 0;
-      break;
-    case 3:
-      isAnyOptionSelected = document.querySelector('#etape3 .solutions-card.selected') !== null;
-      break;
-    case 4:
-      // Assuming you want to check if the input field is not empty
-      const projectName = document.querySelector('#etape4 input[type="text"]').value.trim();
-      isAnyOptionSelected = projectName.length > 0;
-      break;
-    // Add conditions for other steps if necessary
+    // Enable or disable the submit button based on the selection
+    submitButton.disabled = !isAnyOptionSelected;
+    nextButton.disabled = !isAnyOptionSelected; 
+    if (isAnyOptionSelected) {
+      submitButton.classList.remove('disabled', 'purple-light-btn');
+      submitButton.classList.add('purple-btn');
+    } else {
+      submitButton.classList.add('disabled', 'purple-light-btn');
+      submitButton.classList.remove('purple-btn');
+    }
+  
+    // If it's not the 5th step, ensure buttons are visible
+    if (currentStep < 5) {
+      submitButton.style.display = 'block'; // or 'inline-block' depending on your styling
+      nextButton.style.display = currentStep === 4 ? 'none' : 'block'; // Hide the ignore button on the last input step
+    }
   }
 
-  // Enable or disable the submit button based on the selection
-  submitButton.disabled = !isAnyOptionSelected;
-  nextButton.disabled = !isAnyOptionSelected; 
-  if (isAnyOptionSelected) {
-    submitButton.classList.remove('disabled', 'purple-light-btn');
-    submitButton.classList.add('purple-btn');
-    nextButton.classList.remove('disabled');
-    
-  } else {
-    submitButton.classList.add('disabled', 'purple-light-btn');
-    submitButton.classList.remove('purple-btn');
-  }
-}
-
-
+//#endregion
+//#region EXPORT .
 export async function saveWalletId(walletId, walletType) {
   try {
       // Define the document reference in the 'wallets' collection
@@ -199,5 +241,4 @@ export async function saveWalletId(walletId, walletType) {
       console.error(`Error saving ${walletType} wallet ID (${walletId}):`, error);
   }
 }
-
-
+//#endregion

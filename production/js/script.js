@@ -49,10 +49,65 @@ function openPopup() {
     }
 }
 
-function closePopup() {
-    document.getElementById("popup").style.display = "none";
-    menu.classList.remove('menu-open');
+// Function to determine if an element is visible
+function isElementVisible(elem) {
+  return !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
 }
+
+  // Utility function to detect mobile devices
+function isMobileDevice() {
+  return /Mobi|Android/i.test(navigator.userAgent);
+}
+
+
+// Execute this script after the DOM has fully loaded
+document.addEventListener("DOMContentLoaded", function() {
+  // Check if the user is on a mobile device
+  if(isMobileDevice()){
+    // Get all elements with the class 'mobile-get-started'
+    var getStartedButtons = document.querySelectorAll(".mobile-get-started");
+
+    // Loop through each element and add a click event listener
+    getStartedButtons.forEach(function(button) {
+      button.addEventListener("click", function(event) {
+        // Prevent the default link behavior
+        event.preventDefault();
+
+        // Redirect to the 'templates.html' page
+        window.location.href = "templates.html";
+      });
+    });
+
+    // Get the 'Get Started' button by its ID
+    var getStartedBtn = document.getElementById("getstarted-btn");
+
+    // Check if the getStartedBtn exists to avoid null reference errors
+    if(getStartedBtn) {
+      // Remove the existing 'onclick' event handler for 'openPopup()'
+      getStartedBtn.onclick = null;
+
+      // Add a new click event listener to the button
+      getStartedBtn.addEventListener("click", function(event) {
+        // Prevent the default link behavior
+        event.preventDefault();
+
+        // Check if the button is displayed
+        if(isElementVisible(getStartedBtn)) {
+          // If the button is visible, redirect to the 'templates.html' page
+          window.location.href = "templates.html";
+        } else {
+          // If the button is not visible, optionally handle this case
+          console.log("Button is not visible. Not triggering any action.");
+        }
+      });
+    }
+  }
+});
+
+
+// Ensure you have defined openPopup() and any other necessary functions elsewhere.
+
+
 
 document.querySelector('.popup .popup-more-btn').addEventListener('click', function(event) {
   event.preventDefault();
@@ -75,6 +130,11 @@ document.querySelector('.popup .popup-more-btn').addEventListener('click', funct
   }
 });
 
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+  menu.classList.remove('menu-open');
+}
 
 //#endregion
 
@@ -113,10 +173,6 @@ window.onload = openDefaultTab;
 
 //#region CONNECT WALLET 
 
-  // Utility function to detect mobile devices
-  function isMobileDevice() {
-    return /Mobi|Android/i.test(navigator.userAgent);
-  }
 
   // Provider Phantom
   function getProvider() {
@@ -419,7 +475,7 @@ window.onload = openDefaultTab;
   // Add event listener to the walletcoin button
   document.getElementById("operatouch").addEventListener("click", signInWithOpera);
   // Other functions or event listeners
-  document.getElementById("Walletconnect").addEventListener("click",signInWithWalletConnect);
+  // document.getElementById("Walletconnect").addEventListener("click",signInWithWalletConnect);
 
 
 
