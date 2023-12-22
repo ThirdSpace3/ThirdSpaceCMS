@@ -165,6 +165,7 @@ body {
     top: 45px;
     right: -50px;
     z-index: -1;
+    max-width: 200px;
 }
 
 .selected {
@@ -175,7 +176,7 @@ body {
 }
 
 
-/*==================== ETAPE 2 ====================*/
+/*==================== MOBILE ====================*/
 @media only screen and (max-width: 650px) {
     .template-mobile {
         height: 80vh;
@@ -185,6 +186,7 @@ body {
         align-items: center;
         justify-content: center;
         padding: 0 5%;
+        overflow-x: hidden;
     }
     .template-content {
         display: none;
@@ -195,8 +197,31 @@ body {
         left: -190px;
     }
     .template-deco-top {
-        max-width: 160px;
+        max-width: 100px;
         top: 45px;
-        right: -60px;
+        right: 10px;
     }
+}
+
+/*==================== CONFIRMATION END ====================*/
+.template-confirmation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    height: 80vh;
+    display: none;
+}
+.template-confirmation p {
+    max-width: 750px;
+}
+.feedback-submit {
+    font-size: 16px;
+}
+.feedback-input-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
