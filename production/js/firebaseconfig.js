@@ -45,13 +45,23 @@ document.getElementById('submit-button').addEventListener('click', () => {
 
 
 document.getElementById('ignore-button').addEventListener('click', () => {
-currentStep++;
-if (currentStep <= 4) {
-  showStep(currentStep);
-} else {
-    window.location.href = "index.html";    
-}
+  if (currentStep === 3 && isSolutionSelected()) {
+    // If in step 3 and a solution is selected, do not allow navigation
+    console.log('Navigation is blocked because a solution is selected.');
+  } else {
+    currentStep++;
+    if (currentStep <= 4) {
+      showStep(currentStep);
+    } else {
+      window.location.href = "index.html";    
+    }
+  }
 });
+
+function isSolutionSelected() {
+  // Check if any solution card is selected in step 3
+  return document.querySelector('#etape3 .solutions-card.selected') !== null;
+}
 
 document.querySelectorAll('.selectable-button').forEach(button => {
   button.addEventListener('click', () => {
@@ -97,7 +107,7 @@ showStep(1);
 // Call updateSubmitButtonState when showing a new step
 function showStep(stepNumber) {
   for (let i = 1; i <= 5; i++) {
-    document.getElementById(`etape${i}`).style.display = i === stepNumber ? 'block' : 'none';
+    document.getElementById(`etape${i}`).style.display = i === stepNumber ? 'flex' : 'none';
   }
   // Ensure the submit button is in the correct state for the new step
   updateSubmitButtonState();
@@ -191,9 +201,20 @@ function captureData(step) {
       case 2:
         isAnyOptionSelected = document.querySelectorAll('#etape2 .selectable-button-2.selected').length > 0;
         break;
-      case 3:
-        isAnyOptionSelected = document.querySelector('#etape3 .solutions-card.selected') !== null;
-        break;
+        case 3:
+          isAnyOptionSelected = document.querySelector('#etape3 .solutions-card.selected') !== null;
+          nextButton.disabled = !isAnyOptionSelected; 
+          if(!isAnyOptionSelected){
+            nextButton.classList.add("disabled");
+            
+            // Select the ignore button and add a 'disabled' class to it
+            var ignoreBtn = document.getElementById('ignore-button');
+            ignoreBtn.classList.add('disabled');
+            
+            // Optionally, directly remove hover styles by modifying the style property
+            ignoreBtn.style.cursor = "not-allowed";
+          }
+          break;
       case 4:
         const projectName = document.querySelector('#etape4 input[type="text"]').value.trim();
         isAnyOptionSelected = projectName.length > 0;
@@ -210,13 +231,12 @@ function captureData(step) {
 
     // Enable or disable the submit button based on the selection
     submitButton.disabled = !isAnyOptionSelected;
-    nextButton.disabled = !isAnyOptionSelected; 
     if (isAnyOptionSelected) {
-      submitButton.classList.remove('disabled', 'purple-light-btn');
-      submitButton.classList.add('purple-btn');
+      submitButton.classList.remove('disabled');
+      submitButton.disabled = false;
     } else {
-      submitButton.classList.add('disabled', 'purple-light-btn');
-      submitButton.classList.remove('purple-btn');
+      submitButton.classList.add('disabled');
+      submitButton.disabled = true;
     }
   
     // If it's not the 5th step, ensure buttons are visible

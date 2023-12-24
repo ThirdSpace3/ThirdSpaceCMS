@@ -93,15 +93,42 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.50);
     background: rgba(255, 255, 255, 0.20);
 }
+
 .ignore-btn:hover {
     cursor: pointer;
     background: rgba(255, 255, 255, 0.60);
 }
+
+.ignore-btn.disabled:hover, .ignore-btn:disabled:hover {
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.20);
+}
+
 .purple-btn:hover {
     cursor: pointer;
 }
-.disabled {
+
+button.disabled, button.disabled * {
     cursor: not-allowed;
+}
+
+/* Style for the enabled submit button */
+#submit-button:not(.disabled) {
+  cursor: pointer;
+  /* other styles for enabled state */
+}
+
+/* Hover style for the enabled submit button */
+#submit-button:not(.disabled):hover {
+    background: rgba(150, 0, 250, 1);
+    /* other hover styles */
+}
+
+/* Style for the disabled submit button */
+#submit-button.disabled {
+  cursor: not-allowed;
+  opacity: 0.5; /* example style for disabled state */
+  /* other styles for disabled state */
 }
 
 /*==================== ETAPE 2 ====================*/
