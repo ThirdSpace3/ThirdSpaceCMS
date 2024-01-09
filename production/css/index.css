@@ -52,7 +52,11 @@ img {
 
 body {
   background-color: var(--body-purple);
-overflow-x: hidden;
+  overflow-x: hidden;
+}
+
+.no-scroll {
+  overflow-y: hidden;
 }
 
 .section {

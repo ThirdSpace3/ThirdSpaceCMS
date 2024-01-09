@@ -48,7 +48,7 @@ function openPopup() {
   justOpened = true; // Set the flag to true when opening the popup
   var popup = document.getElementById("popup");
   popup.style.display = "block";
-
+  document.body.classList.add('no-scroll');
   // Reset the justOpened flag after a short delay
   setTimeout(() => { justOpened = false; }, 10);
     const menuIcon = document.getElementById('menuIcon');
@@ -94,7 +94,7 @@ document.querySelector('.popup .popup-more-btn').addEventListener('click', funct
 function closePopup() {
   var popup = document.getElementById("popup");
   popup.style.display = "none";
-  // ... Any additional cleanup ...
+  document.body.classList.remove('no-scroll');
 }
 
 document.addEventListener("click", function(event) {
