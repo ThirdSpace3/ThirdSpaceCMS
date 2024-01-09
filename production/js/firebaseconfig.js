@@ -185,7 +185,7 @@ function captureData(step) {
     await saveData(5, data); // Save the data for step 5
   
     // Redirect or perform other actions after saving data
-    window.location.href = "index.html"; // Redirect to a thank you page or back to the home page
+    // window.location.href = "index.html"; // Redirect to a thank you page or back to the home page
   });
   function updateSubmitButtonState() {
     const submitButton = document.getElementById('submit-button');
