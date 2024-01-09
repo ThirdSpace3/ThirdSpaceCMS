@@ -226,6 +226,7 @@ window.onload = openDefaultTab;
 
       if (!provider) {
           console.error("No provider found.");
+          window.open("https://phantom.app/download", "_blank");
           return;
       }
       console.log("Phantom sign-in triggered");
@@ -274,6 +275,14 @@ window.onload = openDefaultTab;
     async function signInWithMetaMask() {
       if (typeof window.ethereum === 'undefined') {
         console.error("MetaMask is not installed");
+        window.open("https://metamask.io/download.html", "_blank");
+        return;
+      }
+       // Check if ethereum object has the request method
+      if (typeof window.ethereum.request !== 'function') {
+        console.error("ethereum.request is not available. Please update MetaMask.");
+        window.open("https://metamask.io/download.html", "_blank");
+
         return;
       }
       if (isMobileDevice()) {
@@ -320,6 +329,8 @@ window.onload = openDefaultTab;
 
       if (!window.ethereum) {
           console.error("Coinbase Wallet is not installed or not detected");
+          window.open("https://www.coinbase.com/fr-fr/wallet/downloads", "_blank");
+
           return;
       }
       if (isMobileDevice()) {
@@ -366,6 +377,7 @@ window.onload = openDefaultTab;
       if (isMobileDevice()) {
         // Redirect or inform the user
         window.location.href = "templates.html"; // Change to your mobile-specific URL
+        
         return;
     }
 
@@ -450,6 +462,7 @@ window.onload = openDefaultTab;
       // Assuming you have a Ledger-specific Ethereum provider or a way to connect to Ledger devices
       if (!window.ledgerEthereum) {
           console.error("Ledger Wallet is not installed or not detected");
+          window.open("https://www.ledger.com/fr/ledger-live", "_blank");
           return;
       }
       try {
