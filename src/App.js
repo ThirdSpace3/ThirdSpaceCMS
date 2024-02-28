@@ -7,7 +7,6 @@ import PopupWallet from './components/PopupWallet'
 
 
 
-
 export default function App() {
   return (
     <div>
