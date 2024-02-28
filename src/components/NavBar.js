@@ -32,7 +32,6 @@ function Navbar() {
   };
 
 
-
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">
