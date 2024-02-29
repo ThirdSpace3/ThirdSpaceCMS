@@ -1,43 +1,67 @@
 import React, { useState } from 'react';
 import './PopupWallet.css';
 
-function PopupWallet() {
-  // State to manage the visibility of the popup
-  const [isPopupOpen, setIsPopupOpen] = useState(true);
-  // State to manage the visibility of additional wallet options
+function PopupWallet({ onClose }) {
   const [showMore, setShowMore] = useState(false);
 
-  // Function to close the popup
-  const closePopup = () => {
-    setIsPopupOpen(false);
-  };
-
-  // Function to toggle the visibility of more wallet options
   const toggleShowMore = (e) => {
-    e.preventDefault(); // Prevent default anchor behavior
+    e.preventDefault();
     setShowMore(!showMore);
   };
 
-  // Only render the popup if isPopupOpen is true
-  if (!isPopupOpen) return null;
+  const handleLoginWithMetamask = async () => {
+    if (window.ethereum) { // Check if MetaMask is installed
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }); // Request accounts
+        const account = accounts[0]; // Use the first account
+        console.log('Connected account:', account);
+        // authentication flow (e.g., sending the account to your backend for verification)
+      } catch (error) {
+        console.error('Error connecting to MetaMask:', error);
+      }
+    } else {
+      console.log('MetaMask is not installed');
+    }
+  };
+  const handleLoginWithPhantom = async () => {
+    try {
+      if ('solana' in window) {
+        const provider = window.solana;
+        if (provider.isPhantom) {
+          // Prompt user to connect wallet if not already connected
+          const response = await provider.connect();
+          const publicKey = response.publicKey.toString();
+          console.log('Connected with public key:', publicKey);
+          // Proceed with any other action after successful connection
+        } else {
+          console.log('Phantom wallet not found');
+        }
+      } else {
+        console.log('Solana object not found! Make sure Phantom wallet is installed.');
+      }
+    } catch (error) {
+      console.error('Error connecting to Phantom Wallet:', error);
+    }
+  };
+
+  const visibleStyle = { display: 'block' }; // Or use 'flex' if that fits your design better
 
   return (
-    <div className="popup" id="popup">
+    <div className="popup" id="popup" style={visibleStyle}>
       <div className="popup-content">
-        <img src="img/navbar-close.png" alt="" className="close-button" onClick={closePopup} />
+        <img src="img/navbar-close.png" alt="Close" className="close-button" onClick={onClose} />
         <h2>Connect a wallet</h2>
         <div className="wallet-list">
-          <button id="metamask" className="wallet-btn"><img src="img/metamask-logo.png" alt="" />Continue with Metamask</button>
-          <button id="phantom" className="wallet-btn"><img src="img/phantom-logo.png" alt="" />Continue with Phantom</button>
+          <button id="metamask" className="wallet-btn" onClick={handleLoginWithMetamask}><img src="img/metamask-logo.png" alt="" />Continue with Metamask</button>
+          <button id="phantom" className="wallet-btn" onClick={handleLoginWithPhantom}><img src="../public/images" alt="" />Continue with Phantom</button>
           <button id="ledger" className="wallet-btn"><img src="img/ledger-logo.png" alt="" />Continue with Ledger</button>
           <button id="operatouch" className="wallet-btn"><img src="img/operatouch-logo.png" alt="" />Continue with Opera Touch</button>
-          <button id="coinbase" className={`wallet-btn wallet-more ${showMore ? '' : 'wallet-hide'}`}><img src="img/coinbase-logo.png" alt="" />Continue with Coinbase</button>
-          {/* Conditionally render additional wallets based on showMore state */}
+          <button id="coinbase" className={`wallet-btn wallet-more ${showMore ? '' : 'wallet-hide'}`}>Continue with Coinbase</button>
           {showMore && (
-            <button id="walletconnect" className="wallet-btn wallet-more"><img src="img/walletconnect-logo.png" alt="" />Continue with Walletconnect</button>
+            <button id="walletconnect" className="wallet-btn wallet-more">Continue with Walletconnect</button>
           )}
         </div>
-        <a href="#" className="popup-more-btn" id="toggleButton" onClick={toggleShowMore}>{showMore ? 'Show Less' : 'Show More'}</a>
+        <a href="#" className="popup-more-btn" onClick={toggleShowMore}>{showMore ? 'Show Less' : 'Show More'}</a>
       </div>
     </div>
   );
