@@ -49,16 +49,16 @@ function PopupWallet({ onClose }) {
   return (
     <div className="popup" id="popup" style={visibleStyle}>
       <div className="popup-content">
-        <img src="img/navbar-close.png" alt="Close" className="close-button" onClick={onClose} />
+        <img src="/images/navbar-close.png" alt="Close" className="close-button" onClick={onClose} />
         <h2>Connect a wallet</h2>
         <div className="wallet-list">
-          <button id="metamask" className="wallet-btn" onClick={handleLoginWithMetamask}><img src="img/metamask-logo.png" alt="" />Continue with Metamask</button>
-          <button id="phantom" className="wallet-btn" onClick={handleLoginWithPhantom}><img src="../public/images" alt="" />Continue with Phantom</button>
-          <button id="ledger" className="wallet-btn"><img src="img/ledger-logo.png" alt="" />Continue with Ledger</button>
-          <button id="operatouch" className="wallet-btn"><img src="img/operatouch-logo.png" alt="" />Continue with Opera Touch</button>
-          <button id="coinbase" className={`wallet-btn wallet-more ${showMore ? '' : 'wallet-hide'}`}>Continue with Coinbase</button>
+          <button id="metamask" className="wallet-btn" onClick={handleLoginWithMetamask}><img src="/images/metamask-logo.png" alt="" />Continue with Metamask</button>
+          <button id="phantom" className="wallet-btn" onClick={handleLoginWithPhantom}><img src="/images/phantom-logo.png" alt="" />Continue with Phantom</button>
+          <button id="ledger" className="wallet-btn"><img src="/images/ledger-logo.png" alt="" />Continue with Ledger</button>
+          <button id="operatouch" className="wallet-btn"><img src="/images/operatouch-logo.png" alt="" />Continue with Opera Touch</button>
+          <button id="coinbase" className={`wallet-btn wallet-more ${showMore ? '' : 'wallet-hide'}`}><img src="/images/coinbase-logo.png" alt="" />Continue with Coinbase</button>
           {showMore && (
-            <button id="walletconnect" className="wallet-btn wallet-more">Continue with Walletconnect</button>
+            <button id="walletconnect" className="wallet-btn wallet-more"><img src="/images/walletconnect-logo.png" alt="" />Continue with Walletconnect</button>
           )}
         </div>
         <a href="#" className="popup-more-btn" onClick={toggleShowMore}>{showMore ? 'Show Less' : 'Show More'}</a>
