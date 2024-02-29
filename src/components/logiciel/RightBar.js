@@ -9,17 +9,26 @@ export default function RightBar() {
             <div className='rightbar-wrapper'>
                 
                 <div className='style-wrapper'>
+                
                     <div className='parameters-wrapper'>
-                        <p className='parameters-wrapper-title'>Background</p>
+                        <div className='parameters-wrapper-title-box'>
+                            <p className='parameters-wrapper-title'>Background</p>
+                            <i class="bi bi-caret-down-fill"></i>
+                        </div>
                         <div className='parameters-wrapper-content'>
                             
                         </div>
+                        <hr className='parameters-wrapper-separation' />
                     </div>
 
                     <div className='parameters-wrapper'>
-                        <p className='parameters-wrapper-title'>Style</p>
+                        <div className='parameters-wrapper-title-box'>
+                            <p className='parameters-wrapper-title'>Style</p>
+                            <i class="bi bi-caret-down-fill"></i>
+                        </div>
                         <div className='parameters-wrapper-content'>
                             <div className='parameters-content-line'>
+                            
                                 <p className='parameters-content-line-title'>Text Decoration</p>
                                 <div className='parameters-content-line-container'>
                                     <a href='' className='parameters-content-line-item'><i class="bi bi-type-italic"></i></a>
@@ -44,6 +53,8 @@ export default function RightBar() {
                             </div>
                             
                         </div>
+                        <hr className='parameters-wrapper-separation' />
+
                     </div>
                 </div>
                 
