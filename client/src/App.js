@@ -3,7 +3,7 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import NoPage from './pages/NoPage'
-import PopupWallet from './components/PopupWallet'
+import Logiciel from './pages/Logiciel'
 
 
 
@@ -16,7 +16,7 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/popup" element={<PopupWallet />} />
+        <Route path="/logiciel" element={<Logiciel />} />
         <Route path="*" element={<NoPage />} />
       </Routes>
     </BrowserRouter>
