@@ -16,14 +16,18 @@ function Navbar() {
     setShowPopup(!showPopup);
   };
   
-
   useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const userAccount = localStorage.getItem('userAccount');
+  
+    if (isLoggedIn && userAccount) {
+      setAccounts([userAccount]);
     if (window.ethereum) {
       const web3Instance = new Web3(window.ethereum);
       setWeb3(web3Instance);
     } else {
       alert('Please install MetaMask to use this feature.');
-    }
+    }}
   }, []);
 
   const toggleMenu = () => {
@@ -53,11 +57,18 @@ function Navbar() {
               <span className="tooltip">Coming Soon</span>
             </li>
           </ul>
-          <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>Get started</a>
+          <a href={accounts.length > 0 ? "./logiciel" : "#"} className="nav__cta nav-bg" onClick={accounts.length === 0 ? togglePopup : undefined}>Get started</a>
+        {accounts.length === 0 && (
           <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
             <span className="material-symbols-outlined">wallet</span>
-            {accounts.length > 0 ? `Wallet: ${accounts[0].substring(0, 6)}...` : 'Connect Wallet'}
+            Connect Wallet
           </a>
+        )}
+        {accounts.length > 0 && (
+          <a href="templates.html" className="nav__cta nav-bg" id="account-btn">
+            <span className="material-symbols-outlined">account_circle</span>
+          </a>
+        )}
          <a href="templates.html" className="nav__cta nav-bg" style={{display: 'none'}} id="account-btn">
             <span className="material-symbols-outlined">account_circle</span>
           </a>
@@ -94,7 +105,7 @@ function Navbar() {
           </ul>
         </div>
       </div>
-      {showPopup && <PopupWallet onClose={() => setShowPopup(false)} />};
+      {showPopup && <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} />}
     </nav>
   );
 }
