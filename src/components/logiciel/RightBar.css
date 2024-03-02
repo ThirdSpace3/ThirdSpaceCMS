@@ -91,3 +91,6 @@
     max-height: 500px; /* Ajustez cette valeur en fonction de la hauteur maximale attendue du contenu. */
 }
 
+.selected {
+    color: white;
+  }

@@ -2,15 +2,27 @@ import React, { useState } from 'react';
 import './RightBar.css';
 import './Root.css';
 
-export default function RightBar({ onBackgroundChange, onTypographyChange, onBorderChange, onSettingsChange }) {
-    const [backgroundStyle, setBackgroundStyle] = useState({});
+export default function RightBar({ onSettingsChange }) {
+  const [backgroundStyle, setBackgroundStyle] = useState({});
   const [typographyStyle, setTypographyStyle] = useState({});
   const [borderStyle, setBorderStyle] = useState({});
   const [isOpen, setIsOpen] = useState({ background: false, typographie: false, border: false });
+  const [selectedAlign, setSelectedAlign] = useState(null);
+  const [selectedDecoration, setSelectedDecoration] = useState(null);
 
-  const handleInputChange = (e, styleProperty) => {
-    setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: e.target.value }));
-    onSettingsChange('typography', { [styleProperty]: e.target.value });
+  const handleInputChange = (e, styleProperty, inputType) => {
+    let value;
+  
+    if (inputType === 'select') {
+      value = e.target.value;
+    } else if (inputType === 'checkbox') {
+      value = e.target.checked;
+    } else {
+      value = parseInt(e.target.value); // Convert string to number
+    }
+  
+    setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+    onSettingsChange('typography', { [styleProperty]: value });
   };
 
   const handleBackgroundChange = (e, styleProperty) => {
@@ -19,24 +31,56 @@ export default function RightBar({ onBackgroundChange, onTypographyChange, onBor
   };
 
   const handleBorderChange = (e, styleProperty) => {
-    setBorderStyle(prevState => ({ ...prevState, [styleProperty]: e.target.value }));
-    onSettingsChange('border', { [styleProperty]: e.target.value });
+    setBorderStyle(prevState => ({ ...prevState, [styleProperty]: parseInt(e.target.value) })); // Convert string to number
+    onSettingsChange('border', { [styleProperty]: parseInt(e.target.value) }); // Convert string to number
   };
+
+  const handleTextDecoration = (decorationType) => {
+    setTypographyStyle(prevState => {
+      const newStyle = { ...prevState };
+  
+      if (decorationType === 'italic') {
+        if (newStyle.fontStyle === 'italic') {
+          newStyle.fontStyle = 'normal';
+          setSelectedDecoration(null);
+        } else {
+          newStyle.fontStyle = 'italic';
+          setSelectedDecoration('italic');
+        }
+      } else {
+        if (newStyle.textDecoration) {
+          if (newStyle.textDecoration.includes(decorationType)) {
+            newStyle.textDecoration = newStyle.textDecoration.split(' ').filter(style => style !== decorationType).join(' ');
+            setSelectedDecoration(null);
+          } else {
+            newStyle.textDecoration += ` ${decorationType}`;
+            setSelectedDecoration(decorationType);
+          }
+        } else {
+          newStyle.textDecoration = decorationType;
+          setSelectedDecoration(decorationType);
+        }
+      }
+  
+      onSettingsChange('typography', newStyle);
+  
+      return newStyle;
+    });
+  };
+    
+  
+  const handleTextAlign = (alignType) => {
+    setTypographyStyle(prevState => {
+      const newStyle = { ...prevState, textAlign: alignType };
+      onSettingsChange('typography', newStyle);
+      setSelectedAlign(alignType); // Set the selectedAlign state
+      return newStyle;
+    });
+  };
+  
 
   const toggleSection = (section) => {
     setIsOpen(prevState => ({ ...prevState, [section]: !prevState[section] }));
-  };
-
-  const handleBackgroundSectionChange = () => {
-    onBackgroundChange(backgroundStyle);
-  };
-
-  const handleTypographySectionChange = () => {
-    onTypographyChange(typographyStyle);
-  };
-
-  const handleBorderSectionChange = () => {
-    onBorderChange(borderStyle);
   };
 
   return (
@@ -99,23 +143,53 @@ export default function RightBar({ onBackgroundChange, onTypographyChange, onBor
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Text Decoration</p>
                 <div className='parameters-content-line-container'>
-                  <a href='#' className='parameters-content-line-item'><i className="bi bi-type-italic"></i></a>
-                  <hr className='parameters-content-line-separation' />
-                  <a href='#' className='parameters-content-line-item'><i className="bi bi-type-underline"></i></a>
-                  <hr className='parameters-content-line-separation' />
-                  <a href='#' className='parameters-content-line-item'><i className="bi bi-type-strikethrough"></i></a>
+                <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'italic' ? 'selected' : ''}`} onClick={() => handleTextDecoration('italic')}><i className="bi bi-type-italic"></i></a>
+                <hr className='parameters-content-line-separation' />
+                <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'underline' ? 'selected' : ''}`} onClick={() => handleTextDecoration('underline')}><i className="bi bi-type-underline"></i></a>
+                <hr className='parameters-content-line-separation' />
+                <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'line-through' ? 'selected' : ''}`} onClick={() => handleTextDecoration('line-through')}><i className="bi bi-type-strikethrough"></i></a>
                 </div>
               </div>
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Text Align</p>
                 <div className='parameters-content-line-container'>
-                  <a href='#' className='parameters-content-line-item'><i className="bi bi-text-left"></i></a>
-                  <hr className='parameters-content-line-separation' />
-                  <a href='#' className='parameters-content-line-item'><i className="bi bi-text-center"></i></a>
-                  <hr className='parameters-content-line-separation' />
-                  <a href='#' className='parameters-content-line-item'><i className="bi bi-text-right"></i></a>
-                  <hr className='parameters-content-line-separation' />
-                  <a href='#' className='parameters-content-line-item'><i className="bi bi-justify"></i></a>
+                <a
+  href="#"
+  className={`parameters-content-line-item ${selectedAlign === 'left' ? 'selected' : ''}`}
+  onClick={() => handleTextAlign('left')}
+>
+  <i className="bi bi-text-left"></i>
+</a>
+
+<hr className='parameters-content-line-separation' />
+
+<a
+  href="#"
+  className={`parameters-content-line-item ${selectedAlign === 'center' ? 'selected' : ''}`}
+  onClick={() => handleTextAlign('center')}
+>
+  <i className="bi bi-text-center"></i>
+</a>
+
+<hr className='parameters-content-line-separation' />
+
+<a
+  href="#"
+  className={`parameters-content-line-item ${selectedAlign === 'right' ? 'selected' : ''}`}
+  onClick={() => handleTextAlign('right')}
+>
+  <i className="bi bi-text-right"></i>
+</a>
+
+<hr className='parameters-content-line-separation' />
+
+<a
+  href="#"
+  className={`parameters-content-line-item ${selectedAlign === 'justify' ? 'selected' : ''}`}
+  onClick={() => handleTextAlign('justify')}
+>
+  <i className="bi bi-justify"></i>
+</a>
                 </div>
               </div>
             </div>
