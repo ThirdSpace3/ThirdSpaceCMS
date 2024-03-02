@@ -1,13 +1,14 @@
 import './TopBar.css';
 import './Root.css';
 
-export default function TopBar() {
+export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, hasUnsavedChanges }) {
     return (
         <>
             <div className='topbar-wrapper'>
                 <div className='topbar-left'>
-                    <a href=""><i class="bi bi-arrow-return-left"></i></a>
-                    <a href=""><i class="bi bi-arrow-return-right"></i></a>
+                    <a className='topbar-undo-btn' onClick={onUndoClick}><i class="bi bi-arrow-return-left"></i></a>
+                    <a className='topbar-redo-btn' onClick={onRedoClick}><i class="bi bi-arrow-return-right"></i></a>
+
                     <hr />
                     <a href=""><i class="bi bi-eye"></i></a>
                 </div>
@@ -16,8 +17,8 @@ export default function TopBar() {
                     <a href="" className='topbar-device-btn'><i class="bi bi-tablet-landscape"></i></a>
                     <a href="" className='topbar-device-btn'><i class="bi bi-phone"></i></a>
                 </div>
-                <a href="" className='topbar-propulse-btn'>Propulse <i class="bi bi-rocket-takeoff"></i></a>
-
+                <button className='topbar-propulse-btn' onClick={onSaveClick} disabled={!hasUnsavedChanges}> Propulse <i class="bi bi-save"></i>
+             </button>
             </div>
         </>
     )

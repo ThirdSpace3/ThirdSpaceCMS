@@ -1,39 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import './NavBar.css';
 import Web3 from 'web3';
 import PopupWallet from '../components/PopupWallet.js'; // Adjust this path as necessary
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [web3, setWeb3] = useState(null);
   const [accounts, setAccounts] = useState([]);
-  const [showPopup, setShowPopup] = useState(false); // State to control the visibility of the PopupWallet
+  const [showPopup, setShowPopup] = useState(false);
 
-  // Function to toggle the visibility of the PopupWallet
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      const userAccount = localStorage.getItem('userAccount');
+      if (isLoggedIn && userAccount) {
+        setAccounts([userAccount]);
+      } else {
+        setAccounts([]);
+      }
+    };
+
+    checkLoginStatus();
+
+    // Add event listener for clearing localStorage on close
+    const handleBeforeUnload = (event) => {
+      localStorage.clear(); // Clear all local storage data
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   const togglePopup = () => {
-    console.log('togglePopup called'); // Debugging line to ensure function is called
     setShowPopup(!showPopup);
   };
-  
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const userAccount = localStorage.getItem('userAccount');
-  
-    if (isLoggedIn && userAccount) {
-      setAccounts([userAccount]);
-    if (window.ethereum) {
-      const web3Instance = new Web3(window.ethereum);
-      setWeb3(web3Instance);
-    } else {
-      alert('Please install MetaMask to use this feature.');
-    }}
-  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
 
   return (
     <nav className="navbar__padding">
@@ -58,7 +65,7 @@ function Navbar() {
             </li>
           </ul>
           <a href={accounts.length > 0 ? "./logiciel" : "#"} className="nav__cta nav-bg" onClick={accounts.length === 0 ? togglePopup : undefined}>Get started</a>
-        {accounts.length === 0 && (
+          {accounts.length === 0 && (
           <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
             <span className="material-symbols-outlined">wallet</span>
             Connect Wallet
@@ -75,7 +82,7 @@ function Navbar() {
         </div>
       </div>
 
-<div className={`navbar__mobile ${isMenuOpen ? 'animate__fadeInLeft' : ''}`} style={{ display: isMenuOpen ? 'block' : 'none' }} id="mobileMenu">
+      <div className={`navbar__mobile ${isMenuOpen ? 'animate__fadeInLeft' : ''}`} style={{ display: isMenuOpen ? 'block' : 'none' }}>
         <div className="navbar__mobile-head">
           <a href="index.html" className="nav__logo">
             <img src="/images/3s-logo.png" alt="thirdspace logo" />
@@ -98,10 +105,10 @@ function Navbar() {
               <span className="tooltip">Coming Soon</span>
             </li>
             <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>Get started</a>
-          <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
-            <span className="material-symbols-outlined">wallet</span>
-            {accounts.length > 0 ? `Wallet: ${accounts[0].substring(0, 6)}...` : 'Connect Wallet'}
-          </a>
+            <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
+          <span className="material-symbols-outlined">wallet</span>
+          {accounts.length > 0 ? `Wallet: ${accounts[0].substring(0, 6)}...` : 'Connect Wallet'}
+        </a>
           </ul>
         </div>
       </div>

@@ -6,7 +6,13 @@ export default function Canva({ settings }) {
   return (
     <>
       <div className='canva-wrapper'>
-        <TemplateTestComponents settings={settings} /> {/* Pass the settings prop to the TemplateTestComponents */}
+        <TemplateTestComponents
+          settings={{
+            background: settings.background,
+            typography: settings.typography,
+            border: settings.border,
+          }}
+        />
       </div>
     </>
   );
