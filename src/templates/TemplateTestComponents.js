@@ -1,17 +1,21 @@
 import React from 'react';
-import './TemplateTestComponents.css'
+import './TemplateTestComponents.css';
 
-export default function TemplateTestComponents() {
-    return (
-        <>
-            <div className='template-wrapper'>
-                <img src='/images/template-test.png' />
-                <div className='template-wrapper-column'>
-                    <h1 className='title'>Template de Test #1</h1>
-                    <p className='paragraph'>Si tu barre ce texte j'te paie le café</p>
-                    <button className='button'>Clique</button>
-                </div>
-            </div>
-        </>
-    )
+export default function TemplateTestComponents({ settings }) {
+  const backgroundStyle = settings.background || {};
+  const typographyStyle = settings.typography || {};
+  const borderStyle = settings.border || {};
+
+  return (
+    <>
+      <div className='template-wrapper'>
+        <div className='template-wrapper-column' style={backgroundStyle}>
+          <h1 className='title' style={typographyStyle}>Template de Test #1</h1>
+          <p className='paragraph' style={typographyStyle}>Si tu barre ce texte j'te paie le café</p>
+          <button className='button' style={borderStyle}>Clique</button>
+        </div>
+        <img src='/images/template-test.png' />
+      </div>
+    </>
+  );
 }
