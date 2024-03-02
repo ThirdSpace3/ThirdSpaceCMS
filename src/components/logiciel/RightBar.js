@@ -17,13 +17,23 @@ export default function RightBar({ onSettingsChange }) {
       value = e.target.value;
     } else if (inputType === 'checkbox') {
       value = e.target.checked;
-    } else {
+    } else if (inputType === 'color') {
+      value = e.target.value;
+    } else if (inputType === 'number') {
       value = parseInt(e.target.value); // Convert string to number
+    } else {
+      value = e.target.value; // For all other input types, use the string value
     }
   
-    setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
-    onSettingsChange('typography', { [styleProperty]: value });
+    if (styleProperty === 'borderColor') {
+      setBorderStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange('border', { [styleProperty]: value });
+    } else {
+      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange('typography', { [styleProperty]: value });
+    }
   };
+    
 
   const handleBackgroundChange = (e, styleProperty) => {
     setBackgroundStyle(prevState => ({ ...prevState, [styleProperty]: e.target.value }));
@@ -67,6 +77,7 @@ export default function RightBar({ onSettingsChange }) {
       return newStyle;
     });
   };
+  
     
   
   const handleTextAlign = (alignType) => {
@@ -121,18 +132,19 @@ export default function RightBar({ onSettingsChange }) {
             <div className='parameters-content-line'>
               <p className='parameters-content-line-title'>Font Family</p>
               <div className='parameters-content-line-container'>
-                <select onChange={(e) => handleInputChange(e, 'fontFamily')}>
-                  <option>Arial</option>
-                  <option>Verdana</option>
-                  <option>Helvetica</option>
+              <select onChange={(e) => handleInputChange(e, 'fontFamily', 'select')}>
+                <option>Arial</option>
+                <option>Verdana</option>
+                <option>Helvetica</option>
                 </select>
+
               </div>
             </div>
             <div className='parameters-content-line'>
-              <p className='parameters-content-line-title'>Font Size</p>
-              <div className='parameters-content-line-container'>
-                <input type="number" min="8" max="72" step="1" defaultValue="14" onChange={(e) => handleInputChange(e, 'fontSize')} /> px
-              </div>
+            <p className='parameters-content-line-title'>Font Size</p>
+            <div className='parameters-content-line-container'>
+                <input type="number" min="8" max="72" step="1" defaultValue="14" onChange={(e) => handleInputChange(e, 'fontSize', 'number')} /> px
+            </div>
             </div>
             <div className='parameters-content-line'>
               <p className='parameters-content-line-title'>Color</p>
@@ -143,12 +155,13 @@ export default function RightBar({ onSettingsChange }) {
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Text Decoration</p>
                 <div className='parameters-content-line-container'>
-                <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'italic' ? 'selected' : ''}`} onClick={() => handleTextDecoration('italic')}><i className="bi bi-type-italic"></i></a>
-                <hr className='parameters-content-line-separation' />
-                <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'underline' ? 'selected' : ''}`} onClick={() => handleTextDecoration('underline')}><i className="bi bi-type-underline"></i></a>
-                <hr className='parameters-content-line-separation' />
-                <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'line-through' ? 'selected' : ''}`} onClick={() => handleTextDecoration('line-through')}><i className="bi bi-type-strikethrough"></i></a>
-                </div>
+  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'italic' ? 'selected' : ''}`} onClick={() => handleTextDecoration('italic')}><i className="bi bi-type-italic"></i></a>
+  <hr className='parameters-content-line-separation' />
+  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'underline' ? 'selected' : ''}`} onClick={() => handleTextDecoration('underline')}><i className="bi bi-type-underline"></i></a>
+  <hr className='parameters-content-line-separation' />
+  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'line-through' ? 'selected' : ''}`} onClick={() => handleTextDecoration('line-through')}><i className="bi bi-type-strikethrough"></i></a>
+</div>
+
               </div>
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Text Align</p>
@@ -206,7 +219,7 @@ export default function RightBar({ onSettingsChange }) {
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Border Color</p>
                 <div className='parameters-content-line-container'>
-                  <input type="color" onChange={(e) => handleBorderChange(e, 'borderColor')} />
+                <input type="color" onChange={(e) => handleInputChange(e, 'borderColor', 'color')}></input>
                 </div>
               </div>
               <div className='parameters-content-line'>
