@@ -15,12 +15,30 @@ export default function Display() {
 
 
   useEffect(() => {
-    // Load the settings from local storage when the component mounts
-    const storedSettings = sessionStorage.getItem('settings');
-  if (storedSettings) {
-    setSettings(JSON.parse(storedSettings));
-  }
+    const fetchSettings = async () => {
+      const userWalletID = sessionStorage.getItem('userAccount');
+      if (userWalletID) {
+        try {
+          const response = await fetch(`/api/settings/${userWalletID}`);
+          if (response.ok) {
+            const data = await response.json();
+            if (data && data.settings) {
+              setSettings(data.settings);
+            } else {
+              console.log('No settings found for this wallet ID:', userWalletID);
+            }
+          } else {
+            console.error('Failed to fetch settings:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error fetching settings:', error);
+        }
+      }
+    };
+  
+    fetchSettings();
   }, []);
+  
   
   const handleSettingsChange = (section, newSettings) => {
     const newSettingsObj = {
@@ -68,21 +86,34 @@ export default function Display() {
   };
   
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     console.log('Retrieving wallet ID from session storage');
     const userWalletID = sessionStorage.getItem('userAccount'); // Use sessionStorage to get the user account
     console.log('Retrieved wallet ID:', userWalletID);
   
     const settingsToSave = {
-      walletId: userWalletID, // Include the wallet ID in the settings object
-      ...settings
+      userId: userWalletID, // Use userId to align with server-side naming
+      settings: settings
     };
     console.log('Saving settings with wallet ID:', settingsToSave);
   
-    // Save the settings in session storage
-    sessionStorage.setItem('settings', JSON.stringify(settingsToSave));
-    setHasUnsavedChanges(false);
+    // Send settings to server
+    try {
+      const response = await fetch('/api/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(settingsToSave),
+      });
+      const responseData = await response.json();
+      console.log(responseData.message);
+      setHasUnsavedChanges(false);
+    } catch (error) {
+      console.error('Failed to save settings:', error);
+    }
   };
+  
   
 
   return (

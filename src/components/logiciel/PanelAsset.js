@@ -6,7 +6,7 @@ export default function PanelAsset() {
     return (
         <>
         <div className='navbar-panel'>
-            <p>Asset</p>
+            
         </div>
         </>
     );

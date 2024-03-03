@@ -9,9 +9,10 @@ function Navbar() {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
+    // Function to check login status
     const checkLoginStatus = () => {
-      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      const userAccount = localStorage.getItem('userAccount');
+      const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+      const userAccount = sessionStorage.getItem('userAccount');
       if (isLoggedIn && userAccount) {
         setAccounts([userAccount]);
       } else {
@@ -21,17 +22,8 @@ function Navbar() {
 
     checkLoginStatus();
 
-    // Add event listener for clearing localStorage on close
-    const handleBeforeUnload = (event) => {
-      localStorage.clear(); // Clear all local storage data
-    };
+    // Optionally, you can listen for changes in localStorage across tabs
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    // Cleanup function to remove the event listener
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
   }, []);
 
   const togglePopup = () => {
