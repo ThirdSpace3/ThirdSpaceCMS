@@ -17,7 +17,7 @@ export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, hasUnsav
                     <a href="" className='topbar-device-btn'><i class="bi bi-tablet-landscape"></i></a>
                     <a href="" className='topbar-device-btn'><i class="bi bi-phone"></i></a>
                 </div>
-                <button className='topbar-propulse-btn' onClick={onSaveClick} disabled={!hasUnsavedChanges}> Propulse <i class="bi bi-save"></i>
+                <button className='topbar-propulse-btn' onClick={onSaveClick} disabled={!hasUnsavedChanges}> Propulse <i class="bi bi-rocket-takeoff"></i>
              </button>
             </div>
         </>
