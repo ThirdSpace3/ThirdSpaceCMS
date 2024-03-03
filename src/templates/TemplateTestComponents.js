@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TemplateTestComponents.css';
+export default function TemplateTestComponents({ settings, styles  }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedElement, setSelectedElement] = useState('title');
 
-export default function TemplateTestComponents({ settings }) {
+  const [editableContent, setEditableContent] = useState({
+    title: 'Template de Test #1',
+    paragraph: 'Tu vas me devoir un café je crois bien',
+  });
+
+  const handleContentChange = (e, contentType) => {
+    setEditableContent((prevContent) => ({
+      ...prevContent,
+      [contentType]: e.target.value,
+    }));
+  };
+
+  const onElementSelect = (element) => {
+    setSelectedElement(element);
+  };
+
   const backgroundStyle = settings.background || {};
   const typographyStyle = settings.typography || {};
   const borderStyle = settings.border || {};
+
 
   const containerStyle = {
     ...backgroundStyle,
@@ -20,15 +39,48 @@ export default function TemplateTestComponents({ settings }) {
     textDecoration: typographyStyle.textDecoration || 'none',
   };
 
-  return (
-    <>
+
+  return (    
+  <>
       <div className='template-wrapper' style={containerStyle}>
-        <div className='template-wrapper-column' >
-          <h1 className='title' style={textStyle}>Template de Test #1</h1>
-          <p className='paragraph' style={textStyle}>Si tu barre ce texte j'te paie le café</p>
-          <button className='button' style={borderStyle}>Clique</button>
-        </div>
         <img src='/images/template-test.png' />
+
+        <div className='template-wrapper-column' >
+
+
+  {/* Conditional rendering for title */}
+  {isEditing && selectedElement === 'title' ? (
+    <input
+      type="text"
+      value={editableContent.title}
+      onChange={(e) => handleContentChange(e, 'title')}
+      onBlur={() => setIsEditing(false)} // Stop editing when the input loses focus
+      autoFocus
+    />
+  ) : (
+    <h1 className='title' style={textStyle} onClick={() => { setIsEditing(true); onElementSelect('title'); }}>
+              {editableContent.title}
+            </h1>
+  )}
+
+  {/* Conditional rendering for paragraph */}
+  {isEditing && selectedElement === 'paragraph' ? (
+    <textarea
+      value={editableContent.paragraph}
+      onChange={(e) => handleContentChange(e, 'paragraph')}
+      onBlur={() => setIsEditing(false)} // Stop editing when the textarea loses focus
+    />
+  ) : (
+    <p className='paragraph' style={textStyle} onClick={() => { setIsEditing(true); onElementSelect('paragraph'); }}>
+              {editableContent.paragraph}
+            </p>
+          
+  )}
+
+<button className='button' >Clique</button>
+        </div>
+
+        <img id='redirect_test' src='/images/template-test.png' />
       </div>
     </>
   );
