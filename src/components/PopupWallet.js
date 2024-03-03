@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './PopupWallet.css';
+import axios from 'axios';
 
 function PopupWallet({ onClose, onUserLogin }) {
   const [showMore, setShowMore] = useState(false);
@@ -14,7 +15,12 @@ function PopupWallet({ onClose, onUserLogin }) {
       try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
-        console.log('Connected account:', account);
+        try {
+          const response = await axios.post('/api/wallets', { walletId: account });
+          console.log('Wallet ID saved to database:', response.data);
+        } catch (error) {
+          console.error('Error saving wallet ID to database:', error);
+        }
   
         // Create a message to sign
         const message = "Please sign this message to confirm your identity.";
@@ -49,7 +55,12 @@ function PopupWallet({ onClose, onUserLogin }) {
         if (provider.isPhantom) {
           const response = await provider.connect();
           const publicKey = response.publicKey.toString();
-          console.log('Connected with public key:', publicKey);
+          try {
+            const response = await axios.post('/api/wallets', { walletId: publicKey });
+            console.log('Wallet ID saved to database:', response.data);
+          } catch (error) {
+            console.error('Error saving wallet ID to database:', error);
+          }
     
           // Create a message to sign
           const message = new TextEncoder().encode("Please sign this message to confirm your identity.");
