@@ -12,12 +12,14 @@ export default function Display() {
   const [history, setHistory] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const settingsRef = useRef(settings);
+
+
   useEffect(() => {
     // Load the settings from local storage when the component mounts
-    const storedSettings = localStorage.getItem('settings');
-    if (storedSettings) {
-      setSettings(JSON.parse(storedSettings));
-    }
+    const storedSettings = sessionStorage.getItem('settings');
+  if (storedSettings) {
+    setSettings(JSON.parse(storedSettings));
+  }
   }, []);
   
   const handleSettingsChange = (section, newSettings) => {
@@ -67,10 +69,18 @@ export default function Display() {
   
 
   const handleSaveClick = () => {
-    // Save the settings here, for example, by sending them to a server or storing them in local storage.
-    console.log('Saving settings:', settings);
-   // Save the settings in local storage
-    localStorage.setItem('settings', JSON.stringify(settings));
+    console.log('Retrieving wallet ID from session storage');
+    const userWalletID = sessionStorage.getItem('userAccount'); // Use sessionStorage to get the user account
+    console.log('Retrieved wallet ID:', userWalletID);
+  
+    const settingsToSave = {
+      walletId: userWalletID, // Include the wallet ID in the settings object
+      ...settings
+    };
+    console.log('Saving settings with wallet ID:', settingsToSave);
+  
+    // Save the settings in session storage
+    sessionStorage.setItem('settings', JSON.stringify(settingsToSave));
     setHasUnsavedChanges(false);
   };
   

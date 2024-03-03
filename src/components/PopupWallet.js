@@ -17,28 +17,31 @@ function PopupWallet({ onClose, onUserLogin }) {
         const account = accounts[0];
         try {
           const response = await axios.post('/api/wallets', { walletId: account });
-          console.log('Wallet ID saved to database:', response.data);
+          if (response.data.status === 'existing') {
+            console.log('Wallet ID already linked to an existing account.');
+          } else {
+            console.log('Wallet ID saved to database:', response.data);
+          }
         } catch (error) {
           console.error('Error saving wallet ID to database:', error);
         }
-  
-        // Create a message to sign
+
         const message = "Please sign this message to confirm your identity.";
         const signature = await window.ethereum.request({
           method: 'personal_sign',
           params: [message, account],
         });
         console.log('Signature:', signature);
-        // This is where you use the onUserLogin function passed as a prop
+
         if (typeof onUserLogin === 'function') {
           onUserLogin(account);
-          localStorage.setItem('isLoggedIn', 'true'); // Set login flag
-          localStorage.setItem('userAccount', account); // Save user account
+          sessionStorage.setItem('isLoggedIn', 'true'); // Set login flag in session storage
+          sessionStorage.setItem('userAccount', account); // Save user account in session storage
         } else {
           console.error('onUserLogin is not a function');
         }
-                onClose(); // Optionally close the popup after login
-                console.log('onUserLogin prop type:', typeof onUserLogin);
+        onClose();
+        console.log('onUserLogin prop type:', typeof onUserLogin);
 
       } catch (error) {
         console.error('Error connecting to MetaMask:', error);
@@ -46,18 +49,22 @@ function PopupWallet({ onClose, onUserLogin }) {
     } else {
       console.log('MetaMask is not installed');
     }
-  };
+};
   
   const handleLoginWithPhantom = async () => {
     if ('solana' in window) {
-      try{
+      try {
         const provider = window.solana;
         if (provider.isPhantom) {
           const response = await provider.connect();
           const publicKey = response.publicKey.toString();
           try {
             const response = await axios.post('/api/wallets', { walletId: publicKey });
-            console.log('Wallet ID saved to database:', response.data);
+            if (response.data.status === 'existing') {
+              console.log('Wallet ID already linked to an existing account.');
+            } else {
+              console.log('Wallet ID saved to database:', response.data);
+            }
           } catch (error) {
             console.error('Error saving wallet ID to database:', error);
           }
@@ -69,8 +76,8 @@ function PopupWallet({ onClose, onUserLogin }) {
           // Use onUserLogin function here as well
           if (typeof onUserLogin === 'function') {
             onUserLogin(publicKey);
-            localStorage.setItem('isLoggedIn', 'true'); // Set login flag
-            localStorage.setItem('userAccount', publicKey); // Save user account
+            sessionStorage.setItem('isLoggedIn', 'true'); // Set login flag
+            sessionStorage.setItem('userAccount', publicKey); // Save user account
           } else {
             console.error('onUserLogin is not a function');
           }
