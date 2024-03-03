@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import NavBar from './NavBar';
 import TopBar from './TopBar';
 import RightBar from './RightBar';
@@ -8,43 +8,37 @@ import './Display.css';
 
 export default function Display() {
   const [settings, setSettings] = useState({});
-  const [settingsFetched, setSettingsFetched] = useState(true);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [history, setHistory] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const settingsRef = useRef(settings);
+
 
   useEffect(() => {
     const fetchSettings = async () => {
       const userWalletID = sessionStorage.getItem('userAccount');
       if (userWalletID) {
         try {
-          // Simulate a network error by using an invalid URL
-          const response = await fetch(`/api/settings/${userWalletID}_invalid`);
+          const response = await fetch(`/api/settings/${userWalletID}`);
           if (response.ok) {
             const data = await response.json();
             if (data && data.settings) {
               setSettings(data.settings);
-              setSettingsFetched(true);
             } else {
               console.log('No settings found for this wallet ID:', userWalletID);
-              setSettingsFetched(false);
             }
           } else {
             console.error('Failed to fetch settings:', response.statusText);
-            setSettingsFetched(false);
-            alert('Failed to load settings. Default styles will be applied.');
           }
         } catch (error) {
           console.error('Error fetching settings:', error);
-          setSettingsFetched(false);
-          alert('An error occurred while fetching settings. Please try again later.');
         }
       }
     };
-
+  
     fetchSettings();
   }, []);
+  
   
   const handleSettingsChange = (section, newSettings) => {
     const newSettingsObj = {
@@ -124,14 +118,14 @@ export default function Display() {
 
   return (
     <>
-      <TopBar onSaveClick={handleSaveClick} onUndoClick={handleUndo} onRedoClick={handleRedo} hasUnsavedChanges={hasUnsavedChanges} />
+<TopBar onSaveClick={handleSaveClick} onUndoClick={handleUndo} onRedoClick={handleRedo} hasUnsavedChanges={hasUnsavedChanges} />
       <div className="displayWrapper">
         <NavBar />
         <div className="displayColumnWrapper">
           <ActualPageParametersBTN />
-          <Canva settings={settings} settingsFetched={settingsFetched} /> {/* Pass settingsFetched to Canva */}
+          <Canva settings={settings} /> {/* Pass the settings to the Canva component */}
         </div>
-        <RightBar onSettingsChange={handleSettingsChange} />
+        <RightBar onSettingsChange={handleSettingsChange} /> {/* Pass the handleSettingsChange to the RightBar component */}
       </div>
     </>
   );
