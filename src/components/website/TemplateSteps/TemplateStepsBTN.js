@@ -1,15 +1,15 @@
-import './TemplateSteps.css'
-import '../../Root.css'
+import './TemplateSteps.css';
+import '../../Root.css';
 import React from 'react';
 
-const TemplateStepsBTN= () => {
+const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled }) => {
     return (
-        <div class="btn-box">
-            <button id="ignore-button" class="ignore-btn">Skip</button>
-            <button id="submit-button" class="purple-light-btn">Next</button>
+        <div className="btn-box">
+            <button className="ignore-btn" onClick={onIgnore}>Skip</button>
+            <button className="purple-light-btn" onClick={onNext} disabled={!isNextEnabled}>Next</button>
         </div>
+    );
+};
 
-        );
-}
 
 export default TemplateStepsBTN;

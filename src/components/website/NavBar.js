@@ -3,12 +3,20 @@ import './NavBar.css';
 import Web3 from 'web3';
 import PopupWallet from './PopupWallet.js'; // Adjust this path as necessary
 import '../Root.css'
-
+import TemplateStep1 from './TemplateSteps/TemplateStep1.js';
+import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [showTemplateStep1, setShowTemplateStep1] = useState(false);
+  const navigate = useNavigate();
+
+  const handleAccountClick = () => {
+    navigate('/templatestep');
+  };
+  
 
   useEffect(() => {
     // Function to check login status
@@ -65,11 +73,12 @@ function Navbar() {
             Connect Wallet
           </a>
         )}
-        {accounts.length > 0 && (
-          <a href="templates.html" className="nav__cta nav-bg" id="account-btn">
-            <span className="material-symbols-outlined">account_circle</span>
-          </a>
-        )}
+{accounts.length > 0 && (
+  <a href="#" className="nav__cta nav-bg" id="account-btn" onClick={handleAccountClick}>
+    <span className="material-symbols-outlined">account_circle</span>
+  </a>
+)}
+
          <a href="templates.html" className="nav__cta nav-bg" style={{display: 'none'}} id="account-btn">
             <span className="material-symbols-outlined">account_circle</span>
           </a>
@@ -107,6 +116,7 @@ function Navbar() {
         </div>
       </div>
       {showPopup && <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} />}
+      {showTemplateStep1 && <TemplateStep1 />}
     </nav>
   );
 }

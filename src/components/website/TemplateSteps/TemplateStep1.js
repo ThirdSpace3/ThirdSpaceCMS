@@ -1,43 +1,53 @@
-import './TemplateSteps.css'
-import '../../Root.css'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const TemplateStep1= () => {
+const TemplateStep1 = ({ onNext, onIgnore }) => {
+    const [selectedButton, setSelectedButton] = useState('');
+    const [inputValue, setInputValue] = useState('');
+    const [isNextEnabled, setIsNextEnabled] = useState(false);
+
+    // Event handler for button selection
+    const handleButtonClick = (value) => {
+        setSelectedButton(value);
+    };
+
+    // Event handler for input change
+    const handleInputChange = (event) => {
+        setInputValue(event.target.value);
+    };
+
+    // Effect to update the enabled state of the "Next" button
+    useEffect(() => {
+        setIsNextEnabled(selectedButton !== '' || inputValue.trim() !== '');
+    }, [selectedButton, inputValue]);
+
     return (
-        <div  id="etape1"  >
-        <div class="step-box">
-            <h2 class="template-title">What is your site about?</h2>
-            <p class="template-subtitle">This will enable us to give you some initial ideas and examples.</p>
-            <div class="template-label-box">
-                <button class="selectable-button" id="design">Design</button>
-                <button class="selectable-button" id="crypto">Crypto</button>
-                <button class="selectable-button" id="nft">NFT</button>
-                <button class="selectable-button" id="portfolio">Portfolio</button>
-                <button class="selectable-button" id="collections">Collections</button>
-                <button class="selectable-button" id="3dmodels">3D Models</button>
-                <button class="selectable-button" id="games">Games</button>
-                <button class="selectable-button" id="blogs">Blogs</button>
-                <button class="selectable-button" id="marketing">Marketing</button>
-                <button class="selectable-button" id="mode">Mode</button>
-                <button class="selectable-button" id="marketplace">Marketplace</button>
-                <button class="selectable-button" id="dapps">DApps</button>
-                <button class="selectable-button" id="defi">DeFi</button>
-                <button class="selectable-button" id="dex">DEX</button>
-                <button class="selectable-button" id="dao">DAO</button>
-                <button class="selectable-button" id="education">Education</button>
-                <button class="selectable-button" id="security">Security</button>
-                <button class="selectable-button" id="storage">Storage</button>
-                <button class="selectable-button" id="library">Library</button>
-                <button class="selectable-button" id="socialmedias">Social Medias</button>
-                <button class="selectable-button" id="crowdraising">Crowd Raising</button>
-            </div>
-            <div class="template-input-box">
-                <p class="template-subtitle">Can't find what you're looking for?</p>
-                <input type="text" placeholder="Describe your website..."/>
+        <div id="etape1">
+            <div className="step-box">
+                <h2 className="template-title">What is your site about?</h2>
+                <p className="template-subtitle">This will enable us to give you some initial ideas and examples.</p>
+                <div className="template-label-box">
+                    {['Design', 'Crypto', 'NFT', 'Portfolio', 'Collections', '3D Models', 'Games', 'Blogs', 'Marketing', 'Mode', 'Marketplace', 'DApps', 'DeFi', 'DEX', 'DAO', 'Education', 'Security', 'Storage', 'Library', 'Social Medias', 'Crowd Raising'].map((button) => (
+                        <button
+                            key={button}
+                            className={`selectable-button ${selectedButton === button ? 'selected' : ''}`}
+                            onClick={() => handleButtonClick(button)}
+                        >
+                            {button}
+                        </button>
+                    ))}
+                </div>
+                <div className="template-input-box">
+                    <p className="template-subtitle">Can't find what you're looking for?</p>
+                    <input
+                        type="text"
+                        placeholder="Describe your website..."
+                        value={inputValue}
+                        onChange={handleInputChange}
+                    />
+                </div>
             </div>
         </div>
-    </div>
-        );
-}
+    );
+};
 
 export default TemplateStep1;

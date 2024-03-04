@@ -191,15 +191,15 @@ button.disabled, button.disabled * {
     display: block;
 }
 #etape2{
-    display: none;
+    display: block;
 }#etape3{
-    display: none;
+    display: block;
 }#etape4{
-    display: none;
+    display: block;
 }
 
 .final-btn-box {
-    display: none;
+    display: block;
 }
 
 .template-deco-bot {
