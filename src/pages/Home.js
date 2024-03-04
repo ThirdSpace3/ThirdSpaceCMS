@@ -5,6 +5,7 @@ import HowItWork from "../components/website/home/HowItWork"
 import Roadmap from "../components/website/home/Roadmap"
 import GetInTouch from "../components/website/home/GetInTouch"
 import Footer from "../components/website/Footer"
+import ReportBugBTN from "../components/website/ReportBugBTN"
 
 export default function Home() {
     return (
@@ -16,6 +17,7 @@ export default function Home() {
             <Roadmap />
             <GetInTouch />
             <Footer />
+            <ReportBugBTN />
         </>
     )
 }

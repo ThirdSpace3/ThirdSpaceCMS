@@ -1,0 +1,276 @@
+body {
+    overflow: hidden;
+}
+.template-content {
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10%;
+}
+.template-title {
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 800;
+    text-align: center;
+}
+.template-subtitle {
+    color: rgba(255, 255, 255, 0.80);
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: center;
+}
+.step-box {
+    max-width: 900px;
+    height: 65vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+}
+.template-label-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center
+}
+.selectable-button {
+    border-radius: 22px;
+    border: 1.189px solid rgba(255, 255, 255, 0.50);
+    background: rgba(255, 255, 255, 0.20);
+    color: #FFF;
+    text-align: center;
+    font-family: var(--inter);
+    font-size: 16.257px;
+    font-style: normal;
+    font-weight: 400;
+    padding: 15px 20px;
+    flex: 0 0 auto;
+}
+.selectable-button:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.60);
+}
+
+.template-input-box {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.template-input-box input {
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.50);
+    background: rgba(255, 255, 255, 0.20);
+    width: 100%;
+    padding: 15px 20px;
+    color: var(--white);
+}
+.btn-box {
+    display: flex;
+    gap: 10px;
+}
+
+.ignore-btn {
+    display: flex;
+    padding: 15px 30px;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border-radius: 28px;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.50);
+    background: rgba(255, 255, 255, 0.20);
+}
+
+.ignore-btn:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.60);
+}
+
+.ignore-btn.disabled:hover, .ignore-btn:disabled:hover {
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.20);
+}
+
+.purple-btn:hover {
+    cursor: pointer;
+}
+
+button.disabled, button.disabled * {
+    cursor: not-allowed;
+}
+
+/* Style for the enabled submit button */
+#submit-button:not(.disabled) {
+  cursor: pointer;
+  /* other styles for enabled state */
+}
+
+/* Hover style for the enabled submit button */
+#submit-button:not(.disabled):hover {
+    background: rgba(150, 0, 250, 1);
+    /* other hover styles */
+}
+
+/* Style for the disabled submit button */
+#submit-button.disabled {
+  cursor: not-allowed;
+  opacity: 0.5; /* example style for disabled state */
+  /* other styles for disabled state */
+}
+
+/*==================== ETAPE 2 ====================*/
+
+.template-label-box-2 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+.template-label-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+.selectable-button-2 {
+    border-radius: 22px;
+    border: 1.189px solid rgba(255, 255, 255, 0.50);
+    background: rgba(255, 255, 255, 0.20);
+    color: #FFF;
+    text-align: center;
+    font-family: var(--inter);
+    font-size: 16.257px;
+    font-style: normal;
+    font-weight: 400;
+    padding: 15px 20px;
+    width: 250px;
+}
+.selectable-button-2:hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.60);
+}
+@media only screen and (max-height: 800px) {
+    .selectable-button,
+    .selectable-button-2,
+    .template-input-box input {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    .btn-box button {
+        padding: 10px 20px;
+    }
+    .template-content {
+        justify-content: space-around;
+    }
+}
+
+/*==================== ETAPE 3 ====================*/
+
+.solutions-card:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.card-selected {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+#etape1{
+    display: block;
+}
+#etape2{
+    display: none;
+}#etape3{
+    display: none;
+}#etape4{
+    display: none;
+}
+
+.final-btn-box {
+    display: none;
+}
+
+.template-deco-bot {
+    position: absolute;
+    bottom: -400px;
+    left: -390px;
+    z-index: -1;
+}
+.template-deco-top {
+    position: absolute;
+    top: 45px;
+    right: -50px;
+    z-index: -1;
+    max-width: 200px;
+}
+
+.selected {
+    background: rgba(255, 255, 255, 0.60);
+}
+.template-mobile {
+    display: none;
+}
+
+
+/*==================== MOBILE ====================*/
+@media only screen and (max-width: 700px) {
+    .template-mobile {
+        height: 80vh;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 5%;
+        overflow-x: hidden;
+    }
+    .template-content {
+        display: none;
+    }
+    .template-deco-bot {
+        max-width: 350px;
+        bottom: -150px;
+        left: -190px;
+    }
+    .template-deco-top {
+        max-width: 100px;
+        top: 45px;
+        right: 10px;
+    }
+}
+
+/*==================== CONFIRMATION END ====================*/
+#etape5 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    height: 80vh;
+    display: none;
+}
+#etape5 p {
+    max-width: 750px;
+}
+.feedback-submit {
+    font-size: 16px;
+}
+.feedback-input-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+

@@ -1,0 +1,18 @@
+/*==================== BTN REPORT BUG ====================*/
+
+.btn-report-bug {
+    padding: 10px;
+    border-radius: 25px;
+    background: var(--purple);
+    color: white;
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-report-bug:hover {
+    background: var(--deep-purple);
+  }
