@@ -1,5 +1,5 @@
 import './TopBar.css';
-import './Root.css';
+import '../Root.css';
 
 export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, hasUnsavedChanges }) {
     return (

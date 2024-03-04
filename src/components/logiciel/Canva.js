@@ -1,5 +1,5 @@
 import './Canva.css';
-import './Root.css';
+import '../Root.css';
 import TemplateTestComponents from '../../templates/TemplateTestComponents';
 
 export default function Canva({ settings }) {

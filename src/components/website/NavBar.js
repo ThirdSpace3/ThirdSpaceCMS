@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './NavBar.css';
 import Web3 from 'web3';
-import PopupWallet from '../components/PopupWallet.js'; // Adjust this path as necessary
+import PopupWallet from './PopupWallet.js'; // Adjust this path as necessary
+import '../Root.css'
+
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,22 +40,22 @@ function Navbar() {
     <nav className="navbar__padding">
       <div className="navbar__pc">
         <a href="index.html" className="nav__logo">
-          <img src="/images/3s-logo.png" alt="thirdspace logo" />
+          <img src="./images/3s-logo.png" alt="thirdspace logo" />
         </a>
         <div className="navbar__right">
           <ul className="nav__links nav-bg">
             <li><a href="/home" className="nav__links-btn">Home</a></li>
             <li className="coming-soon">
               <a href="/about" className="nav__links-btn">About</a>
-              <span className="tooltip">Coming Soon</span>
+               
             </li>
             <li className="coming-soon">
               <a href="#" className="nav__links-btn">Ressources</a>
-              <span className="tooltip">Coming Soon</span>
+               
             </li>
             <li className="coming-soon">
               <a href="#" className="nav__links-btn">Pricing</a>
-              <span className="tooltip">Coming Soon</span>
+               
             </li>
           </ul>
           <a href={accounts.length > 0 ? "./logiciel" : "#"} className="nav__cta nav-bg" onClick={accounts.length === 0 ? togglePopup : undefined}>Get started</a>
@@ -86,15 +88,15 @@ function Navbar() {
             <li><a href="#" className="nav__links-btn">Home</a></li>
             <li className="coming-soon">
               <a href="#" className="nav__links-btn">About</a>
-              <span className="tooltip">Coming Soon</span>
+               
             </li>
             <li className="coming-soon">
               <a href="#" className="nav__links-btn">Ressources</a>
-              <span className="tooltip">Coming Soon</span>
+               
             </li>
             <li className="coming-soon">
               <a href="#" className="nav__links-btn">Pricing</a>
-              <span className="tooltip">Coming Soon</span>
+               
             </li>
             <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>Get started</a>
             <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>

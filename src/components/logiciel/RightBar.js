@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './RightBar.css';
-import './Root.css';
+import '../Root.css';
 
 export default function RightBar({ onSettingsChange }) {
   const [backgroundStyle, setBackgroundStyle] = useState({});

@@ -1,4 +1,4 @@
-import NavBar from "../components/NavBar"
+import NavBar from "../components/website/NavBar"
 
 export default function NoPage() {
     return (

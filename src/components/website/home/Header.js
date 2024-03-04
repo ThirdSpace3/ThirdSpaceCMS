@@ -1,0 +1,28 @@
+import './Header.css'
+import '../../Root.css'
+import React from 'react';
+
+function Header() {
+  return (
+    <>
+    <img src="./images/header-bg.png" alt="" class="header-bg"/>
+
+      <section className="header section">
+        <div className="header__left">
+          <h1 className="header__title">Web3's Easiest Builder. Dive in Code-Free.</h1>
+          <p className="section__text">We, at Third Space, will co-construct the project with you! We want to give everyone the opportunity to boost their business on Web 3.</p>
+          <div className="header__cta">
+            <a href="#" className="purple-btn" id="getstarted-btn">Get Started</a>
+            <a href="https://discord.gg/dked3DEngT" className="purple-light-btn" target='_blank'>
+              <img src="./images/logo-discord-1.png" alt="" className="cta-icon" />Join the community
+            </a>
+          </div>
+        </div>
+        <img src="./images/header-img.png" alt="" className="header__right" />
+      </section>
+      <img src="./images/header-deco.png" alt="" className="header-deco" />
+    </>
+  );
+}
+
+export default Header;

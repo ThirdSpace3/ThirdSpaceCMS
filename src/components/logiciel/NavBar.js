@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './NavBar.css';
-import './Root.css';
+import '../Root.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import PanelAsset from './PanelAsset';
 import PanelFile from './PanelFile';

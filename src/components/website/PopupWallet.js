@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './PopupWallet.css';
 import axios from 'axios';
+import '../Root.css'
+
 
 function PopupWallet({ onClose, onUserLogin }) {
   const [showMore, setShowMore] = useState(false);

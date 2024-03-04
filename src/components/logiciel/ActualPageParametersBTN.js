@@ -1,5 +1,5 @@
 import './ActualPageParametersBTN.css';
-import './Root.css';
+import '../Root.css';
 
 
 export default function ActualPageParametersBTN() {
