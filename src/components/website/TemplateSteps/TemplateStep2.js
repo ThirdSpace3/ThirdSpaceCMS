@@ -1,42 +1,74 @@
-import './TemplateSteps.css'
-import '../../Root.css'
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import './TemplateSteps.css';
+import '../../Root.css';
 
-const TemplateStep2= () => {
+const TemplateStep2 = ({ updateNextButtonState }) => {
+    const [selectedButtons, setSelectedButtons] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+
+    // Toggle selection for a button
+    const handleButtonClick = (buttonId) => {
+        setSelectedButtons(prevSelections => 
+            prevSelections.includes(buttonId) ? prevSelections.filter(id => id !== buttonId) : [...prevSelections, buttonId]
+        );
+    };
+
+    // Handle input change
+    const handleInputChange = (event) => {
+        setInputValue(event.target.value);
+    };
+
+    // Define buttons in pairs for each row
+    const buttonPairs = [
+        ["Upsells my collections", "Boost my visibility"],
+        ["Deploy my market", "Organize my work"],
+        ["Share a subject", "Communication"],
+        ["Contact form", "Communautary fidelisation"],
+        ["Marketplace", "Learning platform"]
+    ];
+
+    // Update the Next button enabled state based on selections or input
+    useEffect(() => {
+        const isNextEnabled = selectedButtons.length > 0 || inputValue.trim() !== '';
+        updateNextButtonState(isNextEnabled);
+    }, [selectedButtons, inputValue, updateNextButtonState]);
+
     return (
-        <div  id="etape2"  >
-        <div class="step-box">
-            <h2 class="template-title">What are your main objectives?</h2>
-            <p class="template-subtitle">Select all the items that apply. If something interests you but isn't a top priority, don't worry. You can add all our features to the template of your choice.</p>
-            <div class="template-label-box-2">
-                <div class="template-label-row">
-                    <button class="selectable-button-2" id="design">Upsells my collections </button>
-                    <button class="selectable-button-2" id="crypto">Boost my visibility </button>    
+        <div id="etape2">
+            <div className="step-box">
+                <h2 className="template-title">What are your main objectives?</h2>
+                <p className="template-subtitle">Select all the items that apply...</p>
+                <div className="template-label-box-2">
+                    {buttonPairs.map((pair, rowIndex) => (
+                        <div key={rowIndex} className="template-label-row">
+                            {pair.map((buttonLabel, buttonIndex) => {
+                                const buttonId = buttonLabel.replace(/\s+/g, '').toLowerCase();
+                                return (
+                                    <button
+                                        key={buttonId}
+                                        className={`selectable-button-2 ${selectedButtons.includes(buttonId) ? 'selected' : ''}`}
+                                        id={buttonId}
+                                        onClick={() => handleButtonClick(buttonId)}
+                                    >
+                                        {buttonLabel}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    ))}
                 </div>
-                <div class="template-label-row">
-                    <button class="selectable-button-2" id="market">Deploy my market</button>
-                    <button class="selectable-button-2" id="work">Organize my work</button>    
+                <div className="template-input-box">
+                    <p className="template-subtitle">Looking for a feature we don't provide yet?</p>
+                    <input
+                        type="text"
+                        placeholder="Describe your feature..."
+                        value={inputValue}
+                        onChange={handleInputChange}
+                    />
                 </div>
-                <div class="template-label-row">
-                    <button class="selectable-button-2" id="Share">Share a subject </button>
-                    <button class="selectable-button-2" id="Communication">Communication</button>    
-                </div>
-                <div class="template-label-row">
-                    <button class="selectable-button-2" id="form">Contact form</button>
-                    <button class="selectable-button-2" id="Communautary">Communautary fidelisation</button>    
-                </div>
-                <div class="template-label-row">
-                    <button class="selectable-button-2" id="Marketplace">Marketplace </button>
-                    <button class="selectable-button-2" id="Learning">Learning plateform</button>    
-                </div>
-            </div>
-            <div class="template-input-box">
-                <p class="template-subtitle">Looking for a feature we don't provide yet ? Ask it and we will make it happen</p>
-                <input type="text" placeholder="Describe your feature..."/>
             </div>
         </div>
-    </div>
-        );
+    );
 }
 
 export default TemplateStep2;

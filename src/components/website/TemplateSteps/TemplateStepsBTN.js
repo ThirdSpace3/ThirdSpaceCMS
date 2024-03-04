@@ -2,11 +2,20 @@ import './TemplateSteps.css';
 import '../../Root.css';
 import React from 'react';
 
-const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled }) => {
+const TemplateStepsBTN = ({ onNext, isNextEnabled, currentStep }) => {
     return (
         <div className="btn-box">
-            <button className="ignore-btn" onClick={onIgnore}>Skip</button>
-            <button className="purple-light-btn" onClick={onNext} disabled={!isNextEnabled}>Next</button>
+            {currentStep !== 3 && currentStep !== 4 && (
+                <button className="ignore-btn" onClick={() => onNext(true)}>Skip</button>
+            )}
+            {/* Use 'purple-light-btn' class and apply 'disabled' class conditionally based on 'isNextEnabled' */}
+            <button
+                className={`purple-light-btn ${!isNextEnabled ? 'disabled' : ''}`}
+                onClick={() => onNext(false)}
+                disabled={!isNextEnabled}
+            >
+                Next
+            </button>
         </div>
     );
 };

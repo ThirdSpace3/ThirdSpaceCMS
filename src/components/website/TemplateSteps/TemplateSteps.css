@@ -73,6 +73,7 @@ body {
 }
 .btn-box {
     display: flex;
+    justify-content: center;
     gap: 10px;
 }
 
@@ -111,24 +112,12 @@ button.disabled, button.disabled * {
     cursor: not-allowed;
 }
 
-/* Style for the enabled submit button */
-#submit-button:not(.disabled) {
-  cursor: pointer;
-  /* other styles for enabled state */
+.purple-light-btn:not(.disabled):hover {
+    background: rgba(150, 0, 250, 1); /* Example hover background */
+    /* other hover styles here */
 }
 
-/* Hover style for the enabled submit button */
-#submit-button:not(.disabled):hover {
-    background: rgba(150, 0, 250, 1);
-    /* other hover styles */
-}
 
-/* Style for the disabled submit button */
-#submit-button.disabled {
-  cursor: not-allowed;
-  opacity: 0.5; /* example style for disabled state */
-  /* other styles for disabled state */
-}
 
 /*==================== ETAPE 2 ====================*/
 
@@ -187,16 +176,6 @@ button.disabled, button.disabled * {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-#etape1{
-    display: block;
-}
-#etape2{
-    display: block;
-}#etape3{
-    display: block;
-}#etape4{
-    display: block;
-}
 
 .final-btn-box {
     display: block;
@@ -252,15 +231,19 @@ button.disabled, button.disabled * {
 }
 
 /*==================== CONFIRMATION END ====================*/
-#etape5 {
+#etape5, 
+#etape4,
+#etape3,
+#etape2,
+#etape1{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 25px;
     height: 80vh;
-    display: none;
 }
+
 #etape5 p {
     max-width: 750px;
 }
