@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react';
 import './TemplateSteps.css';
 import '../../Root.css';
 
-const TemplateStep2 = ({ updateNextButtonState }) => {
-    const [selectedButtons, setSelectedButtons] = useState([]);
+const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButtons, currentStep,props }) => {
     const [inputValue, setInputValue] = useState('');
 
     // Toggle selection for a button
     const handleButtonClick = (buttonId) => {
-        setSelectedButtons(prevSelections => 
-            prevSelections.includes(buttonId) ? prevSelections.filter(id => id !== buttonId) : [...prevSelections, buttonId]
-        );
+        setSelectedButtons(prevSelections => ({
+            ...prevSelections,
+            [currentStep]: (prevSelections[currentStep] || []).includes(buttonId)
+                ? prevSelections[currentStep].filter(id => id !== buttonId)
+                : [...prevSelections[currentStep] || [], buttonId]
+        }));
     };
-
     // Handle input change
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
     };
-
     // Define buttons in pairs for each row
     const buttonPairs = [
         ["Upsells my collections", "Boost my visibility"],

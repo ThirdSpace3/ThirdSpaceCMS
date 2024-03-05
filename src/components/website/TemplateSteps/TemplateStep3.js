@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import './TemplateSteps.css';
 import '../../Root.css';
 
-const TemplateStep3 = ({ updateNextButtonState }) => {
+const TemplateStep3 = ({ updateNextButtonState, currentStep, setSelectedButtons }) => {
     const [selectedItem, setSelectedItem] = useState('');
 
     // Handle card click
     const handleCardClick = (itemId) => {
         setSelectedItem(itemId);
-    };
+        setSelectedButtons(prevSelectedButtons => ({
+          ...prevSelectedButtons,
+          [currentStep]: [itemId]
+        }));
+      };
 
     // Communicate selection status to parent component
     useEffect(() => {

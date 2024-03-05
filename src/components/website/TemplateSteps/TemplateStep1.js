@@ -1,26 +1,43 @@
 import React, { useState, useEffect } from 'react';
 
-const TemplateStep1 = ({ updateNextButtonState }) => {
-    const [selectedButtons, setSelectedButtons] = useState([]);
+const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedButtons, setSelectedButtons, currentStep }) => {
     const [inputValue, setInputValue] = useState('');
 
-    // Event handler for button selection
+    useEffect(() => {
+        // This effect ensures the "Next" button is correctly enabled based on the input or selections.
+        const hasSelectionOrInput = selectedButtons[currentStep] ? selectedButtons[currentStep].length > 0 || inputValue.trim() !== '' : inputValue.trim() !== '';
+        updateNextButtonState(hasSelectionOrInput);
+    }, [selectedButtons, inputValue, updateNextButtonState, currentStep]);
+
+    useEffect(() => {
+        // Assuming you have a way to detect step transition (e.g., via props or context)
+        // Save the input value when transitioning away from the current step
+        return () => {
+            if (inputValue.trim() && currentStep === 1) {
+                // This checks if we're still on step 1 and there's an inputValue when unmounting or changing steps
+                setSelectedButtons(prev => ({
+                    ...prev,
+                    1: [...(prev[1] || []), inputValue.trim()].filter((value, index, self) => self.indexOf(value) === index) // Ensure uniqueness
+                }));
+            }
+        };
+    }, [currentStep, inputValue]); // Depend on currentStep and inputValue to trigger on changes
+
     const handleButtonClick = (value) => {
-        setSelectedButtons(prev => 
-            prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
-        );
+        handleFinalInputSave(inputValue);
+        setSelectedButtons(prev => ({
+            ...prev,
+            [currentStep]: prev[currentStep] ? 
+                prev[currentStep].includes(value) 
+                    ? prev[currentStep].filter(item => item !== value)
+                    : [...prev[currentStep], value]
+                : [value]
+        }));
     };
 
-    // Event handler for input change
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
     };
-
-    // Effect to update the enabled state of the "Next" button
-    useEffect(() => {
-        const isNextEnabled = selectedButtons.length > 0 || inputValue.trim() !== '';
-        updateNextButtonState(isNextEnabled);
-    }, [selectedButtons, inputValue, updateNextButtonState]);
 
     return (
         <div id="etape1">
