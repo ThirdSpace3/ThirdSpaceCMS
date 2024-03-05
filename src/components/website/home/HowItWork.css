@@ -43,7 +43,7 @@
     background: var(--purple, #9600FA);}
   
   .tabcontent {
-    display: none;
+    display: flex;
     padding: 20px 50px;
   }
   .tabcontent-content {
