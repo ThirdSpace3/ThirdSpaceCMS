@@ -13,7 +13,7 @@ function GetInTouch() {
             Make sure to join our discord if you have any questions about us or our solutions.
           </p>
           <div className="getintouch-socials">
-            <a href="https://github.com/ThirdSpace3/ThirdSpaceCMS" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/ThirdSpace3" target="_blank" rel="noopener noreferrer">
               <img src='./images/logo-github-2.png' alt="Github Logo" />
               Join the community
             </a>

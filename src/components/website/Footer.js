@@ -41,7 +41,7 @@ const Footer = () => {
                 <div className="footer-socials">
                     <a href="https://twitter.com/ThirdSpace_3" target="_blank" rel="noopener noreferrer"><img src="./images/logo-x-1.png" alt="Twitter"/></a>
                     <a href="https://discord.gg/dked3DEngT" target="_blank" rel="noopener noreferrer"><img src="./images/logo-discord-1.png" alt="Discord"/></a>
-                    <a href="https://github.com/ThirdSpace3/ThirdSpaceCMS" target="_blank" rel="noopener noreferrer"><img src="./images/logo-github-1.png" alt="GitHub"/></a>
+                    <a href="https://github.com/ThirdSpace3" target="_blank" rel="noopener noreferrer"><img src="./images/logo-github-1.png" alt="GitHub"/></a>
                     <a href="https://www.linkedin.com/company/thirdspace-3/" target="_blank" rel="noopener noreferrer"><img src="./images/logo-linkedin-1.png" alt="LinkedIn"/></a>
                 </div>
             </div>
