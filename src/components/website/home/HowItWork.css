@@ -49,14 +49,14 @@
   .tabcontent-content {
     display: flex;
     justify-content: space-evenly;
-    align-items: start;
+    align-items: flex-start;
     gap: 25px;
   }
   .tabcontent-left {
     display: flex;
     flex-direction: column;
     gap: 25px;
-    align-items: start;
+    align-items: flex-start;;
     width: 45%;
   }
   .tabcontent-left h3 {
