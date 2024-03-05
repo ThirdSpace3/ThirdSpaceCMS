@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import './HowItWork.css';
 import '../../Root.css';
-
+import PopupWallet from '../PopupWallet';
 function HowItWork() {
-    const [activeTab, setActiveTab] = useState('TabA');
+  const [activeTab, setActiveTab] = useState('TabA');
+  const [showWalletPopup, setShowWalletPopup] = useState(false); // Add this line
+  useEffect(() => {
+    // Ceci est exécuté après le premier rendu
+    // et chaque fois que l'onglet actif change
+    setActiveTab('TabA'); // Définit l'onglet par défaut
+  }, []);
 
-    useEffect(() => {
-        // Ceci est exécuté après le premier rendu
-        // et chaque fois que l'onglet actif change
-        setActiveTab('TabA'); // Définit l'onglet par défaut
-    }, []);
-
-    const openTab = (tabName) => {
-        setActiveTab(tabName);
-    };
-
+  const openTab = (tabName) => {
+    setActiveTab(tabName);
+  };
+  const toggleWalletPopup = () => {
+    setShowWalletPopup(!showWalletPopup);
+  };
+  const handleUserLogin = (userAccount) => {
+    // Handle user login here
+    console.log('User logged in:', userAccount);
+  };
     return (
         <section className="functionnement section">
             <p className="section-label">How It Work</p>
@@ -32,7 +38,7 @@ function HowItWork() {
                             <div className="tabcontent-left">
                                 <h3>Create your account & Start imagining</h3>
                                 <p>Using and easy process, create an account with your wallets and start creating your own space.</p>
-                                <a href="#" className="purple-light-btn mobile-get-started">Get Started</a>
+                                <button className="purple-light-btn mobile-get-started" onClick={toggleWalletPopup}>Get Started</button>
                             </div>
                             <img src="./images/howitworkd-1.png" alt=""/>
                         </div>
@@ -44,7 +50,7 @@ function HowItWork() {
                             <div className="tabcontent-left">
                                 <h3>Choose your solution & Let the magic happen</h3>
                                 <p>Choose between our solutions what work best for you. Be accompanied at each step of the process.</p>
-                                <a href="#" className="purple-light-btn mobile-get-started">Get Started</a>
+                                <button className="purple-light-btn mobile-get-started" onClick={toggleWalletPopup}>Get Started</button>
                             </div>
                             <img src="./images/howitworkd-2.png" alt=""/>
                         </div>          
@@ -56,13 +62,15 @@ function HowItWork() {
                             <div className="tabcontent-left">
                                 <h3>Design your website & Propel it</h3>
                                 <p>Now that your solution is defined, you can start to put your imagination and creativity to work to bring your new project to life.</p>
-                                <a href="#" className="purple-light-btn mobile-get-started">Get Started</a>
+                                <button className="purple-light-btn mobile-get-started" onClick={toggleWalletPopup}>Get Started</button>
                             </div>
                             <img src="./images/howitworkd-3.png" alt=""/>
                         </div>
                     </div>
                 )}
             </div>
+            {showWalletPopup && <PopupWallet onClose={toggleWalletPopup} onUserLogin={handleUserLogin} />}
+
         </section>
     );
 }
