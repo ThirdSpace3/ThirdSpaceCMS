@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RightBar.css';
 import '../Root.css';
+import { useStyle } from './StyleContext'; // Adjust the path as necessary
 
 export default function RightBar({ onSettingsChange }) {
   const [backgroundStyle, setBackgroundStyle] = useState({});
@@ -9,31 +10,59 @@ export default function RightBar({ onSettingsChange }) {
   const [isOpen, setIsOpen] = useState({ background: false, typographie: false, border: false });
   const [selectedAlign, setSelectedAlign] = useState(null);
   const [selectedDecoration, setSelectedDecoration] = useState(null);
+  const { updateStyle } = useStyle(); // Get the function to update the style
+
+  const [style, setStyle] = useState({
+    background: {},
+    typography: {},
+    border: {}
+  });
+
+  useEffect(() => {
+    // Update the global style whenever the local style state changes
+    updateStyle(style);
+  }, [style, updateStyle]);
 
   const handleInputChange = (e, styleProperty, inputType) => {
     let value;
+    let styleCategory; // This will be determined based on the styleProperty
   
-    if (inputType === 'select') {
+    if (inputType === 'select' || inputType === 'color') {
       value = e.target.value;
     } else if (inputType === 'checkbox') {
       value = e.target.checked;
-    } else if (inputType === 'color') {
-      value = e.target.value;
     } else if (inputType === 'number') {
-      value = parseInt(e.target.value); // Convert string to number
+      value = parseInt(e.target.value, 10); // Convert string to number
     } else {
       value = e.target.value; // For all other input types, use the string value
     }
   
-    if (styleProperty === 'borderColor') {
-      setBorderStyle(prevState => ({ ...prevState, [styleProperty]: value }));
-      onSettingsChange('border', { [styleProperty]: value });
+    // Determine the style category based on the property being changed
+    if (styleProperty === 'backgroundColor' || styleProperty === 'backgroundImage') {
+      styleCategory = 'background';
+    } else if (styleProperty === 'borderColor' || styleProperty === 'borderWidth') {
+      styleCategory = 'border';
     } else {
-      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
-      onSettingsChange('typography', { [styleProperty]: value });
+      // Default to typography for all other properties
+      styleCategory = 'typography';
     }
+  
+    // Update the unified style state, targeting the correct category
+    setStyle(prevState => ({
+      ...prevState,
+      [styleCategory]: {
+        ...prevState[styleCategory],
+        [styleProperty]: value
+      }
+    }));
+  
+    // Assuming onSettingsChange needs to keep its signature
+    onSettingsChange(styleCategory, { [styleProperty]: value });
   };
-    
+
+  const handleSectionToggle = (section) => {
+    setIsOpen(prevState => ({ ...prevState, [section]: !prevState[section] }));
+  };
 
   const handleBackgroundChange = (e, styleProperty) => {
     setBackgroundStyle(prevState => ({ ...prevState, [styleProperty]: e.target.value }));
@@ -48,7 +77,7 @@ export default function RightBar({ onSettingsChange }) {
   const handleTextDecoration = (decorationType) => {
     setTypographyStyle(prevState => {
       const newStyle = { ...prevState };
-  
+
       if (decorationType === 'italic') {
         if (newStyle.fontStyle === 'italic') {
           newStyle.fontStyle = 'normal';
@@ -71,15 +100,15 @@ export default function RightBar({ onSettingsChange }) {
           setSelectedDecoration(decorationType);
         }
       }
-  
+
       onSettingsChange('typography', newStyle);
-  
+
       return newStyle;
     });
   };
-  
-    
-  
+
+
+
   const handleTextAlign = (alignType) => {
     setTypographyStyle(prevState => {
       const newStyle = { ...prevState, textAlign: alignType };
@@ -88,7 +117,7 @@ export default function RightBar({ onSettingsChange }) {
       return newStyle;
     });
   };
-  
+
 
   const toggleSection = (section) => {
     setIsOpen(prevState => ({ ...prevState, [section]: !prevState[section] }));
@@ -129,80 +158,80 @@ export default function RightBar({ onSettingsChange }) {
               <i className={`bi bi-caret-down-fill ${isOpen.typographie ? 'rotate' : ''}`}></i>
             </div>
             <div className={`parameters-wrapper-content ${isOpen.typographie ? 'open' : ''}`}>
-            <div className='parameters-content-line'>
-              <p className='parameters-content-line-title'>Font Family</p>
-              <div className='parameters-content-line-container'>
-              <select onChange={(e) => handleInputChange(e, 'fontFamily', 'select')}>
-                <option>Arial</option>
-                <option>Verdana</option>
-                <option>Helvetica</option>
-                </select>
+              <div className='parameters-content-line'>
+                <p className='parameters-content-line-title'>Font Family</p>
+                <div className='parameters-content-line-container'>
+                  <select onChange={(e) => handleInputChange(e, 'fontFamily', 'select')}>
+                    <option>Arial</option>
+                    <option>Verdana</option>
+                    <option>Helvetica</option>
+                  </select>
 
+                </div>
               </div>
-            </div>
-            <div className='parameters-content-line'>
-            <p className='parameters-content-line-title'>Font Size</p>
-            <div className='parameters-content-line-container'>
-                <input type="number" min="8" max="72" step="1" defaultValue="14" onChange={(e) => handleInputChange(e, 'fontSize', 'number')} /> px
-            </div>
-            </div>
-            <div className='parameters-content-line'>
-              <p className='parameters-content-line-title'>Color</p>
-              <div className='parameters-content-line-container'>
-                <input type="color" onChange={(e) => handleInputChange(e, 'color')} />
+              <div className='parameters-content-line'>
+                <p className='parameters-content-line-title'>Font Size</p>
+                <div className='parameters-content-line-container'>
+                  <input type="number" min="8" max="72" step="1" defaultValue="14" onChange={(e) => handleInputChange(e, 'fontSize', 'number')} /> px
+                </div>
               </div>
-            </div>
+              <div className='parameters-content-line'>
+                <p className='parameters-content-line-title'>Color</p>
+                <div className='parameters-content-line-container'>
+                  <input type="color" onChange={(e) => handleInputChange(e, 'color')} />
+                </div>
+              </div>
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Text Decoration</p>
                 <div className='parameters-content-line-container'>
-  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'italic' ? 'selected' : ''}`} onClick={() => handleTextDecoration('italic')}><i className="bi bi-type-italic"></i></a>
-  <hr className='parameters-content-line-separation' />
-  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'underline' ? 'selected' : ''}`} onClick={() => handleTextDecoration('underline')}><i className="bi bi-type-underline"></i></a>
-  <hr className='parameters-content-line-separation' />
-  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'line-through' ? 'selected' : ''}`} onClick={() => handleTextDecoration('line-through')}><i className="bi bi-type-strikethrough"></i></a>
-</div>
+                  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'italic' ? 'selected' : ''}`} onClick={() => handleTextDecoration('italic')}><i className="bi bi-type-italic"></i></a>
+                  <hr className='parameters-content-line-separation' />
+                  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'underline' ? 'selected' : ''}`} onClick={() => handleTextDecoration('underline')}><i className="bi bi-type-underline"></i></a>
+                  <hr className='parameters-content-line-separation' />
+                  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'line-through' ? 'selected' : ''}`} onClick={() => handleTextDecoration('line-through')}><i className="bi bi-type-strikethrough"></i></a>
+                </div>
 
               </div>
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Text Align</p>
                 <div className='parameters-content-line-container'>
-                <a
-  href="#"
-  className={`parameters-content-line-item ${selectedAlign === 'left' ? 'selected' : ''}`}
-  onClick={() => handleTextAlign('left')}
->
-  <i className="bi bi-text-left"></i>
-</a>
+                  <a
+                    href="#"
+                    className={`parameters-content-line-item ${selectedAlign === 'left' ? 'selected' : ''}`}
+                    onClick={() => handleTextAlign('left')}
+                  >
+                    <i className="bi bi-text-left"></i>
+                  </a>
 
-<hr className='parameters-content-line-separation' />
+                  <hr className='parameters-content-line-separation' />
 
-<a
-  href="#"
-  className={`parameters-content-line-item ${selectedAlign === 'center' ? 'selected' : ''}`}
-  onClick={() => handleTextAlign('center')}
->
-  <i className="bi bi-text-center"></i>
-</a>
+                  <a
+                    href="#"
+                    className={`parameters-content-line-item ${selectedAlign === 'center' ? 'selected' : ''}`}
+                    onClick={() => handleTextAlign('center')}
+                  >
+                    <i className="bi bi-text-center"></i>
+                  </a>
 
-<hr className='parameters-content-line-separation' />
+                  <hr className='parameters-content-line-separation' />
 
-<a
-  href="#"
-  className={`parameters-content-line-item ${selectedAlign === 'right' ? 'selected' : ''}`}
-  onClick={() => handleTextAlign('right')}
->
-  <i className="bi bi-text-right"></i>
-</a>
+                  <a
+                    href="#"
+                    className={`parameters-content-line-item ${selectedAlign === 'right' ? 'selected' : ''}`}
+                    onClick={() => handleTextAlign('right')}
+                  >
+                    <i className="bi bi-text-right"></i>
+                  </a>
 
-<hr className='parameters-content-line-separation' />
+                  <hr className='parameters-content-line-separation' />
 
-<a
-  href="#"
-  className={`parameters-content-line-item ${selectedAlign === 'justify' ? 'selected' : ''}`}
-  onClick={() => handleTextAlign('justify')}
->
-  <i className="bi bi-justify"></i>
-</a>
+                  <a
+                    href="#"
+                    className={`parameters-content-line-item ${selectedAlign === 'justify' ? 'selected' : ''}`}
+                    onClick={() => handleTextAlign('justify')}
+                  >
+                    <i className="bi bi-justify"></i>
+                  </a>
                 </div>
               </div>
             </div>
@@ -219,7 +248,7 @@ export default function RightBar({ onSettingsChange }) {
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Border Color</p>
                 <div className='parameters-content-line-container'>
-                <input type="color" onChange={(e) => handleInputChange(e, 'borderColor', 'color')}></input>
+                  <input type="color" onChange={(e) => handleInputChange(e, 'borderColor', 'color')}></input>
                 </div>
               </div>
               <div className='parameters-content-line'>

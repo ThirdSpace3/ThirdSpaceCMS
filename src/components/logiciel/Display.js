@@ -5,7 +5,9 @@ import RightBar from './RightBar';
 import Canva from './Canva';
 import ActualPageParametersBTN from './ActualPageParametersBTN';
 import './Display.css';
-
+import { StyleProvider } from './StyleContext'; // Adjust the path as necessary
+import TextEditor from '../../test2/TextEditor'
+import TemplateTestComponents from '../../templates/TemplateTestComponents';
 export default function Display() {
   const [settings, setSettings] = useState({});
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -117,16 +119,17 @@ export default function Display() {
   
 
   return (
-    <>
+    <StyleProvider>
 <TopBar onSaveClick={handleSaveClick} onUndoClick={handleUndo} onRedoClick={handleRedo} hasUnsavedChanges={hasUnsavedChanges} />
       <div className="displayWrapper">
         <NavBar />
         <div className="displayColumnWrapper">
           <ActualPageParametersBTN />
-          <Canva settings={settings} /> {/* Pass the settings to the Canva component */}
+          <TextEditor settings={settings} /> 
+          {/* <TemplateTestComponents settings={settings}/> */}
         </div>
         <RightBar onSettingsChange={handleSettingsChange} /> {/* Pass the handleSettingsChange to the RightBar component */}
       </div>
-    </>
-  );
+      </StyleProvider>
+    );
 }
