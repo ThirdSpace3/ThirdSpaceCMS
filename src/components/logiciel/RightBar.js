@@ -3,7 +3,7 @@ import './RightBar.css';
 import '../Root.css';
 import { useStyle } from './StyleContext'; // Adjust the path as necessary
 
-export default function RightBar({ onSettingsChange }) {
+export default function RightBar({ onSettingsChange, selectedElement  }) {
   const [backgroundStyle, setBackgroundStyle] = useState({});
   const [typographyStyle, setTypographyStyle] = useState({});
   const [borderStyle, setBorderStyle] = useState({});
@@ -36,7 +36,7 @@ export default function RightBar({ onSettingsChange }) {
     } else {
       value = e.target.value; // For all other input types, use the string value
     }
-  
+
     // Determine the style category based on the property being changed
     if (styleProperty === 'backgroundColor' || styleProperty === 'backgroundImage') {
       styleCategory = 'background';
@@ -57,7 +57,11 @@ export default function RightBar({ onSettingsChange }) {
     }));
   
     // Assuming onSettingsChange needs to keep its signature
-    onSettingsChange(styleCategory, { [styleProperty]: value });
+    onSettingsChange(selectedElement, {
+      [styleProperty]: value
+    });
+    console.log("Input change for:", styleProperty, "value:", value);
+
   };
 
   const handleSectionToggle = (section) => {

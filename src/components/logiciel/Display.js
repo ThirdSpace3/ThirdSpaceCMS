@@ -10,10 +10,10 @@ import TextEditor from '../../test2/TextEditor'
 import TemplateTestComponents from '../../templates/TemplateTestComponents';
 export default function Display() {
   const [settings, setSettings] = useState({});
+  const [selectedElement, setSelectedElement] = useState(null); // Added state for selected element
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [history, setHistory] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const settingsRef = useRef(settings);
 
 
   useEffect(() => {
@@ -25,7 +25,10 @@ export default function Display() {
           if (response.ok) {
             const data = await response.json();
             if (data && data.settings) {
+              console.log("Before update:", settings);
               setSettings(data.settings);
+              console.log("After update:", data.settings);
+
             } else {
               console.log('No settings found for this wallet ID:', userWalletID);
             }
@@ -43,34 +46,44 @@ export default function Display() {
   
   
   const handleSettingsChange = (section, newSettings) => {
-    const newSettingsObj = {
+    console.log("Updating settings for:", section, "with:", newSettings);
+
+    if (!selectedElement) return; // Do nothing if no element is selected
+  
+    // Ensure settings for the selected element and section exist before attempting to update
+    const updatedSettings = {
       ...settings,
-      [section]: {
-        ...settings[section],
-        ...newSettings,
+      [selectedElement]: {
+        ...settings[selectedElement] || {}, // Ensure the selected element's settings exist
+        [section]: {
+          ...(settings[selectedElement] || {})[section] || {}, // Ensure the section exists
+          ...newSettings,
+        },
       },
     };
   
-    setSettings(newSettingsObj);
+    setSettings(updatedSettings);
     setHasUnsavedChanges(true);
   
+    // Corrected usage of 'updatedSettings' instead of 'newSettingsObj'
     if (section === 'typography' && newSettings.color) {
       const newColor = newSettings.color;
       const newHistory = [...history];
       newHistory.splice(currentIndex + 1);
-      newHistory.push({ ...newSettingsObj, typography: { ...newSettingsObj.typography, color: newColor } });
+      newHistory.push({ ...updatedSettings, typography: { ...updatedSettings[selectedElement].typography, color: newColor } });
       setHistory(newHistory);
       setCurrentIndex(newHistory.length - 1);
     } else {
       setHistory(prevHistory => {
         const newHistory = [...prevHistory];
         newHistory.splice(currentIndex + 1);
-        newHistory.push(newSettingsObj);
+        newHistory.push(updatedSettings);
         setCurrentIndex(newHistory.length - 1);
         return newHistory;
       });
     }
   };
+  
   
   
   const handleUndo = () => {
@@ -120,16 +133,16 @@ export default function Display() {
 
   return (
     <StyleProvider>
-<TopBar onSaveClick={handleSaveClick} onUndoClick={handleUndo} onRedoClick={handleRedo} hasUnsavedChanges={hasUnsavedChanges} />
+      <TopBar onSaveClick={handleSaveClick} onUndoClick={handleUndo} onRedoClick={handleRedo} hasUnsavedChanges={hasUnsavedChanges} />
       <div className="displayWrapper">
         <NavBar />
         <div className="displayColumnWrapper">
           <ActualPageParametersBTN />
-          <TextEditor settings={settings} /> 
-          {/* <TemplateTestComponents settings={settings}/> */}
+          <TextEditor settings={settings} selectedElement={selectedElement} setSelectedElement={setSelectedElement} />
+          {/* Continue with the rest of your layout */}
         </div>
-        <RightBar onSettingsChange={handleSettingsChange} /> {/* Pass the handleSettingsChange to the RightBar component */}
+        <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
       </div>
-      </StyleProvider>
-    );
+    </StyleProvider>
+  );
 }
