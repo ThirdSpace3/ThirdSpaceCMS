@@ -6,8 +6,10 @@ import { useStyle } from './StyleContext'; // Adjust the path as necessary
 export default function RightBar({ selectedElement }) {
   console.log('Selected element in RightBar:', selectedElement); // Add this line
 
-  const [backgroundStyle, setBackgroundStyle] = useState({});
-  const [typographyStyle, setTypographyStyle] = useState({});
+  const [backgroundStyle, setBackgroundStyle] = useState({
+    backgroundColor: '',
+    backgroundImage: '',
+  });  const [typographyStyle, setTypographyStyle] = useState({});
   const [borderStyle, setBorderStyle] = useState({});
   const [isOpen, setIsOpen] = useState({ background: false, typographie: false, border: false });
   const [selectedAlign, setSelectedAlign] = useState(null);
@@ -22,9 +24,14 @@ export default function RightBar({ selectedElement }) {
   
       for (const [key, value] of Object.entries(newSettings)) {
         if (key === 'background') {
-          element.style.setProperty('background-color', value.backgroundColor);
-          element.style.setProperty('background-image', value.backgroundImage);
-        } else if (key === 'border') {
+          if (value.backgroundColor) {
+            element.style.setProperty('background-color', value.backgroundColor);
+          }
+          if (value.backgroundImage) {
+            element.style.setProperty('background-image', value.backgroundImage);
+          }
+        }
+         else if (key === 'border') {
           element.style.setProperty('border-color', value.borderColor);
           element.style.setProperty('border-style', value.borderStyle);
           element.style.setProperty('border-width', value.borderWidth); // Use number value directly
@@ -128,6 +135,8 @@ export default function RightBar({ selectedElement }) {
   };
   
   
+
+  
   const handleBackgroundChange = (e, styleProperty) => {
     let value;
   
@@ -136,18 +145,23 @@ export default function RightBar({ selectedElement }) {
     } else if (styleProperty === 'backgroundImage') {
       const file = e.target.files[0];
       const reader = new FileReader();
-  
+    
       reader.onloadend = () => {
         value = `url(${reader.result})`;
         setBackgroundStyle(prevState => ({ ...prevState, [styleProperty]: value }));
         onSettingsChange(selectedElement, { background: { [styleProperty]: value } });
       };
-  
+    
       if (file) {
         reader.readAsDataURL(file);
       }
     }
+    
+  
+    setBackgroundStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+    onSettingsChange(selectedElement, { background: { [styleProperty]: value } });
   };
+  
 
   const handleTextDecoration = (decorationType) => {
     if (selectedElement) {
