@@ -3,7 +3,33 @@ import './RightBar.css';
 import '../Root.css';
 import { useStyle } from './StyleContext'; // Adjust the path as necessary
 
-export default function RightBar({ onSettingsChange, selectedElement  }) {
+export default function RightBar({ selectedElement }) {
+
+  const onSettingsChange = (element, newSettings) => {
+    if (element) {
+      const currentStyles = window.getComputedStyle(element);
+  
+      for (const [key, value] of Object.entries(newSettings)) {
+        if (key === 'background') {
+          element.style.setProperty('background-color', value.backgroundColor);
+          element.style.setProperty('background-image', value.backgroundImage);
+        } else if (key === 'border') {
+          element.style.setProperty('border-color', value.borderColor);
+          element.style.setProperty('border-width', `${value.borderWidth}px`);
+        } else if (key === 'typography') {
+          element.style.setProperty('font-family', value.fontFamily || currentStyles.fontFamily);
+          element.style.setProperty('font-size', `${value.fontSize || currentStyles.fontSize}px`);
+          element.style.setProperty('color', value.color);
+          element.style.setProperty('font-style', value.fontStyle);
+          element.style.setProperty('text-decoration', value.textDecoration);
+          element.style.setProperty('text-align', value.textAlign);
+        }
+      }
+    }
+  };
+  
+  
+
   console.log('Selected element in RightBar:', selectedElement); // Add this line
 
   const [backgroundStyle, setBackgroundStyle] = useState({});
@@ -19,14 +45,32 @@ export default function RightBar({ onSettingsChange, selectedElement  }) {
     typography: {},
     border: {}
   });
-// In the RightBar component
-if (selectedElement) {
-  console.log('selectedElement:', selectedElement);
-  console.log('selectedElement.tagName:', selectedElement.tagName);
-  console.log('selectedElement.id:', selectedElement.id);
-} else {
-  console.log('No element selected');
-}
+
+  // Set the initial state of the RightBar component based on the selected element's current styles
+  useEffect(() => {
+    if (selectedElement) {
+      const elementStyle = window.getComputedStyle(selectedElement);
+
+      setBackgroundStyle({
+        backgroundColor: elementStyle.backgroundColor,
+        backgroundImage: elementStyle.backgroundImage
+      });
+
+      setBorderStyle({
+        borderColor: elementStyle.borderColor,
+        borderWidth: parseInt(elementStyle.borderWidth, 10)
+      });
+
+      setTypographyStyle({
+        fontFamily: elementStyle.fontFamily,
+        fontSize: parseInt(elementStyle.fontSize, 10),
+        color: elementStyle.color,
+        fontStyle: elementStyle.fontStyle,
+        textDecoration: elementStyle.textDecoration,
+        textAlign: elementStyle.textAlign
+      });
+    }
+  }, [selectedElement]);
 
   useEffect(() => {
     // Update the global style whenever the local style state changes
@@ -36,7 +80,9 @@ if (selectedElement) {
   const handleInputChange = (e, styleProperty, inputType) => {
     let value;
   
-    if (inputType === 'select' || inputType === 'color') {
+    if (inputType === 'select') {
+      value = e.target.value;
+    } else if (inputType === 'color') {
       value = e.target.value;
     } else if (inputType === 'checkbox') {
       value = e.target.checked;
@@ -46,20 +92,24 @@ if (selectedElement) {
       value = e.target.value; // For all other input types, use the string value
     }
   
-    // Update the state of the specific style category
-    if (styleProperty === 'backgroundColor' || styleProperty === 'backgroundImage') {
-      setBackgroundStyle(prevState => ({ ...prevState, [styleProperty]: value }));
-      onSettingsChange(selectedElement, { background: { [styleProperty]: value } });
-    } else if (styleProperty === 'borderColor' || styleProperty === 'borderWidth') {
-      setBorderStyle(prevState => ({ ...prevState, [styleProperty]: value }));
-      onSettingsChange(selectedElement, { border: { [styleProperty]: value } });
-    } else {
+    // Update the state of the specific style category for the selected element only
+    if (styleProperty === 'fontFamily') {
+      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { typography: { [styleProperty]: value } });
+    } else if (styleProperty === 'fontSize') {
+      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { typography: { [styleProperty]: `${value}px` } });
+    } else if (styleProperty === 'color') {
+      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { typography: { [styleProperty]: value } });
+    } else if (styleProperty === 'fontWeight') {
       setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
       onSettingsChange(selectedElement, { typography: { [styleProperty]: value } });
     }
   
     console.log("Input change for:", styleProperty, "value:", value);
   };
+  
   
 
   const handleSectionToggle = (section) => {
@@ -77,53 +127,29 @@ if (selectedElement) {
   };
 
   const handleTextDecoration = (decorationType) => {
-    setTypographyStyle(prevState => {
-      const newStyle = { ...prevState };
-
-      if (decorationType === 'italic') {
-        if (newStyle.fontStyle === 'italic') {
-          newStyle.fontStyle = 'normal';
-          setSelectedDecoration(null);
-        } else {
-          newStyle.fontStyle = 'italic';
-          setSelectedDecoration('italic');
-        }
-      } else {
-        if (newStyle.textDecoration) {
-          if (newStyle.textDecoration.includes(decorationType)) {
-            newStyle.textDecoration = newStyle.textDecoration.split(' ').filter(style => style !== decorationType).join(' ');
-            setSelectedDecoration(null);
-          } else {
-            newStyle.textDecoration += ` ${decorationType}`;
-            setSelectedDecoration(decorationType);
-          }
-        } else {
-          newStyle.textDecoration = decorationType;
-          setSelectedDecoration(decorationType);
-        }
-      }
-
-      onSettingsChange('typography', newStyle);
-
-      return newStyle;
-    });
-  };
-
-
-
-  const handleTextAlign = (alignType) => {
-    setTypographyStyle(prevState => ({ ...prevState, textAlign: alignType }));
-    // In the RightBar component
     if (selectedElement) {
-      onSettingsChange(selectedElement, { typography: { textAlign: alignType } });
-    } else {
-      console.log('No element selected');
+      const currentStyle = window.getComputedStyle(selectedElement);
+      let newStyle = {};
+  
+      if (decorationType === 'italic') {
+        newStyle.fontStyle = currentStyle.fontStyle === 'italic' ? 'normal' : 'italic';
+      } else if (decorationType === 'underline') {
+        newStyle.textDecoration = currentStyle.textDecoration === 'underline' ? 'none' : 'underline';
+      } else if (decorationType === 'line-through') {
+        newStyle.textDecoration = currentStyle.textDecoration === 'line-through' ? 'none' : 'line-through';
+      }
+  
+      onSettingsChange(selectedElement, { typography: newStyle });
     }
-    setSelectedAlign(alignType); // Set the selectedAlign state
   };
   
-
-
+  const handleTextAlign = (alignType) => {
+    if (selectedElement) {
+      const newStyle = { textAlign: alignType };
+      onSettingsChange(selectedElement, { typography: newStyle });
+    }
+  };
+  
   const toggleSection = (section) => {
     setIsOpen(prevState => ({ ...prevState, [section]: !prevState[section] }));
   };
@@ -239,6 +265,16 @@ if (selectedElement) {
                   </a>
                 </div>
               </div>
+              <div className='parameters-content-line'>
+                <p className='parameters-content-line-title'>Font Weight</p>
+                <div className='parameters-content-line-container'>
+                  <select onChange={(e) => handleInputChange(e, 'fontWeight', 'select')}>
+                    <option value="normal">Normal</option>
+                    <option value="bold">Bold</option>
+                  </select>
+                </div>
+              </div>
+
             </div>
             <hr className='parameters-wrapper-separation' />
           </div>
