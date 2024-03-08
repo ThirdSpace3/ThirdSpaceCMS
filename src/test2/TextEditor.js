@@ -31,7 +31,7 @@ const TextEditor = ({ settings, selectedElement, setSelectedElement }) => {
       };
     
       return (
-        <div>
+        <div > 
           {/* Hero Section */}
           <section>
             <EditableText
