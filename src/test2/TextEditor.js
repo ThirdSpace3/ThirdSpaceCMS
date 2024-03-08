@@ -3,6 +3,7 @@ import EditableText from './EditableText'; // Adjust the import path according t
 import './EditableText.css'
 import { useStyle } from '../components/logiciel/StyleContext'; // Adjust the import path as necessary
 
+
 const TextEditor = ({ settings, selectedElement, setSelectedElement }) => {
     const { style } = useStyle();
 
