@@ -5,6 +5,14 @@ import { useStyle } from './StyleContext'; // Adjust the path as necessary
 
 export default function RightBar({ selectedElement }) {
 
+
+  const [backgroundStyle, setBackgroundStyle] = useState({});
+  const [typographyStyle, setTypographyStyle] = useState({});
+  const [borderStyle, setBorderStyle] = useState({});
+  const [isOpen, setIsOpen] = useState({ background: false, typographie: false, border: false });
+  const [selectedAlign, setSelectedAlign] = useState(null);
+  const [selectedDecoration, setSelectedDecoration] = useState(null);
+  const { updateStyle } = useStyle(); // Get the function to update the style
   const onSettingsChange = (element, newSettings) => {
     if (element) {
       const currentStyles = window.getComputedStyle(element);
@@ -32,19 +40,51 @@ export default function RightBar({ selectedElement }) {
 
   console.log('Selected element in RightBar:', selectedElement); // Add this line
 
-  const [backgroundStyle, setBackgroundStyle] = useState({});
-  const [typographyStyle, setTypographyStyle] = useState({});
-  const [borderStyle, setBorderStyle] = useState({});
-  const [isOpen, setIsOpen] = useState({ background: false, typographie: false, border: false });
-  const [selectedAlign, setSelectedAlign] = useState(null);
-  const [selectedDecoration, setSelectedDecoration] = useState(null);
-  const { updateStyle } = useStyle(); // Get the function to update the style
-
   const [style, setStyle] = useState({
     background: {},
     typography: {},
     border: {}
   });
+
+
+  const handleInputChange = (e, styleProperty, inputType) => {
+    let value;
+  
+    if (inputType === 'select') {
+      value = e.target.value;
+    } else if (inputType === 'color') {
+      value = e.target.value;
+    } else if (inputType === 'checkbox') {
+      value = e.target.checked;
+    } else if (inputType === 'number') {
+      value = parseInt(e.target.value, 10); // Convert string to number
+    } else {
+      value = e.target.value; // For all other input types, use the string value
+    }
+  
+    // Update the state of the specific style category for the selected element only
+    if (styleProperty === 'fontFamily') {
+      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { typography: { [styleProperty]: value } });
+    } else if (styleProperty === 'fontSize') {
+      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { typography: { [styleProperty]: `${value}px` } });
+    } else if (styleProperty === 'color') {
+      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { typography: { [styleProperty]: value } });
+    } else if (styleProperty === 'borderColor') {
+      setBorderStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { border: { [styleProperty]: value } });
+    } else if (styleProperty === 'borderStyle') {
+      setBorderStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { border: { [styleProperty]: value } });
+    }
+  
+    console.log("Input change for:", styleProperty, "value:", value);
+  };
+
+
+
 
   // Set the initial state of the RightBar component based on the selected element's current styles
   useEffect(() => {
@@ -77,55 +117,51 @@ export default function RightBar({ selectedElement }) {
     updateStyle(style);
   }, [style, updateStyle]);
 
-  const handleInputChange = (e, styleProperty, inputType) => {
-    let value;
+
+
+
+
   
-    if (inputType === 'select') {
-      value = e.target.value;
-    } else if (inputType === 'color') {
-      value = e.target.value;
-    } else if (inputType === 'checkbox') {
-      value = e.target.checked;
-    } else if (inputType === 'number') {
-      value = parseInt(e.target.value, 10); // Convert string to number
-    } else {
-      value = e.target.value; // For all other input types, use the string value
-    }
-  
-    // Update the state of the specific style category for the selected element only
-    if (styleProperty === 'fontFamily') {
-      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
-      onSettingsChange(selectedElement, { typography: { [styleProperty]: value } });
-    } else if (styleProperty === 'fontSize') {
-      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
-      onSettingsChange(selectedElement, { typography: { [styleProperty]: `${value}px` } });
-    } else if (styleProperty === 'color') {
-      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
-      onSettingsChange(selectedElement, { typography: { [styleProperty]: value } });
-    } else if (styleProperty === 'fontWeight') {
-      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
-      onSettingsChange(selectedElement, { typography: { [styleProperty]: value } });
-    }
-  
-    console.log("Input change for:", styleProperty, "value:", value);
-  };
   
   
 
-  const handleSectionToggle = (section) => {
-    setIsOpen(prevState => ({ ...prevState, [section]: !prevState[section] }));
-  };
 
-  const handleBackgroundChange = (e, styleProperty) => {
-    setBackgroundStyle(prevState => ({ ...prevState, [styleProperty]: e.target.value }));
-    onSettingsChange('background', { [styleProperty]: e.target.value });
-  };
+
+
+
 
   const handleBorderChange = (e, styleProperty) => {
-    setBorderStyle(prevState => ({ ...prevState, [styleProperty]: parseInt(e.target.value) })); // Convert string to number
-    onSettingsChange('border', { [styleProperty]: parseInt(e.target.value) }); // Convert string to number
+    const value = parseInt(e.target.value, 10); // Convert string to number
+    setBorderStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+    onSettingsChange(selectedElement, { border: { [styleProperty]: `${value}px` } });
   };
+  
 
+
+
+
+  
+  const handleBackgroundChange = (e, styleProperty) => {
+    let value;
+  
+    if (styleProperty === 'backgroundColor') {
+      value = e.target.value;
+    } else if (styleProperty === 'backgroundImage') {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+  
+      reader.onloadend = () => {
+        value = `url(${reader.result})`;
+        setBackgroundStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+        onSettingsChange(selectedElement, { background: { [styleProperty]: value } });
+      };
+  
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+  };
+  
   const handleTextDecoration = (decorationType) => {
     if (selectedElement) {
       const currentStyle = window.getComputedStyle(selectedElement);
@@ -178,6 +214,29 @@ export default function RightBar({ selectedElement }) {
                   <input type="file" accept="image/*" onChange={(e) => handleBackgroundChange(e, 'backgroundImage')} />
                 </div>
               </div>
+              <div className='parameters-content-line'>
+                <p className='parameters-content-line-title'>Background Position</p>
+                <div className='parameters-content-line-container'>
+                  <select onChange={(e) => handleInputChange(e, 'backgroundPosition', 'select')}>
+                    <option value="center">Center</option>
+                    <option value="top">Top</option>
+                    <option value="bottom">Bottom</option>
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                  </select>
+                </div>
+              </div>
+
+<div className='parameters-content-line'>
+  <p className='parameters-content-line-title'>Background Size</p>
+  <div className='parameters-content-line-container'>
+    <select onChange={(e) => handleInputChange(e, 'backgroundSize', 'select')}>
+      <option value="auto">Auto</option>
+      <option value="cover">Cover</option>
+      <option value="contain">Contain</option>
+    </select>
+  </div>
+</div>
             </div>
             <hr className='parameters-wrapper-separation' />
           </div>
@@ -296,6 +355,24 @@ export default function RightBar({ selectedElement }) {
                 <p className='parameters-content-line-title'>Border Width</p>
                 <div className='parameters-content-line-container'>
                   <input type="number" min="0" max="20" step="1" defaultValue="1" onChange={(e) => handleBorderChange(e, 'borderWidth')} /> px
+                </div>
+              </div>
+              <div className='parameters-content-line'>
+                <p className='parameters-content-line-title'>Border Style</p>
+                <div className='parameters-content-line-container'>
+                  <select onChange={(e) => handleInputChange(e, 'borderStyle', 'select')}>
+                    <option value="none">None</option>
+                    <option value="solid">Solid</option>
+                    <option value="dashed">Dashed</option>
+                    <option value="dotted">Dotted</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className='parameters-content-line'>
+                <p className='parameters-content-line-title'>Border Radius</p>
+                <div className='parameters-content-line-container'>
+                  <input type="number" min="0" max="100" step="1" defaultValue="0" onChange={(e) => handleInputChange(e, 'borderRadius', 'number')} /> px
                 </div>
               </div>
             </div>
