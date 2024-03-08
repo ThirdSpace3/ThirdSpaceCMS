@@ -1,24 +1,56 @@
-import React from 'react';
-import './EditableText.css'
-const EditableText = ({ tagName, content, onContentChange, style, onClick }) => {
-  const Tag = tagName; // Dynamically determined tag based on props
+import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import './EditableText.css';
 
-  const handleBlur = (event) => {
-    // Use innerText to capture content without HTML, or innerHTML if you need HTML content
-    onContentChange(event.target.innerText);
+const EditableText = forwardRef(({ tagName, content, onContentChange, style, innerRef, onClick }, ref) => {
+  const [editing, setEditing] = useState(false);
+  const [currentContent, setCurrentContent] = useState(content);
+
+  const handleEdit = () => {
+    setEditing(true);
   };
 
+  const handleSave = () => {
+    onContentChange(currentContent);
+    setEditing(false);
+  };
+
+  const handleContentChange = (event) => {
+    setCurrentContent(event.target.value);
+  };
+
+  useImperativeHandle(ref, () => ({
+    getContent: () => currentContent,
+  }));
+
+  const TagName = tagName;
+
   return (
-    <Tag
-      contentEditable
-      suppressContentEditableWarning={true}
-      onBlur={handleBlur}
-      dangerouslySetInnerHTML={{ __html: content }}
-      className={`editable ${tagName}`}
-      style={style} // Apply the style prop
-      onClick={onClick} // Attach the onClick handler
-    />
+    <div className="editable-text-container">
+      {editing ? (
+        <TagName
+          ref={innerRef}
+          contentEditable={true}
+          suppressContentEditableWarning={true}
+          className="editable-text-input"
+          style={style}
+          onInput={handleContentChange}
+          onBlur={handleSave}
+        >
+          {currentContent}
+        </TagName>
+      ) : (
+        <TagName
+          ref={innerRef}
+          className="editable-text"
+          style={style}
+          onClick={() => onClick(innerRef)} // Update this line
+        >
+          {currentContent}
+        </TagName>
+      )}
+    </div>
   );
-};
+});
+
 
 export default EditableText;

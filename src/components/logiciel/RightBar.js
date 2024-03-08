@@ -4,6 +4,8 @@ import '../Root.css';
 import { useStyle } from './StyleContext'; // Adjust the path as necessary
 
 export default function RightBar({ onSettingsChange, selectedElement  }) {
+  console.log('Selected element in RightBar:', selectedElement); // Add this line
+
   const [backgroundStyle, setBackgroundStyle] = useState({});
   const [typographyStyle, setTypographyStyle] = useState({});
   const [borderStyle, setBorderStyle] = useState({});
@@ -17,6 +19,14 @@ export default function RightBar({ onSettingsChange, selectedElement  }) {
     typography: {},
     border: {}
   });
+// In the RightBar component
+if (selectedElement) {
+  console.log('selectedElement:', selectedElement);
+  console.log('selectedElement.tagName:', selectedElement.tagName);
+  console.log('selectedElement.id:', selectedElement.id);
+} else {
+  console.log('No element selected');
+}
 
   useEffect(() => {
     // Update the global style whenever the local style state changes
@@ -25,7 +35,6 @@ export default function RightBar({ onSettingsChange, selectedElement  }) {
 
   const handleInputChange = (e, styleProperty, inputType) => {
     let value;
-    let styleCategory; // This will be determined based on the styleProperty
   
     if (inputType === 'select' || inputType === 'color') {
       value = e.target.value;
@@ -36,33 +45,22 @@ export default function RightBar({ onSettingsChange, selectedElement  }) {
     } else {
       value = e.target.value; // For all other input types, use the string value
     }
-
-    // Determine the style category based on the property being changed
+  
+    // Update the state of the specific style category
     if (styleProperty === 'backgroundColor' || styleProperty === 'backgroundImage') {
-      styleCategory = 'background';
+      setBackgroundStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { background: { [styleProperty]: value } });
     } else if (styleProperty === 'borderColor' || styleProperty === 'borderWidth') {
-      styleCategory = 'border';
+      setBorderStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { border: { [styleProperty]: value } });
     } else {
-      // Default to typography for all other properties
-      styleCategory = 'typography';
+      setTypographyStyle(prevState => ({ ...prevState, [styleProperty]: value }));
+      onSettingsChange(selectedElement, { typography: { [styleProperty]: value } });
     }
   
-    // Update the unified style state, targeting the correct category
-    setStyle(prevState => ({
-      ...prevState,
-      [styleCategory]: {
-        ...prevState[styleCategory],
-        [styleProperty]: value
-      }
-    }));
-  
-    // Assuming onSettingsChange needs to keep its signature
-    onSettingsChange(selectedElement, {
-      [styleProperty]: value
-    });
     console.log("Input change for:", styleProperty, "value:", value);
-
   };
+  
 
   const handleSectionToggle = (section) => {
     setIsOpen(prevState => ({ ...prevState, [section]: !prevState[section] }));
@@ -114,13 +112,16 @@ export default function RightBar({ onSettingsChange, selectedElement  }) {
 
 
   const handleTextAlign = (alignType) => {
-    setTypographyStyle(prevState => {
-      const newStyle = { ...prevState, textAlign: alignType };
-      onSettingsChange('typography', newStyle);
-      setSelectedAlign(alignType); // Set the selectedAlign state
-      return newStyle;
-    });
+    setTypographyStyle(prevState => ({ ...prevState, textAlign: alignType }));
+    // In the RightBar component
+    if (selectedElement) {
+      onSettingsChange(selectedElement, { typography: { textAlign: alignType } });
+    } else {
+      console.log('No element selected');
+    }
+    setSelectedAlign(alignType); // Set the selectedAlign state
   };
+  
 
 
   const toggleSection = (section) => {
