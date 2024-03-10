@@ -1,87 +1,97 @@
-import React, { useState } from 'react';
-import './TemplateTestComponents.css';
-export default function TemplateTestComponents({ settings, styles }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [selectedElement, setSelectedElement] = useState('title');
+import React, { useState, useRef, useEffect } from 'react';
+import EditableText from '../components/logiciel/TemplateComponent/EditableText';
+import { useStyle } from '../components/logiciel/StyleContext';
 
-  const [editableContent, setEditableContent] = useState({
+export default function TemplateTestComponents({ settings, selectedElement, setSelectedElement }) {
+  const { style } = useStyle();
+
+  const [content, setContent] = useState({
     title: 'Template de Test #1',
     paragraph: 'Tu vas me devoir un café je crois bien',
   });
 
-  const handleContentChange = (e, contentType) => {
-    setEditableContent((prevContent) => ({
+  const handleContentChange = (key, newValue) => {
+    setContent((prevContent) => ({
       ...prevContent,
-      [contentType]: e.target.value,
+      [key]: newValue,
     }));
   };
 
-  const onElementSelect = (element) => {
-    setSelectedElement(element);
+  const handleTextClick = (elementRef) => {
+    console.log('elementRef in handleTextClick:', elementRef);
+    setSelectedElement(elementRef.current);
   };
 
-  const backgroundStyle = settings.background || {};
-  const typographyStyle = settings.typography || {};
-  const borderStyle = settings.border || {};
-
-
-  const containerStyle = {
-    ...backgroundStyle,
-    border: `${borderStyle.borderWidth}px solid ${borderStyle.borderColor}`,
+  // Define your styles
+  const styles = {
+    templateWrapper: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      width: '100%',
+      // height: '100%',
+      backgroundColor: '#9600FA',
+      overflow: 'auto',
+    },
+    templateWrapperColumn: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '15px',
+    },
+    title: {
+      ...style.typography,
+      fontSize: '35px',
+      color: '#fff',
+      fontFamily: "'Montserrat', sans-serif",
+      fontWeight: '800',
+    },
+    paragraph: {
+      ...style.typography,
+      fontSize: '18px',
+      color: '#a0a0a0',
+      fontFamily: "'Inter', sans-serif",
+      fontWeight: '500',
+      textAlign: 'left',
+    },
+    button: {
+      fontSize: '15px',
+      color: '#fff',
+      fontFamily: "'Montserrat', sans-serif",
+      fontWeight: '500',
+      backgroundColor: '#58D7AD',
+    },
   };
 
-  const textStyle = {
-    ...typographyStyle,
-    fontFamily: typographyStyle.fontFamily || 'Arial',
-    fontSize: typographyStyle.fontSize || '16px',
-    color: typographyStyle.color || '#000000',
-    textAlign: typographyStyle.textAlign || 'left',
-    textDecoration: typographyStyle.textDecoration || 'none',
-  };
-
+  // Use useRef to create references for the title and paragraph elements
+  const titleRef = useRef(null);
+  const paragraphRef = useRef(null);
 
   return (
-    <>
-      <div className='template-wrapper' style={containerStyle}>
-        <img src='/images/template-test.png' />
+    <div style={styles.templateWrapper}>
+      <img src='/images/template-test.png' />
 
-        <div className='template-wrapper-column' >
-
-
-          {/* Conditional rendering for title */}
-          {isEditing && selectedElement === 'title' ? (
-            <input
-              type="text"
-              value={editableContent.title}
-              onChange={(e) => handleContentChange(e, 'title')}
-              onBlur={() => setIsEditing(false)} // Stop editing when the input loses focus
-              autoFocus
-            />
-          ) : (
-            <h1 className='title' style={textStyle} onClick={() => { setIsEditing(true); onElementSelect('title'); }}>
-              {editableContent.title}
-            </h1>
-          )}
-
-          {/* Conditional rendering for paragraph */}
-          {isEditing && selectedElement === 'paragraph' ? (
-            <textarea
-              value={editableContent.paragraph}
-              onChange={(e) => handleContentChange(e, 'paragraph')}
-              onBlur={() => setIsEditing(false)} // Stop editing when the textarea loses focus
-            />
-          ) : (
-            <p className='paragraph' style={textStyle} onClick={() => { setIsEditing(true); onElementSelect('paragraph'); }}>
-              {editableContent.paragraph}
-            </p>
-
-          )}
-
-          <button className='button' >Clique</button>
-        </div>
-
-        <img id='redirect_test' src='/images/template-test.png' />
+      <div style={styles.templateWrapperColumn} >
+        <EditableText
+          tagName="h1"
+          content={content.title}
+          onContentChange={(newValue) => handleContentChange('title', newValue)}
+          style={styles.title}
+          innerRef={titleRef}
+          onClick={(elementRef) => handleTextClick(elementRef)}
+        />
+        <EditableText
+          tagName="p"
+          content={content.paragraph}
+          onContentChange={(newValue) => handleContentChange('paragraph', newValue)}
+          style={styles.paragraph}
+          innerRef={paragraphRef}
+          onClick={(elementRef) => handleTextClick(elementRef)}
+        />
+        <button style={styles.button} >Clique</button>
       </div>
-    </>
+
+      <img id='redirect_test' src='/images/template-test.png' />
+    </div>
   );
 }

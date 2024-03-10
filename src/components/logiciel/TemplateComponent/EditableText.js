@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
-import './EditableText.css';
 
 const EditableText = forwardRef(({ tagName, content, onContentChange, style, innerRef, onClick }, ref) => {
   const [editing, setEditing] = useState(false);
