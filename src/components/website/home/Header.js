@@ -2,13 +2,24 @@ import './Header.css'
 import '../../Root.css'
 import React, { useState } from 'react';
 import PopupWallet from '../PopupWallet';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
-  const [showWalletPopup, setShowWalletPopup] = useState(false); // Add this line
+  const [showWalletPopup, setShowWalletPopup] = useState(false);
+  const navigate = useNavigate();
+  const userIsLoggedIn = () => {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    return isLoggedIn;
+  };
 
   const toggleWalletPopup = () => {
-    setShowWalletPopup(!showWalletPopup);
+    if (!userIsLoggedIn()) {
+      setShowWalletPopup(!showWalletPopup);
+    } else {
+      navigate('./logiciel');
+    }
   };
+
   const handleUserLogin = (userAccount) => {
     // Handle user login here
     console.log('User logged in:', userAccount);

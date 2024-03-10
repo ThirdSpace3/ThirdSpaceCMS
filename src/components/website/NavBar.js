@@ -66,18 +66,24 @@ function Navbar() {
                
             </li>
           </ul>
-          <a href={accounts.length > 0 ? "./logiciel" : "#"} className="nav__cta nav-bg" onClick={accounts.length === 0 ? togglePopup : undefined}>Get started</a>
+          <a
+            href={accounts.length > 0 ? "./logiciel" : "#"}
+            className="nav__cta nav-bg"
+            onClick={accounts.length === 0 ? togglePopup : undefined}
+          >
+            Get started
+          </a>
           {accounts.length === 0 && (
           <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
             <span className="material-symbols-outlined">wallet</span>
             Connect Wallet
           </a>
-        )}
-{accounts.length > 0 && (
-  <a href="#" className="nav__cta nav-bg" id="account-btn" onClick={handleAccountClick}>
-    <span className="material-symbols-outlined">account_circle</span>
-  </a>
-)}
+            )}
+            {accounts.length > 0 && (
+              <a href="#" className="nav__cta nav-bg" id="account-btn" onClick={handleAccountClick}>
+                <span className="material-symbols-outlined">account_circle</span>
+              </a>
+            )}
 
          <a href="templates.html" className="nav__cta nav-bg" style={{display: 'none'}} id="account-btn">
             <span className="material-symbols-outlined">account_circle</span>

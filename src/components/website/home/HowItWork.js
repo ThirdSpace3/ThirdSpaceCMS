@@ -2,21 +2,35 @@ import React, { useState, useEffect } from 'react';
 import './HowItWork.css';
 import '../../Root.css';
 import PopupWallet from '../PopupWallet';
+import { useNavigate } from 'react-router-dom';
+
+
 function HowItWork() {
   const [activeTab, setActiveTab] = useState('TabA');
   const [showWalletPopup, setShowWalletPopup] = useState(false); // Add this line
+  const navigate = useNavigate();
+  
   useEffect(() => {
-    // Ceci est exécuté après le premier rendu
-    // et chaque fois que l'onglet actif change
-    setActiveTab('TabA'); // Définit l'onglet par défaut
+    setActiveTab('TabA');
   }, []);
 
   const openTab = (tabName) => {
     setActiveTab(tabName);
   };
-  const toggleWalletPopup = () => {
-    setShowWalletPopup(!showWalletPopup);
+
+  const userIsLoggedIn = () => {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    return isLoggedIn;
   };
+
+  const toggleWalletPopup = () => {
+    if (!userIsLoggedIn()) {
+      setShowWalletPopup(!showWalletPopup);
+    } else {
+      navigate('./logiciel');
+    }
+  };;
+
   const handleUserLogin = (userAccount) => {
     // Handle user login here
     console.log('User logged in:', userAccount);
