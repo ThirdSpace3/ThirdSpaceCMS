@@ -6,15 +6,15 @@ import Canva from './Canva';
 import ActualPageParametersBTN from './ActualPageParametersBTN';
 import './Display.css';
 import { StyleProvider } from './StyleContext';
-import TextEditor from '../../test2/TextEditor';
-import TemplateTestComponents from '../../templates/TemplateTestComponents';
+import Template1OnDo from '../../templates/Template1OnDo';
+import Template2ImageOnDo from '../../templates/Template2ImageOnDo';
 import axios from 'axios';
 
 export default function Display() {
   const [settings, setSettings] = useState({});
   const [selectedElement, setSelectedElement] = useState(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [activeEditor, setActiveEditor] = useState('TextEditor'); // Set the default editor to TextEditor
+  const [activeEditor, setActiveEditor] = useState('Template1OnDo'); // Set the default editor to TextEditor
 
   
   const handleSettingsChange = (section, newSettings) => {
@@ -98,14 +98,14 @@ return (
     <NavBar handleEditorChange={handleEditorChange} />
       <div className="displayColumnWrapper">
         <ActualPageParametersBTN />
-        {activeEditor === 'TextEditor' ? (
-          <TextEditor
+        {activeEditor === 'Template1OnDo' ? (
+          <Template1OnDo
             settings={settings}
             selectedElement={selectedElement}
             setSelectedElement={setSelectedElement}
           />
         ) : (
-          <TemplateTestComponents settings={settings}             
+          <Template2ImageOnDo settings={settings}             
           selectedElement={selectedElement}
           setSelectedElement={setSelectedElement}
 />

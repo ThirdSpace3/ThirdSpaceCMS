@@ -9,7 +9,7 @@ export default function PanelFile({ handleSwitch }) {
             <div className='navbar-panel'>
                 <p>File</p>
                 <div className='navbar-panel-buttons'>
-                    <button onClick={() => handleSwitch('TextEditor')}>Text Editor</button>
+                    <button onClick={() => handleSwitch('Template1OnDo')}>Template1OnDo</button>
                     <button onClick={() => handleSwitch('TemplateTestComponents')}>Template Test Components</button>
                 </div>
             </div>

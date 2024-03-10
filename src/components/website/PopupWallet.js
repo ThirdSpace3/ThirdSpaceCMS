@@ -89,6 +89,7 @@ function PopupWallet({ onClose, onUserLogin }) {
         }
       } catch (error) {
         console.error('Error connecting to Phantom:', error);
+        //window.open("https://phantom.app/download", "_blank");
       }
     } else {
       console.log('Solana object not found! Make sure Phantom wallet is installed.');

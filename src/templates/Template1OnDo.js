@@ -3,7 +3,7 @@ import EditableText from '../components/logiciel/TemplateComponent/EditableText'
 import { useStyle } from '../components/logiciel/StyleContext'; // Adjust the import path as necessary
 
 
-const TextEditor = ({ settings, selectedElement, setSelectedElement }) => {
+const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {
   const { style } = useStyle();
 
   const [content, setContent] = useState({
@@ -37,8 +37,8 @@ const TextEditor = ({ settings, selectedElement, setSelectedElement }) => {
       alignItems: 'center',
       justifyContent: 'space-between',
       width: '100%',
-      // height: '100%',
-      backgroundColor: '#9600FA',
+      height: 'auto', // added height property for better layout control
+      backgroundColor: '#2c3e50', // navy blue
       overflow: 'auto',
     },
     templateWrapperColumn: {
@@ -47,45 +47,40 @@ const TextEditor = ({ settings, selectedElement, setSelectedElement }) => {
       gap: '15px',
     },
     title: {
-      ...style.typography,
       fontSize: '35px',
-      color: '#fff',
+      color: '#ffffff', // white
       fontFamily: "'Montserrat', sans-serif",
       fontWeight: '800',
     },
     subtitle: {
-      ...style.typography,
       fontSize: '25px',
-      color: '#a0a0a0',
+      color: '#95a5a6', // light gray
       fontFamily: "'Inter', sans-serif",
       fontWeight: '500',
       textAlign: 'left',
     },
     paragraph: {
-      ...style.typography,
       fontSize: '18px',
-      color: '#a0a0a0',
+      color: '#7f8c8d', // medium gray
       fontFamily: "'Inter', sans-serif",
       fontWeight: '500',
       textAlign: 'left',
     },
     sectionTitle: {
-      ...style.typography,
       fontSize: '30px',
-      color: '#fff',
+      color: '#ffffff', // white
       fontFamily: "'Montserrat', sans-serif",
       fontWeight: '800',
     },
     sectionContent: {
-      ...style.typography,
       fontSize: '18px',
-      color: '#a0a0a0',
+      color: '#7f8c8d', // medium gray
       fontFamily: "'Inter', sans-serif",
       fontWeight: '500',
       textAlign: 'left',
     },
   };
-
+    
   // Use useRef to create references for the title and paragraph elements
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
@@ -169,4 +164,4 @@ const TextEditor = ({ settings, selectedElement, setSelectedElement }) => {
   );
 };
 
-export default TextEditor;
+export default Template1OnDo;

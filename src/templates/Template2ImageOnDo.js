@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import EditableText from '../components/logiciel/TemplateComponent/EditableText';
 import { useStyle } from '../components/logiciel/StyleContext';
 
-export default function TemplateTestComponents({ settings, selectedElement, setSelectedElement }) {
+export default function Template2ImageOnDo({ settings, selectedElement, setSelectedElement }) {
   const { style } = useStyle();
 
   const [content, setContent] = useState({
