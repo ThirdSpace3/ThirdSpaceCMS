@@ -5,17 +5,34 @@ const EditableText = forwardRef(({ tagName, content, onContentChange, style, inn
   const [editing, setEditing] = useState(false);
   const [currentContent, setCurrentContent] = useState(content);
 
+  useEffect(() => {
+    setCurrentContent(content);
+  }, [content]);
+
+
+  // Enter editing mode and focus on the editable element
   const handleEdit = () => {
-    setEditing(true);
+    if (!editing) {
+      setEditing(true);
+      // Ensure focus is set after a brief delay to account for state update latency
+      setTimeout(() => {
+        if (innerRef.current) {
+          innerRef.current.focus();
+        }
+      }, 0);
+    }
   };
 
+
+  // Capture live edits directly from the contentEditable element
+  const handleContentChange = (event) => {
+    setCurrentContent(event.currentTarget.textContent);
+  };
+
+  // Save changes and exit editing mode
   const handleSave = () => {
     onContentChange(currentContent);
     setEditing(false);
-  };
-
-  const handleContentChange = (event) => {
-    setCurrentContent(event.target.value);
   };
 
   useImperativeHandle(ref, () => ({
@@ -25,8 +42,8 @@ const EditableText = forwardRef(({ tagName, content, onContentChange, style, inn
   const TagName = tagName;
 
   return (
-    <div className="editable-text-container">
-      {editing ? (
+    <div className={`editable-text-container${editing ? ' editing' : ''}`} onClick={() => onClick(innerRef)}>
+       {editing ? (
         <TagName
           ref={innerRef}
           contentEditable={true}
@@ -35,22 +52,19 @@ const EditableText = forwardRef(({ tagName, content, onContentChange, style, inn
           style={style}
           onInput={handleContentChange}
           onBlur={handleSave}
-        >
-          {currentContent}
-        </TagName>
+          dangerouslySetInnerHTML={{ __html: currentContent }}
+        />
       ) : (
         <TagName
           ref={innerRef}
           className="editable-text"
           style={style}
-          onClick={() => onClick(innerRef)} // Update this line
-        >
-          {currentContent}
-        </TagName>
+          onClick={handleEdit}
+          dangerouslySetInnerHTML={{ __html: currentContent }}
+        ></TagName>
       )}
     </div>
   );
 });
-
 
 export default EditableText;

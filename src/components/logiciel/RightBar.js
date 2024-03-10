@@ -29,40 +29,40 @@ export default function RightBar({ selectedElement }) {
   };
 
 
-const handleInputChange = (e, styleProperty, inputType) => {
-  let value;
-
-  if (inputType === 'select') {
-    value = e.target.value;
-  } else if (inputType === 'color') {
-    value = e.target.value;
-  } else if (inputType === 'checkbox') {
-    value = e.target.checked;
-  } else if (inputType === 'number') {
-    value = parseInt(e.target.value, 10); // Convert string to number
-  } else {
-    value = e.target.value; // For all other input types, use the string value
-  }
-
-  // Update the state of the specific style category for the selected element only
-  if (styleProperty === 'fontFamily' || styleProperty === 'fontSize' || styleProperty === 'color') {
-    setTypographyStyle(prevState => ({
-      ...prevState, // Spread the existing typographyStyle object
-      [styleProperty]: value // Update the specific property
-    }));
-    onSettingsChange(selectedElement, { typography: { ...typographyStyle, [styleProperty]: value } });
-  } else if (styleProperty === 'borderColor' || styleProperty === 'borderWidth' || styleProperty === 'borderStyle' || styleProperty === 'borderRadius') {
-    setBorderStyle(prevState => ({
-      ...prevState, // Spread the existing borderStyle object
-      [styleProperty]: value // Update the specific property
-    }));
-    console.log('Border style state:', borderStyle); // Log the borderStyle state
-    onSettingsChange(selectedElement, { border: { ...borderStyle, [styleProperty]: value } });
-  }
-
-  console.log("Input change for:", styleProperty, "value:", value);
-};
-
+  const handleInputChange = (e, styleProperty, inputType) => {
+    let value;
+  
+    if (inputType === 'select' || inputType === 'color') {
+      value = e.target.value;
+    } else if (inputType === 'checkbox') {
+      value = e.target.checked;
+    } else if (inputType === 'number') {
+      value = parseInt(e.target.value, 10); // Convert string to number
+    } else {
+      value = e.target.value; // For all other input types, use the string value
+    }
+  
+    // Directly construct the updated style object based on the property being changed
+    if (styleProperty === 'fontFamily' || styleProperty === 'fontSize' || styleProperty === 'color' || styleProperty === 'fontStyle' || styleProperty === 'textDecoration' || styleProperty === 'textAlign' || styleProperty === 'fontWeight') {
+      // Typography related properties
+      const updatedTypographyStyle = { ...typographyStyle, [styleProperty]: value };
+      setTypographyStyle(updatedTypographyStyle);
+      onSettingsChange(selectedElement, { typography: updatedTypographyStyle });
+    } else if (styleProperty === 'borderColor' || styleProperty === 'borderWidth' || styleProperty === 'borderStyle' || styleProperty === 'borderRadius') {
+      // Border related properties
+      const updatedBorderStyle = { ...borderStyle, [styleProperty]: value };
+      setBorderStyle(updatedBorderStyle);
+      onSettingsChange(selectedElement, { border: updatedBorderStyle });
+    } else if (styleProperty === 'backgroundColor' || styleProperty === 'backgroundImage' || styleProperty === 'backgroundPosition' || styleProperty === 'backgroundSize') {
+      // Background related properties
+      const updatedBackgroundStyle = { ...backgroundStyle, [styleProperty]: value };
+      setBackgroundStyle(updatedBackgroundStyle);
+      onSettingsChange(selectedElement, { background: updatedBackgroundStyle });
+    }
+  
+    console.log("Input change for:", styleProperty, "value:", value);
+  };
+  
 
 
 const onSettingsChange = (element, newSettings) => {
