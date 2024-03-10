@@ -286,7 +286,7 @@ const onSettingsChange = (element, newSettings) => {
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Font Size</p>
                 <div className='parameters-content-line-container'>
-                  <input type="number" min="8" max="72" step="1" defaultValue="14" onChange={(e) => handleInputChange(e, 'fontSize', 'number')} /> px
+                  <input type="number" min="8" max="72" step="1" defaultValue="14" onChange={(e) => handleInputChange(e, 'fontSize', 'number')} /> 
                 </div>
               </div>
               <div className='parameters-content-line'>
@@ -378,7 +378,7 @@ const onSettingsChange = (element, newSettings) => {
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Border Width</p>
                 <div className='parameters-content-line-container'>
-                  <input type="number" min="0" max="20" step="1" defaultValue="1" onChange={(e) => handleBorderChange(e, 'borderWidth')} /> px
+                  <input type="number" min="0" max="20" step="1" defaultValue="1" onChange={(e) => handleBorderChange(e, 'borderWidth')} /> 
                 </div>
               </div>
               <div className='parameters-content-line'>
@@ -396,7 +396,7 @@ const onSettingsChange = (element, newSettings) => {
 <div className='parameters-content-line'>
   <p className='parameters-content-line-title'>Border Radius</p>
   <div className='parameters-content-line-container'>
-    <input type="number" min="0" max="100" step="1" defaultValue="0" onChange={(e) => handleInputChange(e, 'borderRadius', 'number')} /> px
+    <input type="number" min="0" max="100" step="1" defaultValue="0" onChange={(e) => handleInputChange(e, 'borderRadius', 'number')} /> 
   </div>
 </div>
 
