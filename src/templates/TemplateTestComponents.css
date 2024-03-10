@@ -6,6 +6,7 @@
     width: 100%;
     /* height: 100%; */
     background-color: #9600FA;
+    overflow: auto;
 }
 .template-wrapper-column {
     display: flex;

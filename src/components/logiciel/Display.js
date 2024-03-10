@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useRef  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import NavBar from './NavBar';
 import TopBar from './TopBar';
 import RightBar from './RightBar';
 import Canva from './Canva';
 import ActualPageParametersBTN from './ActualPageParametersBTN';
 import './Display.css';
-import { StyleProvider } from './StyleContext'; // Adjust the path as necessary
-import TextEditor from '../../test2/TextEditor'
+import { StyleProvider } from './StyleContext';
+import TextEditor from '../../test2/TextEditor';
 import TemplateTestComponents from '../../templates/TemplateTestComponents';
 import axios from 'axios';
+
 export default function Display() {
   const [settings, setSettings] = useState({});
-  const [selectedElement, setSelectedElement] = useState(null); // Added state for selected element
+  const [selectedElement, setSelectedElement] = useState(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [activeEditor, setActiveEditor] = useState('TextEditor'); // Set the default editor to TextEditor
 
   
   const handleSettingsChange = (section, newSettings) => {
@@ -85,18 +87,33 @@ useEffect(() => {
  
   
 
-  return (
-    <StyleProvider>
-<TopBar onSaveClick={saveSettings} hasUnsavedChanges={hasUnsavedChanges} />
-      <div className="displayWrapper">
-        <NavBar />
-        <div className="displayColumnWrapper">
-          <ActualPageParametersBTN />
-          <TextEditor settings={settings} selectedElement={selectedElement} setSelectedElement={setSelectedElement} />
-          {/* Continue with the rest of your layout */}
-        </div>
-        <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
+const handleEditorChange = (editor) => {
+  setActiveEditor(editor);
+};
+
+return (
+  <StyleProvider>
+    <TopBar onSaveClick={saveSettings} hasUnsavedChanges={hasUnsavedChanges} />
+    <div className="displayWrapper">
+    <NavBar handleEditorChange={handleEditorChange} />
+      <div className="displayColumnWrapper">
+        <ActualPageParametersBTN />
+        {activeEditor === 'TextEditor' ? (
+          <TextEditor
+            settings={settings}
+            selectedElement={selectedElement}
+            setSelectedElement={setSelectedElement}
+          />
+        ) : (
+          <TemplateTestComponents settings={settings}             
+          selectedElement={selectedElement}
+          setSelectedElement={setSelectedElement}
+/>
+        )}
+        {/* Continue with the rest of your layout */}
       </div>
-    </StyleProvider>
-  );
+      <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
+    </div>
+  </StyleProvider>
+);
 }

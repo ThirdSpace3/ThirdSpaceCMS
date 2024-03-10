@@ -54,6 +54,7 @@
     width: 250px;
     background-color: var(--menu-bg);
     border-radius: 0 10px 10px 0;
+    padding-top: 2vh;
 }
 .no-border-radius {
     border-radius: 0 !important; 

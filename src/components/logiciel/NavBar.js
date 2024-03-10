@@ -7,7 +7,7 @@ import PanelFile from './PanelFile';
 import PanelLayers from './PanelLayers';
 import PanelPlus from './PanelPlus';
 
-export default function NavBar() {
+export default function NavBar({ handleEditorChange }) {
     const [visiblePanel, setVisiblePanel] = useState(null);
 
     const togglePanel = (panel) => {
@@ -19,6 +19,11 @@ export default function NavBar() {
 
     // Fonction pour générer la classe du bouton en fonction du panneau visible
     const buttonClass = (panel) => `navbar-icon ${visiblePanel === panel ? 'active' : ''}`;
+
+    // Function to handle switching between TextEditor and TemplateTestComponents
+    const handleSwitch = (editor) => {
+        handleEditorChange(editor);
+    };
 
     return (
         <>
@@ -38,7 +43,7 @@ export default function NavBar() {
                 </div>
 
                 {visiblePanel === 'plus' && <PanelPlus />}
-                {visiblePanel === 'file' && <PanelFile />}
+                {visiblePanel === 'file' && <PanelFile handleSwitch={handleSwitch} />}
                 {visiblePanel === 'layers' && <PanelLayers />}
                 {visiblePanel === 'images' && <PanelAsset />}
             </div>
