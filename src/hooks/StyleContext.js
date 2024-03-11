@@ -1,9 +1,14 @@
+// StyleContext.js
 import React, { createContext, useContext, useState } from 'react';
 
 const StyleContext = createContext();
 
-export const useStyle = () => useContext(StyleContext);
-
+export const useStyle = () => {
+    const context = useContext(StyleContext);
+    console.log("useStyle context:", context);
+    return context;
+  };
+  
 export const StyleProvider = ({ children }) => {
     const [style, setStyle] = useState({});
 

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import EditableText from '../components/logiciel/TemplateComponent/EditableText';
-import { useStyle } from '../components/logiciel/hooks/StyleContext';
+import { useStyle } from '../hooks/StyleContext';
 
 export default function Template2ImageOnDo({ settings, selectedElement, setSelectedElement }) {
   const { style } = useStyle();

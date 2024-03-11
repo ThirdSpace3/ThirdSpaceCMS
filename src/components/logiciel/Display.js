@@ -5,7 +5,7 @@ import RightBar from './RightBar';
 import Canva from './Canva';
 import ActualPageParametersBTN from './ActualPageParametersBTN';
 import './Display.css';
-import { StyleProvider } from './hooks/StyleContext';
+import { StyleProvider } from '../../hooks/StyleContext';
 import Template1OnDo from '../../templates/Template1OnDo';
 import Template2ImageOnDo from '../../templates/Template2ImageOnDo';
 import axios from 'axios';

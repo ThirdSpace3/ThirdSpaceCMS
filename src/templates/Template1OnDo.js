@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import EditableText from '../components/logiciel/TemplateComponent/EditableText'; // Adjust the import path according to your file structure
-import { useStyle } from '../components/logiciel/hooks/StyleContext'; // Adjust the import path as necessary
+import { useStyle } from '../hooks/StyleContext'; // Adjust the import path as necessary
 
 
 const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {

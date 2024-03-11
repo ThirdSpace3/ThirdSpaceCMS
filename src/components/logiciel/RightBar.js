@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './RightBar.css';
 import '../Root.css';
-import { useStyle } from './hooks/StyleContext'; // Adjust the path as necessary
+import { useStyle } from '../../hooks/StyleContext';
 
 export default function RightBar({ selectedElement }) {
 
