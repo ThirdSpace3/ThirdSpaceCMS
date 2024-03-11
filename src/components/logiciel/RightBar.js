@@ -100,6 +100,14 @@ export default function RightBar({ selectedElement }) {
         }
       }
     }
+    // Inside onSettingsChange function
+if (newSettings.width) {
+  element.style.width = newSettings.width; // Directly applying width
+}
+if (newSettings.height) {
+  element.style.height = newSettings.height; // Directly applying height
+}
+
   };
 
 
@@ -108,34 +116,35 @@ export default function RightBar({ selectedElement }) {
   useEffect(() => {
     if (selectedElement) {
       const elementStyle = window.getComputedStyle(selectedElement);
-
+      
       setBackgroundStyle({
         backgroundColor: elementStyle.backgroundColor,
-        backgroundImage: elementStyle.backgroundImage
+        backgroundImage: elementStyle.backgroundImage,
       });
-
+  
       setBorderStyle({
         borderColor: elementStyle.borderColor,
-        borderWidth: parseInt(elementStyle.borderWidth, 10)
+        borderWidth: parseInt(elementStyle.borderWidth, 10),
       });
-
+  
       setTypographyStyle({
         fontFamily: elementStyle.fontFamily,
         fontSize: parseInt(elementStyle.fontSize, 10),
         color: elementStyle.color,
         fontStyle: elementStyle.fontStyle,
         textDecoration: elementStyle.textDecoration,
-        textAlign: elementStyle.textAlign
+        textAlign: elementStyle.textAlign,
       });
+  
+      // Capture initial width and height
+      setSizeStyle({
+        width: selectedElement.style.width,
+        height: selectedElement.style.height,
+      });
+      updateStyle(style);
     }
   }, [selectedElement]);
-
-  useEffect(() => {
-    // Update the global style whenever the local style state changes
-    updateStyle(style);
-  }, [style, updateStyle]);
-
-
+  
 
   const handleBackgroundChange = (e, styleProperty) => {
     let value;
@@ -212,8 +221,20 @@ export default function RightBar({ selectedElement }) {
     onSettingsChange(selectedElement, { border: { ...borderStyle, [styleProperty]: value, borderRadius: borderStyle.borderRadius } });
   };
 
+  const [sizeStyle, setSizeStyle] = useState({
+    width: '',
+    height: '',
+  });
+  
+// Handler for changing width in RightBar
+const handleWidthChange = (newWidth) => {
+  updateStyle({ ...style, width: newWidth + 'px' }); // Append 'px' to make it a valid CSS value
+};
 
-
+// Handler for changing width in RightBar
+const handleHeightChange = (newWidth) => {
+  updateStyle({ ...style, height: newWidth + 'px' }); // Append 'px' to make it a valid CSS value
+};
 
 
   return (
@@ -263,6 +284,11 @@ export default function RightBar({ selectedElement }) {
                   </select>
                 </div>
               </div>
+
+
+
+
+
             </div>
             <hr className='parameters-wrapper-separation' />
           </div>
@@ -406,6 +432,19 @@ export default function RightBar({ selectedElement }) {
 
             </div>
             <hr className='parameters-wrapper-separation' />
+            <div className='parameters-content-line'>
+                <p className='parameters-content-line-title'>Width</p>
+                <div className='parameters-content-line-container'>
+                  <input type="text" value={sizeStyle.width} onChange={(e) => setSizeStyle({...sizeStyle, width: e.target.value})} onBlur={() => onSettingsChange(selectedElement, { width: sizeStyle.width })} />
+                </div>
+              </div>
+              <div className='parameters-content-line'>
+                <p className='parameters-content-line-title'>Height</p>
+                <div className='parameters-content-line-container'>
+                  <input type="text" value={sizeStyle.height} onChange={(e) => setSizeStyle({...sizeStyle, height: e.target.value})} onBlur={() => onSettingsChange(selectedElement, { height: sizeStyle.height })} />
+                </div>
+              </div>
+
           </div>
         </div>
       </div>

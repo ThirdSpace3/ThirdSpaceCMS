@@ -10,7 +10,10 @@ export const useStyle = () => {
   };
   
 export const StyleProvider = ({ children }) => {
-    const [style, setStyle] = useState({});
+    const [style, setStyle] = useState({
+        width: '100%', // Default width
+        height: 'auto', // Default height
+    });
 
     const updateStyle = (newStyle) => {
         setStyle(newStyle);

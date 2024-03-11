@@ -1,7 +1,13 @@
 import './TopBar.css';
 import '../Root.css';
-
-export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, hasUnsavedChanges }) {
+// You can place this in a constants file or directly in your components
+const deviceSizes = {
+    tv: "100%", // Example, adjust based on your design
+    tablet: "768px", // Common tablet width
+    smartphone: "375px", // Common smartphone width
+  };
+  
+export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, onDeviceChange }) {
     return (
         <>
             <div className='topbar-wrapper'>
@@ -13,9 +19,9 @@ export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, hasUnsav
                     <a href=""><i class="bi bi-eye"></i></a>
                 </div>
                 <div className='topbar-mid'>
-                    <a href="" className='topbar-device-btn'><i class="bi bi-tv"></i></a>
-                    <a href="" className='topbar-device-btn'><i class="bi bi-tablet-landscape"></i></a>
-                    <a href="" className='topbar-device-btn'><i class="bi bi-phone"></i></a>
+                    <a onClick={() => onDeviceChange(deviceSizes.tv)} className='topbar-device-btn'><i className="bi bi-tv"></i></a>
+                    <a onClick={() => onDeviceChange(deviceSizes.tablet)} className='topbar-device-btn'><i className="bi bi-tablet-landscape"></i></a>
+                    <a onClick={() => onDeviceChange(deviceSizes.smartphone)} className='topbar-device-btn'><i className="bi bi-phone"></i></a>
                 </div>
                 <button className='topbar-propulse-btn' onClick={() => { console.log('Button clicked'); onSaveClick(); }}>
   Propulse

@@ -3,7 +3,7 @@ import EditableText from '../components/logiciel/TemplateComponent/EditableText'
 import { useStyle } from '../hooks/StyleContext'; // Adjust the import path as necessary
 
 
-const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {
+const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement }) => {
   const { style } = useStyle();
 
   const [content, setContent] = useState({
@@ -35,7 +35,7 @@ const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      width: '100%',
+      width: deviceSize,
       height: 'auto', // added height property for better layout control
       backgroundColor: '#2c3e50', // navy blue
       overflow: 'auto',
@@ -98,7 +98,7 @@ const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {
           tagName="h1"
           content={content.title}
           onContentChange={(newValue) => handleContentChange('title', newValue)}
-          style={styles.title}
+          style={{ ...styles.title, width: style.width, height: style.height }} // Apply resizing styles here
           innerRef={titleRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />
@@ -106,7 +106,7 @@ const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {
           tagName="h2"
           content={content.subtitle}
           onContentChange={(newValue) => handleContentChange('subtitle', newValue)}
-          style={styles.subtitle}
+          style={{...styles.subtitle, width: style.width, height: style.height }}
           innerRef={subtitleRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />
@@ -114,7 +114,7 @@ const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {
           tagName="p"
           content={content.introParagraph}
           onContentChange={(newValue) => handleContentChange('introParagraph', newValue)}
-          style={styles.paragraph}
+          style={{...styles.paragraph, width: style.width, height: style.height }}
           innerRef={introParagraphRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />
@@ -126,7 +126,7 @@ const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {
           tagName="h2"
           content={content.section1Title}
           onContentChange={(newValue) => handleContentChange('section1Title', newValue)}
-          style={styles.sectionTitle}
+          style={{...styles.sectionTitle, width: style.width, height: style.height }}
           innerRef={section1TitleRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />
@@ -134,7 +134,7 @@ const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {
           tagName="p"
           content={content.section1Content}
           onContentChange={(newValue) => handleContentChange('section1Content', newValue)}
-          style={styles.sectionContent}
+          style={{...styles.sectionContent, width: style.width, height: style.height }}
           innerRef={section1ContentRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />
@@ -146,7 +146,7 @@ const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {
           tagName="h2"
           content={content.section2Title}
           onContentChange={(newValue) => handleContentChange('section2Title', newValue)}
-          style={styles.sectionTitle}
+          style={{...styles.sectionTitle, width: style.width, height: style.height }}
           innerRef={section2TitleRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />
@@ -154,7 +154,7 @@ const Template1OnDo = ({ settings, selectedElement, setSelectedElement }) => {
           tagName="p"
           content={content.section2Content}
           onContentChange={(newValue) => handleContentChange('section2Content', newValue)}
-          style={styles.sectionContent}
+          style={{...styles.sectionContent, width: style.width, height: style.height }}
           innerRef={section2ContentRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />

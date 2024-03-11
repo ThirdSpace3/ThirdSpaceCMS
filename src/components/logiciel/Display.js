@@ -91,15 +91,22 @@ const handleEditorChange = (editor) => {
   setActiveEditor(editor);
 };
 
+
+const [selectedDeviceSize, setSelectedDeviceSize] = useState("100%");
+
+const handleDeviceChange = (size) => {
+  setSelectedDeviceSize(size);
+};
+
 return (
   <StyleProvider>
-    <TopBar onSaveClick={saveSettings} hasUnsavedChanges={hasUnsavedChanges} />
+ <TopBar onDeviceChange={handleDeviceChange} onSaveClick={saveSettings} hasUnsavedChanges={hasUnsavedChanges} />
     <div className="displayWrapper">
     <NavBar handleEditorChange={handleEditorChange} />
       <div className="displayColumnWrapper">
         <ActualPageParametersBTN />
         {activeEditor === 'Template1OnDo' ? (
-          <Template1OnDo
+         <Template1OnDo deviceSize={selectedDeviceSize}
             settings={settings}
             selectedElement={selectedElement}
             setSelectedElement={setSelectedElement}
