@@ -1,5 +1,5 @@
 import React from 'react';
-import './NavBar.css';
+import './LeftBar.css';
 import '../Root.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 

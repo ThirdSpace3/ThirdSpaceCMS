@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import NavBar from './NavBar';
+import NavBar from './LeftBar';
 import TopBar from './TopBar';
 import RightBar from './RightBar';
 import Canva from './Canva';
 import ActualPageParametersBTN from './ActualPageParametersBTN';
 import './Display.css';
-import { StyleProvider } from './StyleContext';
+import { StyleProvider } from './hooks/StyleContext';
 import Template1OnDo from '../../templates/Template1OnDo';
 import Template2ImageOnDo from '../../templates/Template2ImageOnDo';
 import axios from 'axios';
