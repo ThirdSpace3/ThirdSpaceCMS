@@ -54,11 +54,19 @@
     width: 250px;
     background-color: var(--menu-bg);
     border-radius: 0 10px 10px 0;
-    padding-top: 2vh;
+    padding-top: 10vh;
+    color : red;
 }
 .no-border-radius {
     border-radius: 0 !important; 
 }
 .navbar-icon.active {
     color: var(--white); 
+}
+.navbar-panel-buttons {
+    height: 100vh;
+    width: 250px;
+    background-color: var(--menu-bg);
+    border-radius: 0 10px 10px 0;
+    padding-top: 2vh;
 }

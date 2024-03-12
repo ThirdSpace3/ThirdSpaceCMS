@@ -4,11 +4,22 @@ const EditableText = forwardRef(
   ({ tagName, content, onContentChange, style, innerRef, onClick, isEditable }, ref) => {
     const [editing, setEditing] = useState(false);
     const [currentContent, setCurrentContent] = useState(content);
+    const [cursorPosition, setCursorPosition] = useState(null);
 
     useEffect(() => {
       setCurrentContent(content);
     }, [content]);
-
+    useEffect(() => {
+      if (cursorPosition !== null && innerRef.current) {
+        const range = document.createRange();
+        const selection = window.getSelection();
+        range.setStart(innerRef.current.childNodes[0], cursorPosition);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+    }, [cursorPosition, innerRef]);
+    
     const handleEdit = () => {
       if (isEditable && !editing) {
         setEditing(true);
@@ -23,21 +34,17 @@ const EditableText = forwardRef(
     const handleContentChange = (event) => {
       event.preventDefault();
       const newContent = event.currentTarget.textContent;
+      const cursorPos = window.getSelection().getRangeAt(0).startOffset;
+      setCursorPosition(cursorPos);
       setCurrentContent(newContent);
-
-      const range = document.createRange();
-      const selection = window.getSelection();
-      range.selectNodeContents(event.currentTarget);
-      range.collapse(false);
-      selection.removeAllRanges();
-      selection.addRange(range);
     };
 
     const handleSave = () => {
       onContentChange(currentContent);
       setEditing(false);
+      setCursorPosition(null);
     };
-
+    
     useImperativeHandle(ref, () => ({
       getContent: () => currentContent,
     }));

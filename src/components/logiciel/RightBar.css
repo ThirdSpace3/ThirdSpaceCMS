@@ -4,6 +4,7 @@
     background-color: var(--menu-bg);
     border-radius: 10px 0 0 10px;
     background-color: #131313;
+    overflow: auto;
 }
 
 .style-wrapper {
