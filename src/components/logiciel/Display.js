@@ -98,29 +98,58 @@ const handleDeviceChange = (size) => {
   setSelectedDeviceSize(size);
 };
 
+
+const [showOnlyTemplate1OnDo, setShowOnlyTemplate1OnDo] = useState(false);
+
+const toggleTemplate1OnDoVisibility = () => {
+  setShowOnlyTemplate1OnDo(prev => !prev);
+};
+
+
+
 return (
   <StyleProvider>
- <TopBar onDeviceChange={handleDeviceChange} onSaveClick={saveSettings} hasUnsavedChanges={hasUnsavedChanges} />
-    <div className="displayWrapper">
-    <NavBar handleEditorChange={handleEditorChange} />
-      <div className="displayColumnWrapper">
-        <ActualPageParametersBTN />
-        {activeEditor === 'Template1OnDo' ? (
-         <Template1OnDo deviceSize={selectedDeviceSize}
-            settings={settings}
-            selectedElement={selectedElement}
-            setSelectedElement={setSelectedElement}
-          />
-        ) : (
-          <Template2ImageOnDo settings={settings}             
-          selectedElement={selectedElement}
-          setSelectedElement={setSelectedElement}
-/>
-        )}
-        {/* Continue with the rest of your layout */}
+    {!showOnlyTemplate1OnDo && ( // Only render TopBar when showOnlyTemplate1OnDo is false
+      <TopBar
+        onDeviceChange={handleDeviceChange}
+        onSaveClick={saveSettings}
+        hasUnsavedChanges={hasUnsavedChanges}
+        onToggleTemplate1OnDo={toggleTemplate1OnDoVisibility}
+      />
+    )}
+    {showOnlyTemplate1OnDo ? (
+  <Template1OnDo
+    deviceSize={selectedDeviceSize}
+    settings={settings}
+    selectedElement={selectedElement}
+    setSelectedElement={setSelectedElement}
+    onToggleTemplate1OnDo={toggleTemplate1OnDoVisibility}
+    showOnlyTemplate1OnDo={showOnlyTemplate1OnDo} // Pass the showOnlyTemplate1OnDo state here
+  />
+) : (
+      <div className="displayWrapper">
+        <NavBar handleEditorChange={handleEditorChange} />
+        <div className="displayColumnWrapper">
+          <ActualPageParametersBTN />
+          {activeEditor === 'Template1OnDo' ? (
+            <Template1OnDo
+              deviceSize={selectedDeviceSize}
+              settings={settings}
+              selectedElement={selectedElement}
+              setSelectedElement={setSelectedElement}
+            />
+          ) : (
+            <Template2ImageOnDo
+              settings={settings}
+              selectedElement={selectedElement}
+              setSelectedElement={setSelectedElement}
+            />
+          )}
+        </div>
+        <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
       </div>
-      <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
-    </div>
+    )}
   </StyleProvider>
 );
+
 }

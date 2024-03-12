@@ -1,32 +1,36 @@
 import './TopBar.css';
 import '../Root.css';
-// You can place this in a constants file or directly in your components
+// Remove the direct import of Template1OnDo since you're not using it in TopBar
+// import Template1OnDo from '../../templates/Template1OnDo'; // This line is no longer needed
+
 const deviceSizes = {
     tv: "100%", // Example, adjust based on your design
     tablet: "768px", // Common tablet width
     smartphone: "375px", // Common smartphone width
-  };
-  
-export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, onDeviceChange }) {
+};
+
+// Add a new prop onToggleTemplate1OnDo for toggling the visibility of Template1OnDo
+export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, onDeviceChange, onToggleTemplate1OnDo }) {
     return (
         <>
             <div className='topbar-wrapper'>
                 <div className='topbar-left'>
-                    <a className='topbar-undo-btn' onClick={onUndoClick}><i class="bi bi-arrow-return-left"></i></a>
-                    <a className='topbar-redo-btn' onClick={onRedoClick}><i class="bi bi-arrow-return-right"></i></a>
+                    <a className='topbar-undo-btn' onClick={onUndoClick}><i className="bi bi-arrow-return-left"></i></a>
+                    <a className='topbar-redo-btn' onClick={onRedoClick}><i className="bi bi-arrow-return-right"></i></a>
 
                     <hr />
-                    <a href=""><i class="bi bi-eye"></i></a>
+                    {/* Update this line to call onToggleTemplate1OnDo when the eye icon is clicked */}
+                    <a onClick={onToggleTemplate1OnDo}><i className="bi bi-eye"></i></a>
                 </div>
                 <div className='topbar-mid'>
                     <a onClick={() => onDeviceChange(deviceSizes.tv)} className='topbar-device-btn'><i className="bi bi-tv"></i></a>
                     <a onClick={() => onDeviceChange(deviceSizes.tablet)} className='topbar-device-btn'><i className="bi bi-tablet-landscape"></i></a>
                     <a onClick={() => onDeviceChange(deviceSizes.smartphone)} className='topbar-device-btn'><i className="bi bi-phone"></i></a>
                 </div>
-                <button className='topbar-propulse-btn' onClick={() => { console.log('Button clicked'); onSaveClick(); }}>
-  Propulse
-</button>
+                <button className='topbar-propulse-btn' onClick={onSaveClick}>
+                    Propulse
+                </button>
             </div>
         </>
-    )
+    );
 }

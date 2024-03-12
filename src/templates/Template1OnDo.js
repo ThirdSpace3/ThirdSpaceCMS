@@ -1,9 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback  } from 'react';
 import EditableText from '../components/logiciel/TemplateComponent/EditableText'; // Adjust the import path according to your file structure
 import { useStyle } from '../hooks/StyleContext'; // Adjust the import path as necessary
 
 
-const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement }) => {
+const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onToggleTemplate1OnDo, showOnlyTemplate1OnDo }) => {
   const { style } = useStyle();
 
   const [content, setContent] = useState({
@@ -29,6 +29,12 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement }) => {
     setSelectedElement(elementRef.current);
   };
 
+ // Create a function to handle the return button click
+ const handleReturnClick = useCallback(() => {
+  onToggleTemplate1OnDo();
+}, [onToggleTemplate1OnDo]);
+
+
   // Define your styles
   const styles = {
     templateWrapper: {
@@ -39,12 +45,12 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement }) => {
       height: 'auto', // added height property for better layout control
       backgroundColor: '#2c3e50', // navy blue
       overflow: 'auto',
+      alignItems: 'center',
     },
     templateWrapperColumn: {
       display: 'flex',
       flexDirection: 'column',
       width: '80%',
-
       gap: '15px',
     },
     title: {
@@ -93,6 +99,8 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement }) => {
 
   return (
     <div style={styles.templateWrapper}>
+      {showOnlyTemplate1OnDo && <button onClick={handleReturnClick}>Return</button>}
+
       <div style={styles.templateWrapperColumn}>
         <EditableText
           tagName="h1"
