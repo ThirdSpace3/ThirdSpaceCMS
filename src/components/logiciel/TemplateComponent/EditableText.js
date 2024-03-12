@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 
 const EditableText = forwardRef(
-  ({ tagName, content, onContentChange, style, innerRef, onClick }, ref) => {
+  ({ tagName, content, onContentChange, style, innerRef, onClick, isEditable }, ref) => {
     const [editing, setEditing] = useState(false);
     const [currentContent, setCurrentContent] = useState(content);
 
@@ -9,11 +9,9 @@ const EditableText = forwardRef(
       setCurrentContent(content);
     }, [content]);
 
-    // Enter editing mode and focus on the editable element
     const handleEdit = () => {
-      if (!editing) {
+      if (isEditable && !editing) {
         setEditing(true);
-        // Ensure focus is set after a brief delay to account for state update latency
         setTimeout(() => {
           if (innerRef.current) {
             innerRef.current.focus();
@@ -22,13 +20,11 @@ const EditableText = forwardRef(
       }
     };
 
-    // Capture live edits directly from the contentEditable element
     const handleContentChange = (event) => {
       event.preventDefault();
       const newContent = event.currentTarget.textContent;
       setCurrentContent(newContent);
 
-      // Move cursor to the end of the content
       const range = document.createRange();
       const selection = window.getSelection();
       range.selectNodeContents(event.currentTarget);
@@ -37,7 +33,6 @@ const EditableText = forwardRef(
       selection.addRange(range);
     };
 
-    // Save changes and exit editing mode
     const handleSave = () => {
       onContentChange(currentContent);
       setEditing(false);

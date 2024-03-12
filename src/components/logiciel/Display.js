@@ -16,10 +16,10 @@ export default function Display() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [activeEditor, setActiveEditor] = useState('Template1OnDo'); // Set the default editor to TextEditor
 
-  
+
   const handleSettingsChange = (section, newSettings) => {
     if (!selectedElement) return; // Guard clause if no element is selected
-  
+
     const updatedSettings = {
       ...settings,
       [selectedElement]: {
@@ -30,14 +30,14 @@ export default function Display() {
         },
       },
     };
-  
+
     console.log("Updating settings for:", section, "with:", newSettings);
     setSettings(updatedSettings);
     setHasUnsavedChanges(true);
   };
-  
 
- // This function is to be called when the "Propulse" button is clicked
+
+  // This function is to be called when the "Propulse" button is clicked
   const saveSettings = async () => {
     const walletId = sessionStorage.getItem('userAccount');
     if (!walletId) {
@@ -63,93 +63,93 @@ export default function Display() {
       alert('Failed to save settings. See console for more details.');
     }
   };
-  
 
 
-useEffect(() => {
-  const fetchSettings = async () => {
-    const walletId = sessionStorage.getItem('userAccount');
-    if (walletId) {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/settings/${walletId}`);
-        if (response.status === 200 && response.data) {
-          setSettings(response.data.settings);
-          console.log(response.data.settings);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const walletId = sessionStorage.getItem('userAccount');
+      if (walletId) {
+        try {
+          const response = await axios.get(`http://localhost:5000/api/settings/${walletId}`);
+          if (response.status === 200 && response.data) {
+            setSettings(response.data.settings);
+            console.log(response.data.settings);
+          }
+        } catch (error) {
+          console.error('Failed to fetch settings:', error);
         }
-      } catch (error) {
-        console.error('Failed to fetch settings:', error);
       }
-    }
+    };
+
+    fetchSettings();
+  }, []);
+
+
+
+  const handleEditorChange = (editor) => {
+    setActiveEditor(editor);
   };
 
-  fetchSettings();
-}, []);
- 
-  
 
-const handleEditorChange = (editor) => {
-  setActiveEditor(editor);
-};
+  const [selectedDeviceSize, setSelectedDeviceSize] = useState("100%");
+
+  const handleDeviceChange = (size) => {
+    setSelectedDeviceSize(size);
+  };
 
 
-const [selectedDeviceSize, setSelectedDeviceSize] = useState("100%");
+  const [showOnlyTemplate1OnDo, setShowOnlyTemplate1OnDo] = useState(false);
 
-const handleDeviceChange = (size) => {
-  setSelectedDeviceSize(size);
-};
-
-
-const [showOnlyTemplate1OnDo, setShowOnlyTemplate1OnDo] = useState(false);
-
-const toggleTemplate1OnDoVisibility = () => {
-  setShowOnlyTemplate1OnDo(prev => !prev);
-};
+  const toggleTemplate1OnDoVisibility = () => {
+    setShowOnlyTemplate1OnDo(prev => !prev);
+  };
 
 
 
-return (
-  <StyleProvider>
-    {!showOnlyTemplate1OnDo && ( // Only render TopBar when showOnlyTemplate1OnDo is false
-      <TopBar
-        onDeviceChange={handleDeviceChange}
-        onSaveClick={saveSettings}
-        hasUnsavedChanges={hasUnsavedChanges}
-        onToggleTemplate1OnDo={toggleTemplate1OnDoVisibility}
-      />
-    )}
-    {showOnlyTemplate1OnDo ? (
-  <Template1OnDo
-    deviceSize={selectedDeviceSize}
-    settings={settings}
-    selectedElement={selectedElement}
-    setSelectedElement={setSelectedElement}
-    onToggleTemplate1OnDo={toggleTemplate1OnDoVisibility}
-    showOnlyTemplate1OnDo={showOnlyTemplate1OnDo} // Pass the showOnlyTemplate1OnDo state here
-  />
-) : (
-      <div className="displayWrapper">
-        <NavBar handleEditorChange={handleEditorChange} />
-        <div className="displayColumnWrapper">
-          <ActualPageParametersBTN />
-          {activeEditor === 'Template1OnDo' ? (
-            <Template1OnDo
-              deviceSize={selectedDeviceSize}
-              settings={settings}
-              selectedElement={selectedElement}
-              setSelectedElement={setSelectedElement}
-            />
-          ) : (
-            <Template2ImageOnDo
-              settings={settings}
-              selectedElement={selectedElement}
-              setSelectedElement={setSelectedElement}
-            />
-          )}
+  return (
+    <StyleProvider>
+      {!showOnlyTemplate1OnDo && ( // Only render TopBar when showOnlyTemplate1OnDo is false
+        <TopBar
+          onDeviceChange={handleDeviceChange}
+          onSaveClick={saveSettings}
+          hasUnsavedChanges={hasUnsavedChanges}
+          onToggleTemplate1OnDo={toggleTemplate1OnDoVisibility}
+        />
+      )}
+      {showOnlyTemplate1OnDo ? (
+        <Template1OnDo
+          deviceSize={selectedDeviceSize}
+          settings={settings}
+          selectedElement={selectedElement}
+          setSelectedElement={setSelectedElement}
+          onToggleTemplate1OnDo={toggleTemplate1OnDoVisibility}
+          showOnlyTemplate1OnDo={showOnlyTemplate1OnDo} // Pass the showOnlyTemplate1OnDo state here
+        />
+      ) : (
+        <div className="displayWrapper">
+          <NavBar handleEditorChange={handleEditorChange} />
+          <div className="displayColumnWrapper">
+            <ActualPageParametersBTN />
+            {activeEditor === 'Template1OnDo' ? (
+              <Template1OnDo
+                deviceSize={selectedDeviceSize}
+                settings={settings}
+                selectedElement={selectedElement}
+                setSelectedElement={setSelectedElement}
+              />
+            ) : (
+              <Template2ImageOnDo
+                settings={settings}
+                selectedElement={selectedElement}
+                setSelectedElement={setSelectedElement}
+              />
+            )}
+          </div>
+          <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
         </div>
-        <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
-      </div>
-    )}
-  </StyleProvider>
-);
+      )}
+    </StyleProvider>
+  );
 
 }

@@ -1,7 +1,6 @@
-import React, { useState, useRef, useCallback  } from 'react';
-import EditableText from '../components/logiciel/TemplateComponent/EditableText'; // Adjust the import path according to your file structure
-import { useStyle } from '../hooks/StyleContext'; // Adjust the import path as necessary
-
+import React, { useState, useRef, useCallback } from 'react';
+import EditableText from '../components/logiciel/TemplateComponent/EditableText';
+import { useStyle } from '../hooks/StyleContext';
 
 const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onToggleTemplate1OnDo, showOnlyTemplate1OnDo }) => {
   const { style } = useStyle();
@@ -14,7 +13,6 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
     section1Content: 'Content for section 1. This is editable.',
     section2Title: 'Section 2 Title',
     section2Content: 'Content for section 2. This is also editable.',
-    // Extend this object with more sections as needed
   });
 
   const handleContentChange = (key, newValue) => {
@@ -25,14 +23,12 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
   };
 
   const handleTextClick = (elementRef) => {
-    console.log('elementRef in handleTextClick:', elementRef); // Add this line
     setSelectedElement(elementRef.current);
   };
 
- // Create a function to handle the return button click
- const handleReturnClick = useCallback(() => {
-  onToggleTemplate1OnDo();
-}, [onToggleTemplate1OnDo]);
+  const handleReturnClick = useCallback(() => {
+    onToggleTemplate1OnDo();
+  }, [onToggleTemplate1OnDo]);
 
 
   // Define your styles
@@ -99,32 +95,38 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
 
   return (
     <div style={styles.templateWrapper}>
-      {showOnlyTemplate1OnDo && <button onClick={handleReturnClick}>Return</button>}
-
+    {showOnlyTemplate1OnDo && <button onClick={handleReturnClick}>Return</button>}
+    
       <div style={styles.templateWrapperColumn}>
+      <EditableText
+        isEditable={!showOnlyTemplate1OnDo}
+        tagName="h1"
+        content={content.title}
+        onContentChange={(newValue) => handleContentChange('title', newValue)}
+        style={{ ...styles.title, width: style.width, height: style.height }}
+        innerRef={titleRef}
+        onClick={(elementRef) => handleTextClick(elementRef)}
+      />
         <EditableText
-          tagName="h1"
-          content={content.title}
-          onContentChange={(newValue) => handleContentChange('title', newValue)}
-          style={{ ...styles.title, width: style.width, height: style.height }} // Apply resizing styles here
-          innerRef={titleRef}
-          onClick={(elementRef) => handleTextClick(elementRef)}
-        />
-        <EditableText
-          tagName="h2"
+        isEditable={!showOnlyTemplate1OnDo}
+        tagName="h2"
           content={content.subtitle}
           onContentChange={(newValue) => handleContentChange('subtitle', newValue)}
           style={{...styles.subtitle, width: style.width, height: style.height }}
           innerRef={subtitleRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
+
         />
         <EditableText
+                isEditable={!showOnlyTemplate1OnDo}
+
           tagName="p"
           content={content.introParagraph}
           onContentChange={(newValue) => handleContentChange('introParagraph', newValue)}
           style={{...styles.paragraph, width: style.width, height: style.height }}
           innerRef={introParagraphRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
+
         />
       </div>
 
@@ -132,6 +134,8 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
       <div style={styles.templateWrapperColumn}>
         <EditableText
           tagName="h2"
+          isEditable={!showOnlyTemplate1OnDo}
+
           content={content.section1Title}
           onContentChange={(newValue) => handleContentChange('section1Title', newValue)}
           style={{...styles.sectionTitle, width: style.width, height: style.height }}
@@ -140,6 +144,8 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
         />
         <EditableText
           tagName="p"
+          isEditable={!showOnlyTemplate1OnDo}
+
           content={content.section1Content}
           onContentChange={(newValue) => handleContentChange('section1Content', newValue)}
           style={{...styles.sectionContent, width: style.width, height: style.height }}
@@ -152,6 +158,7 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
       <div style={styles.templateWrapperColumn}>
         <EditableText
           tagName="h2"
+          isEditable={!showOnlyTemplate1OnDo}
           content={content.section2Title}
           onContentChange={(newValue) => handleContentChange('section2Title', newValue)}
           style={{...styles.sectionTitle, width: style.width, height: style.height }}
@@ -160,6 +167,7 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
         />
         <EditableText
           tagName="p"
+          isEditable={!showOnlyTemplate1OnDo}
           content={content.section2Content}
           onContentChange={(newValue) => handleContentChange('section2Content', newValue)}
           style={{...styles.sectionContent, width: style.width, height: style.height }}
