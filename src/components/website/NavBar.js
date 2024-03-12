@@ -47,12 +47,12 @@ function Navbar() {
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">
-        <a href="index.html" className="nav__logo">
+        <a href="./" className="nav__logo">
           <img src="./images/3s-logo.png" alt="thirdspace logo" />
         </a>
         <div className="navbar__right">
           <ul className="nav__links nav-bg">
-            <li><a href="/home" className="nav__links-btn">Home</a></li>
+            <li><a href="./" className="nav__links-btn">Home</a></li>
             <li className="coming-soon">
               <a href="/about" className="nav__links-btn">About</a>
                
