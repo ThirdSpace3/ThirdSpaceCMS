@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import NavBar from './LeftBar';
+import LeftBar from './LeftBar';
 import TopBar from './TopBar';
 import RightBar from './RightBar';
 import Canva from './Canva';
@@ -9,13 +9,13 @@ import { StyleProvider } from '../../hooks/StyleContext';
 import Template1OnDo from '../../templates/Template1OnDo';
 import Template2ImageOnDo from '../../templates/Template2ImageOnDo';
 import axios from 'axios';
-
+import { ImageProvider } from '../../hooks/ImageContext';
 export default function Display() {
   const [settings, setSettings] = useState({});
   const [settingsHistory, setSettingsHistory] = useState([{}]); // Initialize with empty settings
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0); const [selectedElement, setSelectedElement] = useState(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [activeEditor, setActiveEditor] = useState('Template1OnDo'); // Set the default editor to TextEditor
+  const [activeEditor, setActiveEditor] = useState('Template2ImageOnDo'); // Set the default editor to TextEditor
 
 
   const handleSettingsChange = (section, newSettings) => {
@@ -128,7 +128,13 @@ export default function Display() {
     setShowOnlyTemplate1OnDo(prev => !prev);
   };
 
+  
+  const [imageHistory, setImageHistory] = useState([]);
 
+  const addImageToHistory = (imageURL) => {
+    setImageHistory((prevHistory) => [...prevHistory, imageURL]);
+  };
+  
 
   return (
     <StyleProvider>
@@ -152,7 +158,7 @@ export default function Display() {
         />
       ) : (
         <div className="displayWrapper">
-          <NavBar handleEditorChange={handleEditorChange} />
+          <LeftBar handleEditorChange={handleEditorChange}                addImageToHistory={addImageToHistory} />
           <div className="displayColumnWrapper">
             <ActualPageParametersBTN />
             {activeEditor === 'Template1OnDo' ? (
@@ -161,12 +167,15 @@ export default function Display() {
                 settings={settings}
                 selectedElement={selectedElement}
                 setSelectedElement={setSelectedElement}
+
               />
             ) : (
               <Template2ImageOnDo
                 settings={settings}
                 selectedElement={selectedElement}
                 setSelectedElement={setSelectedElement}
+                addImageToHistory={addImageToHistory}
+
               />
             )}
           </div>

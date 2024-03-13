@@ -70,3 +70,20 @@
     border-radius: 0 10px 10px 0;
     padding-top: 2vh;
 }
+
+/* Image Preview */
+
+.ImagePreview{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px; /* Adjust the space between images */
+}
+
+.image-preview img {
+    width: 100px; /* Width of the image */
+    height: 100px; /* Height of the image */
+    object-fit: cover; /* Ensures the image covers the area, might crop */
+    border-radius: 4px; /* Optional: Rounds corners of the image */
+}

@@ -7,7 +7,7 @@ import PanelFile from './PanelFile';
 import PanelLayers from './PanelLayers';
 import PanelPlus from './PanelPlus';
 
-export default function NavBar({ handleEditorChange }) {
+export default function LeftBar({ handleEditorChange, imageHistory }) {
     const [visiblePanel, setVisiblePanel] = useState(null);
 
     const togglePanel = (panel) => {
@@ -45,7 +45,8 @@ export default function NavBar({ handleEditorChange }) {
                 {visiblePanel === 'plus' && <PanelPlus />}
                 {visiblePanel === 'file' && <PanelFile handleSwitch={handleSwitch} />}
                 {visiblePanel === 'layers' && <PanelLayers />}
-                {visiblePanel === 'images' && <PanelAsset />}
+                {visiblePanel === 'images' && <PanelAsset imageHistory={imageHistory} />
+}
             </div>
         </>
     );

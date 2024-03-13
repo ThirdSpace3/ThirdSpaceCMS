@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect  } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import EditableText from '../components/logiciel/TemplateComponent/EditableText';
 import { useStyle } from '../hooks/StyleContext';
 import axios from 'axios'; // Make sure axios is installed
@@ -12,14 +12,6 @@ const Template1OnDo = ({
 }) => {
   const { style } = useStyle();
   const [walletId, setWalletId] = useState('');
-
-  useEffect(() => {
-    // Retrieve the walletId from session storage
-    const storedWalletId = sessionStorage.getItem('userAccount');
-    if (storedWalletId) {
-      setWalletId(storedWalletId);
-    }
-  }, []);
   const [content, setContent] = useState({
     title: 'Your Landing Page Title',
     subtitle: 'Your Subtitle Here',
@@ -29,23 +21,6 @@ const Template1OnDo = ({
     section2Title: 'Section 2 Title',
     section2Content: 'Content for section 2. This is also editable.',
   });
-
-  const handleContentChange = (key, newValue) => {
-    setContent((prevContent) => ({
-      ...prevContent,
-      [key]: newValue,
-    }));
-  };
-
-  const handleTextClick = (elementRef) => {
-    setSelectedElement(elementRef.current);
-  };
-
-  const handleReturnClick = useCallback(() => {
-    onToggleTemplate1OnDo();
-  }, [onToggleTemplate1OnDo]);
-
-  // Define your styles
   const styles = {
     templateWrapper: {
       display: 'flex',
@@ -97,11 +72,20 @@ const Template1OnDo = ({
       textAlign: 'left',
     },
   };
-     // Function to merge base styles with dynamic styles from context
-  const getCombinedStyles = (styles) => {
-    const combinedStyles = { ...styles, ...style }; // Merge base style with context style
-    console.log("Combined Styles:", combinedStyles); // Log combined styles
-    return combinedStyles;
+  const fetchStyleForKey = (key) => {
+    // Mapping keys to their respective style properties
+    const keyStyleMap = {
+      title: styles.title,
+      subtitle: styles.subtitle,
+      introParagraph: styles.paragraph,
+      section1Title: styles.sectionTitle,
+      section1Content: styles.sectionContent,
+      section2Title: styles.sectionTitle,
+      section2Content: styles.sectionContent,
+    };
+
+    // Fetch and return the style for the given key
+    return keyStyleMap[key] || {};
   };
 
   // Use useRef to create references for the title and paragraph elements
@@ -113,56 +97,77 @@ const Template1OnDo = ({
   const section2TitleRef = useRef(null);
   const section2ContentRef = useRef(null);
 
-  const [elementStyles, setElementStyles] = useState({
-    title: styles.title,
-    subtitle: styles.subtitle,
-    introParagraph: styles.paragraph,
-    section1Title: styles.sectionTitle,
-    section1Content: styles.sectionContent,
-    section2Title: styles.sectionTitle,
-    section2Content: styles.sectionContent,
-  });
+  const getContentAndStyles = useCallback(() => {
+    return { content, styles };
+  }, [content, styles]);
   
-  const handleStyleChange = (key, newStyle) => {
-    setElementStyles((prevStyles) => ({
-      ...prevStyles,
-      [key]: { ...prevStyles[key], ...newStyle },
+  useEffect(() => {
+    // Retrieve the walletId from session storage
+    const storedWalletId = sessionStorage.getItem('userAccount');
+    if (storedWalletId) {
+      setWalletId(storedWalletId);
+    }
+  }, []);
+
+  const handleContentChange = (key, newValue) => {
+    setContent((prevContent) => ({
+      ...prevContent,
+      [key]: newValue,
     }));
   };
-  
+
+  const handleTextClick = (elementRef) => {
+    setSelectedElement(elementRef.current);
+  };
+
+  const handleReturnClick = useCallback(() => {
+    onToggleTemplate1OnDo();
+  }, [onToggleTemplate1OnDo]);
+
+  // Function to merge base styles with dynamic styles from context
+  const getCombinedStyles = (styles) => {
+    const combinedStyles = { ...styles, ...style }; // Merge base style with context style
+    console.log("Combined Styles:", combinedStyles); // Log combined styles
+    return combinedStyles;
+  };
+
   const saveSettings = async () => {
     // Prepare content with styles
     const contentWithStyles = Object.keys(content).reduce((acc, key) => {
+      const style = fetchStyleForKey(key); // Fetch style for this content key
       acc[key] = {
         text: content[key],
-        style: elementStyles[key] || {},
+        style: style,
       };
       return acc;
     }, {});
-  
+
     const settingsData = {
-      content: contentWithStyles,
+      content: contentWithStyles, // This now includes styles
       deviceSize,
-      // No need to save the global style here if every element has its style saved individually
+      style, // Consider if you need this at the top level since styles are also included with content
+      // Include any other relevant settings here
     };
-  
+
     try {
       const response = await axios.post('http://localhost:5000/api/settings', {
         userId: walletId,
         settings: settingsData,
       });
-  
+
       if (response.status === 200 || response.status === 201) {
         console.log('Settings saved successfully');
+        // Optionally, perform actions based on the successful save
       }
     } catch (error) {
       console.error('Failed to save settings:', error);
+      // Handle errors, perhaps show a message to the user
     }
   };
-  
+
 
   return (
- <div style={styles.templateWrapper}>
+    <div style={styles.templateWrapper}>
       {showOnlyTemplate1OnDo && <button onClick={handleReturnClick}>Return</button>}
       <p>Wallet ID: {walletId}</p>
       <button onClick={saveSettings}>Save Settings</button>
@@ -176,10 +181,10 @@ const Template1OnDo = ({
           style={getCombinedStyles(styles.title)} // Correctly apply combined styles
           innerRef={titleRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
-        />        
+        />
         <EditableText
-        isEditable={!showOnlyTemplate1OnDo}
-        tagName="h2"
+          isEditable={!showOnlyTemplate1OnDo}
+          tagName="h2"
           content={content.subtitle}
           onContentChange={(newValue) => handleContentChange('subtitle', newValue)}
           style={getCombinedStyles(styles.subtitle)} // Correctly apply combined styles
@@ -188,7 +193,7 @@ const Template1OnDo = ({
 
         />
         <EditableText
-                isEditable={!showOnlyTemplate1OnDo}
+          isEditable={!showOnlyTemplate1OnDo}
 
           tagName="p"
           content={content.introParagraph}
