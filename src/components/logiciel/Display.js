@@ -12,7 +12,8 @@ import axios from 'axios';
 
 export default function Display() {
   const [settings, setSettings] = useState({});
-  const [selectedElement, setSelectedElement] = useState(null);
+  const [settingsHistory, setSettingsHistory] = useState([{}]); // Initialize with empty settings
+  const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0); const [selectedElement, setSelectedElement] = useState(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [activeEditor, setActiveEditor] = useState('Template1OnDo'); // Set the default editor to TextEditor
 
@@ -32,8 +33,30 @@ export default function Display() {
     };
 
     console.log("Updating settings for:", section, "with:", newSettings);
+
+    // Instead of directly setting the new settings,
+    // we now also need to update the history.
+    const newHistory = settingsHistory.slice(0, currentHistoryIndex + 1); // Copy up to the current point
+    newHistory.push(updatedSettings); // Add new settings snapshot
+    setSettingsHistory(newHistory);
+    setCurrentHistoryIndex(newHistory.length - 1); // Update current index to the new snapshot
+
     setSettings(updatedSettings);
     setHasUnsavedChanges(true);
+  };
+
+  const undo = () => {
+    if (currentHistoryIndex > 0) {
+      setCurrentHistoryIndex(currentHistoryIndex - 1);
+      setSettings(settingsHistory[currentHistoryIndex - 1]);
+    }
+  };
+
+  const redo = () => {
+    if (currentHistoryIndex < settingsHistory.length - 1) {
+      setCurrentHistoryIndex(currentHistoryIndex + 1);
+      setSettings(settingsHistory[currentHistoryIndex + 1]);
+    }
   };
 
 
@@ -111,9 +134,10 @@ export default function Display() {
     <StyleProvider>
       {!showOnlyTemplate1OnDo && ( // Only render TopBar when showOnlyTemplate1OnDo is false
         <TopBar
-          onDeviceChange={handleDeviceChange}
           onSaveClick={saveSettings}
-          hasUnsavedChanges={hasUnsavedChanges}
+          onUndoClick={undo}
+          onRedoClick={redo}
+          onDeviceChange={handleDeviceChange}
           onToggleTemplate1OnDo={toggleTemplate1OnDoVisibility}
         />
       )}

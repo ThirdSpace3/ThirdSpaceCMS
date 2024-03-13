@@ -1,10 +1,25 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect  } from 'react';
 import EditableText from '../components/logiciel/TemplateComponent/EditableText';
 import { useStyle } from '../hooks/StyleContext';
+import axios from 'axios'; // Make sure axios is installed
 
-const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onToggleTemplate1OnDo, showOnlyTemplate1OnDo }) => {
+const Template1OnDo = ({
+  deviceSize,
+  selectedElement,
+  setSelectedElement,
+  onToggleTemplate1OnDo,
+  showOnlyTemplate1OnDo
+}) => {
   const { style } = useStyle();
+  const [walletId, setWalletId] = useState('');
 
+  useEffect(() => {
+    // Retrieve the walletId from session storage
+    const storedWalletId = sessionStorage.getItem('userAccount');
+    if (storedWalletId) {
+      setWalletId(storedWalletId);
+    }
+  }, []);
   const [content, setContent] = useState({
     title: 'Your Landing Page Title',
     subtitle: 'Your Subtitle Here',
@@ -29,7 +44,6 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
   const handleReturnClick = useCallback(() => {
     onToggleTemplate1OnDo();
   }, [onToggleTemplate1OnDo]);
-
 
   // Define your styles
   const styles = {
@@ -83,7 +97,13 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
       textAlign: 'left',
     },
   };
-    
+     // Function to merge base styles with dynamic styles from context
+  const getCombinedStyles = (styles) => {
+    const combinedStyles = { ...styles, ...style }; // Merge base style with context style
+    console.log("Combined Styles:", combinedStyles); // Log combined styles
+    return combinedStyles;
+  };
+
   // Use useRef to create references for the title and paragraph elements
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
@@ -93,26 +113,76 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
   const section2TitleRef = useRef(null);
   const section2ContentRef = useRef(null);
 
+  const [elementStyles, setElementStyles] = useState({
+    title: styles.title,
+    subtitle: styles.subtitle,
+    introParagraph: styles.paragraph,
+    section1Title: styles.sectionTitle,
+    section1Content: styles.sectionContent,
+    section2Title: styles.sectionTitle,
+    section2Content: styles.sectionContent,
+  });
+  
+  const handleStyleChange = (key, newStyle) => {
+    setElementStyles((prevStyles) => ({
+      ...prevStyles,
+      [key]: { ...prevStyles[key], ...newStyle },
+    }));
+  };
+  
+  const saveSettings = async () => {
+    // Prepare content with styles
+    const contentWithStyles = Object.keys(content).reduce((acc, key) => {
+      acc[key] = {
+        text: content[key],
+        style: elementStyles[key] || {},
+      };
+      return acc;
+    }, {});
+  
+    const settingsData = {
+      content: contentWithStyles,
+      deviceSize,
+      // No need to save the global style here if every element has its style saved individually
+    };
+  
+    try {
+      const response = await axios.post('http://localhost:5000/api/settings', {
+        userId: walletId,
+        settings: settingsData,
+      });
+  
+      if (response.status === 200 || response.status === 201) {
+        console.log('Settings saved successfully');
+      }
+    } catch (error) {
+      console.error('Failed to save settings:', error);
+    }
+  };
+  
+
   return (
-    <div style={styles.templateWrapper}>
-    {showOnlyTemplate1OnDo && <button onClick={handleReturnClick}>Return</button>}
-    
+ <div style={styles.templateWrapper}>
+      {showOnlyTemplate1OnDo && <button onClick={handleReturnClick}>Return</button>}
+      <p>Wallet ID: {walletId}</p>
+      <button onClick={saveSettings}>Save Settings</button>
+
       <div style={styles.templateWrapperColumn}>
-      <EditableText
-        isEditable={!showOnlyTemplate1OnDo}
-        tagName="h1"
-        content={content.title}
-        onContentChange={(newValue) => handleContentChange('title', newValue)}
-        style={{ ...styles.title, width: style.width, height: style.height }}
-        innerRef={titleRef}
-        onClick={(elementRef) => handleTextClick(elementRef)}
-      />
+        <EditableText
+          isEditable={!showOnlyTemplate1OnDo}
+          tagName="h1"
+          content={content.title}
+          onContentChange={(newValue) => handleContentChange('title', newValue)}
+          style={getCombinedStyles(styles.title)} // Correctly apply combined styles
+          innerRef={titleRef}
+          onClick={(elementRef) => handleTextClick(elementRef)}
+        />        
         <EditableText
         isEditable={!showOnlyTemplate1OnDo}
         tagName="h2"
           content={content.subtitle}
           onContentChange={(newValue) => handleContentChange('subtitle', newValue)}
-          style={{...styles.subtitle, width: style.width, height: style.height }}
+          style={getCombinedStyles(styles.subtitle)} // Correctly apply combined styles
           innerRef={subtitleRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
 
@@ -123,7 +193,7 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
           tagName="p"
           content={content.introParagraph}
           onContentChange={(newValue) => handleContentChange('introParagraph', newValue)}
-          style={{...styles.paragraph, width: style.width, height: style.height }}
+          style={getCombinedStyles(styles.paragraph)} // Correctly apply combined styles
           innerRef={introParagraphRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
 
@@ -138,7 +208,7 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
 
           content={content.section1Title}
           onContentChange={(newValue) => handleContentChange('section1Title', newValue)}
-          style={{...styles.sectionTitle, width: style.width, height: style.height }}
+          style={getCombinedStyles(styles.sectionTitle)} // Correctly apply combined styles
           innerRef={section1TitleRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />
@@ -148,7 +218,7 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
 
           content={content.section1Content}
           onContentChange={(newValue) => handleContentChange('section1Content', newValue)}
-          style={{...styles.sectionContent, width: style.width, height: style.height }}
+          style={getCombinedStyles(styles.sectionContent)} // Correctly apply combined styles
           innerRef={section1ContentRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />
@@ -161,7 +231,7 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
           isEditable={!showOnlyTemplate1OnDo}
           content={content.section2Title}
           onContentChange={(newValue) => handleContentChange('section2Title', newValue)}
-          style={{...styles.sectionTitle, width: style.width, height: style.height }}
+          style={getCombinedStyles(styles.sectionTitle)} // Correctly apply combined styles
           innerRef={section2TitleRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />
@@ -170,7 +240,7 @@ const Template1OnDo = ({ deviceSize, selectedElement, setSelectedElement, onTogg
           isEditable={!showOnlyTemplate1OnDo}
           content={content.section2Content}
           onContentChange={(newValue) => handleContentChange('section2Content', newValue)}
-          style={{...styles.sectionContent, width: style.width, height: style.height }}
+          style={getCombinedStyles(styles.sectionContent)} // Correctly apply combined styles
           innerRef={section2ContentRef}
           onClick={(elementRef) => handleTextClick(elementRef)}
         />

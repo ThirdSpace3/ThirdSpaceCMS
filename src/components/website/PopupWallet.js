@@ -66,6 +66,7 @@ function PopupWallet({ onClose, onUserLogin }) {
               console.log('Wallet ID already linked to an existing account.');
             } else {
               console.log('Wallet ID saved to database:', response.data);
+              sessionStorage.setItem('UserId', publicKey);
             }
           } catch (error) {
             console.error('Error saving wallet ID to database:', error);
