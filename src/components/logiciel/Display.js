@@ -10,15 +10,17 @@ import Template1OnDo from '../../templates/TemplateFullText';
 import Template2ImageOnDo from '../../templates/TemplateImg_txt';
 import axios from 'axios';
 import { ImageHistoryProvider } from '../../hooks/ImageHistoryContext';
+
 export default function Display() {
   const [settings, setSettings] = useState({});
   const [settingsHistory, setSettingsHistory] = useState([{}]); // Initialize with empty settings
-  const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0); const [selectedElement, setSelectedElement] = useState(null);
+  const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
+  const [selectedElement, setSelectedElement] = useState(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [activeEditor, setActiveEditor] = useState('Template2ImageOnDo'); // Set the default editor to TextEditor
 
-
   const handleSettingsChange = (section, newSettings) => {
+    console.log("handleSettingsChange called with:", section, newSettings);
     if (!selectedElement) return; // Guard clause if no element is selected
 
     const updatedSettings = {
@@ -46,18 +48,25 @@ export default function Display() {
   };
 
   const undo = () => {
+    console.log("undo called");
     if (currentHistoryIndex > 0) {
       setCurrentHistoryIndex(currentHistoryIndex - 1);
-      setSettings(settingsHistory[currentHistoryIndex - 1]);
+      const newSettings = settingsHistory[currentHistoryIndex - 1];
+      setSettings(newSettings);
+      console.log("Settings updated to:", newSettings);
     }
   };
 
   const redo = () => {
+    console.log("redo called");
     if (currentHistoryIndex < settingsHistory.length - 1) {
       setCurrentHistoryIndex(currentHistoryIndex + 1);
-      setSettings(settingsHistory[currentHistoryIndex + 1]);
+      const newSettings = settingsHistory[currentHistoryIndex + 1];
+      setSettings(newSettings);
+      console.log("Settings updated to:", newSettings);
     }
   };
+  
 
 
   // This function is to be called when the "Propulse" button is clicked
