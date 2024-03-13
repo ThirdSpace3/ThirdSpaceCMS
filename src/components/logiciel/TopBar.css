@@ -45,6 +45,7 @@
     gap: 10px;
     background-color: var(--main-color);
     border-radius: 30px;
+    border: none;
 }
 .topbar-device-btn {
     color: var(--not-selected);

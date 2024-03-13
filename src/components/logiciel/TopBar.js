@@ -29,6 +29,7 @@ export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, onDevice
                 </div>
                 <button className='topbar-propulse-btn' onClick={onSaveClick}>
                     Propulse
+                    <i class="bi bi-rocket-takeoff"></i>
                 </button>
             </div>
         </>
