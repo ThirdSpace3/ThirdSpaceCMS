@@ -1,6 +1,6 @@
 import './Canva.css';
 import '../Root.css';
-import TemplateTestComponents from '../../templates/Template2ImageOnDo';
+import TemplateTestComponents from '../../templates/TemplateImg_txt';
 
 export default function Canva({ settings }) {
   return (

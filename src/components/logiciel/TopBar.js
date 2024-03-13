@@ -10,7 +10,7 @@ const deviceSizes = {
 };
 
 // Add a new prop onToggleTemplate1OnDo for toggling the visibility of Template1OnDo
-export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, onDeviceChange, onToggleTemplate1OnDo }) {
+export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, onDeviceChange, onPreview }) {
     return (
         <>
             <div className='topbar-wrapper'>
@@ -19,8 +19,8 @@ export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, onDevice
                     <a className='topbar-redo-btn' onClick={onRedoClick}><i className="bi bi-arrow-return-right"></i></a>
 
                     <hr />
-                    {/* Update this line to call onToggleTemplate1OnDo when the eye icon is clicked */}
-                    <a onClick={onToggleTemplate1OnDo}><i className="bi bi-eye"></i></a>
+                    {/* Update this line to call onPreview when the eye icon is clicked */}
+                    <a onClick={onPreview}><i className="bi bi-eye"></i></a>
                 </div>
                 <div className='topbar-mid'>
                     <a onClick={() => onDeviceChange(deviceSizes.tv)} className='topbar-device-btn'><i className="bi bi-tv"></i></a>

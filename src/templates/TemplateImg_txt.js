@@ -1,24 +1,22 @@
-import React, { useState } from 'react';
-import ImageSlots from '../components/logiciel/TemplateComponent/ImageSlots'; // New ImageSlots component
+import React, { useState, useRef } from 'react';
+import ImageSlots from '../components/logiciel/TemplateComponent/ImageSlots';
 import EditableText from '../components/logiciel/TemplateComponent/EditableText';
 import { useStyle } from '../hooks/StyleContext';
 import { useImageHistory } from '../hooks/ImageHistoryContext';
 
-export default function Template2ImageOnDo({ settings, selectedElement, setSelectedElement }) {
-  const { style } = useStyle();
-  const { imageHistory } = useImageHistory(); // Adjust based on your context
+export default function Template2ImageOnDo({ deviceSize, setSelectedElement }) {
 
+  //#region Content Editing 
+  //Base style 
+  const { style } = useStyle();
+  //Base Images from ImageSlots.js
+  const { imageHistory } = useImageHistory();
+
+  //Written content + class name 
   const [content, setContent] = useState({
     title: 'Template de Test #1',
     paragraph: 'Tu vas me devoir un café je crois bien',
   });
-
-  const handleContentChange = (key, newValue) => {
-    setContent((prevContent) => ({
-      ...prevContent,
-      [key]: newValue,
-    }));
-  };
   // Define your styles
   const styles = {
     templateWrapper: {
@@ -26,8 +24,7 @@ export default function Template2ImageOnDo({ settings, selectedElement, setSelec
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'space-between',
-      width: '100%',
-      // height: '100%',
+      width: deviceSize,
       backgroundColor: '#9600FA',
       overflow: 'auto',
     },
@@ -60,27 +57,53 @@ export default function Template2ImageOnDo({ settings, selectedElement, setSelec
     },
   };
 
-  
+//#endregion
+
+  //#region Functions
+  // Consolidating useRef hooks into an object for easier management
+  const refs = {
+    title: useRef(null),
+    paragraph: useRef(null),
+  };
+
+  const handleContentChange = (key, newValue) => {
+    setContent((prevContent) => ({
+      ...prevContent,
+      [key]: newValue,
+    }));
+  };
+
+  const handleTextClick = (ref) => {
+    setSelectedElement(ref.current);
+  };
+  // A function to render EditableText components more concisely
+  const renderEditableText = (key, tagName, style) => (
+    <EditableText
+      isEditable={true}
+      tagName={tagName}
+      content={content[key]}
+      onContentChange={(newValue) => handleContentChange(key, newValue)}
+      style={style}
+      innerRef={refs[key]}
+      onClick={() => handleTextClick(refs[key])}
+    />
+  );
+
+//#endregion
+
+
   return (
     <div style={styles.templateWrapper}>
+      {/* Styles from above, History = Saving in the PanelAssets */}
       <ImageSlots styles={styles} imageHistory={imageHistory} />
       <div style={styles.templateWrapperColumn}>
-        <EditableText
-          tagName="h1"
-          content={content.title}
-          onContentChange={(newValue) => handleContentChange('title', newValue)}
-          style={styles.title}
-        />
-        <EditableText
-          tagName="p"
-          content={content.paragraph}
-          onContentChange={(newValue) => handleContentChange('paragraph', newValue)}
-          style={styles.paragraph}
-        />
+        {/* Class Name, Tag, Styles applied */}
+        {renderEditableText('title', 'h1', styles.title)}
+        {renderEditableText('paragraph', 'p', styles.paragraph)}
+        {/* Buttons */}
         <button style={styles.button}>Clique</button>
       </div>
       <ImageSlots styles={styles} imageHistory={imageHistory} />
-
     </div>
   );
 }

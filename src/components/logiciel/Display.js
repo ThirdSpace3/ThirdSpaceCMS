@@ -6,8 +6,8 @@ import Canva from './Canva';
 import ActualPageParametersBTN from './ActualPageParametersBTN';
 import './Display.css';
 import { StyleProvider } from '../../hooks/StyleContext';
-import Template1OnDo from '../../templates/Template1OnDo';
-import Template2ImageOnDo from '../../templates/Template2ImageOnDo';
+import Template1OnDo from '../../templates/TemplateFullText';
+import Template2ImageOnDo from '../../templates/TemplateImg_txt';
 import axios from 'axios';
 import { ImageHistoryProvider } from '../../hooks/ImageHistoryContext';
 export default function Display() {
@@ -121,13 +121,11 @@ export default function Display() {
     setSelectedDeviceSize(size);
   };
 
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
 
-  const [showOnlyTemplate1OnDo, setShowOnlyTemplate1OnDo] = useState(false);
-
-  const toggleTemplate1OnDoVisibility = () => {
-    setShowOnlyTemplate1OnDo(prev => !prev);
+  const handlePreview = () => {
+    setIsPreviewMode(!isPreviewMode);
   };
-
   
   const [imageHistory, setImageHistory] = useState([]);
 
@@ -136,54 +134,66 @@ export default function Display() {
   };
   
 
-  return (<ImageHistoryProvider>
-    <StyleProvider>
-      {!showOnlyTemplate1OnDo && ( // Only render TopBar when showOnlyTemplate1OnDo is false
-        <TopBar
-          onSaveClick={saveSettings}
-          onUndoClick={undo}
-          onRedoClick={redo}
-          onDeviceChange={handleDeviceChange}
-          onToggleTemplate1OnDo={toggleTemplate1OnDoVisibility}
-        />
-      )}
-      {showOnlyTemplate1OnDo ? (
-        <Template1OnDo
-          deviceSize={selectedDeviceSize}
-          settings={settings}
-          selectedElement={selectedElement}
-          setSelectedElement={setSelectedElement}
-          onToggleTemplate1OnDo={toggleTemplate1OnDoVisibility}
-          showOnlyTemplate1OnDo={showOnlyTemplate1OnDo} // Pass the showOnlyTemplate1OnDo state here
-        />
-      ) : (
-        <div className="displayWrapper">
-          <LeftBar handleEditorChange={handleEditorChange}                addImageToHistory={addImageToHistory} />
+  return (
+    <ImageHistoryProvider>
+      <StyleProvider>
+        {!isPreviewMode && ( // Only render TopBar when not in preview mode
+          <TopBar
+            onSaveClick={saveSettings}
+            onUndoClick={undo}
+            onRedoClick={redo}
+            onDeviceChange={handleDeviceChange}
+            onPreview={handlePreview}
+          />
+        )}
+        {isPreviewMode ? (
+          // Render only the editable template when in preview mode
           <div className="displayColumnWrapper">
-            <ActualPageParametersBTN />
             {activeEditor === 'Template1OnDo' ? (
               <Template1OnDo
                 deviceSize={selectedDeviceSize}
                 settings={settings}
                 selectedElement={selectedElement}
                 setSelectedElement={setSelectedElement}
-
               />
             ) : (
               <Template2ImageOnDo
+                deviceSize={selectedDeviceSize}
                 settings={settings}
                 selectedElement={selectedElement}
                 setSelectedElement={setSelectedElement}
                 addImageToHistory={addImageToHistory}
-
               />
             )}
           </div>
-          <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
-        </div>
-      )}
-    </StyleProvider>
+        ) : (
+          // Render everything else when not in preview mode
+          <div className="displayWrapper">
+            <LeftBar handleEditorChange={handleEditorChange} addImageToHistory={addImageToHistory} />
+            <div className="displayColumnWrapper">
+              <ActualPageParametersBTN />
+              {activeEditor === 'Template1OnDo' ? (
+                <Template1OnDo
+                  deviceSize={selectedDeviceSize}
+                  settings={settings}
+                  selectedElement={selectedElement}
+                  setSelectedElement={setSelectedElement}
+                />
+              ) : (
+                <Template2ImageOnDo
+                  deviceSize={selectedDeviceSize}
+                  settings={settings}
+                  selectedElement={selectedElement}
+                  setSelectedElement={setSelectedElement}
+                  addImageToHistory={addImageToHistory}
+                />
+              )}
+            </div>
+            <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
+          </div>
+        )}
+      </StyleProvider>
     </ImageHistoryProvider>
   );
-
+  
 }
