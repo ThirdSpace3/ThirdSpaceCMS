@@ -9,7 +9,7 @@ import { StyleProvider } from '../../hooks/StyleContext';
 import Template1OnDo from '../../templates/Template1OnDo';
 import Template2ImageOnDo from '../../templates/Template2ImageOnDo';
 import axios from 'axios';
-import { ImageProvider } from '../../hooks/ImageContext';
+import { ImageHistoryProvider } from '../../hooks/ImageHistoryContext';
 export default function Display() {
   const [settings, setSettings] = useState({});
   const [settingsHistory, setSettingsHistory] = useState([{}]); // Initialize with empty settings
@@ -136,7 +136,7 @@ export default function Display() {
   };
   
 
-  return (
+  return (<ImageHistoryProvider>
     <StyleProvider>
       {!showOnlyTemplate1OnDo && ( // Only render TopBar when showOnlyTemplate1OnDo is false
         <TopBar
@@ -183,6 +183,7 @@ export default function Display() {
         </div>
       )}
     </StyleProvider>
+    </ImageHistoryProvider>
   );
 
 }

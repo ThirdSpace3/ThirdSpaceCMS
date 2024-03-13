@@ -1,34 +1,32 @@
-import React, { useState } from 'react';
-import './LeftBar.css';
-import '../Root.css';
+import React from 'react';
+import './LeftBar.css'; // Ensure the path is correct
+import '../Root.css'; // Ensure the path is correct
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useImageHistory } from '../../hooks/ImageHistoryContext'; // Adjust the import path as necessary
 
 export default function PanelAsset() {
-    // State to store the image URLs
-    const [images, setImages] = useState([]);
+    const { addImageToHistory, imageHistory, selectImage, selectedImage } = useImageHistory();
 
-    // Function to handle file input changes
     const handleFileChange = (event) => {
-        const files = Array.from(event.target.files); // Convert FileList to Array
-
-        // Create URLs for the selected files
-        const newImageUrls = files.map(file => URL.createObjectURL(file));
-        
-        // Update the state with the new images, appending them to any existing images
-        setImages(prevImages => [...prevImages, ...newImageUrls]);
+        const files = Array.from(event.target.files);
+        files.forEach(file => {
+            const newImageUrl = URL.createObjectURL(file);
+            addImageToHistory(newImageUrl);
+        });
     };
-
+    const handleImageSelect = (image) => {
+        selectImage(image); // Update the selected image in the context
+    };
     return (
         <div className='navbar-panel'>
-            {/* File input for selecting images */}
             <input type="file" accept="image/*" multiple onChange={handleFileChange} />
             <div className="ImagePreview">
-                {images.map((image, index) => (
-                    <div key={index} className="image-preview">
-                        <img src={image} alt={`Preview ${index}`} />
-                    </div>
-                ))}
-            </div>
+            {imageHistory.map((image, index) => (
+                <div key={index} className={`image-preview ${image === selectedImage ? 'selected' : ''}`} onClick={() => handleImageSelect(image)}>
+                    <img src={image} alt={`Preview ${index}`} />
+                </div>
+            ))}
+        </div>
         </div>
     );
 }
