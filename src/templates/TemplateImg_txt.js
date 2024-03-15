@@ -4,7 +4,7 @@ import EditableText from '../components/logiciel/TemplateComponent/EditableText'
 import { useStyle } from '../hooks/StyleContext';
 import { useImageHistory } from '../hooks/ImageHistoryContext';
 
-export default function Template2ImageOnDo({ deviceSize, setSelectedElement }) {
+export default function Template2ImageOnDo({ deviceSize, setSelectedElement, isPreviewMode, settings, handleSettingsChange }) {
 
   //#region Content Editing 
   //Base style 
@@ -13,10 +13,10 @@ export default function Template2ImageOnDo({ deviceSize, setSelectedElement }) {
   const { imageHistory } = useImageHistory();
 
   //Written content + class name 
-  const [content, setContent] = useState({
-    title: 'Template de Test #1',
-    paragraph: 'Tu vas me devoir un café je crois bien',
-  });
+  // const [content, setContent] = useState({
+  //   title: 'Template de Test #1',
+  //   paragraph: 'Tu vas me devoir un café je crois bien',
+  // });
   // Define your styles
   const styles = {
     templateWrapper: {
@@ -67,27 +67,38 @@ export default function Template2ImageOnDo({ deviceSize, setSelectedElement }) {
   };
 
   const handleContentChange = (key, newValue) => {
-    setContent((prevContent) => ({
-      ...prevContent,
-      [key]: newValue,
-    }));
+    handleSettingsChange('content', { [key]: newValue });
   };
 
-  const handleTextClick = (ref) => {
+
+// Inside Template2ImageOnDo
+const handleTextClick = (ref) => {
+  if (!isPreviewMode) { // Only allow text selection if not in preview mode
     setSelectedElement(ref.current);
-  };
-  // A function to render EditableText components more concisely
-  const renderEditableText = (key, tagName, style) => (
+  }
+};
+
+// Then, in the renderEditableText function
+const renderEditableText = (key, tagName, style) => {
+  if (!settings.content) {
+    return null;
+  }
+
+  return (
     <EditableText
-      isEditable={true}
+      isEditable={!isPreviewMode} // Disable editing if in preview mode
       tagName={tagName}
-      content={content[key]}
+      content={settings.content[key]} // Replace content with settings.content
       onContentChange={(newValue) => handleContentChange(key, newValue)}
       style={style}
       innerRef={refs[key]}
       onClick={() => handleTextClick(refs[key])}
     />
   );
+};
+
+
+
 
 //#endregion
 
@@ -98,8 +109,8 @@ export default function Template2ImageOnDo({ deviceSize, setSelectedElement }) {
       <ImageSlots styles={styles} imageHistory={imageHistory} />
       <div style={styles.templateWrapperColumn}>
         {/* Class Name, Tag, Styles applied */}
-        {renderEditableText('title', 'h1', styles.title)}
-        {renderEditableText('paragraph', 'p', styles.paragraph)}
+        {settings.content && renderEditableText('title', 'h1', styles.title)}
+        {settings.content && renderEditableText('paragraph', 'p', styles.paragraph)}
         {/* Buttons */}
         <button style={styles.button}>Clique</button>
       </div>

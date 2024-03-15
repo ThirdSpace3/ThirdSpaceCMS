@@ -1,16 +1,25 @@
+import React, { useState } from 'react';
 import './TopBar.css';
 import '../Root.css';
-// Remove the direct import of Template1OnDo since you're not using it in TopBar
-// import Template1OnDo from '../../templates/Template1OnDo'; // This line is no longer needed
 
 const deviceSizes = {
-    tv: "100%", // Example, adjust based on your design
-    tablet: "768px", // Common tablet width
-    smartphone: "375px", // Common smartphone width
+    tv: "100%",
+    tablet: "768px",
+    smartphone: "375px",
 };
 
-// Add a new prop onToggleTemplate1OnDo for toggling the visibility of Template1OnDo
 export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, onDeviceChange, onPreview }) {
+    const [eyeIcon, setEyeIcon] = useState("bi bi-eye"); // Initial state is 'bi bi-eye'
+
+    const handleEyeIconClick = () => {
+        if (eyeIcon === "bi bi-eye") {
+            setEyeIcon("bi bi-eye-slash"); // Change to 'bi bi-eye-slash' when clicked
+        } else {
+            setEyeIcon("bi bi-eye"); // Change back to 'bi bi-eye' when clicked again
+        }
+        onPreview(); // Call onPreview function
+    };
+
     return (
         <>
             <div className='topbar-wrapper'>
@@ -19,8 +28,8 @@ export default function TopBar({ onSaveClick, onUndoClick, onRedoClick, onDevice
                     <a className='topbar-redo-btn' onClick={onRedoClick}><i className="bi bi-arrow-return-right"></i></a>
 
                     <hr />
-                    {/* Update this line to call onPreview when the eye icon is clicked */}
-                    <a onClick={onPreview}><i className="bi bi-eye"></i></a>
+                    {/* Update this line to call handleEyeIconClick when the eye icon is clicked */}
+                    <a onClick={handleEyeIconClick}><i className={eyeIcon}></i></a>
                 </div>
                 <div className='topbar-mid'>
                     <a onClick={() => onDeviceChange(deviceSizes.tv)} className='topbar-device-btn'><i className="bi bi-tv"></i></a>

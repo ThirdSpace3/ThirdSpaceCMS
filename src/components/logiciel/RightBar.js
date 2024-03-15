@@ -3,7 +3,11 @@ import './RightBar.css';
 import '../Root.css';
 import { useStyle } from '../../hooks/StyleContext';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-
+import SizeSection from './Settings/SizeSettings';
+import SpacingSettings from './Settings/SpacingSettings';
+import BorderSettings from './Settings/BorderSettings';
+import BackgroundSettings from './Settings/BackgroundSettings';
+import TypographySettings from './Settings/TypographySettings';
 export default function RightBar({ selectedElement }) {
 
   const [typographyStyle, setTypographyStyle] = useState({});
@@ -13,11 +17,14 @@ export default function RightBar({ selectedElement }) {
   const [selectedDecoration, setSelectedDecoration] = useState(null);
   const { updateStyle } = useStyle(); // Get the function to update the style
 
+  const [selectedSide, setSelectedSide] = useState(null);
+
   const [style, setStyle] = useState({
     background: {},
     typography: {},
     border: {}
   });
+
   const [backgroundStyle, setBackgroundStyle] = useState({
     backgroundColor: '',
     backgroundImage: '',
@@ -32,29 +39,6 @@ export default function RightBar({ selectedElement }) {
     maxHeight: '',
     overflow: '',
   });
-  const [marginTopInput, setMarginTopInput] = useState('');
-  const [marginRightInput, setMarginRightInput] = useState('');
-  const [marginBottomInput, setMarginBottomInput] = useState('');
-  const [marginLeftInput, setMarginLeftInput] = useState('');
-  const [paddingTopInput, setPaddingTopInput] = useState('');
-  const [paddingRightInput, setPaddingRightInput] = useState('');
-  const [paddingBottomInput, setPaddingBottomInput] = useState('');
-  const [paddingLeftInput, setPaddingLeftInput] = useState('');
-
-  const [marginStyle, setMarginStyle] = useState({
-    top: '',
-    right: '',
-    bottom: '',
-    left: '',
-  });
-
-  const [paddingStyle, setPaddingStyle] = useState({
-    top: '',
-    right: '',
-    bottom: '',
-    left: '',
-  });
-
 
   const toggleSection = (section) => {
     setIsOpen(prevState => ({ ...prevState, [section]: !prevState[section] }));
@@ -291,23 +275,6 @@ export default function RightBar({ selectedElement }) {
     }
   };
 
-  const handleBorderChange = (e, styleProperty) => {
-    const value = parseInt(e.target.value, 10); // Convert string to number
-    setBorderStyle(prevState => ({ ...prevState, [styleProperty]: value }));
-    onSettingsChange(selectedElement, { border: { ...borderStyle, [styleProperty]: value, borderRadius: borderStyle.borderRadius } });
-  };
-
-
-  // Handler for changing width in RightBar
-  const handleWidthChange = (newWidth) => {
-    updateStyle({ ...style, width: newWidth + 'px' }); // Append 'px' to make it a valid CSS value
-  };
-
-  // Handler for changing width in RightBar
-  const handleHeightChange = (newWidth) => {
-    updateStyle({ ...style, height: newWidth + 'px' }); // Append 'px' to make it a valid CSS value
-  };
-
 
   return (
     <>
@@ -315,400 +282,58 @@ export default function RightBar({ selectedElement }) {
         <div className='style-wrapper'>
 
           {/* Section Size */}
-          <div className='parameters-wrapper'>
-            <div className='parameters-wrapper-title-box' onClick={() => toggleSection('size')}>
-              <p className='parameters-wrapper-title'>Size</p>
-              <i className={`bi bi-caret-down-fill ${isOpen.size ? 'rotate' : ''}`}></i>
-            </div>
 
-            <div className={`parameters-wrapper-content ${isOpen.size ? 'open' : ''}`}>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Width</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={sizeStyle.width} onChange={(e) => setSizeStyle({ ...sizeStyle, width: e.target.value })} onBlur={() => onSettingsChange(selectedElement, { width: sizeStyle.width })} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Height</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={sizeStyle.height} onChange={(e) => setSizeStyle({ ...sizeStyle, height: e.target.value })} onBlur={() => onSettingsChange(selectedElement, { height: sizeStyle.height })} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Min Width</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={sizeStyle.minWidth} onChange={(e) => setSizeStyle({ ...sizeStyle, minWidth: e.target.value })} onBlur={() => onSettingsChange(selectedElement, { size: sizeStyle })} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Max Width</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={sizeStyle.maxWidth} onChange={(e) => setSizeStyle({ ...sizeStyle, maxWidth: e.target.value })} onBlur={() => onSettingsChange(selectedElement, { size: sizeStyle })} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Min Height</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={sizeStyle.minHeight} onChange={(e) => setSizeStyle({ ...sizeStyle, minHeight: e.target.value })} onBlur={() => onSettingsChange(selectedElement, { size: sizeStyle })} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Max Height</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={sizeStyle.maxHeight} onChange={(e) => setSizeStyle({ ...sizeStyle, maxHeight: e.target.value })} onBlur={() => onSettingsChange(selectedElement, { size: sizeStyle })} />
-                </div>
-              </div>
-
-
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Overflow</p>
-                <div className='parameters-content-line-container'>
-                  <button
-                    className={`parameters-content-line-button ${sizeStyle.overflow === 'visible' ? 'selected' : ''}`}
-                    onClick={() => {
-                      setSizeStyle({ ...sizeStyle, overflow: 'visible' });
-                      onSettingsChange(selectedElement, { size: sizeStyle });
-                    }}
-                  >
-                    <i className="bi bi-eye"></i>
-                  </button>
-                  <button
-                    className={`parameters-content-line-button ${sizeStyle.overflow === 'hidden' ? 'selected' : ''}`}
-                    onClick={() => {
-                      setSizeStyle({ ...sizeStyle, overflow: 'hidden' });
-                      onSettingsChange(selectedElement, { size: sizeStyle });
-                    }}
-                  >
-                    <i className="bi bi-eye-slash"></i>
-                  </button>
-                </div>
-              </div>
-
-
-
-
-
-
-            </div>
-            <hr className='parameters-wrapper-separation' />
-          </div>
+          <SizeSection
+            isOpen={isOpen}
+            toggleSection={toggleSection}
+            sizeStyle={sizeStyle}
+            onSettingsChange={onSettingsChange}
+            selectedElement={selectedElement}
+          />
 
           {/* Section Spacing */}
+          <SpacingSettings
+            isOpen={isOpen}
+            toggleSection={toggleSection}
+            sizeStyle={sizeStyle}
+            onSettingsChange={onSettingsChange}
+            selectedElement={selectedElement}
+          />
 
-          <div className='parameters-wrapper'>
-            <div className='parameters-wrapper-title-box' onClick={() => toggleSection('spacing')}>
-              <p className='parameters-wrapper-title'>Spacing</p>
-              <i className={`bi bi-caret-down-fill ${isOpen.spacing ? 'rotate' : ''}`}></i>
-            </div>
-
-            <div className={`parameters-wrapper-content ${isOpen.spacing ? 'open' : ''}`}>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Margin Top</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={marginTopInput} onChange={(e) => {
-                    const value = e.target.value;
-                    setMarginTopInput(value);
-                    const numericValue = value.match(/\d+/);
-                    setMarginStyle({ ...marginStyle, top: numericValue ? numericValue[0] + 'px' : '' });
-                    onSettingsChange(selectedElement, { margin: marginStyle });
-                  }} />
-                </div>
-              </div>
-
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Margin Right</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={marginRightInput} onChange={(e) => {
-                    const value = e.target.value;
-                    setMarginRightInput(value);
-                    const numericValue = value.match(/\d+/);
-                    setMarginStyle({ ...marginStyle, right: numericValue ? numericValue[0] + 'px' : '' });
-                    onSettingsChange(selectedElement, { margin: marginStyle });
-                  }} />
-                </div>
-              </div>
-
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Margin Bottom</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={marginBottomInput} onChange={(e) => {
-                    const value = e.target.value;
-                    setMarginBottomInput(value);
-                    const numericValue = value.match(/\d+/);
-                    setMarginStyle({ ...marginStyle, bottom: numericValue ? numericValue[0] + 'px' : '' });
-                    onSettingsChange(selectedElement, { margin: marginStyle });
-                  }} />
-                </div>
-              </div>
-
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Margin Left</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={marginLeftInput} onChange={(e) => {
-                    const value = e.target.value;
-                    setMarginLeftInput(value);
-                    const numericValue = value.match(/\d+/);
-                    setMarginStyle({ ...marginStyle, left: numericValue ? numericValue[0] + 'px' : '' });
-                    onSettingsChange(selectedElement, { margin: marginStyle });
-                  }} />
-                </div>
-              </div>
-
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Padding Top</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={paddingTopInput} onChange={(e) => {
-                    const value = e.target.value;
-                    setPaddingTopInput(value);
-                    const numericValue = value.match(/\d+/);
-                    setPaddingStyle({ ...paddingStyle, top: numericValue ? numericValue[0] + 'px' : '' });
-                    onSettingsChange(selectedElement, { padding: paddingStyle });
-                  }} />
-                </div>
-              </div>
-
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Padding Right</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={paddingRightInput} onChange={(e) => {
-                    const value = e.target.value;
-                    setPaddingRightInput(value);
-                    const numericValue = value.match(/\d+/);
-                    setPaddingStyle({ ...paddingStyle, right: numericValue ? numericValue[0] + 'px' : '' });
-                    onSettingsChange(selectedElement, { padding: paddingStyle });
-                  }} />
-                </div>
-              </div>
-
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Padding Bottom</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={paddingBottomInput} onChange={(e) => {
-                    const value = e.target.value;
-                    setPaddingBottomInput(value);
-                    const numericValue = value.match(/\d+/);
-                    setPaddingStyle({ ...paddingStyle, bottom: numericValue ? numericValue[0] + 'px' : '' });
-                    onSettingsChange(selectedElement, { padding: paddingStyle });
-                  }} />
-                </div>
-              </div>
-
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Padding Left</p>
-                <div className='parameters-content-line-container'>
-                  <input type="text" value={paddingLeftInput} onChange={(e) => {
-                    const value = e.target.value;
-                    setPaddingLeftInput(value);
-                    const numericValue = value.match(/\d+/);
-                    setPaddingStyle({ ...paddingStyle, left: numericValue ? numericValue[0] + 'px' : '' });
-                    onSettingsChange(selectedElement, { padding: paddingStyle });
-                  }} />
-                </div>
-              </div>
-
-              {/* Repeat for margin-right, margin-bottom, margin-left, padding-top, padding-right, padding-bottom, padding-left */}
-            </div>
-
-            <hr className='parameters-wrapper-separation' />
-          </div>
 
           {/* Section Border */}
-          <div className='parameters-wrapper'>
-            <div className='parameters-wrapper-title-box' onClick={() => toggleSection('border')}>
-              <p className='parameters-wrapper-title'>Border</p>
-              <i className={`bi bi-caret-down-fill ${isOpen.border ? 'rotate' : ''}`}></i>
-            </div>
-            <div className={`parameters-wrapper-content ${isOpen.border ? 'open' : ''}`}>
+          <BorderSettings
+            isOpen={isOpen}
+            toggleSection={toggleSection}
+            sizeStyle={sizeStyle}
+            onSettingsChange={onSettingsChange}
+            handleInputChange={handleInputChange}
+          />
 
-            <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Border Radius</p>
-                <div className='parameters-content-line-container'>
-                  <input type="number" min="0" max="100" step="1" defaultValue="0" onChange={(e) => handleInputChange(e, 'borderRadius', 'number')} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Border Color</p>
-                <div className='parameters-content-line-container'>
-                  <input type="color" onChange={(e) => handleInputChange(e, 'borderColor', 'color')}></input>
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Border Width</p>
-                <div className='parameters-content-line-container'>
-                  <input type="number" min="0" max="20" step="1" defaultValue="1" onChange={(e) => handleBorderChange(e, 'borderWidth')} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Border Style</p>
-                <div className='parameters-content-line-container'>
-                  <select onChange={(e) => handleInputChange(e, 'borderStyle', 'select')}>
-                    <option value="none">None</option>
-                    <option value="solid">Solid</option>
-                    <option value="dashed">Dashed</option>
-                    <option value="dotted">Dotted</option>
-                  </select>
-                </div>
-              </div>
-
-
-
-
-
-            </div>
-            <hr className='parameters-wrapper-separation' />
-
-
-          </div>
 
 
           {/* Section Background */}
-          <div className='parameters-wrapper'>
-            <div className='parameters-wrapper-title-box' onClick={() => toggleSection('background')}>
-              <p className='parameters-wrapper-title'>Background</p>
-              <i className={`bi bi-caret-down-fill ${isOpen.background ? 'rotate' : ''}`}></i>
-            </div>
 
-            <div className={`parameters-wrapper-content ${isOpen.background ? 'open' : ''}`}>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Color</p>
-                <div className='parameters-content-line-container'>
-                  <input type="color" onChange={(e) => handleBackgroundChange(e, 'backgroundColor')} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Image</p>
-                <div className='parameters-content-line-container'>
-                  <input type="file" accept="image/*" onChange={(e) => handleBackgroundChange(e, 'backgroundImage')} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Background Position</p>
-                <div className='parameters-content-line-container'>
-                  <select onChange={(e) => handleInputChange(e, 'backgroundPosition', 'select')}>
-                    <option value="center">Center</option>
-                    <option value="top">Top</option>
-                    <option value="bottom">Bottom</option>
-                    <option value="left">Left</option>
-                    <option value="right">Right</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Background Size</p>
-                <div className='parameters-content-line-container'>
-                  <select onChange={(e) => handleInputChange(e, 'backgroundSize', 'select')}>
-                    <option value="auto">Auto</option>
-                    <option value="cover">Cover</option>
-                    <option value="contain">Contain</option>
-                  </select>
-                </div>
-              </div>
-
-
-
-
-
-            </div>
-            <hr className='parameters-wrapper-separation' />
-          </div>
+          <BackgroundSettings
+            isOpen={isOpen}
+            toggleSection={toggleSection}
+            handleBackgroundChange={handleBackgroundChange}
+            backgroundStyle={backgroundStyle}
+          />
 
           {/* Section Typographie */}
-          <div className='parameters-wrapper'>
-            <div className='parameters-wrapper-title-box' onClick={() => toggleSection('typographie')}>
-              <p className='parameters-wrapper-title'>Typographie</p>
-              <i className={`bi bi-caret-down-fill ${isOpen.typographie ? 'rotate' : ''}`}></i>
-            </div>
-            <div className={`parameters-wrapper-content ${isOpen.typographie ? 'open' : ''}`}>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Font Family</p>
-                <div className='parameters-content-line-container'>
-                  <select onChange={(e) => handleInputChange(e, 'fontFamily', 'select')}>
-                    <option>Arial</option>
-                    <option>Verdana</option>
-                    <option>Helvetica</option>
-                  </select>
+          <TypographySettings
+            selectedElement={selectedElement}
+            updateStyle={updateStyle}
+            toggleSection={toggleSection}
+            isOpen={isOpen}
+            handleInputChange={handleInputChange}
+            selectedDecoration={selectedDecoration}
+            handleTextDecoration={handleTextDecoration}
+            selectedAlign={selectedAlign}
+            handleTextAlign={handleTextAlign}
+          />
 
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Font Size</p>
-                <div className='parameters-content-line-container'>
-                  <input type="number" min="8" max="72" step="1" defaultValue="14" onChange={(e) => handleInputChange(e, 'fontSize', 'number')} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Color</p>
-                <div className='parameters-content-line-container'>
-                  <input type="color" onChange={(e) => handleInputChange(e, 'color')} />
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Text Decoration</p>
-                <div className='parameters-content-line-container'>
-                  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'italic' ? 'selected' : ''}`} onClick={() => handleTextDecoration('italic')}><i className="bi bi-type-italic"></i></a>
-                  <hr className='parameters-content-line-separation' />
-                  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'underline' ? 'selected' : ''}`} onClick={() => handleTextDecoration('underline')}><i className="bi bi-type-underline"></i></a>
-                  <hr className='parameters-content-line-separation' />
-                  <a href='#' className={`parameters-content-line-item ${selectedDecoration === 'line-through' ? 'selected' : ''}`} onClick={() => handleTextDecoration('line-through')}><i className="bi bi-type-strikethrough"></i></a>
-                </div>
-
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Text Align</p>
-                <div className='parameters-content-line-container'>
-                  <a
-                    href="#"
-                    className={`parameters-content-line-item ${selectedAlign === 'left' ? 'selected' : ''}`}
-                    onClick={() => handleTextAlign('left')}
-                  >
-                    <i className="bi bi-text-left"></i>
-                  </a>
-
-                  <hr className='parameters-content-line-separation' />
-
-                  <a
-                    href="#"
-                    className={`parameters-content-line-item ${selectedAlign === 'center' ? 'selected' : ''}`}
-                    onClick={() => handleTextAlign('center')}
-                  >
-                    <i className="bi bi-text-center"></i>
-                  </a>
-
-                  <hr className='parameters-content-line-separation' />
-
-                  <a
-                    href="#"
-                    className={`parameters-content-line-item ${selectedAlign === 'right' ? 'selected' : ''}`}
-                    onClick={() => handleTextAlign('right')}
-                  >
-                    <i className="bi bi-text-right"></i>
-                  </a>
-
-                  <hr className='parameters-content-line-separation' />
-
-                  <a
-                    href="#"
-                    className={`parameters-content-line-item ${selectedAlign === 'justify' ? 'selected' : ''}`}
-                    onClick={() => handleTextAlign('justify')}
-                  >
-                    <i className="bi bi-justify"></i>
-                  </a>
-                </div>
-              </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Font Weight</p>
-                <div className='parameters-content-line-container'>
-                  <select onChange={(e) => handleInputChange(e, 'fontWeight', 'select')}>
-                    <option value="normal">Normal</option>
-                    <option value="bold">Bold</option>
-                  </select>
-                </div>
-              </div>
-
-            </div>
-            <hr className='parameters-wrapper-separation' />
-          </div>
 
 
         </div>
