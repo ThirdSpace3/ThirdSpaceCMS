@@ -3,11 +3,11 @@ import './RightBar.css';
 import '../Root.css';
 import { useStyle } from '../../hooks/StyleContext';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import SizeSection from './Settings/SizeSettings';
-import SpacingSettings from './Settings/SpacingSettings';
-import BorderSettings from './Settings/BorderSettings';
-import BackgroundSettings from './Settings/BackgroundSettings';
-import TypographySettings from './Settings/TypographySettings';
+import SizeSection from './RightBarComponents/SizeSettings';
+import SpacingSettings from './RightBarComponents/SpacingSettings';
+import BorderSettings from './RightBarComponents/BorderSettings';
+import BackgroundSettings from './RightBarComponents/BackgroundSettings';
+import TypographySettings from './RightBarComponents/TypographySettings';
 export default function RightBar({ selectedElement }) {
 
   const [typographyStyle, setTypographyStyle] = useState({});
