@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import LeftBar from './LeftBar';
 import TopBar from './TopBar';
 import RightBar from './RightBar';
-import Canva from './Canva';
 import ActualPageParametersBTN from './ActualPageParametersBTN';
 import './Display.css';
 import { StyleProvider } from '../../hooks/StyleContext';
