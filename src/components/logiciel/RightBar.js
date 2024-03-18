@@ -11,7 +11,7 @@ import TypographySettings from './RightBarComponents/TypographySettings';
 export default function RightBar({ selectedElement }) {
 
   const [typographyStyle, setTypographyStyle] = useState({});
-  const [borderStyle, setBorderStyle] = useState({});
+
   const [isOpen, setIsOpen] = useState({ size: false, background: false, typographie: false, border: false, });
   const [selectedAlign, setSelectedAlign] = useState(null);
   const [selectedDecoration, setSelectedDecoration] = useState(null);
@@ -29,7 +29,12 @@ export default function RightBar({ selectedElement }) {
     backgroundColor: '',
     backgroundImage: '',
   });
-
+  const [borderStyle, setBorderStyle] = useState({
+    top: {},
+    right: {},
+    bottom: {},
+    left: {}
+  });
   const [sizeStyle, setSizeStyle] = useState({
     width: '',
     height: '',
@@ -57,7 +62,14 @@ export default function RightBar({ selectedElement }) {
     } else {
       value = e.target.value; // For all other input types, use the string value
     }
-
+    if (['borderColor', 'borderWidth', 'borderStyle', 'borderRadius'].includes(styleProperty)) {
+      const updatedStyle = selectedSide ? 
+      { ...borderStyle, [selectedSide]: { ...borderStyle[selectedSide], [styleProperty]: value } } : 
+      { ...borderStyle, top: value, right: value, bottom: value, left: value };
+  
+      setBorderStyle(updatedStyle);
+      onSettingsChange(selectedElement, { border: updatedStyle });
+    }
     // Directly construct the updated style object based on the property being changed
     if (styleProperty === 'fontFamily' || styleProperty === 'fontSize' || styleProperty === 'color' || styleProperty === 'fontStyle' || styleProperty === 'textDecoration' || styleProperty === 'textAlign' || styleProperty === 'fontWeight') {
       // Typography related properties
@@ -88,60 +100,91 @@ export default function RightBar({ selectedElement }) {
 
   const onSettingsChange = (element, newSettings) => {
     if (element) {
-      const currentStyles = window.getComputedStyle(element);
-
-      for (const [key, value] of Object.entries(newSettings)) {
-        if (key === 'background') {
-          if (value.backgroundColor) {
-            element.style.setProperty('background-color', value.backgroundColor);
-          }
-          if (value.backgroundImage) {
-            element.style.setProperty('background-image', value.backgroundImage);
-          }
-        } else if (key === 'border') {
-          element.style.setProperty('border-color', value.borderColor);
-          element.style.setProperty('border-style', value.borderStyle);
-          if (value.borderWidth) {
-            element.style.setProperty('border-width', `${value.borderWidth}px`); // Append 'px' here
-            console.log(`Border width set to ${value.borderWidth}px`); // Log the borderWidth value
-          }
-          if (value.borderRadius) {
-            element.style.setProperty('border-radius', `${value.borderRadius}px`); // Append 'px' here
-            console.log(`Border radius set to ${value.borderRadius}px`); // Log the borderRadius value
-          }
-        } else if (key === 'typography') {
-          element.style.setProperty('font-family', value.fontFamily);
-          element.style.setProperty('font-size', `${value.fontSize}px`); // Append 'px' here
-          element.style.setProperty('color', value.color);
-          element.style.setProperty('font-style', value.fontStyle);
-          element.style.setProperty('text-decoration', value.textDecoration);
-          element.style.setProperty('text-align', value.textAlign);
+      // Apply background settings
+      if (newSettings.background) {
+        const { backgroundColor, backgroundImage, backgroundPosition, backgroundSize } = newSettings.background;
+        if (backgroundColor) {
+          element.style.backgroundColor = backgroundColor;
+        }
+        if (backgroundImage) {
+          element.style.backgroundImage = backgroundImage;
+        }
+        if (backgroundPosition) {
+          element.style.backgroundPosition = backgroundPosition;
+        }
+        if (backgroundSize) {
+          element.style.backgroundSize = backgroundSize;
         }
       }
-    }
-    if (newSettings.size) {
-      if (newSettings.size.width) {
-        element.style.width = newSettings.size.width;
+  
+      // Apply typography settings
+      if (newSettings.typography) {
+        const { fontFamily, fontSize, color, fontStyle, textDecoration, textAlign } = newSettings.typography;
+        if (fontFamily) {
+          element.style.fontFamily = fontFamily;
+        }
+        if (fontSize) {
+          element.style.fontSize = `${fontSize}px`;
+        }
+        if (color) {
+          element.style.color = color;
+        }
+        if (fontStyle) {
+          element.style.fontStyle = fontStyle;
+        }
+        if (textDecoration) {
+          element.style.textDecoration = textDecoration;
+        }
+        if (textAlign) {
+          element.style.textAlign = textAlign;
+        }
       }
-      if (newSettings.size.height) {
-        element.style.height = newSettings.size.height;
+  
+      // Apply size settings
+      if (newSettings.size) {
+        const { width, height, minWidth, maxWidth, minHeight, maxHeight, overflow } = newSettings.size;
+        if (width) {
+          element.style.width = width;
+        }
+        if (height) {
+          element.style.height = height;
+        }
+        if (minWidth) {
+          element.style.minWidth = minWidth;
+        }
+        if (maxWidth) {
+          element.style.maxWidth = maxWidth;
+        }
+        if (minHeight) {
+          element.style.minHeight = minHeight;
+        }
+        if (maxHeight) {
+          element.style.maxHeight = maxHeight;
+        }
+        if (overflow) {
+          element.style.overflow = overflow;
+        }
       }
-      if (newSettings.size.minWidth) {
-        element.style.minWidth = newSettings.size.minWidth;
+  
+      // Apply border settings selectively based on the selected side
+      if (newSettings.border) {
+        const sides = ['top', 'right', 'bottom', 'left'];
+        sides.forEach(side => {
+          if (selectedSide === side || !selectedSide) {
+            const borderStyleForSide = newSettings.border[side] || newSettings.border;
+            if (borderStyleForSide.borderColor) {
+              element.style.setProperty(`border-${side}-color`, borderStyleForSide.borderColor);
+            }
+            if (borderStyleForSide.borderStyle) {
+              element.style.setProperty(`border-${side}-style`, borderStyleForSide.borderStyle);
+            }
+            if (borderStyleForSide.borderWidth) {
+              element.style.setProperty(`border-${side}-width`, `${borderStyleForSide.borderWidth}px`);
+            }
+            // Border radius is complex and may not apply uniformly to sides; handle with care.
+          }
+        });
       }
-      if (newSettings.size.maxWidth) {
-        element.style.maxWidth = newSettings.size.maxWidth;
-      }
-      if (newSettings.size.minHeight) {
-        element.style.minHeight = newSettings.size.minHeight;
-      }
-      if (newSettings.size.maxHeight) {
-        element.style.maxHeight = newSettings.size.maxHeight;
-      }
-      if (newSettings.size.overflow) {
-        element.style.overflow = newSettings.size.overflow;
-      }
-    }
     if (newSettings.margin) {
       if (newSettings.margin.top) {
         element.style.marginTop = newSettings.margin.top;
@@ -171,7 +214,8 @@ export default function RightBar({ selectedElement }) {
         element.style.paddingLeft = newSettings.padding.left;
       }
     }
-  };
+  }
+};
 
 
 
@@ -305,9 +349,10 @@ export default function RightBar({ selectedElement }) {
           <BorderSettings
             isOpen={isOpen}
             toggleSection={toggleSection}
-            sizeStyle={sizeStyle}
+            sizeStyle={borderStyle} // Note: Ensure the passed props align with your actual use case
             onSettingsChange={onSettingsChange}
             handleInputChange={handleInputChange}
+            setSelectedSide={setSelectedSide}
           />
 
 

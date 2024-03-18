@@ -1,16 +1,7 @@
-import React, { useState } from 'react';
+import React, {  } from 'react';
 
-export default function BorderSettings({ selectedElement, onSettingsChange, toggleSection, isOpen, handleInputChange }) {
-  const [borderStyle, setBorderStyle] = useState({});
-  const [selectedSide, setSelectedSide] = useState(null);
+export default function BorderSettings({ setSelectedSide, toggleSection, isOpen, handleInputChange }) {
 
-  const handleBorderChange = (e, styleProperty) => {
-    const value = parseInt(e.target.value, 10); // Convert string to number
-    if (selectedSide) {
-      setBorderStyle(prevState => ({ ...prevState, [styleProperty]: { ...prevState[styleProperty], [selectedSide]: value } }));
-      onSettingsChange(selectedElement, { border: { ...borderStyle, [styleProperty]: { ...borderStyle[styleProperty], [selectedSide]: value }, borderRadius: borderStyle.borderRadius } });
-    }
-  };
 
   return (
     <div>
