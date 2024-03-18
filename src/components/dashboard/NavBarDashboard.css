@@ -1,0 +1,20 @@
+.Navabr_wapper{
+    display: flex;
+    width: 100%;
+    color: white;
+    justify-content: space-around;
+    height: 10vh;
+    align-items: center;
+    margin-bottom: 5vh;
+}
+.Navabr_wapper ul{
+    display: flex;
+    width: 60%;
+    justify-content: space-around
+}
+.options{
+    display: flex;
+    width: 40%;
+    align-items: center;
+    justify-content: space-around;
+}

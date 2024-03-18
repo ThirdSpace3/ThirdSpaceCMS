@@ -11,7 +11,12 @@ export default function Template2ImageOnDo({ deviceSize, setSelectedElement, isP
   const { style } = useStyle();
   //Base Images from ImageSlots.js
   const { imageHistory } = useImageHistory();
+  const responsiveStyles = {
+    H1Size: deviceSize === "375px" ? "16px" : deviceSize === "768px" ? "20px" : "",
+    PSize: deviceSize === "375px" ? "12px" : deviceSize === "768px" ? "16px" : "",
 
+    // Add more responsive styles as needed
+  };
   //Written content + class name 
   const [content, setContent] = useState({
      title: 'Template de Test #1',
@@ -27,6 +32,7 @@ export default function Template2ImageOnDo({ deviceSize, setSelectedElement, isP
       width: deviceSize,
       backgroundColor: '#9600FA',
       overflow: 'auto',
+
     },
     templateWrapperColumn: {
       display: 'flex',
@@ -35,14 +41,14 @@ export default function Template2ImageOnDo({ deviceSize, setSelectedElement, isP
     },
     title: {
       ...style.typography,
-      fontSize: '35px',
+      fontSize: responsiveStyles.H1Size, // Make font size responsive
       color: '#fff',
       fontFamily: "'Montserrat', sans-serif",
       fontWeight: '800',
     },
     paragraph: {
       ...style.typography,
-      fontSize: '18px',
+      fontSize: responsiveStyles.PSize,
       color: '#a0a0a0',
       fontFamily: "'Inter', sans-serif",
       fontWeight: '500',
@@ -71,11 +77,8 @@ export default function Template2ImageOnDo({ deviceSize, setSelectedElement, isP
       ...prevContent,
       [key]: newValue,
     }));
-  };
-  
-  
+  };  
 
-// Inside Template2ImageOnDo
 const handleTextClick = (ref) => {
   if (!isPreviewMode) { // Only allow text selection if not in preview mode
     setSelectedElement(ref.current);
@@ -83,7 +86,6 @@ const handleTextClick = (ref) => {
 };
 
 // Then, in the renderEditableText function
-// Render function inside Template2ImageOnDo
 const renderEditableText = (key, tagName, style) => {
   return (
     <EditableText
@@ -97,10 +99,6 @@ const renderEditableText = (key, tagName, style) => {
     />
   );
 };
-
-
-
-
 
 //#endregion
 

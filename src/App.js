@@ -5,7 +5,7 @@ import Contact from './pages/Contact'
 import NoPage from './pages/NoPage'
 import Logiciel from './pages/Logiciel'
 import TemplateStep from './pages/TemplateStep'
-
+import Dashboard from './pages/Dashboard'
 export default function App() {
   return (
     <div>
@@ -18,6 +18,8 @@ export default function App() {
           <Route path="/logiciel" element={<Logiciel />} />
           <Route path="/templates" element={<TemplateStep />} />
           <Route path="/templatestep" element={<TemplateStep />} /> {/* Use the 'element' prop here */}
+          <Route path="/dashboard" element={<Dashboard />} /> {/* Use the 'element' prop here */}
+
           <Route path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>
