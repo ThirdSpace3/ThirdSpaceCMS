@@ -1,6 +1,23 @@
-import React from 'react';
+import React ,{ useRef } from 'react';
+import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const BackgroundSettings = ({ isOpen, toggleSection, handleBackgroundChange, backgroundStyle }) => {
+    const fileInputRef = useRef(null);
+    const { addImageToHistory, imageHistory, selectImage, selectedImage } = useImageHistory();
+
+    const handleUploadClick = () => {
+        fileInputRef.current.click();
+    };
+
+    // Modified handleBackgroundChange to use addImageToHistory
+    const modifiedHandleBackgroundChange = (e, property, type = 'input') => {
+        if (property === 'backgroundImage' && e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            const newImageUrl = URL.createObjectURL(file);
+            addImageToHistory({ url: newImageUrl, category: 'Photo' }); // Assuming all uploads are photos
+        }
+        handleBackgroundChange(e, property, type);
+    };
     return (
         <div className='parameters-wrapper'>
             <div className='parameters-wrapper-title-box' onClick={() => toggleSection('background')}>
@@ -18,7 +35,7 @@ const BackgroundSettings = ({ isOpen, toggleSection, handleBackgroundChange, bac
                 <div className='parameters-content-line'>
                     <p className='parameters-content-line-title'>Image</p>
                     <div className='parameters-content-line-container'>
-                        <input type="file" accept="image/*" onChange={(e) => handleBackgroundChange(e, 'backgroundImage')} />
+                        <input type="file" accept="image/*"  onChange={(e) => modifiedHandleBackgroundChange(e, 'backgroundImage')} />
                     </div>
                 </div>
                 <div className='parameters-content-line'>

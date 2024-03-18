@@ -8,7 +8,7 @@ import SpacingSettings from './RightBarComponents/SpacingSettings';
 import BorderSettings from './RightBarComponents/BorderSettings';
 import BackgroundSettings from './RightBarComponents/BackgroundSettings';
 import TypographySettings from './RightBarComponents/TypographySettings';
-export default function RightBar({ selectedElement }) {
+export default function RightBar({ selectedElement , addImageToHistory}) {
 
   const [typographyStyle, setTypographyStyle] = useState({});
 
@@ -368,6 +368,7 @@ export default function RightBar({ selectedElement }) {
             toggleSection={toggleSection}
             handleBackgroundChange={handleBackgroundChange}
             backgroundStyle={backgroundStyle}
+            addImageToHistory={addImageToHistory}
           />
 
           {/* Section Typographie */}

@@ -171,7 +171,7 @@ export default function Display() {
           </div>
           {!isPreviewMode && ( // Hide LeftBar and RightBar in preview mode
             <>
-              <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
+              <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} addImageToHistory={addImageToHistory}/>
             </>
           )}
         </div>
