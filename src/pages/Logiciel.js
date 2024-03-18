@@ -1,12 +1,12 @@
-import Display from "../components/logiciel/Display"
-
-
-
+import Display from "../components/logiciel/Display";
+import { useParams } from "react-router-dom";
 
 export default function Logiciel() {
-    return (
-        <>
-            <Display />
-        </>
-    )
+  const { templateName } = useParams();
+
+  return (
+    <>
+      <Display templateName={templateName} />
+    </>
+  );
 }

@@ -3,7 +3,7 @@ import EditableText from '../components/logiciel/TemplateComponent/EditableText'
 import { useStyle } from '../hooks/StyleContext';
 import axios from 'axios'; // Make sure axios is installed
 
-const Template1OnDo = ({
+const TemplateFullText = ({
   deviceSize,
   selectedElement,
   setSelectedElement,
@@ -256,4 +256,4 @@ const Template1OnDo = ({
   );
 };
 
-export default Template1OnDo;
+export default TemplateFullText;

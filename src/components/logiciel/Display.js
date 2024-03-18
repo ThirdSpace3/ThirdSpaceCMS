@@ -5,10 +5,11 @@ import RightBar from './RightBar';
 import ActualPageParametersBTN from './ActualPageParametersBTN';
 import './Display.css';
 import { StyleProvider } from '../../hooks/StyleContext';
-import Template1OnDo from '../../templates/TemplateFullText';
-import Template2ImageOnDo from '../../templates/TemplateImg_txt';
+import TemplateFullText from '../../templates/TemplateFullText';
+import TemplateImg_txt from '../../templates/TemplateImg_txt';
 import axios from 'axios';
 import { ImageHistoryProvider } from '../../hooks/ImageHistoryContext';
+import { useParams } from 'react-router-dom'; // Import useParams
 
 export default function Display() {
   const [settings, setSettings] = useState({  });
@@ -16,7 +17,13 @@ export default function Display() {
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [selectedElement, setSelectedElement] = useState(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [activeEditor, setActiveEditor] = useState('Template2ImageOnDo'); // Set the default editor to TextEditor
+  const [activeEditor, setActiveEditor] = useState(''); // Initialize activeEditor as an empty string
+  const { templateName } = useParams(); // Get templateName from the URL
+  useEffect(() => {
+    console.log(templateName); // Log the templateName value
+    setActiveEditor(templateName); // Set activeEditor to templateName when the component mounts
+  }, [templateName]);
+  
 
   const handleSettingsChange = (section, newSettings) => {
     setSettings((prevSettings) => {
@@ -148,8 +155,8 @@ export default function Display() {
                 <ActualPageParametersBTN />
               </>
             )}
-            {activeEditor === 'Template1OnDo' ? (
-              <Template1OnDo
+            {activeEditor === 'TemplateFullText' ? (
+              <TemplateFullText
                 deviceSize={selectedDeviceSize}
                 settings={settings}
                 selectedElement={selectedElement}
@@ -158,7 +165,7 @@ export default function Display() {
 
               />
             ) : (
-              <Template2ImageOnDo
+              <TemplateImg_txt
                 deviceSize={selectedDeviceSize}
                 settings={settings}
                 handleSettingsChange={handleSettingsChange}

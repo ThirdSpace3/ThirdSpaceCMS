@@ -4,7 +4,7 @@ import EditableText from '../components/logiciel/TemplateComponent/EditableText'
 import { useStyle } from '../hooks/StyleContext';
 import { useImageHistory } from '../hooks/ImageHistoryContext';
 
-export default function Template2ImageOnDo({ deviceSize, setSelectedElement, isPreviewMode, settings, handleSettingsChange }) {
+export default function TemplateImg_txt({ deviceSize, setSelectedElement, isPreviewMode, settings, handleSettingsChange }) {
   //#region Content Editing
   //Base style
   const { style, updateStyle } = useStyle();

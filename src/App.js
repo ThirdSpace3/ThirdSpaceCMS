@@ -6,23 +6,24 @@ import NoPage from './pages/NoPage'
 import Logiciel from './pages/Logiciel'
 import TemplateStep from './pages/TemplateStep'
 import Dashboard from './pages/Dashboard'
+import Display from './components/logiciel/Display'
 export default function App() {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route index element={<Home/>}/>
+          <Route index element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/logiciel" element={<Logiciel />} />
           <Route path="/templates" element={<TemplateStep />} />
-          <Route path="/templatestep" element={<TemplateStep />} /> {/* Use the 'element' prop here */}
-          <Route path="/dashboard" element={<Dashboard />} /> {/* Use the 'element' prop here */}
-
+          <Route path="/templatestep" element={<TemplateStep />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/logiciel/:templateName" element={<Display />} /> {/* Add this line for the dynamic route */}
           <Route path="*" element={<NoPage />} />
         </Routes>
       </BrowserRouter>
     </div>
-  )
+  );
 }
