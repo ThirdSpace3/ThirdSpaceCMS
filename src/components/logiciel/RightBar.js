@@ -62,6 +62,8 @@ export default function RightBar({ selectedElement }) {
     } else {
       value = e.target.value; // For all other input types, use the string value
     }
+
+    
     if (['borderColor', 'borderWidth', 'borderStyle', 'borderRadius'].includes(styleProperty)) {
       const updatedStyle = selectedSide ? 
       { ...borderStyle, [selectedSide]: { ...borderStyle[selectedSide], [styleProperty]: value } } : 
