@@ -13,11 +13,11 @@ export default function Template2ImageOnDo({ deviceSize, setSelectedElement, isP
   const { imageHistory } = useImageHistory();
 
   //Written content + class name 
-  // const [content, setContent] = useState({
-  //   title: 'Template de Test #1',
-  //   paragraph: 'Tu vas me devoir un café je crois bien',
-  // });
-  // Define your styles
+  const [content, setContent] = useState({
+     title: 'Template de Test #1',
+     paragraph: 'Tu vas me devoir un café je crois bien',
+   });
+   //Define your styles
   const styles = {
     templateWrapper: {
       display: 'flex',
@@ -80,7 +80,7 @@ const handleTextClick = (ref) => {
 
 // Then, in the renderEditableText function
 const renderEditableText = (key, tagName, style) => {
-  if (!settings.content) {
+  if (!content) {
     return null;
   }
 
@@ -88,7 +88,7 @@ const renderEditableText = (key, tagName, style) => {
     <EditableText
       isEditable={!isPreviewMode} // Disable editing if in preview mode
       tagName={tagName}
-      content={settings.content[key]} // Replace content with settings.content
+      content={content[key]} // Replace content with settings.content
       onContentChange={(newValue) => handleContentChange(key, newValue)}
       style={style}
       innerRef={refs[key]}
@@ -109,8 +109,8 @@ const renderEditableText = (key, tagName, style) => {
       <ImageSlots styles={styles} imageHistory={imageHistory} />
       <div style={styles.templateWrapperColumn}>
         {/* Class Name, Tag, Styles applied */}
-        {settings.content && renderEditableText('title', 'h1', styles.title)}
-        {settings.content && renderEditableText('paragraph', 'p', styles.paragraph)}
+        {content && renderEditableText('title', 'h1', styles.title)}
+        {content && renderEditableText('paragraph', 'p', styles.paragraph)}
         {/* Buttons */}
         <button style={styles.button}>Clique</button>
       </div>

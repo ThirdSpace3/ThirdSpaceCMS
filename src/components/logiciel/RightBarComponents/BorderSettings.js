@@ -44,7 +44,7 @@ export default function BorderSettings({ selectedElement, onSettingsChange, togg
               <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Border Width</p>
                 <div className='parameters-content-line-container'>
-                  <input type="number" min="0" max="20" step="1" defaultValue="1" value={borderStyle.borderWidth ? borderStyle.borderWidth[selectedSide] : ''} onChange={(e) => handleBorderChange(e, 'borderWidth')} />
+                  <input type="number" min="0" max="20" step="1" defaultValue="0" onChange={(e) => handleInputChange(e, 'borderWidth')} />
                 </div>
               </div>
               <div className='parameters-content-line'>

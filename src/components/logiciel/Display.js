@@ -11,12 +11,7 @@ import axios from 'axios';
 import { ImageHistoryProvider } from '../../hooks/ImageHistoryContext';
 
 export default function Display() {
-  const [settings, setSettings] = useState({
-    content: {
-      title: 'Template de Test #1',
-      paragraph: 'Tu vas me devoir un café je crois bien',
-    },
-  });
+  const [settings, setSettings] = useState({  });
   const [settingsHistory, setSettingsHistory] = useState([settings]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState(0);
   const [selectedElement, setSelectedElement] = useState(null);
