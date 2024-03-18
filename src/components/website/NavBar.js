@@ -67,7 +67,7 @@ function Navbar() {
             </li>
           </ul>
           <a
-            href={accounts.length > 0 ? "./logiciel" : "#"}
+            href={accounts.length > 0 ? "./dashboard" : "#"}
             className="nav__cta nav-bg"
             onClick={accounts.length === 0 ? togglePopup : undefined}
           >

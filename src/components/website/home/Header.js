@@ -16,7 +16,7 @@ function Header() {
     if (!userIsLoggedIn()) {
       setShowWalletPopup(!showWalletPopup);
     } else {
-      navigate('./logiciel');
+      navigate('./dashboard');
     }
   };
 

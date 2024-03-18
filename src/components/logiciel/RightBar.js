@@ -8,6 +8,7 @@ import SpacingSettings from './RightBarComponents/SpacingSettings';
 import BorderSettings from './RightBarComponents/BorderSettings';
 import BackgroundSettings from './RightBarComponents/BackgroundSettings';
 import TypographySettings from './RightBarComponents/TypographySettings';
+
 export default function RightBar({ selectedElement , addImageToHistory}) {
 
   const [typographyStyle, setTypographyStyle] = useState({});
@@ -49,6 +50,9 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
     setIsOpen(prevState => ({ ...prevState, [section]: !prevState[section] }));
   };
 
+  const saveStateInSessionStorage = (stateName, state) => {
+    sessionStorage.setItem(stateName, JSON.stringify(state));
+  };
 
   const handleInputChange = (e, styleProperty, inputType) => {
     let value;
@@ -66,36 +70,42 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
       const updatedStyle = selectedSide ? 
       { ...borderStyle, [selectedSide]: { ...borderStyle[selectedSide], [styleProperty]: value } } : 
       { ...borderStyle, top: value, right: value, bottom: value, left: value };
-  
+
       setBorderStyle(updatedStyle);
       onSettingsChange(selectedElement, { border: updatedStyle });
+      saveStateInSessionStorage('borderStyle', updatedStyle); // Save the state in session storage
     }
-    // Directly construct the updated style object based on the property being changed
+
     if (styleProperty === 'fontFamily' || styleProperty === 'fontSize' || styleProperty === 'color' || styleProperty === 'fontStyle' || styleProperty === 'textDecoration' || styleProperty === 'textAlign' || styleProperty === 'fontWeight') {
-      // Typography related properties
       const updatedTypographyStyle = { ...typographyStyle, [styleProperty]: value };
       setTypographyStyle(updatedTypographyStyle);
       onSettingsChange(selectedElement, { typography: updatedTypographyStyle });
-    } if (styleProperty === 'borderColor' || styleProperty === 'borderWidth' || styleProperty === 'borderStyle' || styleProperty === 'borderRadius') {
-      // Border related properties
+      saveStateInSessionStorage('typographyStyle', updatedTypographyStyle); // Save the state in session storage
+    }
+
+    if (styleProperty === 'borderColor' || styleProperty === 'borderWidth' || styleProperty === 'borderStyle' || styleProperty === 'borderRadius') {
       const updatedBorderStyle = { ...borderStyle, [styleProperty]: value };
       setBorderStyle(updatedBorderStyle);
       onSettingsChange(selectedElement, { border: updatedBorderStyle });
-    } if (styleProperty === 'backgroundColor' || styleProperty === 'backgroundImage' || styleProperty === 'backgroundPosition' || styleProperty === 'backgroundSize') {
-      // Background related properties
+      saveStateInSessionStorage('borderStyle', updatedBorderStyle); // Save the state in session storage
+    }
+
+    if (styleProperty === 'backgroundColor' || styleProperty === 'backgroundImage' || styleProperty === 'backgroundPosition' || styleProperty === 'backgroundSize') {
       const updatedBackgroundStyle = { ...backgroundStyle, [styleProperty]: value };
       setBackgroundStyle(updatedBackgroundStyle);
       onSettingsChange(selectedElement, { background: updatedBackgroundStyle });
+      saveStateInSessionStorage('backgroundStyle', updatedBackgroundStyle); // Save the state in session storage
     }
+
     if (styleProperty === 'width' || styleProperty === 'height' || styleProperty === 'minWidth' || styleProperty === 'maxWidth' || styleProperty === 'minHeight' || styleProperty === 'maxHeight' || styleProperty === 'overflow') {
       const updatedSizeStyle = { ...sizeStyle, [styleProperty]: value };
       setSizeStyle(updatedSizeStyle);
       onSettingsChange(selectedElement, { size: updatedSizeStyle });
+      saveStateInSessionStorage('sizeStyle', updatedSizeStyle); // Save the state in session storage
     }
 
     console.log("Input change for:", styleProperty, "value:", value);
   };
-
 
 
   const onSettingsChange = (element, newSettings) => {
@@ -340,6 +350,7 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
           />
 
           {/* Section Spacing */}
+          
           <SpacingSettings
             isOpen={isOpen}
             toggleSection={toggleSection}
@@ -350,6 +361,7 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
 
 
           {/* Section Border */}
+
           <BorderSettings
             isOpen={isOpen}
             toggleSection={toggleSection}
@@ -358,8 +370,6 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
             handleInputChange={handleInputChange}
             setSelectedSide={setSelectedSide}
           />
-
-
 
           {/* Section Background */}
 
@@ -372,6 +382,7 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
           />
 
           {/* Section Typographie */}
+
           <TypographySettings
             selectedElement={selectedElement}
             updateStyle={updateStyle}
