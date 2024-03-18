@@ -41,16 +41,26 @@ const EditableText = forwardRef(
 
     const TagName = tagName;
 
-    useEffect(() => {
-      if (cursorPosition !== null && innerRef.current && innerRef.current.childNodes[0]) {
+// Inside EditableText component
+useEffect(() => {
+  if (editing) {
+    const focusAndSetCursor = () => {
+      const textNode = innerRef.current.childNodes[0];
+      if (textNode) {
         const range = document.createRange();
-        const selection = window.getSelection();
-        range.setStart(innerRef.current.childNodes[0], cursorPosition);
+        const sel = window.getSelection();
+        range.setStart(textNode, cursorPosition || textNode.length);
         range.collapse(true);
-        selection.removeAllRanges();
-        selection.addRange(range);
+        sel.removeAllRanges();
+        sel.addRange(range);
       }
-    }, [cursorPosition, innerRef]);
+      innerRef.current.focus();
+    };
+    
+    focusAndSetCursor();
+  }
+}, [editing, innerRef, cursorPosition]);
+
 
     return (
       <div className={`editable-text-container${editing ? ' editing' : ''}`} onClick={() => onClick(innerRef)}>

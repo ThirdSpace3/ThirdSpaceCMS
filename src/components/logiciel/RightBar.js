@@ -62,8 +62,6 @@ export default function RightBar({ selectedElement }) {
     } else {
       value = e.target.value; // For all other input types, use the string value
     }
-
-    
     if (['borderColor', 'borderWidth', 'borderStyle', 'borderRadius'].includes(styleProperty)) {
       const updatedStyle = selectedSide ? 
       { ...borderStyle, [selectedSide]: { ...borderStyle[selectedSide], [styleProperty]: value } } : 
@@ -121,7 +119,7 @@ export default function RightBar({ selectedElement }) {
   
       // Apply typography settings
       if (newSettings.typography) {
-        const { fontFamily, fontSize, color, fontStyle, textDecoration, textAlign } = newSettings.typography;
+        const { fontFamily, fontSize, color, fontStyle, textDecoration, textAlign, fontWeight } = newSettings.typography;
         if (fontFamily) {
           element.style.fontFamily = fontFamily;
         }
@@ -139,6 +137,10 @@ export default function RightBar({ selectedElement }) {
         }
         if (textAlign) {
           element.style.textAlign = textAlign;
+        }
+        if(fontWeight){
+          element.style.fontWeight = fontWeight;
+
         }
       }
   

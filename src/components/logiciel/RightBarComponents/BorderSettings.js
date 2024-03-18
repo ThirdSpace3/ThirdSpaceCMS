@@ -1,9 +1,16 @@
-import React, { } from 'react';
+import React, {useState  } from 'react';
 import '../RightBar.css';
 export default function BorderSettings({ setSelectedSide, toggleSection, isOpen, handleInputChange }) {
 
+  const [selectedBorderStyle, setSelectedBorderStyle] = useState('none'); // Initial state
+
   const selectAllBorders = () => {
     setSelectedSide(''); // Use a special value 'all' to indicate all borders
+  };
+
+  const handleBorderStyleChange = (newStyle) => {
+    setSelectedBorderStyle(newStyle); // Update local state for visual feedback
+    handleInputChange({ target: { value: newStyle } }, 'borderStyle', 'select'); // Mimicking an event structure
   };
   return (
     <div>
@@ -26,6 +33,7 @@ export default function BorderSettings({ setSelectedSide, toggleSection, isOpen,
             <p className='parameters-content-line-title'>Border Radius</p>
             <div className='parameters-content-line-container'>
               <input type="number" min="0" max="100" step="1" defaultValue="0" onChange={(e) => handleInputChange(e, 'borderRadius', 'number')} />
+              <span className="px-label">px</span>
             </div>
           </div>
           <div className='parameters-content-line'>
@@ -38,17 +46,18 @@ export default function BorderSettings({ setSelectedSide, toggleSection, isOpen,
             <p className='parameters-content-line-title'>Border Width</p>
             <div className='parameters-content-line-container'>
               <input type="number" min="0" max="20" step="1" defaultValue="0" onChange={(e) => handleInputChange(e, 'borderWidth')} />
+              <span className="px-label">px</span>
+
             </div>
           </div>
           <div className='parameters-content-line'>
             <p className='parameters-content-line-title'>Border Style</p>
             <div className='parameters-content-line-container'>
-              <select onChange={(e) => handleInputChange(e, 'borderStyle', 'select')}>
-                <option value="none">None</option>
-                <option value="solid">Solid</option>
-                <option value="dashed">Dashed</option>
-                <option value="dotted">Dotted</option>
-              </select>
+              {/* Icon-based selection for Border Style */}
+              <i className={`bi bi-slash-circle ${selectedBorderStyle === 'none' ? 'selected-icon' : ''}`} onClick={() => handleBorderStyleChange('none')}></i>
+              <i className={`bi bi-dash-lg ${selectedBorderStyle === 'solid' ? 'selected-icon' : ''}`} onClick={() => handleBorderStyleChange('solid')}></i>
+              <i className={`bi bi-dash ${selectedBorderStyle === 'dashed' ? 'selected-icon' : ''}`} onClick={() => handleBorderStyleChange('dashed')}></i>
+              {/* Optional: Add an icon for 'dotted' if needed */}
             </div>
           </div>
 

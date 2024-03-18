@@ -37,6 +37,17 @@ export default function TypographySettings({
                 </div>
               </div>
               <div className='parameters-content-line'>
+                <p className='parameters-content-line-title'>Font Weight</p>
+                <div className='parameters-content-line-container'>
+                  <select onChange={(e) => handleInputChange(e, 'fontWeight', 'select')}>
+                    <option value="100">Light</option>
+                    <option value="500">Normal</option>
+                    <option value="800">Bold</option>
+                    <option value="1000">Extra Bold</option> 
+                  </select>
+                </div>
+              </div>
+              <div className='parameters-content-line'>
                 <p className='parameters-content-line-title'>Font Size</p>
                 <div className='parameters-content-line-container'>
                   <input type="number" min="8" max="72" step="1" defaultValue="14" onChange={(e) => handleInputChange(e, 'fontSize', 'number')} />
@@ -101,15 +112,7 @@ export default function TypographySettings({
                   </a>
                 </div>
               </div>
-              <div className='parameters-content-line'>
-                <p className='parameters-content-line-title'>Font Weight</p>
-                <div className='parameters-content-line-container'>
-                  <select onChange={(e) => handleInputChange(e, 'fontWeight', 'select')}>
-                    <option value="normal">Normal</option>
-                    <option value="bold">Bold</option>
-                  </select>
-                </div>
-              </div>
+
 
             </div>
             <hr className='parameters-wrapper-separation' />

@@ -38,6 +38,13 @@
     gap: 10px;
 
 }
+.px-label {
+    color: var(--white);
+  }
+.parameters-content-line-container i {
+    color: var(--white);
+}
+
 .parameters-content-line-item {
     font-family: var(--inter);
     font-size: 18px;

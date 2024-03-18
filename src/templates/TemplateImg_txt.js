@@ -67,9 +67,13 @@ export default function Template2ImageOnDo({ deviceSize, setSelectedElement, isP
   };
 
   const handleContentChange = (key, newValue) => {
-    handleSettingsChange('content', { [key]: newValue });
+    setContent(prevContent => ({
+      ...prevContent,
+      [key]: newValue,
+    }));
   };
-
+  
+  
 
 // Inside Template2ImageOnDo
 const handleTextClick = (ref) => {
@@ -79,16 +83,13 @@ const handleTextClick = (ref) => {
 };
 
 // Then, in the renderEditableText function
+// Render function inside Template2ImageOnDo
 const renderEditableText = (key, tagName, style) => {
-  if (!content) {
-    return null;
-  }
-
   return (
     <EditableText
-      isEditable={!isPreviewMode} // Disable editing if in preview mode
+      isEditable={!isPreviewMode}
       tagName={tagName}
-      content={content[key]} // Replace content with settings.content
+      content={content[key]}
       onContentChange={(newValue) => handleContentChange(key, newValue)}
       style={style}
       innerRef={refs[key]}
@@ -96,6 +97,7 @@ const renderEditableText = (key, tagName, style) => {
     />
   );
 };
+
 
 
 
