@@ -3,7 +3,7 @@
     background-color: #131313;
     flex-direction: column;
     color: white;
-    width: 13.3%;
+    width: 20%;
     height: 100vh;
     justify-content: space-between
 }
@@ -11,9 +11,9 @@
 .Profil_Display{
     display: flex;
     flex-direction: row;
-    padding: 50px;
     justify-content: space-between;
-
+    height: 10vh;
+    align-items: center
 }
 
 .Dashboard_Menu{
@@ -22,14 +22,32 @@
     align-items: center;
 
 }
-.Dashboard_Menu_element{
+.Dashboard_Menu_element,
+.footer_element{
     padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    width: 80%;
+    padding-top: 2vh;
+
+}
+.Dashboard_Menu_element i,
+.footer_element i {
+    padding-right: 2vw;
 }
 .footer_leftbar{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.footer_content{
-    padding-bottom: 5vh ;
+.footer_content {
+    height: 20vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;    
+}
+.footer_element{
+    display: flex;
 }

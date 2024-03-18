@@ -1,10 +1,11 @@
 .Dahsboard_Wrapper{
     display: flex;
-    color: white;
+    color: black;
   }
   
   .Dashboard_Column{
     width: 100%;
+    background-color: white;
   }
   
   .RecentlyViewed  {

@@ -131,46 +131,12 @@ const TemplateFullText = ({
     return combinedStyles;
   };
 
-  const saveSettings = async () => {
-    // Prepare content with styles
-    const contentWithStyles = Object.keys(content).reduce((acc, key) => {
-      const style = fetchStyleForKey(key); // Fetch style for this content key
-      acc[key] = {
-        text: content[key],
-        style: style,
-      };
-      return acc;
-    }, {});
-
-    const settingsData = {
-      content: contentWithStyles, // This now includes styles
-      deviceSize,
-      style, // Consider if you need this at the top level since styles are also included with content
-      // Include any other relevant settings here
-    };
-
-    try {
-      const response = await axios.post('http://localhost:5000/api/settings', {
-        userId: walletId,
-        settings: settingsData,
-      });
-
-      if (response.status === 200 || response.status === 201) {
-        console.log('Settings saved successfully');
-        // Optionally, perform actions based on the successful save
-      }
-    } catch (error) {
-      console.error('Failed to save settings:', error);
-      // Handle errors, perhaps show a message to the user
-    }
-  };
 
 
   return (
     <div style={styles.templateWrapper}>
       {showOnlyTemplate1OnDo && <button onClick={handleReturnClick}>Return</button>}
       <p>Wallet ID: {walletId}</p>
-      <button onClick={saveSettings}>Save Settings</button>
 
       <div style={styles.templateWrapperColumn}>
         <EditableText

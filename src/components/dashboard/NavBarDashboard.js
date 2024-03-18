@@ -15,10 +15,13 @@ import './NavBarDashboard.css'
                 <select>
                     <option>Creation Date</option>
                 </select>
+                <div className="creation_projects">
+                <img></img>
                 <button>
-                    <img></img>
+                   
                     <p>New Projects</p>
                 </button>
+                </div>
                 </div>
             </div>
         </>

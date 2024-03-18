@@ -88,25 +88,6 @@ export default function Display() {
 
 
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      const walletId = sessionStorage.getItem('userAccount');
-      if (walletId) {
-        try {
-          const response = await axios.get(`http://localhost:5000/api/settings/${walletId}`);
-          if (response.status === 200 && response.data) {
-            setSettings(response.data.settings);
-            console.log(response.data.settings);
-          }
-        } catch (error) {
-          console.error('Failed to fetch settings:', error);
-        }
-      }
-    };
-
-    fetchSettings();
-  }, []);
-
 
 
   const handleEditorChange = (editor) => {

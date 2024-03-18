@@ -1,7 +1,6 @@
 .Navabr_wapper{
     display: flex;
     width: 100%;
-    color: white;
     justify-content: space-around;
     height: 10vh;
     align-items: center;
