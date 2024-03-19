@@ -30,7 +30,7 @@ export default function LeftBar({ handleEditorChange, imageHistory }) {
             <div className='navbar-wrapper'>
                 <div className={mainClass}>
                     <div className='navbar-home-btn'>
-                        <a href="../"><img src='/images/3s-logo-picto.png' alt="Home"/></a>
+                        <a href="../dashboard"><img src='/images/3s-logo-picto.png' alt="Home"/></a>
                         <hr />
                     </div>
                     <div className='navbar-icon-container'>
