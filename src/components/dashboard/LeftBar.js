@@ -20,7 +20,7 @@ function LeftBarDashboard() {
           </div>
           <div className="Dashboard_Menu">
             {/* Menu items with Bootstrap Icons */}
-            <div className="Dashboard_Menu_element"><i className="bi bi-folder"></i><p>Projects</p></div>
+            <a href="../logiciel" className="Dashboard_Menu_element"><i className="bi bi-folder"></i><p>Projects</p></a>
             <div className="Dashboard_Menu_element"><i className="bi bi-wallet"></i><p>Billing</p></div>
             <div className="Dashboard_Menu_element"><i className="bi bi-shop"></i><p>Marketplace</p></div>
             <div className="Dashboard_Menu_element"><i className="bi bi-question-circle"></i><p>Forum Q/A</p></div>
