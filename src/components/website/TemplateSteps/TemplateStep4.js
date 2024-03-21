@@ -1,30 +1,45 @@
-import React, { useState } from 'react';
+import './TemplateSteps.css';
+import '../../Root.css';
+import React from 'react';
 
-const TemplateStep4 = ({ updateNextButtonState, setProjectName, currentStep }) => {
-  const [inputValue, setInputValue] = useState('');
+const TemplateStep5 = () => {
 
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-    setProjectName(event.target.value); // Use the function passed as prop
-    updateNextButtonState(event.target.value.trim() !== '');
-  };
 
-  return (
-    <div id="etape4">
-      <div className="step-box">
-        <h2 className="template-title">Choose a name for your project</h2>
-        <p className="template-subtitle">You can always change your mind later.</p>
-        <div className="template-input-box">
-          <input
-            type="text"
-            placeholder="Choose a name..."
-            value={inputValue}
-            onChange={handleInputChange}
-          />
-        </div>
-      </div>
-    </div>
-  );
+
+    return (
+        <div id="etape4">
+                <div className="step-box">
+                    <h2 className="template-title">Choose a template</h2>
+                    <p className="template-subtitle">You can always explore other templates if you change your mind later.</p>
+
+                    <div className='listing-container'>
+                        <div className='filters-container'>
+
+                        </div>
+                        <div className='templates-container'>
+                            <div className='templates-box'>
+                                <div className='templates-img'>
+                                    <img src='template-test.png' />
+                                </div>
+                                <div className='templates-infos'>
+                                    <h3>Template Name</h3>
+                                    <i class="bi bi-star"></i>
+                                </div>
+                                <div className='templates-hover'>
+                                    <a href="">View Demo</a>
+                                    <a href="">Start Editing</a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        
+    );
 };
 
-export default TemplateStep4;
+export default TemplateStep5;

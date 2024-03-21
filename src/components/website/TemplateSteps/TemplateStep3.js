@@ -22,6 +22,9 @@ const TemplateStep3 = ({ updateNextButtonState, currentStep, setSelectedButtons 
     return (
         <div id="etape3">
             <div className="step-box">
+                <h2 className="template-title">How would you like to start?</h2>
+                <p className="template-subtitle">You can always explore other products if you change your mind later.</p>
+
                 <div className="solutions-row">
                     {['Templates', 'Sections', 'Scratch'].map((item, index) => (
                         <div 

@@ -73,6 +73,7 @@ body {
 }
 .btn-box {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     gap: 10px;
 }
@@ -256,4 +257,7 @@ button.disabled, button.disabled * {
     align-items: center;
     justify-content: center;
 }
+
+
+/*==================== ETAPE 4 ====================*/
 

@@ -1,38 +1,30 @@
-import './TemplateSteps.css';
-import '../../Root.css';
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState } from 'react';
 
-const TemplateStep5 = () => {
+const TemplateStep4 = ({ updateNextButtonState, setProjectName, currentStep }) => {
+  const [inputValue, setInputValue] = useState('');
 
-    const navigate = useNavigate(); // Initialize useNavigate
-    const handleDoneClick = () => {
-        navigate('/'); // Navigate to the homepage
-    };
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+    setProjectName(event.target.value); // Use the function passed as prop
+    updateNextButtonState(event.target.value.trim() !== '');
+  };
 
-
-    return (
-        <div id="etape5" className="template-confirmation">
-            <h2 className="template-title">Thanks for your time!</h2>
-            <p className="template-subtitle">Let's co-build Third Space! If you want to let a feedback feel free to do it, you can also report bugs by joining our Discord!</p>
-            <div className="getintouch-socials">
-                <a href="https://github.com/ThirdSpace3/ThirdSpaceCMS" target="_blank" rel="noopener noreferrer"><img src="img/logo-github-2.png" alt=""/>Join the community</a>
-                <a href="https://discord.gg/q7X9Hb6rGz" target="_blank" rel="noopener noreferrer"><img src="img/logo-discord-2.png" alt=""/>Join the community</a>
-            </div>
-            <div className="template-input-box feedback-input-box">
-                <p className="template-subtitle">Feel free to share your experience with ThirdSpace!</p>
-                <input type="text" placeholder="Describe your experience..."/>
-                <a href="#" id="feedback-button" className="purple-btn feedback-submit">Submit</a> 
-                {/* Vraiment besoin des deux buttons ? 
-                je peut faire une fonction qui SI il y a un input je recupere SINON non.
-                je redirect au meme endroit de toute facon */}
-            </div>
-
-            <div className="final-btn-box">
-                <button id="submit-button" className="purple-light-btn" onClick={handleDoneClick}>Done</button>
-            </div>
+  return (
+    <div id="etape5">
+      <div className="step-box">
+        <h2 className="template-title">Choose a name for your project</h2>
+        <p className="template-subtitle">You can always change your mind later.</p>
+        <div className="template-input-box">
+          <input
+            type="text"
+            placeholder="Choose a name..."
+            value={inputValue}
+            onChange={handleInputChange}
+          />
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
-export default TemplateStep5;
+export default TemplateStep4;
