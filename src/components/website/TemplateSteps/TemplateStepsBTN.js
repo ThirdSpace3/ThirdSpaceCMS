@@ -5,23 +5,27 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
 
 
 
-const handleNextClick = async () => {
-  if (isNextEnabled) {
-    try {
-      // Send selected buttons and template data (including project name) to the backend API
-      await axios.post('/api/user-actions', {
-        walletId,
-        step: currentStep,
-        selectedButtons: selectedButtons[currentStep],
-        templateData, // Ensure this includes the project name under `name` key
-      });
-
-      onNext(); // Proceed to the next step
-    } catch (error) {
-      console.error('Error saving user actions:', error);
+  const handleNextClick = async () => {
+    if (isNextEnabled) {
+      try {
+        // First, store the current selections in session storage
+        sessionStorage.setItem('selectedButtons', JSON.stringify(selectedButtons));
+  
+        // Send selected buttons and template data (including project name) to the backend API
+        await axios.post('/api/user-actions', {
+          walletId,
+          step: currentStep,
+          selectedButtons: selectedButtons[currentStep],
+          templateData,
+        });
+  
+        onNext(); // Proceed to the next step
+      } catch (error) {
+        console.error('Error saving user actions:', error);
+      }
     }
-  }
-};
+  };
+  
 
 
   return (

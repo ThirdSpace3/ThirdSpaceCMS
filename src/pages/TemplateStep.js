@@ -13,15 +13,15 @@ export default function TemplateStep() {
   const [currentStep, setCurrentStep] = useState(1);
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [selectedButtons, setSelectedButtons] = useState({
-    1: [],
+    1: [''],
     2: [],
     3: [],
     4: [],
     5: [],
   });
+  
   const walletId = sessionStorage.getItem('userAccount'); // Ensure this is your actual key
 
-  console.log('Current Step:', currentStep); // Add this before the return statement in your TemplateStep component
   useEffect(() => {
     console.log(selectedButtons); // Check if selectedButtons updates correctly
   }, [selectedButtons]);
@@ -31,16 +31,25 @@ export default function TemplateStep() {
   };
 
   const [projectName, setProjectName] = useState('');
+  useEffect(() => {
+    // Load stored data on component mount
+    const storedButtons = sessionStorage.getItem('selectedButtons');
+    if (storedButtons) {
+      console.log(storedButtons);
 
+      setSelectedButtons(JSON.parse(storedButtons));
+    }
+  }, []);
+  
   // Modify handleNext to use projectName when moving from step 4
   const handleNext = () => {
     if (currentStep === 4) {
-      // Save the project name from the temporary state to selectedButtons
       setSelectedButtons(prevSelectedButtons => ({
         ...prevSelectedButtons,
-        4: projectName, // Assuming you want to store the project name as a string
+        4: [projectName], // Store as an array
       }));
     }
+    
 
     if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
@@ -54,6 +63,8 @@ export default function TemplateStep() {
 
   // This function could be passed to steps that need to enable/disable the "Next" button
   const updateNextButtonState = (isEnabled) => {
+    console.log(`updateNextButtonState called with: ${isEnabled}`);
+
     setIsNextEnabled(isEnabled);
   };
 
@@ -65,6 +76,7 @@ export default function TemplateStep() {
       }));
     }
   };
+
 
   return (
     <>
