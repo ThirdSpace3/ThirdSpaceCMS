@@ -262,3 +262,7 @@ button.disabled, button.disabled * {
 
 /*==================== ETAPE 4 ====================*/
 
+.templates-container{
+    display: flex;
+    justify-content: center;
+}

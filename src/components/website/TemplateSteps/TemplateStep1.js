@@ -8,6 +8,20 @@ const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedBu
         updateNextButtonState(hasSelectionOrInput);
     }, [selectedButtons, inputValue, updateNextButtonState, currentStep]);
 
+    // Load data for the current step from session storage on component mount
+    useEffect(() => {
+        const sessionData = sessionStorage.getItem('stepData');
+        if (sessionData) {
+            const parsedData = JSON.parse(sessionData);
+            if (parsedData[currentStep]) {
+                setSelectedButtons(prev => ({
+                    ...prev,
+                    [currentStep]: parsedData[currentStep]
+                }));
+            }
+        }
+    }, [currentStep, setSelectedButtons]);
+
     useEffect(() => {
         // Define a function to save data to session storage
         const saveDataToSession = (newData) => {
@@ -16,29 +30,31 @@ const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedBu
             sessionStorage.setItem('stepData', JSON.stringify(sessionData));
         };
 
-        // Update session storage immediately with the latest inputValue
-        if (inputValue.trim()) {
-            setSelectedButtons(prev => {
-                const updated = { 
-                    ...prev, 
-                    [currentStep]: prev[currentStep] ? prev[currentStep].filter(value => typeof value !== 'string') : [] // Remove any existing string input
-                };
-                updated[currentStep].push(inputValue.trim()); // Add the latest inputValue
+        return () => {
+            // Only save when there is a non-empty inputValue
+            if (inputValue.trim()) {
+                setSelectedButtons(prev => {
+                    const updated = { 
+                        ...prev, 
+                        [currentStep]: [...(prev[currentStep] || []), inputValue.trim()].filter((value, index, self) => self.indexOf(value) === index) // Ensure uniqueness
+                    };
 
-                // Update session storage
-                saveDataToSession(updated[currentStep]);
+                    // Update session storage
+                    saveDataToSession(updated[currentStep]);
 
-                return updated;
-            });
-        }
-    }, [inputValue, currentStep]); // Only rerun effect if inputValue or currentStep changes
+                    return updated;
+                });
+            }
+        };
+    }, [currentStep, inputValue, setSelectedButtons]);
 
-    const handleButtonClick = value => {
+    const handleButtonClick = (value) => {
         setSelectedButtons(prev => {
-            const newValueExists = prev[currentStep] ? prev[currentStep].includes(value) : false;
-            const updatedSelections = newValueExists ?
-                prev[currentStep].filter(item => item !== value) : 
-                [...(prev[currentStep] || []).filter(item => typeof item !== 'string'), value]; // Keep only non-string items and add the new value
+            const updatedSelections = prev[currentStep] ?
+                prev[currentStep].includes(value) ?
+                    prev[currentStep].filter(item => item !== value) :
+                    [...prev[currentStep], value] :
+                [value];
 
             // Update session storage
             const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
@@ -55,8 +71,6 @@ const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedBu
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
     };
-
-    
     
     
     return (

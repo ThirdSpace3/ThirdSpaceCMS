@@ -10,8 +10,9 @@ import TemplateStepsBTN from "../components/website/TemplateSteps/TemplateStepsB
 import ReportBugBTN from "../components/website/ReportBugBTN";
 
 export default function TemplateStep() {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(4);
   const [isNextEnabled, setIsNextEnabled] = useState(false);
+  const [inputValue, setInputValue] = useState('');
   const [selectedButtons, setSelectedButtons] = useState({
     1: [''],
     2: [],
@@ -43,7 +44,14 @@ export default function TemplateStep() {
   
   // Modify handleNext to use projectName when moving from step 4
   const handleNext = () => {
-    if (currentStep === 4) {
+    // Logic to save inputValue to session storage or pass it to the next step
+    const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
+    if (inputValue.trim()) {
+      if (!sessionData[currentStep]) sessionData[currentStep] = {};
+      sessionData[currentStep].inputValue = inputValue.trim();
+      sessionStorage.setItem('stepData', JSON.stringify(sessionData));
+    }
+        if (currentStep === 4) {
       setSelectedButtons(prevSelectedButtons => ({
         ...prevSelectedButtons,
         4: [projectName], // Store as an array
@@ -80,15 +88,17 @@ export default function TemplateStep() {
 
   return (
     <>
-      {currentStep === 1 && (
-        <TemplateStep1
-          updateNextButtonState={updateNextButtonState}
-          handleFinalInputSave={handleFinalInputSave}
-          selectedButtons={selectedButtons[1]}
-          setSelectedButtons={setSelectedButtons}
-          currentStep={currentStep}
-        />
-      )}
+       {currentStep === 1 && (
+      <TemplateStep1
+        updateNextButtonState={updateNextButtonState}
+        handleFinalInputSave={handleFinalInputSave} // You may want to adjust or remove this if it's not used elsewhere
+        selectedButtons={selectedButtons[1]}
+        setSelectedButtons={setSelectedButtons}
+        currentStep={currentStep}
+        inputValue={inputValue} // Pass inputValue to TemplateStep1
+        setInputValue={setInputValue} // Pass setInputValue to TemplateStep1 for updating the inputValue
+      />
+    )}
 
 
       {currentStep === 2 && (
@@ -125,18 +135,17 @@ export default function TemplateStep() {
         />
       )}
       {currentStep < 5 && (
-        <TemplateStepsBTN
-          onNext={handleNext}
-          onIgnore={handleIgnore}
-          isNextEnabled={isNextEnabled}
-          selectedButtons={selectedButtons}
-          walletId={walletId}
-          currentStep={currentStep}
-          templateData={templateData} // Add this line
-        />
-
-
-      )}
+      <TemplateStepsBTN
+        onNext={handleNext}
+        onIgnore={handleIgnore}
+        isNextEnabled={isNextEnabled}
+        selectedButtons={selectedButtons}
+        walletId={walletId}
+        currentStep={currentStep}
+        templateData={templateData}
+        inputValue={inputValue} // Pass inputValue to TemplateStepsBTN
+      />
+    )}
       <ReportBugBTN />
       <img src="./images/template-deco-1.png" alt="" className="template-deco-bot" />
       <img src="./images/template-deco-2.png" alt="" className="template-deco-top" />

@@ -1,17 +1,19 @@
 import React from 'react';
 import axios from 'axios';
 
-const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, walletId, currentStep, handleSaveName, templateData }) => {
+const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, walletId, currentStep, inputValue, templateData }) => {
 
 
 
   const handleNextClick = async () => {
     if (isNextEnabled) {
       try {
-        // First, store the current selections in session storage
-        sessionStorage.setItem('selectedButtons', JSON.stringify(selectedButtons));
+        // Save inputValue to session storage here
+        const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
+        sessionData[currentStep] = { ...sessionData[currentStep], inputValue }; // Modify according to your structure
+        sessionStorage.setItem('stepData', JSON.stringify(sessionData));
   
-        // Send selected buttons and template data (including project name) to the backend API
+        // Proceed with existing logic...
         await axios.post('/api/user-actions', {
           walletId,
           step: currentStep,
