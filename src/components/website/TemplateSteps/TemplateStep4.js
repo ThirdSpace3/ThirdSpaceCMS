@@ -1,10 +1,11 @@
 import './TemplateSteps.css';
 import '../../Root.css';
-import React from 'react';
 import { Link } from 'react-router-dom';
 import TemplateFullText from '../../../templates/TemplateFullText';
 import { useNavigate } from 'react-router-dom';
-const TemplateStep5 = () => {
+import  { useState } from 'react';
+    const TemplateStep5 = () => {
+        const [isHovered, setIsHovered] = useState(false);
 
   // const navigate = useNavigate('');
 
@@ -21,21 +22,57 @@ const TemplateStep5 = () => {
 
                         </div>
                         <div className='templates-container'>
-                            <div className='templates-box'>
-                                <div className='templates-img'>
-                                    <img src='./images/howitworkd-1.png'/> {/**Preview of the template  */}
-                                </div>
-                                <div className='templates-infos'>
-                                    <h3>Template Name</h3> {/**Template Infos  */}
-                                    <i class="bi bi-star"></i> {/**Rating of the template for later */}
-                                </div>
-                                <div className='templates-hover'>
-                                    <a href="" ><Link to="/templates/TemplateFullText">View Demo</Link></a> {/**Redirect to preview display of the template in a preview public url */}
-                                    <a href=""><Link to="/logiciel/:templateName">Start Editing</Link></a>{/**Redirect to editor */}
-
-                                </div>
-
-                            </div>
+                        <div className='templates-box'>
+            <div className='templates-img' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+                <img src='./images/template-test.png' alt='Template Preview' />
+                {isHovered && (
+                    <div className='templates-hover'>
+                        <div className='templates-hover-content'>
+                        <a href=""><Link to="/templates/TemplateFullText">View Demo</Link></a>
+                        <a href=""><Link to="/logiciel/:templateName">Start Editing</Link></a>
+                        </div>
+                    </div>
+                )}
+            </div>
+            <div className='templates-infos'>
+                <h3>Template Name</h3>
+                {/* <i className="bi bi-star"></i> */}
+            </div>
+                         </div>
+                         <div className='templates-box'>
+            <div className='templates-img' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+                <img src='./images/template-test.png' alt='Template Preview' />
+                {isHovered && (
+                    <div className='templates-hover'>
+                        <div className='templates-hover-content'>
+                        <a href=""><Link to="/templates/TemplateFullText">View Demo</Link></a>
+                        <a href=""><Link to="/logiciel/:templateName">Start Editing</Link></a>
+                        </div>
+                    </div>
+                )}
+            </div>
+            <div className='templates-infos'>
+                <h3>Template Name</h3>
+                <i className="bi bi-star"></i>
+            </div>
+                         </div>
+                         <div className='templates-box'>
+            <div className='templates-img' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+                <img src='./images/template-test.png' alt='Template Preview' />
+                {isHovered && (
+                    <div className='templates-hover'>
+                        <div className='templates-hover-content'>
+                        <a href=""><Link to="/templates/TemplateFullText">View Demo</Link></a>
+                        <a href=""><Link to="/logiciel/:templateName">Start Editing</Link></a>
+                        </div>
+                    </div>
+                )}
+            </div>
+            <div className='templates-infos'>
+                <h3>Template Name</h3>
+                <i className="bi bi-star"></i>
+            </div>
+                         </div>
                         </div>
                     </div>
                    
