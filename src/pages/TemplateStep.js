@@ -10,11 +10,11 @@ import TemplateStepsBTN from "../components/website/TemplateSteps/TemplateStepsB
 import ReportBugBTN from "../components/website/ReportBugBTN";
 
 export default function TemplateStep() {
-  const [currentStep, setCurrentStep] = useState(4);
+  const [currentStep, setCurrentStep] = useState(1);
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [selectedButtons, setSelectedButtons] = useState({
-    1: [''],
+    1: [],
     2: [],
     3: [],
     4: [],
@@ -51,10 +51,10 @@ export default function TemplateStep() {
       sessionData[currentStep].inputValue = inputValue.trim();
       sessionStorage.setItem('stepData', JSON.stringify(sessionData));
     }
-        if (currentStep === 4) {
+        if (currentStep === 5) {
       setSelectedButtons(prevSelectedButtons => ({
         ...prevSelectedButtons,
-        4: [projectName], // Store as an array
+        5: [projectName], // Store as an array
       }));
     }
     
@@ -134,7 +134,7 @@ export default function TemplateStep() {
           currentStep={currentStep}
         />
       )}
-      {currentStep < 5 && (
+      {currentStep <= 5 && (
       <TemplateStepsBTN
         onNext={handleNext}
         onIgnore={handleIgnore}

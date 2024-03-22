@@ -1,85 +1,77 @@
-import './TemplateSteps.css';
-import '../../Root.css';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import TemplateFullText from '../../../templates/TemplateFullText';
-import { useNavigate } from 'react-router-dom';
-import  { useState } from 'react';
-    const TemplateStep5 = () => {
-        const [isHovered, setIsHovered] = useState(false);
+import TemplateImg_txt from '../../../templates/TemplateImg_txt';
 
-  // const navigate = useNavigate('');
+const templates = [
+  {
+    id: 'templateFullText', // Added an ID for each template
+    name: 'TemplateFullText',
+    component: TemplateFullText,
+    img: './images/template-test.png',
+  },
+  {
+    id: 'templateImgTxt', // Added an ID for each template
+    name: 'TemplateImg_txt',
+    component: TemplateImg_txt,
+    img: './images/howitworkd-1.png',
+  },
+];
 
-  // navigate('./dashboard');
+const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep }) => {
+    const [isHovered, setIsHovered] = useState(Array(templates.length).fill(false));
+  const [selectedTemplateId, setSelectedTemplateId] = useState('');
 
-    return (
-        <div id="etape4">
-                <div className="step-box">
-                    <h2 className="template-title">Choose a template</h2>
-                    <p className="template-subtitle">You can always explore other templates if you change your mind later.</p>
+  const handleHover = (index, state) => {
+    const updatedHoverStates = [...isHovered];
+    updatedHoverStates[index] = state;
+    setIsHovered(updatedHoverStates);
+  };
 
-                    <div className='listing-container'>
-                        <div className='filters-container'>
+  const handleTemplateSelect = (templateId) => {
+    // Here, we're directly using setSelectedButtons to update the selected template ID for step 4
+    setSelectedButtons(prevSelectedButtons => ({
+      ...prevSelectedButtons,
+      [currentStep]: [templateId] // Assuming templateId is unique for each template
+    }));
+    updateNextButtonState(true); // This could be conditional based on additional logic
 
-                        </div>
-                        <div className='templates-container'>
-                        <div className='templates-box'>
-            <div className='templates-img' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-                <img src='./images/template-test.png' alt='Template Preview' />
-                {isHovered && (
-                    <div className='templates-hover'>
-                        <div className='templates-hover-content'>
-                        <a href=""><Link to="/templates/TemplateFullText">View Demo</Link></a>
-                        <a href=""><Link to="/logiciel/:templateName">Start Editing</Link></a>
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div className='templates-infos'>
-                <h3>Template Name</h3>
-                {/* <i className="bi bi-star"></i> */}
-            </div>
-                         </div>
-                         <div className='templates-box'>
-            <div className='templates-img' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-                <img src='./images/template-test.png' alt='Template Preview' />
-                {isHovered && (
-                    <div className='templates-hover'>
-                        <div className='templates-hover-content'>
-                        <a href=""><Link to="/templates/TemplateFullText">View Demo</Link></a>
-                        <a href=""><Link to="/logiciel/:templateName">Start Editing</Link></a>
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div className='templates-infos'>
-                <h3>Template Name</h3>
-                <i className="bi bi-star"></i>
-            </div>
-                         </div>
-                         <div className='templates-box'>
-            <div className='templates-img' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-                <img src='./images/template-test.png' alt='Template Preview' />
-                {isHovered && (
-                    <div className='templates-hover'>
-                        <div className='templates-hover-content'>
-                        <a href=""><Link to="/templates/TemplateFullText">View Demo</Link></a>
-                        <a href=""><Link to="/logiciel/:templateName">Start Editing</Link></a>
-                        </div>
-                    </div>
-                )}
-            </div>
-            <div className='templates-infos'>
-                <h3>Template Name</h3>
-                <i className="bi bi-star"></i>
-            </div>
-                         </div>
-                        </div>
-                    </div>
-                   
-                </div>
-            </div>
-        
-    );
 };
 
-export default TemplateStep5;
+  return (
+    <div id="etape4">
+      <div className="step-box">
+        <h2 className="template-title">Choose a template</h2>
+        <p className="template-subtitle">You can always explore other templates if you change your mind later.</p>
+        <div className='listing-container'>
+          <div className='templates-container'>
+            {templates.map((template, index) => (
+              <div className='templates-box' key={template.id} onClick={() => handleTemplateSelect(template.id)}>
+                <div
+                  className='templates-img'
+                  onMouseEnter={() => handleHover(index, true)}
+                  onMouseLeave={() => handleHover(index, false)}
+                >
+                  <img src={template.img} alt={`${template.name} Preview`} />
+                  {isHovered[index] && (
+                    <div className='templates-hover'>
+                      <div className='templates-hover-content'>
+                        <Link to={`/template-preview/${template.name}`}>View Demo</Link>
+                        <Link to={`/logiciel/${template.name}`}>Start Editing</Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className='templates-infos'>
+                  <h3>{template.name}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TemplateStep4;

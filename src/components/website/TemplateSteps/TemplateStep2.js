@@ -2,10 +2,44 @@ import React, { useState, useEffect } from 'react';
 import './TemplateSteps.css';
 import '../../Root.css';
 
-const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButtons, currentStep,props }) => {
+const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButtons, currentStep }) => {
     const [inputValue, setInputValue] = useState('');
 
-    // Toggle selection for a button
+    useEffect(() => {
+        // Load the initial value of the input from sessionStorage
+        const savedInput = sessionStorage.getItem(`inputValue-${currentStep}`);
+        if (savedInput) setInputValue(savedInput);
+    }, [currentStep]);
+
+    useEffect(() => {
+        return () => {
+            // Save the inputValue to sessionStorage when the component unmounts
+            sessionStorage.setItem(`inputValue-${currentStep}`, inputValue);
+        };
+    }, [inputValue, currentStep]);
+
+    const handleInputChange = (event) => {
+        setInputValue(event.target.value);
+    };
+    const saveDataToSession = (newData) => {
+        const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
+        sessionData[currentStep] = newData;
+        sessionStorage.setItem('stepData', JSON.stringify(sessionData));
+    };
+
+    const handleInputBlur = () => {
+        if (inputValue.trim()) {
+            setSelectedButtons(prev => {
+                const updated = {
+                    ...prev,
+                    [currentStep]: [...(prev[currentStep] || []), inputValue.trim()].filter((value, index, self) => self.indexOf(value) === index) // Ensure uniqueness
+                };
+                saveDataToSession(updated[currentStep]);
+                return updated;
+            });
+        }
+    };
+
     const handleButtonClick = (buttonId) => {
         setSelectedButtons(prevSelections => ({
             ...prevSelections,
@@ -14,11 +48,12 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
                 : [...prevSelections[currentStep] || [], buttonId]
         }));
     };
-    // Handle input change
-    const handleInputChange = (event) => {
-        setInputValue(event.target.value);
-    };
-    // Define buttons in pairs for each row
+
+    useEffect(() => {
+        const isNextEnabled = selectedButtons[currentStep]?.length > 0 || inputValue.trim() !== '';
+        updateNextButtonState(isNextEnabled);
+    }, [selectedButtons, inputValue, updateNextButtonState, currentStep]);
+
     const buttonPairs = [
         ["Upsells my collections", "Boost my visibility"],
         ["Deploy my market", "Organize my work"],
@@ -26,12 +61,6 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
         ["Contact form", "Communautary fidelisation"],
         ["Marketplace", "Learning platform"]
     ];
-
-    // Update the Next button enabled state based on selections or input
-    useEffect(() => {
-        const isNextEnabled = selectedButtons.length > 0 || inputValue.trim() !== '';
-        updateNextButtonState(isNextEnabled);
-    }, [selectedButtons, inputValue, updateNextButtonState]);
 
     return (
         <div id="etape2">
@@ -41,13 +70,12 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
                 <div className="template-label-box-2">
                     {buttonPairs.map((pair, rowIndex) => (
                         <div key={rowIndex} className="template-label-row">
-                            {pair.map((buttonLabel, buttonIndex) => {
+                            {pair.map((buttonLabel) => {
                                 const buttonId = buttonLabel.replace(/\s+/g, '').toLowerCase();
                                 return (
                                     <button
                                         key={buttonId}
-                                        className={`selectable-button-2 ${selectedButtons.includes(buttonId) ? 'selected' : ''}`}
-                                        id={buttonId}
+                                        className={`selectable-button-2 ${selectedButtons[currentStep]?.includes(buttonId) ? 'selected' : ''}`}
                                         onClick={() => handleButtonClick(buttonId)}
                                     >
                                         {buttonLabel}
@@ -64,6 +92,7 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
                         placeholder="Describe your feature..."
                         value={inputValue}
                         onChange={handleInputChange}
+                        onBlur={handleInputBlur} // Save when the input loses focus
                     />
                 </div>
             </div>

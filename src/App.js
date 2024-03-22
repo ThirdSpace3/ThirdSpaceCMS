@@ -7,10 +7,15 @@ import Logiciel from './pages/Logiciel'
 import TemplateStep from './pages/TemplateStep'
 import Dashboard from './pages/Dashboard'
 import Display from './components/logiciel/Display'
+import TemplatePreview from './pages/TemplatePreview'
+import { StyleProvider } from './hooks/StyleContext'
+import { ImageHistoryProvider } from './hooks/ImageHistoryContext'
 export default function App() {
   return (
     <div>
       <BrowserRouter>
+      <ImageHistoryProvider>
+      <StyleProvider>
         <Routes>
           <Route index element={<Home />} />
           <Route path="/home" element={<Home />} />
@@ -21,8 +26,12 @@ export default function App() {
           <Route path="/templatestep" element={<TemplateStep />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/logiciel/:templateName" element={<Display />} /> {/* Add this line for the dynamic route */}
+          <Route path="/template-preview/:templateName" element={<TemplatePreview />} /> {/* Add this route for template preview */}
+
           <Route path="*" element={<NoPage />} />
         </Routes>
+        </StyleProvider>
+        </ImageHistoryProvider>
       </BrowserRouter>
     </div>
   );

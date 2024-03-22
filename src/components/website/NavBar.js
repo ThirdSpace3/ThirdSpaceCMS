@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './NavBar.css';
-import Web3 from 'web3';
 import PopupWallet from './PopupWallet.js'; // Adjust this path as necessary
 import '../Root.css'
 import TemplateStep1 from './TemplateSteps/TemplateStep1.js';
@@ -11,12 +10,7 @@ function Navbar() {
   const [accounts, setAccounts] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [showTemplateStep1, setShowTemplateStep1] = useState(false);
-  const navigate = useNavigate();
 
-  const handleAccountClick = () => {
-    navigate('/templatestep');
-  };
-  
 
   useEffect(() => {
     // Function to check login status
@@ -67,7 +61,7 @@ function Navbar() {
             </li>
           </ul>
           <a
-            href={accounts.length > 0 ? "./dashboard" : "#"}
+            href={accounts.length > 0 ? "./templatestep" : "#"}
             className="nav__cta nav-bg"
             onClick={accounts.length === 0 ? togglePopup : undefined}
           >
@@ -80,14 +74,10 @@ function Navbar() {
           </a>
             )}
             {accounts.length > 0 && (
-              <a href="#" className="nav__cta nav-bg" id="account-btn" onClick={handleAccountClick}>
+              <a href="./dashboard" className="nav__cta nav-bg" id="account-btn">
                 <span className="material-symbols-outlined">account_circle</span>
               </a>
             )}
-
-         <a href="templates.html" className="nav__cta nav-bg" style={{display: 'none'}} id="account-btn">
-            <span className="material-symbols-outlined">account_circle</span>
-          </a>
         </div>
       </div>
 

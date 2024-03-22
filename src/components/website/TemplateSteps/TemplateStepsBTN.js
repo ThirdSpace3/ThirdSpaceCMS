@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
 const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, walletId, currentStep, inputValue, templateData }) => {
 
@@ -8,31 +9,38 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
   const handleNextClick = async () => {
     if (isNextEnabled) {
       try {
-        // Save inputValue to session storage here
-        const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
-        sessionData[currentStep] = { ...sessionData[currentStep], inputValue }; // Modify according to your structure
-        sessionStorage.setItem('stepData', JSON.stringify(sessionData));
-  
-        // Proceed with existing logic...
-        await axios.post('/api/user-actions', {
-          walletId,
-          step: currentStep,
-          selectedButtons: selectedButtons[currentStep],
-          templateData,
-        });
-  
+        // Differentiate the behavior based on the currentStep
+        if (currentStep === 5) {
+          // Logic to save data in the database
+          await axios.post('/api/final-submission', {
+            walletId,
+            data: {
+              selectedButtons: selectedButtons[currentStep],
+              inputValue,
+              templateData,
+              // Include any other relevant data
+            },
+          });
+        } else {
+          // Save inputValue to session storage for other steps
+          const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
+          sessionData[currentStep] = { ...sessionData[currentStep], inputValue }; // Modify according to your structure
+          sessionStorage.setItem('stepData', JSON.stringify(sessionData));
+        }  
         onNext(); // Proceed to the next step
       } catch (error) {
-        console.error('Error saving user actions:', error);
+        console.error('Error in operation:', error);
       }
     }
   };
   
+  
 
 
   return (
+    
     <div className="btn-box">
-      {currentStep !== 3 && currentStep !== 4 && (
+      {currentStep !== 4 && currentStep !== 5 && (
         <button className="ignore-btn" onClick={onIgnore}>
           Skip
         </button>
