@@ -18,6 +18,14 @@ const TemplateStep3 = ({ updateNextButtonState, currentStep, setSelectedButtons 
     useEffect(() => {
         updateNextButtonState(selectedItem !== '');
     }, [selectedItem, updateNextButtonState]);
+// Example adjustment for Step 3 (similar logic can be applied to Step 4)
+useEffect(() => {
+    if (selectedItem) {
+        const currentStepData = JSON.parse(sessionStorage.getItem('stepData')) || {};
+        currentStepData[currentStep] = [selectedItem]; // Consistently use arrays for simplicity
+        sessionStorage.setItem('stepData', JSON.stringify(currentStepData));
+    }
+}, [selectedItem, currentStep]);
 
     return (
         <div id="etape3">

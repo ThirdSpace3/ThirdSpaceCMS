@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TemplateFullText from '../../../templates/TemplateFullText';
 import TemplateImg_txt from '../../../templates/TemplateImg_txt';
@@ -30,13 +30,30 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
 
   const handleTemplateSelect = (templateId) => {
     // Here, we're directly using setSelectedButtons to update the selected template ID for step 4
+    console.log(`Template selected: ${templateId}`); // Verify this line is logged
+    setSelectedTemplateId(templateId);
+
     setSelectedButtons(prevSelectedButtons => ({
       ...prevSelectedButtons,
       [currentStep]: [templateId] // Assuming templateId is unique for each template
     }));
+    
     updateNextButtonState(true); // This could be conditional based on additional logic
+    console.log('Session Data Updated:', sessionStorage.getItem('stepData'));
 
 };
+// Example adjustment for Step 3 (similar logic can be applied to Step 4)
+useEffect(() => {
+    console.log('Current Step:', currentStep, 'Selected Template ID:', selectedTemplateId);
+    if (selectedTemplateId) {
+        const currentStepData = JSON.parse(sessionStorage.getItem('stepData')) || {};
+        currentStepData[currentStep] = [selectedTemplateId]; // Use selectedTemplateId
+        sessionStorage.setItem('stepData', JSON.stringify(currentStepData));
+        console.log('Updated session storage:', currentStepData);
+    }
+}, [selectedTemplateId, currentStep]); // Depend on selectedTemplateId
+
+
 
   return (
     <div id="etape4">

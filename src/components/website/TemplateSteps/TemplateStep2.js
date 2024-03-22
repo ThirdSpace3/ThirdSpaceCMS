@@ -15,6 +15,8 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
         return () => {
             // Save the inputValue to sessionStorage when the component unmounts
             sessionStorage.setItem(`inputValue-${currentStep}`, inputValue);
+            console.log('Session Data Updated:', sessionStorage.getItem('stepData'));
+
         };
     }, [inputValue, currentStep]);
 

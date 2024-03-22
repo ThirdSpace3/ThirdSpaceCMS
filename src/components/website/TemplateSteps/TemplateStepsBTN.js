@@ -8,16 +8,20 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
 
   const handleNextClick = async () => {
     if (isNextEnabled) {
-      try {
-        // Differentiate the behavior based on the currentStep
-        if (currentStep === 5) {
-          // Logic to save data in the database
-          await axios.post('/api/final-submission', {
+        try {
+            if (currentStep === 5) {
+                // Directly use the corrected aggregation logic here
+// Assuming session storage data is structured as shown and stored under a single key 'stepData'
+                const allStepsData = JSON.parse(sessionStorage.getItem('stepData')) || {};
+                console.log(allStepsData); // This should now correctly reflect the aggregated data
+
+                // Now, include `allStepsData` in the payload for the final submission
+                await axios.post('/api/final-submission', {
             walletId,
             data: {
               selectedButtons: selectedButtons[currentStep],
               inputValue,
-              templateData,
+              allStepsData,
               // Include any other relevant data
             },
           });
