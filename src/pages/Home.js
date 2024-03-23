@@ -8,6 +8,7 @@ import Footer from "../components/website/Footer"
 import ReportBugBTN from "../components/website/ReportBugBTN"
 
 export default function Home() {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
     return (
         <>
             <NavBar />

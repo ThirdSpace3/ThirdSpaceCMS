@@ -20,10 +20,12 @@ export default function TemplateStep() {
     4: [],
     5: [],
   });
-  
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+
   const walletId = sessionStorage.getItem('userAccount'); // Ensure this is your actual key
 
   useEffect(() => {
+    console.log(isLoggedIn);
     console.log(selectedButtons); // Check if selectedButtons updates correctly
   }, [selectedButtons]);
 

@@ -81,6 +81,7 @@ function PopupWallet({ onClose, onUserLogin }) {
             onUserLogin(publicKey);
             sessionStorage.setItem('isLoggedIn', 'true'); // Set login flag
             sessionStorage.setItem('userAccount', publicKey); // Save user account
+            console.log(sessionStorage);
           } else {
             console.error('onUserLogin is not a function');
           }

@@ -10,7 +10,12 @@ function Navbar() {
   const [accounts, setAccounts] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [showTemplateStep1, setShowTemplateStep1] = useState(false);
+  const navigate = useNavigate();
 
+  const userIsLoggedIn = () => {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    return isLoggedIn;
+  };
 
   useEffect(() => {
     // Function to check login status
@@ -31,8 +36,12 @@ function Navbar() {
   }, []);
 
   const togglePopup = () => {
-    setShowPopup(!showPopup);
-  };
+    console.log(userIsLoggedIn);
+    if (!userIsLoggedIn()) { // If user is not logged in
+      setShowPopup(!showPopup); // Toggle wallet popup
+    } else { // If user is logged in
+      navigate('./templatestep'); // Navigate to './templatestep' route
+    }  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

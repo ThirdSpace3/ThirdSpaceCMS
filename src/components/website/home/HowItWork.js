@@ -16,7 +16,9 @@ function HowItWork() {
 
   const openTab = (tabName) => {
     setActiveTab(tabName);
+    setShowWalletPopup(false); // Reset showWalletPopup state
   };
+  
 
   const userIsLoggedIn = () => {
     const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
@@ -24,12 +26,13 @@ function HowItWork() {
   };
 
   const toggleWalletPopup = () => {
-    if (!userIsLoggedIn()) {
-      setShowWalletPopup(!showWalletPopup);
-    } else {
-      navigate('./logiciel');
+    console.log(userIsLoggedIn);
+    if (!userIsLoggedIn()) { // If user is not logged in
+      setShowWalletPopup(!showWalletPopup); // Toggle wallet popup
+    } else { // If user is logged in
+      navigate('./templatestep'); // Navigate to './templatestep' route
     }
-  };;
+  };
 
   const handleUserLogin = (userAccount) => {
     // Handle user login here

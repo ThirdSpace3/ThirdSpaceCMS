@@ -13,12 +13,14 @@ function Header() {
   };
 
   const toggleWalletPopup = () => {
-    if (!userIsLoggedIn()) {
-      setShowWalletPopup(!showWalletPopup);
-    } else {
-      navigate('./dashboard');
+    console.log(userIsLoggedIn);
+    if (!userIsLoggedIn()) { // If user is not logged in
+      setShowWalletPopup(!showWalletPopup); // Toggle wallet popup
+    } else { // If user is logged in
+      navigate('./templatestep'); // Navigate to './templatestep' route
     }
   };
+  
 
   const handleUserLogin = (userAccount) => {
     // Handle user login here
