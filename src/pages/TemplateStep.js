@@ -7,7 +7,7 @@ import TemplateStep5 from "../components/website/TemplateSteps/TemplateStep5";
 
 // import TemplateStepsMobile from "../components/website/TemplateSteps/TemplateStepsMobile";
 import TemplateStepsBTN from "../components/website/TemplateSteps/TemplateStepsBTN";
-import ReportBugBTN from "../components/website/ReportBugBTN";
+import ReportBugBTN from '../components/website/ReportBugBTN';
 
 export default function TemplateStep() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -92,7 +92,7 @@ export default function TemplateStep() {
       <TemplateStep1
         updateNextButtonState={updateNextButtonState}
         handleFinalInputSave={handleFinalInputSave} // You may want to adjust or remove this if it's not used elsewhere
-        selectedButtons={selectedButtons[1]}
+        selectedButtons={selectedButtons}
         setSelectedButtons={setSelectedButtons}
         currentStep={currentStep}
         inputValue={inputValue} // Pass inputValue to TemplateStep1
@@ -104,7 +104,7 @@ export default function TemplateStep() {
       {currentStep === 2 && (
         <TemplateStep2
           updateNextButtonState={updateNextButtonState}
-          selectedButtons={selectedButtons[2]}
+          selectedButtons={selectedButtons}
           setSelectedButtons={setSelectedButtons}
           currentStep={currentStep}
         />
@@ -113,7 +113,7 @@ export default function TemplateStep() {
       {currentStep === 3 && (
         <TemplateStep3
           updateNextButtonState={updateNextButtonState}
-          selectedButtons={selectedButtons[3]}
+          selectedButtons={selectedButtons}
           setSelectedButtons={setSelectedButtons}
           currentStep={currentStep}
         />
@@ -129,7 +129,7 @@ export default function TemplateStep() {
       {currentStep === 5 && (
         <TemplateStep5
           updateNextButtonState={updateNextButtonState}
-          selectedButtons={selectedButtons[5]}
+          selectedButtons={selectedButtons}
           setSelectedButtons={setSelectedButtons}
           currentStep={currentStep}
         />

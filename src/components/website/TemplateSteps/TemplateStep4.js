@@ -18,6 +18,12 @@ const templates = [
     component: TemplateImg_txt,
     img: './images/howitworkd-1.png',
   },
+  {
+    id: 'templateImgTxt', // Added an ID for each template
+    name: 'TemplateImg_txt',
+    component: TemplateImg_txt,
+    img: './images/howitworkd-1.png',
+  },
 ];
 
 const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep }) => {
