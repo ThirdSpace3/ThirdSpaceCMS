@@ -1,6 +1,56 @@
-body {
-    overflow: hidden;
+/*==================== NAVBAR ====================*/
+nav {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    padding: 0 8%;
 }
+nav a img {
+    width: 10vw;
+}
+
+
+
+.template-deco-bot {
+    position: absolute;
+    bottom: -100px;
+    left: -90px;
+    z-index: -1;
+    max-width: 300px;
+}
+.template-deco-top {
+    position: absolute;
+    top: 45px;
+    right: -50px;
+    z-index: -1;
+    max-width: 150px;
+}
+  /*==================== BASE ====================*/
+  
+  body {
+    overflow-y: hidden;
+}
+#etape5, 
+#etape4,
+#etape3,
+#etape2,
+#etape1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    height: 80vh;
+    position: relative;   
+}
+
+
+#etape5 p {
+    max-width: 750px;
+}
+
+
 .template-content {
     width: 100%;
     height: 90vh;
@@ -183,19 +233,6 @@ button.disabled, button.disabled * {
     display: block;
 }
 
-.template-deco-bot {
-    position: absolute;
-    bottom: -400px;
-    left: -390px;
-    z-index: -1;
-}
-.template-deco-top {
-    position: absolute;
-    top: 45px;
-    right: -50px;
-    z-index: -1;
-    max-width: 200px;
-}
 
 .selected {
     background: rgba(255, 255, 255, 0.60);
@@ -232,23 +269,7 @@ button.disabled, button.disabled * {
     }
 }
 
-/*==================== CONFIRMATION END ====================*/
-#etape5, 
-#etape4,
-#etape3,
-#etape2,
-#etape1{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 25px;
-    height: 80vh;
-}
 
-#etape5 p {
-    max-width: 750px;
-}
 .feedback-submit {
     font-size: 16px;
 }
@@ -263,11 +284,13 @@ button.disabled, button.disabled * {
 /*==================== ETAPE 4 ====================*/
 
 .templates-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap; /* Permet aux éléments de passer à la ligne */
+    justify-content: space-between;
+    /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
-    justify-content: center;
-
+    justify-content: center; */
+    gap: 20px;
 }
 .templates-box {
     display: flex;
@@ -280,7 +303,7 @@ button.disabled, button.disabled * {
     min-height: 300px;
     max-height: 400px;
     min-width: 200px;
-    max-width: 300px;
+    max-width: 250px;
 }
 .templates-img img {
     width: 100%;
@@ -337,8 +360,7 @@ button.disabled, button.disabled * {
     font-family: Montserrat;
     font-size: 16px;
     font-style: normal;
-    font-weight: 500;
-    line-height: 28px; /* 112% */
+    font-weight: 400;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -348,3 +370,4 @@ button.disabled, button.disabled * {
 .templates-infos i {
     font-size: 25px;
 }
+

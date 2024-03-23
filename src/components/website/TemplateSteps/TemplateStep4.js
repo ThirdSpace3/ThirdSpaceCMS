@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import TemplateFullText from '../../../templates/TemplateFullText';
 import TemplateImg_txt from '../../../templates/TemplateImg_txt';
+import NavbarSteps from './TemplateNavbar';
+import TemplateFooter from './TemplateFooter';
 
 const templates = [
   {
@@ -57,6 +59,7 @@ useEffect(() => {
 
   return (
     <div id="etape4">
+    <NavbarSteps />
       <div className="step-box">
         <h2 className="template-title">Choose a template</h2>
         <p className="template-subtitle">You can always explore other templates if you change your mind later.</p>
@@ -83,10 +86,12 @@ useEffect(() => {
                   <h3>{template.name}</h3>
                 </div>
               </div>
+              
             ))}
           </div>
         </div>
       </div>
+      <TemplateFooter />
     </div>
   );
 };
