@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import TemplateFullText from '../../../templates/TemplateFullText';
 import TemplateImg_txt from '../../../templates/TemplateImg_txt';
 import NavbarSteps from './TemplateNavbar';
@@ -27,8 +27,11 @@ const templates = [
 ];
 
 const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep }) => {
-    const [isHovered, setIsHovered] = useState(Array(templates.length).fill(false));
-  const [selectedTemplateId, setSelectedTemplateId] = useState('');
+  const location = useLocation();
+  const { selectedTemplateId } = location.state || {};
+
+  const [isHovered, setIsHovered] = useState(Array(templates.length).fill(false));
+  const [selectedId, setSelectedId] = useState(selectedTemplateId || '');
 
   const handleHover = (index, state) => {
     const updatedHoverStates = [...isHovered];
@@ -39,7 +42,7 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
   const handleTemplateSelect = (templateId) => {
     // Here, we're directly using setSelectedButtons to update the selected template ID for step 4
     console.log(`Template selected: ${templateId}`); // Verify this line is logged
-    setSelectedTemplateId(templateId);
+    setSelectedId(templateId);
 
     setSelectedButtons(prevSelectedButtons => ({
       ...prevSelectedButtons,
@@ -78,11 +81,20 @@ useEffect(() => {
                   onMouseEnter={() => handleHover(index, true)}
                   onMouseLeave={() => handleHover(index, false)}
                 >
-                  <img src={template.img} alt={`${template.name} Preview`} />
+ {/* Replace the img tag with an iframe or the template component */}
+                  {/* <img src={template.img} alt={`${template.name} Preview`} /> */}
+                  {/* Using iframe */}
+                  <iframe scrolling="no" src={`/template-preview/${template.name}`} title={`${template.name} Preview`} />
+
+                  {/* Or, using the template component directly */}
+                  {/* {template.component && <template.component />} */}
+
                   {isHovered[index] && (
                     <div className='templates-hover'>
                       <div className='templates-hover-content'>
-                        <Link to={`/template-preview/${template.name}`}>View Demo</Link>
+<Link to={`/template-preview/${template.name}`} state={{ selectedTemplateId }}>
+  View Demo
+</Link>
                         <Link to={`/logiciel/${template.name}`}>Start Editing</Link>
                       </div>
                     </div>

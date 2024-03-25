@@ -56,6 +56,7 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
       >
         Next
       </button>
+      
     </div>
   );
 };
