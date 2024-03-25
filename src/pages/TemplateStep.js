@@ -9,6 +9,7 @@ import TemplateStep4 from "../components/website/TemplateSteps/TemplateStep4";
 import TemplateStep5 from "../components/website/TemplateSteps/TemplateStep5";
 import TemplateStepsBTN from "../components/website/TemplateSteps/TemplateStepsBTN";
 import ReportBugBTN from '../components/website/ReportBugBTN';
+import TemplateProgressBar from '../components/website/TemplateSteps/TemplateProgressBar';
 
 export default function TemplateStep() {
   const initialStep = Number(sessionStorage.getItem('currentStep')) || 1;
@@ -154,6 +155,7 @@ export default function TemplateStep() {
       />
     )}
       <ReportBugBTN />
+      <TemplateProgressBar />
       <img src="./images/template-deco-1.png" alt="" className="template-deco-bot" />
       <img src="./images/template-deco-2.png" alt="" className="template-deco-top" />
     </>

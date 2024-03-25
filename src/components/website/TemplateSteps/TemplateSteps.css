@@ -42,7 +42,8 @@ nav a img {
     justify-content: center;
     gap: 25px;
     height: 80vh;
-    position: relative;   
+    position: relative;
+    padding: 25px;   
 }
 
 
@@ -229,6 +230,37 @@ button.disabled, button.disabled * {
 .card-selected {
     background-color: rgba(255, 255, 255, 0.2);
 }
+.solutions-card {
+    position: relative;
+  }
+  
+  /* Styles pour centrer la div "Coming Soon" */
+  .solution-comingsoon {
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; 
+    width: 100%;
+    border-radius: 40px;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  
+  .solution-comingsoon:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+
+  }
 
 
 .final-btn-box {
@@ -284,14 +316,64 @@ button.disabled, button.disabled * {
 
 
 /*==================== ETAPE 4 ====================*/
+.templates-section {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+
+.listing-container {
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+.listing-container h3 {
+    color: var(--white);
+    font-family: Montserrat;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.listing-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.listing-dot {
+    width: 14px; 
+    height: 14px;
+    background-color: #D9D9D9; 
+    border-radius: 50%;
+    cursor: pointer; 
+  }
+  
+.listing-dot-selected {
+    background-color: var(--item-selected);
+}
+.listing-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+.listing-item-name {
+    color: #FFF;
+font-family: Inter;
+font-size: 18px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
 
 .templates-container {
     display: flex;
-    flex-wrap: wrap; /* Permet aux éléments de passer à la ligne */
-    justify-content: space-between;
-    /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 20px;
-    justify-content: center; */
+    justify-content: center;
     gap: 20px;
 }
 .templates-box {
@@ -374,3 +456,87 @@ button.disabled, button.disabled * {
     font-size: 25px;
 }
 
+ /*==================== PROGRESS BAR ====================*/
+.progressbar-section {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 20px;
+}
+ .progressbar-container {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.10);
+    padding: 15px 40px;
+}
+.progressbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.progressbar-number {
+    color: #64748B;
+    font-family: Montserrat;
+    font-size: 16.667px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    border-radius: 41.667px;
+    border: 1.667px solid #64748B;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.progressbar-text {
+    color: #64748B;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.progressbar-dot-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+.progressbar-dot {
+    background-color: #64748B;
+    width: 5px;
+    height: 5px;
+    border-radius: 50px;
+}
+    /*== active ==*/
+.progressbar-number p.actual-step {
+    color: #fff;
+    border: 1.667px solid #fff;
+    border-radius: 41.667px;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.progressbar .actual-step {
+    color: #fff;
+}
+.progressbar-dot-box .actual-step {
+    background-color: #fff;
+}
+
+@media only screen and (max-height: 800px) {
+    .progressbar-container {
+        scale: 0.8;
+    }
+}
