@@ -19,8 +19,8 @@ export default function TemplateStep() {
     1: [],
     2: [],
     3: [],
-    4: [],
-    5: [],
+    templateselected: [],
+    name: [],
   });
   const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
   const navigate = useNavigate();

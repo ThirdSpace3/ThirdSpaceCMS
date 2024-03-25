@@ -27,7 +27,7 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
             walletId,
             data: {
               allStepsData: sessionData,
-              templateName: sessionData[4]?.inputValue, // Example, adjust according to your structure
+              templateName: sessionData[5]?.inputValue, // Example, adjust according to your structure
               // Include any other relevant data
             },
           });        
