@@ -21,7 +21,7 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
           console.log(sessionData); // This should reflect the complete data
           sessionStorage.setItem('isTemplateCompleted', 'true');
           setRedirectToRoot(true);
-
+          console.log(walletId);
           // Adjust the payload as per your backend requirements
           await axios.post('/api/final-submission', {
             walletId,

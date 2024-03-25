@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// Import your template steps and other components
 import TemplateStep1 from "../components/website/TemplateSteps/TemplateStep1";
 import TemplateStep2 from "../components/website/TemplateSteps/TemplateStep2";
 import TemplateStep3 from "../components/website/TemplateSteps/TemplateStep3";
 import TemplateStep4 from "../components/website/TemplateSteps/TemplateStep4";
 import TemplateStep5 from "../components/website/TemplateSteps/TemplateStep5";
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-
-// import TemplateStepsMobile from "../components/website/TemplateSteps/TemplateStepsMobile";
 import TemplateStepsBTN from "../components/website/TemplateSteps/TemplateStepsBTN";
 import ReportBugBTN from '../components/website/ReportBugBTN';
 
@@ -23,68 +23,64 @@ export default function TemplateStep() {
     5: [],
   });
   const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
+
+  // Retrieve or initialize the walletId
+  let walletId = sessionStorage.getItem('userAccount');
+ console.log(walletId)
   useEffect(() => {
-    // Redirect to dashboard if the template process is completed
+    // Redirect if template process is completed
     const isTemplateCompleted = sessionStorage.getItem('isTemplateCompleted') === 'true';
     if (isTemplateCompleted) {
-      navigate('/dashboard'); // Adjust the '/dashboard' path as needed
+      navigate('/dashboard');
     }
-  }, []); // Empty dependency array means this runs once on component mount
-  const walletId = sessionStorage.getItem('userAccount'); // Ensure this is your actual key
+  }, [navigate]);
 
-  useEffect(() => {
-    console.log(isLoggedIn);
-    console.log(selectedButtons); // Check if selectedButtons updates correctly
-  }, [selectedButtons]);
-
-  const templateData = {
-    name: selectedButtons[4] || '', // Directly use the value, with a fallback to an empty string
-  };
-
-  const [projectName, setProjectName] = useState('');
   useEffect(() => {
     // Load stored data on component mount
     const storedButtons = sessionStorage.getItem('selectedButtons');
     if (storedButtons) {
-      console.log(storedButtons);
-
       setSelectedButtons(JSON.parse(storedButtons));
     }
     sessionStorage.setItem('currentStep', currentStep.toString());
-  }, [currentStep]);
-  
-  // Modify handleNext to use projectName when moving from step 4
+    // Ensure walletId is not lost upon updating currentStep
+    if (walletId) {
+      sessionStorage.setItem('userAccount', walletId);
+    }
+  }, [currentStep, walletId]);
+
+  const [projectName, setProjectName] = useState('');
+
   const handleNext = () => {
-    // Logic to save inputValue to session storage or pass it to the next step
     const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
     if (inputValue.trim()) {
       if (!sessionData[currentStep]) sessionData[currentStep] = {};
       sessionData[currentStep].inputValue = inputValue.trim();
       sessionStorage.setItem('stepData', JSON.stringify(sessionData));
     }
-        if (currentStep === 5) {
+    if (currentStep === 5) {
       setSelectedButtons(prevSelectedButtons => ({
         ...prevSelectedButtons,
-        5: [projectName], // Store as an array
+        5: [projectName],
       }));
     }
-    
-
     if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
     }
+    // Re-set the walletId to ensure it's not lost during navigation
+    if (walletId) {
+      sessionStorage.setItem('userAccount', walletId);
+    }
   };
+
   const handleIgnore = () => {
     if (currentStep <= 6) {
       setCurrentStep(currentStep + 1);
     }
+    // Optionally ensure walletId is preserved here too, depending on your application's flow
   };
 
-  // This function could be passed to steps that need to enable/disable the "Next" button
   const updateNextButtonState = (isEnabled) => {
-    console.log(`updateNextButtonState called with: ${isEnabled}`);
-
     setIsNextEnabled(isEnabled);
   };
 
@@ -154,7 +150,6 @@ export default function TemplateStep() {
         selectedButtons={selectedButtons}
         walletId={walletId}
         currentStep={currentStep}
-        templateData={templateData}
         inputValue={inputValue} // Pass inputValue to TemplateStepsBTN
       />
     )}

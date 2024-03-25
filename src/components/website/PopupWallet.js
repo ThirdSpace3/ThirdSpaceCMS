@@ -21,6 +21,8 @@ function PopupWallet({ onClose, onUserLogin }) {
           const response = await axios.post('/api/wallets', { walletId: account });
           if (response.data.status === 'existing') {
             console.log('Wallet ID already linked to an existing account.');
+            sessionStorage.setItem('userAccount', account); // Save user account in session storage
+
           } else {
             console.log('Wallet ID saved to database:', response.data);
           }
@@ -63,10 +65,13 @@ function PopupWallet({ onClose, onUserLogin }) {
           try {
             const response = await axios.post('/api/wallets', { walletId: publicKey });
             if (response.data.status === 'existing') {
+              sessionStorage.setItem('userAccount', publicKey); // Save user account in session storage
+
               console.log('Wallet ID already linked to an existing account.');
             } else {
               console.log('Wallet ID saved to database:', response.data);
-              sessionStorage.setItem('UserId', publicKey);
+              sessionStorage.setItem('userAccount', publicKey); // Save user account in session storage
+
             }
           } catch (error) {
             console.error('Error saving wallet ID to database:', error);

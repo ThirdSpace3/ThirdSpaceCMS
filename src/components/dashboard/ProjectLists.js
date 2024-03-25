@@ -7,21 +7,21 @@ export default function Projectlists() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/templates")
-      .then((response) => response.json())
-      .then((data) => setTemplates(data))
-      .catch((error) => console.error("Error fetching templates:", error));
+    fetch('http://localhost:5000/api/templates') // Adjust the URL based on your server setup
+      .then(response => response.json())
+      .then(data => setTemplates(data))
+      .catch(error => console.error("Failed to load templates:", error));
   }, []);
 
   const handleProjectClick = (templateName) => {
     navigate(`/logiciel/${templateName}`);
   };
-  
+
   return (
     <>
       <div className="Projectlists">
         <div className="NewProjects">
-          <img></img>
+          <img></img> {/* Consider adding a src attribute or removing the tag if not used */}
           <h2>New Project</h2>
         </div>
 
@@ -32,13 +32,13 @@ export default function Projectlists() {
             onClick={() => handleProjectClick(template.name)}
           >
             <div className="Projectlists_element_top">
-              <i>Time</i>
+              <i>Time</i> {/* This seems to be placeholder content */}
               <p>Recently Viewed</p>
             </div>
-            <img src={template.previewImage} alt={template.name} />
+            <iframe scrolling="no" src={`/template-preview/${template.name}`} title={`${template.name} Preview`} />
             <div className="Projectlists_element_bt">
               <p>{template.name}</p>
-              <i>Dots</i>
+              <i>Dots</i> {/* This seems to be placeholder content */}
             </div>
           </div>
         ))}
