@@ -50,6 +50,9 @@ useEffect(() => {
                                  item === 'Sections' ? 'Use a large amount of sections and blocks, already set up for you to use.' : 
                                  'Create your entire site from nothing and be free from template constraints.'}
                             </p>
+                            <div className='solution-comingsoon'>
+                                <p>Coming Soon</p>
+                            </div>
                         </div>
                     ))}
                 </div>
