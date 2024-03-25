@@ -10,19 +10,16 @@ const templates = [
     id: 'templateFullText', // Added an ID for each template
     name: 'TemplateFullText',
     component: TemplateFullText,
-    img: './images/template-test.png',
   },
   {
     id: 'templateImgTxt', // Added an ID for each template
     name: 'TemplateImg_txt',
     component: TemplateImg_txt,
-    img: './images/howitworkd-1.png',
   },
   {
     id: 'templateImgTxt', // Added an ID for each template
     name: 'TemplateImg_txt',
     component: TemplateImg_txt,
-    img: './images/howitworkd-1.png',
   },
 ];
 

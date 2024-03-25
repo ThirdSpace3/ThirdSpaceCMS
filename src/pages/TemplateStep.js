@@ -10,7 +10,8 @@ import TemplateStepsBTN from "../components/website/TemplateSteps/TemplateStepsB
 import ReportBugBTN from '../components/website/ReportBugBTN';
 
 export default function TemplateStep() {
-  const [currentStep, setCurrentStep] = useState(1);
+  const initialStep = Number(sessionStorage.getItem('currentStep')) || 1;
+  const [currentStep, setCurrentStep] = useState(initialStep);
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [selectedButtons, setSelectedButtons] = useState({
@@ -42,7 +43,8 @@ export default function TemplateStep() {
 
       setSelectedButtons(JSON.parse(storedButtons));
     }
-  }, []);
+    sessionStorage.setItem('currentStep', currentStep.toString());
+  }, [currentStep]);
   
   // Modify handleNext to use projectName when moving from step 4
   const handleNext = () => {
