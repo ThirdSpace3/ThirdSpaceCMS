@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import TemplateFullText from '../../../templates/TemplateFullText';
 import TemplateImg_txt from '../../../templates/TemplateImg_txt';
 import NavbarSteps from './TemplateNavbar';
-import TemplateFooter from './TemplateFooter';
 import { template } from 'lodash';
 
 const templates = [
@@ -107,7 +106,6 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
           </div>
         </div>
       </div>
-      <TemplateFooter />
     </div>
   );
 };
