@@ -4,9 +4,6 @@ import { Navigate } from 'react-router-dom';
 
 const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, walletId, currentStep, inputValue, templateData }) => {
   const [redirectToRoot, setRedirectToRoot] = useState(false);
-
-
-
   const handleNextClick = async () => {
     if (isNextEnabled) {
       try {
@@ -16,6 +13,8 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
           const allStepsData = JSON.parse(sessionStorage.getItem('stepData')) || {};
           console.log(allStepsData); // This should now correctly reflect the aggregated data
           // Now, include `allStepsData` in the payload for the final submission          
+          sessionStorage.setItem('isTemplateCompleted','true');
+          setRedirectToRoot(true);
 
           await axios.post('/api/final-submission', {
             walletId,
@@ -26,7 +25,6 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
               // Include any other relevant data
             },
           });
-          setRedirectToRoot(true);
 
         } else {
           // Save inputValue to session storage for other steps

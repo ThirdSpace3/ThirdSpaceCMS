@@ -4,6 +4,7 @@ import TemplateStep2 from "../components/website/TemplateSteps/TemplateStep2";
 import TemplateStep3 from "../components/website/TemplateSteps/TemplateStep3";
 import TemplateStep4 from "../components/website/TemplateSteps/TemplateStep4";
 import TemplateStep5 from "../components/website/TemplateSteps/TemplateStep5";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 // import TemplateStepsMobile from "../components/website/TemplateSteps/TemplateStepsMobile";
 import TemplateStepsBTN from "../components/website/TemplateSteps/TemplateStepsBTN";
@@ -22,7 +23,14 @@ export default function TemplateStep() {
     5: [],
   });
   const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
-
+  const navigate = useNavigate(); // Initialize useNavigate
+  useEffect(() => {
+    // Redirect to dashboard if the template process is completed
+    const isTemplateCompleted = sessionStorage.getItem('isTemplateCompleted') === 'true';
+    if (isTemplateCompleted) {
+      navigate('/dashboard'); // Adjust the '/dashboard' path as needed
+    }
+  }, []); // Empty dependency array means this runs once on component mount
   const walletId = sessionStorage.getItem('userAccount'); // Ensure this is your actual key
 
   useEffect(() => {
