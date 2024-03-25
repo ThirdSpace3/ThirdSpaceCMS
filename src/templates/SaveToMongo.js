@@ -14,7 +14,7 @@ const client = new MongoClient(uri, {
 async function saveTemplatesToMongoDB() {
   try {
     await client.connect();
-    const database = client.db('myDatabase'); // Replace with your database name
+    const database = client.db('Templates'); // Replace with your database name
     const templatesCollection = database.collection('templates');
 
     const templatesDir = path.join(__dirname, '');
