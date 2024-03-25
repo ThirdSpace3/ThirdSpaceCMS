@@ -10,7 +10,7 @@ import TemplateStep5 from "../components/website/TemplateSteps/TemplateStep5";
 import TemplateStepsBTN from "../components/website/TemplateSteps/TemplateStepsBTN";
 import ReportBugBTN from '../components/website/ReportBugBTN';
 import TemplateProgressBar from '../components/website/TemplateSteps/TemplateProgressBar';
-
+import TemplateStepsMobile from '../components/website/TemplateSteps/TemplateStepsMobile';
 export default function TemplateStep() {
   const initialStep = Number(sessionStorage.getItem('currentStep')) || 1;
   const [currentStep, setCurrentStep] = useState(initialStep);
@@ -25,6 +25,14 @@ export default function TemplateStep() {
   });
   const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
   const navigate = useNavigate();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Retrieve or initialize the walletId
   let walletId = sessionStorage.getItem('userAccount');
@@ -97,67 +105,78 @@ export default function TemplateStep() {
 
   return (
     <>
-       {currentStep === 1 && (
-      <TemplateStep1
-        updateNextButtonState={updateNextButtonState}
-        handleFinalInputSave={handleFinalInputSave} // You may want to adjust or remove this if it's not used elsewhere
-        selectedButtons={selectedButtons}
-        setSelectedButtons={setSelectedButtons}
-        currentStep={currentStep}
-        inputValue={inputValue} // Pass inputValue to TemplateStep1
-        setInputValue={setInputValue} // Pass setInputValue to TemplateStep1 for updating the inputValue
-      />
-    )}
-
-
-      {currentStep === 2 && (
-        <TemplateStep2
-          updateNextButtonState={updateNextButtonState}
-          selectedButtons={selectedButtons}
-          setSelectedButtons={setSelectedButtons}
-          currentStep={currentStep}
-        />
+      {windowWidth < 768 ? (
+        <TemplateStepsMobile />
+      ) : (
+        // The rest of your component logic remains unchanged, displaying the appropriate step based on 'currentStep'
+        <>
+          {currentStep === 1 && (
+            <TemplateStep1
+              updateNextButtonState={updateNextButtonState}
+              handleFinalInputSave={handleFinalInputSave}
+              selectedButtons={selectedButtons}
+              setSelectedButtons={setSelectedButtons}
+              currentStep={currentStep}
+              inputValue={inputValue}
+              setInputValue={setInputValue}
+            />
+          )}
+  
+          {currentStep === 2 && (
+            <TemplateStep2
+              updateNextButtonState={updateNextButtonState}
+              selectedButtons={selectedButtons}
+              setSelectedButtons={setSelectedButtons}
+              currentStep={currentStep}
+            />
+          )}
+  
+          {currentStep === 3 && (
+            <TemplateStep3
+              updateNextButtonState={updateNextButtonState}
+              selectedButtons={selectedButtons}
+              setSelectedButtons={setSelectedButtons}
+              currentStep={currentStep}
+            />
+          )}
+  
+          {currentStep === 4 && (
+            <TemplateStep4
+              updateNextButtonState={updateNextButtonState}
+              setSelectedButtons={setSelectedButtons}
+              currentStep={currentStep}
+              setProjectName={setProjectName}
+            />
+          )}
+  
+          {currentStep === 5 && (
+            <TemplateStep5
+              updateNextButtonState={updateNextButtonState}
+              selectedButtons={selectedButtons}
+              setSelectedButtons={setSelectedButtons}
+              currentStep={currentStep}
+            />
+          )}
+  
+          {currentStep <= 5 && (
+            <TemplateStepsBTN
+              onNext={handleNext}
+              onIgnore={handleIgnore}
+              isNextEnabled={isNextEnabled}
+              selectedButtons={selectedButtons}
+              walletId={walletId}
+              currentStep={currentStep}
+              inputValue={inputValue}
+            />
+          )}
+        </>
       )}
-
-      {currentStep === 3 && (
-        <TemplateStep3
-          updateNextButtonState={updateNextButtonState}
-          selectedButtons={selectedButtons}
-          setSelectedButtons={setSelectedButtons}
-          currentStep={currentStep}
-        />
-      )}
-      {currentStep === 4 && (
-        <TemplateStep4
-          updateNextButtonState={updateNextButtonState}
-          setSelectedButtons={setSelectedButtons}
-          currentStep={currentStep}
-          setProjectName={setProjectName} // Make sure this is correctly passed
-        />
-      )}
-      {currentStep === 5 && (
-        <TemplateStep5
-          updateNextButtonState={updateNextButtonState}
-          selectedButtons={selectedButtons}
-          setSelectedButtons={setSelectedButtons}
-          currentStep={currentStep}
-        />
-      )}
-      {currentStep <= 5 && (
-      <TemplateStepsBTN
-        onNext={handleNext}
-        onIgnore={handleIgnore}
-        isNextEnabled={isNextEnabled}
-        selectedButtons={selectedButtons}
-        walletId={walletId}
-        currentStep={currentStep}
-        inputValue={inputValue} // Pass inputValue to TemplateStepsBTN
-      />
-    )}
+  
+      {/* Components outside the conditional rendering remain unchanged */}
       <ReportBugBTN />
-      <TemplateProgressBar />
+      <TemplateProgressBar currentStep={currentStep} />
       <img src="./images/template-deco-1.png" alt="" className="template-deco-bot" />
       <img src="./images/template-deco-2.png" alt="" className="template-deco-top" />
     </>
   );
-}
+}  
