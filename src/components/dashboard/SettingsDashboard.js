@@ -7,7 +7,7 @@ import "../Root.css";
 export default function SettingsDashboard() {
 return (
      <>
-     
+     <h1>Settings</h1>
         
         
     </>

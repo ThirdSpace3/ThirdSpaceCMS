@@ -8,7 +8,8 @@ export default function ProfileDashboard() {
 return (
      <>
      
-        
+     <h1>Profile</h1>
+
         
     </>
     

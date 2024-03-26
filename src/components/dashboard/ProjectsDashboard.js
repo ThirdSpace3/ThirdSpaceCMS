@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ProjectsDashboard.css"; // Assurez-vous que le chemin est correct pour vos styles
 
 export default function ProjectsDashboard() {
@@ -21,39 +21,105 @@ export default function ProjectsDashboard() {
         setIsOpen(false);
     };
 
+    
+
     return (
         <>
             <div className="projects-container">
-                <div className="projects-header">
-                    <h1>Projects</h1>
-                    <div className="projects-navbar">
-                        <div className="projects-navbar-input">
-                            <i className="bi bi-search"></i>
-                            <input placeholder="Search..."></input>
-                        </div>
-                        <div className="project-navbar-dropdown">
-                            <div className="project-navbar-dropdown-header" onClick={toggleDropdown}>
-                                <i className={`bi ${selectedOption.icon} project-navbar-dropdown-icon`}></i>
-                                <p className="project-navbar-dropdown-option">{selectedOption.text}</p> 
-                                <i className={`bi bi-caret-down-fill ${isOpen ? 'open' : ''} project-navbar-dropdown-icon`}></i>
+                <div className="projects-header-sticky">
+                    <div className="projects-header">
+                        <h1>Projects</h1>
+                        <div className="projects-navbar">
+                            <div className="projects-navbar-input">
+                                <i className="bi bi-search"></i>
+                                <input placeholder="Search..."></input>
                             </div>
-                            {isOpen && (
-                                <div className="project-navbar-dropdown-list">
-                                    {dropdownOptions.filter(o => o.value !== selectedOption.value).map((option) => (
-                                        <div key={option.value} className="project-navbar-dropdown-item" onClick={() => handleSelect(option)}>
-                                            <i className={`bi ${option.icon} project-navbar-dropdown-icon`}></i>
-                                            <p className="project-navbar-dropdown-option">{option.text}</p>
-                                        </div>
-                                    ))}
+                            <div className="project-navbar-dropdown">
+                                <div className="project-navbar-dropdown-header" onClick={toggleDropdown}>
+                                    <i className={`bi ${selectedOption.icon} project-navbar-dropdown-icon`}></i>
+                                    <p className="project-navbar-dropdown-option">{selectedOption.text}</p> 
+                                    <i className={`bi bi-caret-down-fill ${isOpen ? 'open' : ''} project-navbar-dropdown-icon`}></i>
                                 </div>
-                            )}
+                                {isOpen && (
+                                    <div className="project-navbar-dropdown-list">
+                                        {dropdownOptions.filter(o => o.value !== selectedOption.value).map((option) => (
+                                            <div key={option.value} className="project-navbar-dropdown-item" onClick={() => handleSelect(option)}>
+                                                <i className={`bi ${option.icon} project-navbar-dropdown-icon`}></i>
+                                                <p className="project-navbar-dropdown-option">{option.text}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                            <a href="/new-project" className="projects-navbar-btn"><i className="bi bi-plus-circle"></i> New Project</a>
                         </div>
-                        <a href="/new-project" className="projects-navbar-btn"><i className="bi bi-plus-circle"></i> New Project</a>
                     </div>
                 </div>
 
                 <div className="projects-content">
-                    {/* Contenu du projet ici */}
+                    <div className="projects-content-box">
+                        <div className="projects-content-title">
+                            <i class="bi bi-clock-history"></i>
+                            <h2>Recently viewed</h2>
+                        </div>
+                        <div className="projects-content-listing">
+                            <div className="projects-content-item">
+                                <img src="./images/project-image-test.png"/>
+                                <div className="projects-content-item-info">
+                                    <p>ClosedEarth</p>
+                                    <a href=""><i class="bi bi-three-dots"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className="projects-content-box">
+                        <div className="projects-content-title">
+                        <i class="bi bi-folder2"></i>
+                            <h2>All Projects</h2>
+                        </div>
+                        <div className="projects-content-listing">
+                            <div className="projects-content-item">
+                                <img src="./images/project-image-test.png"/>
+                                <div className="projects-content-item-info">
+                                    <p>ClosedEarth</p>
+                                    <a href=""><i class="bi bi-three-dots"></i></a>
+                                </div>
+                            </div>
+                            <div className="projects-content-item">
+                                <img src="./images/project-image-test.png"/>
+                                <div className="projects-content-item-info">
+                                    <p>ClosedEarth</p>
+                                    <a href=""><i class="bi bi-three-dots"></i></a>
+                                </div>
+                            </div>
+                            <div className="projects-content-item">
+                                <img src="./images/project-image-test.png"/>
+                                <div className="projects-content-item-info">
+                                    <p>ClosedEarth</p>
+                                    <a href=""><i class="bi bi-three-dots"></i></a>
+                                </div>
+                            </div>
+                            <div className="projects-content-item">
+                                <img src="./images/project-image-test.png"/>
+                                <div className="projects-content-item-info">
+                                    <p>ClosedEarth</p>
+                                    <a href=""><i class="bi bi-three-dots"></i></a>
+                                </div>
+                            </div>
+                            <div className="projects-content-item">
+                                <img src="./images/project-image-test.png"/>
+                                <div className="projects-content-item-info">
+                                    <p>ClosedEarth</p>
+                                    <a href=""><i class="bi bi-three-dots"></i></a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </>

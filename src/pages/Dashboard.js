@@ -10,10 +10,13 @@ export default function Dashboard() {
 return (
      <>
      <div className="dashboard-container">
+    <div className="leftMenuDashboard">
         <LeftMenuDashboard />
-
+    </div>
+    <div className="projectsDashboard">
         <ProjectsDashboard />
-     </div>
+    </div>
+</div>
         
         
     </>

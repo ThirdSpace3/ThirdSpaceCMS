@@ -8,7 +8,8 @@ export default function BillingDashboard() {
 return (
      <>
      
-        
+     <h1>Billing</h1>
+
         
     </>
     
