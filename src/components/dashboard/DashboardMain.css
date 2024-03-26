@@ -1,6 +1,8 @@
 /*==== Dashboard ====*/
 .dashboard-container {
     background-color: var(--white);
+    display: flex;
+    flex-direction: row;
 }
 
 

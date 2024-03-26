@@ -1,0 +1,128 @@
+.projects-container {
+    width: 100%;
+}
+
+/*== project header ==*/
+
+.projects-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 50px;
+    padding-top: 30px;
+    align-items: center
+}
+.projects-header h1 {
+    color: var(--menu-bg);
+    font-family: var(--inter);
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.projects-navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: var(--menu-bg);
+    border-radius: 20px 0px 0px 20px;    
+}
+
+/*== project navbar input ==*/
+.projects-navbar-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--white);
+    border-radius: 10px;
+    border: 1px solid var(--text-editor);
+    height: 30px;
+    width: 250px;
+}
+.projects-navbar-input i {
+    color: var(--menu-bg);
+    padding: 7px 12px;
+
+}
+.projects-navbar-input input {
+    background-color: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+
+}
+
+/*== project navbar dropdown ==*/
+.project-navbar-dropdown {
+    position: relative;
+    user-select: none;
+    width: 170px;
+  }
+  .project-navbar-dropdown-header {
+    cursor: pointer;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-end;
+  }
+  .arrow {
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+  }
+  .arrow.open {
+    transform: rotate(180deg);
+  }
+  .project-navbar-dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: var(--menu-bg);
+    border-radius: 0 0 7px 7px;
+  }
+  .project-navbar-dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+  }
+  .project-navbar-dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .project-navbar-dropdown-icon {
+    color: var(--white);
+    font-size: 14px;
+  }
+  .project-navbar-dropdown-option {
+    color: var(--white);
+    font-family: var(--inter);
+    font-size: 15px;
+  }
+
+  /*==new project btn==*/
+  .projects-navbar-btn {
+    display: flex;
+    height: 40px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    border: 2px solid var(--purple, #9600FA);
+    background: var(--purple, #9600FA);
+    color: var(--Secondary-2, #FCFCFC);
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  
