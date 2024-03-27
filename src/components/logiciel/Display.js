@@ -112,6 +112,12 @@ export default function Display() {
   const addImageToHistory = (imageURL) => {
     setImageHistory((prevHistory) => [...prevHistory, imageURL]);
   };
+  const templateComponents = {
+    TemplateFullText: TemplateFullText,
+    TemplateImg_txt: TemplateImg_txt,
+    // Add more templates here as needed
+  };
+  const SelectedTemplate = templateComponents[templateName];
 
 
   return (
@@ -135,18 +141,8 @@ export default function Display() {
               <>
                 <ActualPageParametersBTN />
               </>
-            )}
-            {activeEditor === 'TemplateFullText' ? (
-              <TemplateFullText
-                deviceSize={selectedDeviceSize}
-                settings={settings}
-                selectedElement={selectedElement}
-                setSelectedElement={setSelectedElement}
-                isPreviewMode={isPreviewMode} // Pass isPreviewMode as a prop
-
-              />
-            ) : (
-              <TemplateImg_txt
+            )}           
+           <SelectedTemplate
                 deviceSize={selectedDeviceSize}
                 settings={settings}
                 handleSettingsChange={handleSettingsChange}
@@ -155,7 +151,6 @@ export default function Display() {
                 isPreviewMode={isPreviewMode}
               />
 
-            )}
           </div>
           {!isPreviewMode && ( // Hide LeftBar and RightBar in preview mode
             <>

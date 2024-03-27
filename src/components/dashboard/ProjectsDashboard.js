@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./ProjectsDashboard.css";
+import { useNavigate } from 'react-router-dom';
 
 export default function ProjectsDashboard() {
     // Options pour le Dropdown
     const dropdownOptions = [
-        { value: 'all', text: 'All', icon: 'bi-grid-3x3-gap-fill' },
+        { value: 'all', text: 'None', icon: 'bi-grid-3x3-gap-fill' },
         { value: 'option1', text: 'Creation Date', icon: 'bi-arrow-down' },
         { value: 'option2', text: 'Creation Date', icon: 'bi-arrow-up' },
         { value: 'option3', text: 'Alphabetic', icon: 'bi-sort-alpha-down' },
@@ -17,8 +18,8 @@ export default function ProjectsDashboard() {
 
     // Add an array of projects
     const projects = [
-        { name: 'ClosedEarth', image: './images/project-image-test.png', createdAt: '2023-03-20' },
-        { name: 'OpenSea', image: './images/project-image-test.png', createdAt: '2023-03-19' },
+        { name: 'TemplateFullText', image: './images/project-image-test.png', createdAt: '2023-03-20' },
+        { name: 'TemplateImg_txt', image: './images/project-image-test.png', createdAt: '2023-03-19' },
         { name: 'CryptoPunks', image: './images/project-image-test.png', createdAt: '2023-03-18' },
         { name: 'Bored Ape Yacht Club', image: './images/project-image-test.png', createdAt: '2023-03-17' },
         { name: 'Decentraland', image: './images/project-image-test.png', createdAt: '2023-03-16' },
@@ -62,7 +63,11 @@ export default function ProjectsDashboard() {
             setFilteredProjects(projects.filter(project => project.name.toLowerCase().includes(event.target.value.toLowerCase())));
         }
     };
+    const navigate = useNavigate();
 
+    const handleProjectClick = (projectName) => {
+        navigate(`/logiciel/${projectName}`);
+    };
     return (
         <>
             <div className="projects-container">
@@ -122,8 +127,8 @@ export default function ProjectsDashboard() {
                         {/* Display the filtered projects */}
                         <div className="projects-content-listing">
                             {filteredProjects.slice(0, 5).map((project, index) => (
-                                <div key={index} className="projects-content-item">
-                                    <img src={project.image}/>
+                            <div key={index} className="projects-content-item" onClick={() => handleProjectClick(project.name)}>
+                            <img src={project.image}/>
                                     <div className="projects-content-item-info">
                                         <p>{project.name}</p>
                                         <a href=""><i class="bi bi-three-dots"></i></a>
