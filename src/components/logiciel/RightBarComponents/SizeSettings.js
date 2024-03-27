@@ -6,10 +6,10 @@ const SizeSection = ({ isOpen, toggleSection, updateStyle, onSettingsChange, sel
   const [sizeStyle, setSizeStyle] = useState({
     width: '',
     height: '',
-    minWidth: '',
-    maxWidth: '',
-    minHeight: '',
-    maxHeight: '',
+    minWidth: '0',
+    maxWidth: '1920',
+    minHeight: '0',
+    maxHeight: '980',
     overflow: '',
   });
 

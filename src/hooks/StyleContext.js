@@ -1,27 +1,19 @@
-// StyleContext.js
 import React, { createContext, useContext, useState } from 'react';
 
 const StyleContext = createContext();
 
-export const useStyle = () => {
-    const context = useContext(StyleContext);
-    console.log("useStyle context:", context);
-    return context;
-  };
-  
 export const StyleProvider = ({ children }) => {
-    const [style, setStyle] = useState({
-        width: '100%', // Default width
-        height: 'auto', // Default height
-    });
+  const [style, setStyle] = useState({});
 
-    const updateStyle = (newStyle) => {
-        setStyle(newStyle);
-    };
+  const updateStyle = (newStyles) => {
+    setStyle(newStyles);
+  };
 
-    return (
-        <StyleContext.Provider value={{ style, updateStyle }}>
-            {children}
-        </StyleContext.Provider>
-    );
+  return (
+    <StyleContext.Provider value={{ style, updateStyle }}>
+      {children}
+    </StyleContext.Provider>
+  );
 };
+
+export const useStyle = () => useContext(StyleContext);

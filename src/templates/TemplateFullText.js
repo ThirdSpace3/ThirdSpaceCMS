@@ -11,6 +11,7 @@ const TemplateFullText = ({
   showOnlyTemplate1OnDo
 }) => {
   const { style } = useStyle();
+
   const [walletId, setWalletId] = useState('');
   const [content, setContent] = useState({
     title: 'Your Landing Page Title',
@@ -43,6 +44,7 @@ const TemplateFullText = ({
       color: '#ffffff', // white
       fontFamily: "'Montserrat', sans-serif",
       fontWeight: '800',
+      border: '10px solid white',
     },
     subtitle: {
       fontSize: '25px',
@@ -119,19 +121,26 @@ const TemplateFullText = ({
   const handleTextClick = (elementRef) => {
     setSelectedElement(elementRef.current);
   };
-
+ 
   const handleReturnClick = useCallback(() => {
     onToggleTemplate1OnDo();
   }, [onToggleTemplate1OnDo]);
 
+
+  useEffect(() => {
+    // Apply styles to the selected element
+    if (selectedElement && style) {
+      Object.keys(style).forEach(key => {
+        selectedElement.style[key] = style[key];
+      });
+    }
+  }, [style, selectedElement]);
   // Function to merge base styles with dynamic styles from context
   const getCombinedStyles = (styles) => {
     const combinedStyles = { ...styles, ...style }; // Merge base style with context style
     console.log("Combined Styles:", combinedStyles); // Log combined styles
     return combinedStyles;
   };
-
-
 
   return (
     <div style={styles.templateWrapper}>

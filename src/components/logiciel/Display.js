@@ -7,6 +7,7 @@ import './Display.css';
 import { StyleProvider } from '../../hooks/StyleContext';
 import TemplateFullText from '../../templates/TemplateFullText';
 import TemplateImg_txt from '../../templates/TemplateImg_txt';
+import { TemplateTest1 } from '../../templates';
 import axios from 'axios';
 import { ImageHistoryProvider } from '../../hooks/ImageHistoryContext';
 import { useParams } from 'react-router-dom'; // Import useParams
@@ -25,22 +26,17 @@ export default function Display() {
   }, [templateName]);
   
 
-  const handleSettingsChange = (section, newSettings) => {
+  const handleSettingsChange = (elementId, newSettings) => {
+    // Example function body - adjust based on actual state structure
     setSettings((prevSettings) => {
-      const nextSettings = {
-        ...prevSettings,
-        [section]: {
-          ...prevSettings[section],
-          ...newSettings,
-        },
-      };
-
-      setSettingsHistory((prevHistory) => [...prevHistory, nextSettings]);
-
-      return nextSettings;
+      // Here, you would find the relevant element in your state by its ID
+      // and update its settings with `newSettings`
+      // This is a placeholder implementation
+      const updatedSettings = { ...prevSettings, [elementId]: newSettings };
+      return updatedSettings;
     });
   };
-
+  
   const undo = () => {
     if (currentHistoryIndex > 0) {
       setCurrentHistoryIndex(currentHistoryIndex - 1);
@@ -115,6 +111,7 @@ export default function Display() {
   const templateComponents = {
     TemplateFullText: TemplateFullText,
     TemplateImg_txt: TemplateImg_txt,
+    TemplateTest1 : TemplateTest1,
     // Add more templates here as needed
   };
   const SelectedTemplate = templateComponents[templateName];

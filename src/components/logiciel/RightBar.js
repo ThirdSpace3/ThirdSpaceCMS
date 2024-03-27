@@ -9,7 +9,7 @@ import BorderSettings from './RightBarComponents/BorderSettings';
 import BackgroundSettings from './RightBarComponents/BackgroundSettings';
 import TypographySettings from './RightBarComponents/TypographySettings';
 
-export default function RightBar({ selectedElement , addImageToHistory}) {
+export default function RightBar({ selectedElement, addImageToHistory }) {
 
   const [typographyStyle, setTypographyStyle] = useState({});
 
@@ -67,9 +67,9 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
       value = e.target.value; // For all other input types, use the string value
     }
     if (['borderColor', 'borderWidth', 'borderStyle', 'borderRadius'].includes(styleProperty)) {
-      const updatedStyle = selectedSide ? 
-      { ...borderStyle, [selectedSide]: { ...borderStyle[selectedSide], [styleProperty]: value } } : 
-      { ...borderStyle, top: value, right: value, bottom: value, left: value };
+      const updatedStyle = selectedSide ?
+        { ...borderStyle, [selectedSide]: { ...borderStyle[selectedSide], [styleProperty]: value } } :
+        { ...borderStyle, top: value, right: value, bottom: value, left: value };
 
       setBorderStyle(updatedStyle);
       onSettingsChange(selectedElement, { border: updatedStyle });
@@ -126,7 +126,7 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
           element.style.backgroundSize = backgroundSize;
         }
       }
-  
+
       // Apply typography settings
       if (newSettings.typography) {
         const { fontFamily, fontSize, color, fontStyle, textDecoration, textAlign, fontWeight } = newSettings.typography;
@@ -148,38 +148,38 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
         if (textAlign) {
           element.style.textAlign = textAlign;
         }
-        if(fontWeight){
+        if (fontWeight) {
           element.style.fontWeight = fontWeight;
 
         }
       }
-  
+
       // Apply size settings
       if (newSettings.size) {
         const { width, height, minWidth, maxWidth, minHeight, maxHeight, overflow } = newSettings.size;
         if (width) {
-          element.style.width = width;
+          element.style.width =  `${width}px`;
         }
         if (height) {
-          element.style.height = height;
+          element.style.height =  `${height}px`;
         }
         if (minWidth) {
-          element.style.minWidth = minWidth;
+          element.style.minWidth =  `${minWidth}px`;
         }
         if (maxWidth) {
-          element.style.maxWidth = maxWidth;
+          element.style.maxWidth =  `${maxWidth}px`;
         }
         if (minHeight) {
-          element.style.minHeight = minHeight;
+          element.style.minHeight =  `${minHeight}px`;
         }
         if (maxHeight) {
-          element.style.maxHeight = maxHeight;
+          element.style.maxHeight =  `${maxHeight}px`;
         }
         if (overflow) {
-          element.style.overflow = overflow;
+          element.style.overflow =  `${overflow}px`;
         }
       }
-  
+
       // Apply border settings selectively based on the selected side
       if (newSettings.border) {
         const sides = ['top', 'right', 'bottom', 'left'];
@@ -199,37 +199,37 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
           }
         });
       }
-    if (newSettings.margin) {
-      if (newSettings.margin.top) {
-        element.style.marginTop = newSettings.margin.top;
+      if (newSettings.margin) {
+        if (newSettings.margin.top) {
+          element.style.marginTop = newSettings.margin.top;
+        }
+        if (newSettings.margin.right) {
+          element.style.marginRight = newSettings.margin.right;
+        }
+        if (newSettings.margin.bottom) {
+          element.style.marginBottom = newSettings.margin.bottom;
+        }
+        if (newSettings.margin.left) {
+          element.style.marginLeft = newSettings.margin.left;
+        }
       }
-      if (newSettings.margin.right) {
-        element.style.marginRight = newSettings.margin.right;
-      }
-      if (newSettings.margin.bottom) {
-        element.style.marginBottom = newSettings.margin.bottom;
-      }
-      if (newSettings.margin.left) {
-        element.style.marginLeft = newSettings.margin.left;
-      }
-    }
 
-    if (newSettings.padding) {
-      if (newSettings.padding.top) {
-        element.style.paddingTop = newSettings.padding.top;
-      }
-      if (newSettings.padding.right) {
-        element.style.paddingRight = newSettings.padding.right;
-      }
-      if (newSettings.padding.bottom) {
-        element.style.paddingBottom = newSettings.padding.bottom;
-      }
-      if (newSettings.padding.left) {
-        element.style.paddingLeft = newSettings.padding.left;
+      if (newSettings.padding) {
+        if (newSettings.padding.top) {
+          element.style.paddingTop = newSettings.padding.top;
+        }
+        if (newSettings.padding.right) {
+          element.style.paddingRight = newSettings.padding.right;
+        }
+        if (newSettings.padding.bottom) {
+          element.style.paddingBottom = newSettings.padding.bottom;
+        }
+        if (newSettings.padding.left) {
+          element.style.paddingLeft = newSettings.padding.left;
+        }
       }
     }
-  }
-};
+  };
 
 
 
@@ -332,6 +332,11 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
       onSettingsChange(selectedElement, { typography: newStyle });
     }
   };
+  const handleSizeChange = (e, styleProperty) => {
+    const newValue = e.target.value + sizeStyle.unit; // Combine value and unit
+    // Assuming `updateStyle` updates the global context
+    updateStyle({ [styleProperty]: newValue });
+  };
 
 
   return (
@@ -349,8 +354,9 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
             selectedElement={selectedElement}
           />
 
+
           {/* Section Spacing */}
-          
+
           <SpacingSettings
             isOpen={isOpen}
             toggleSection={toggleSection}
@@ -365,9 +371,10 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
           <BorderSettings
             isOpen={isOpen}
             toggleSection={toggleSection}
-            sizeStyle={borderStyle} // Note: Ensure the passed props align with your actual use case
+            borderStyle={borderStyle} // Note: Ensure the passed props align with your actual use case
             onSettingsChange={onSettingsChange}
             handleInputChange={handleInputChange}
+            selectedSide={selectedSide}
             setSelectedSide={setSelectedSide}
           />
 
@@ -395,7 +402,7 @@ export default function RightBar({ selectedElement , addImageToHistory}) {
             handleTextAlign={handleTextAlign}
           />
 
-
+a
 
         </div>
       </div>

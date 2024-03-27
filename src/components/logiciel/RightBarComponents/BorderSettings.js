@@ -1,18 +1,25 @@
-import React, {useState  } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../RightBar.css';
-export default function BorderSettings({ setSelectedSide, toggleSection, isOpen, handleInputChange }) {
+export default function BorderSettings({ setSelectedSide, toggleSection, isOpen, handleInputChange, borderStyle, selectedSide }) {
 
-  const [selectedBorderStyle, setSelectedBorderStyle] = useState('none'); // Initial state
+  const [selectedBorderStyle, setSelectedBorderStyle] = useState(borderStyle.borderStyle || 'none');
 
-  const selectAllBorders = () => {
-    setSelectedSide(''); // Use a special value 'all' to indicate all borders
-  };
+// useEffect hook to synchronize component state with changes in selectedSide or borderStyle
+useEffect(() => {
+  if (selectedSide && borderStyle[selectedSide]) {
+    setSelectedBorderStyle(borderStyle[selectedSide].borderStyle || 'none');
+  }
+}, [borderStyle, selectedSide]);
 
-  const handleBorderStyleChange = (newStyle) => {
-    setSelectedBorderStyle(newStyle); // Update local state for visual feedback
-    handleInputChange({ target: { value: newStyle } }, 'borderStyle', 'select'); // Mimicking an event structure
-  };
-  return (
+const selectAllBorders = () => {
+  setSelectedSide('all'); // Adjusted to 'all' based on your comment in the code
+};
+
+const handleBorderStyleChange = (newStyle) => {
+  setSelectedBorderStyle(newStyle); // Update local state for visual feedback
+  handleInputChange({ target: { value: newStyle } }, 'borderStyle', 'select'); // Mimicking an event structure
+};
+return (
     <div>
       <div className='parameters-wrapper'>
         <div className='parameters-wrapper-title-box' onClick={() => toggleSection('border')}>
