@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import TemplateFullText from '../../../templates/TemplateFullText';
 import TemplateImg_txt from '../../../templates/TemplateImg_txt';
+import { TemplateTest1 } from '../../../templates';
 import NavbarSteps from './TemplateNavbar';
 import { template } from 'lodash';
 
@@ -17,9 +18,9 @@ const templates = [
     component: TemplateImg_txt,
   },
   {
-    id: 'TemplateImg_txt', // Added an ID for each template
-    name: 'TemplateImg_txt',
-    component: TemplateImg_txt,
+    id: 'TemplateTest1', // Added an ID for each template
+    name: 'TemplateTest1',
+    component: TemplateTest1,
   },
 ];
 
@@ -29,6 +30,9 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
 
   const [isHovered, setIsHovered] = useState(Array(templates.length).fill(false));
   const [selectedId, setSelectedId] = useState(selectedTemplateId || '');
+  const [selectedDots, setSelectedDots] = useState([]); // Add this state for filter selection
+
+  const options = ['Portfolio', 'Online Shop', 'Marketplace', 'Services', 'Courses', 'One Page']; // Filter options
 
   const handleHover = (index, state) => {
     const updatedHoverStates = [...isHovered];
@@ -45,6 +49,15 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
       ...prevSelectedButtons,
       [currentStep]: [templateId] // Assuming templateId is unique for each template
     }));
+
+    let newSelectedDots = [...selectedDots];
+    if (newSelectedDots.includes(templateId)) {
+      newSelectedDots = newSelectedDots.filter(id => id !== templateId);
+    } else {
+      newSelectedDots.push(templateId);
+    }
+    setSelectedDots(newSelectedDots);
+
     sessionStorage.setItem('selectedTemplateName', templateId);
     updateNextButtonState(true); // This could be conditional based on additional logic
     console.log('Session Data Updated:', sessionStorage.getItem('stepData'));
@@ -69,8 +82,20 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
       <div className="step-box">
         <h2 className="template-title">Choose a template</h2>
         <p className="template-subtitle">You can always explore other templates if you change your mind later.</p>
+        
         <div className='listing-container'>
+          {/* Add the filter options UI here */}
+          <h3>Type</h3>
+          <div className='listing-content'>
+            {options.map((option) => (
+              <div key={option} className='listing-item' onClick={() => handleTemplateSelect(option)}>
+                <div className={`listing-dot ${selectedDots.includes(option) ? 'listing-dot-selected' : ''}`}></div>
+                <p className='listing-item-name'>{option}</p>
+              </div>
+            ))}
+          </div>
           <div className='templates-container'>
+            
             {templates.map((template, index) => (
               <div className='templates-box' key={template.id} onClick={() => handleTemplateSelect(template.id)}>
                 <div
