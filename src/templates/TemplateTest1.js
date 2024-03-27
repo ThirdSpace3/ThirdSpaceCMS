@@ -10,11 +10,23 @@ import SectionReview from './TemplateComponents/Template1/SectionReview';
 import SectionFAQ1 from './TemplateComponents/Template1/SectionFAQ1';
 import SectionBanner1 from './TemplateComponents/Template1/SectionBanner1';
 import SectionFooter1 from './TemplateComponents/Template1/SectionFooter1';
-const TemplateTest1 = () => {
+const TemplateTest1 = ({ deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, isPreviewMode }) => {
+  
   return (
     <div className='templatebody'>
-      <SectionNavBar1 />
-      <SectionHero1/>
+      <SectionNavBar1
+        deviceSize={deviceSize}
+        settings={settings}
+        handleSettingsChange={handleSettingsChange}
+        selectedElement={selectedElement}
+        setSelectedElement={setSelectedElement}
+        isPreviewMode={isPreviewMode}
+      />
+      <SectionHero1
+              setSelectedElement={setSelectedElement}
+              settings={settings}
+
+      />
       <SectionTrustUs1/>
       <SectionAboutUs1/>
       <SectionPartners1/>

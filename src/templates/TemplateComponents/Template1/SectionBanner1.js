@@ -4,8 +4,9 @@ const styles = {
     ctaContent: {
         backgroundColor: '#F8F8F8',
         display: 'flex',
-        justifycontent: 'center',
+        justifyContent: 'center',
         padding:'20px 20px'
+        
     },
     ctaBanner: {
         backgroundColor: '#000', // Black background for the CTA banner

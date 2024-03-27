@@ -7,7 +7,13 @@
     display: flex;
     align-items: center
 }
-
+/* Global stylesheet or scoped stylesheet for SectionHero */
+.heroImage {
+    max-width: 50%; /* Limit the width to the parent container's width */
+    max-height: 400px; /* Set a maximum height */
+    object-fit: contain; /* Adjust this value to control how images resize */
+  }
+  
 .trust-section-1{
     display: flex;
     flex-direction: column;
@@ -43,6 +49,7 @@
 }
 .images-trust img{
     margin: 20px;
+    max-width: 250px;
 }
 .image-de-merde{
     display: flex;

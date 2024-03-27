@@ -20,7 +20,7 @@ export default function ProjectsDashboard() {
     const projects = [
         { name: 'TemplateFullText', image: './images/project-image-test.png', createdAt: '2023-03-20' },
         { name: 'TemplateImg_txt', image: './images/project-image-test.png', createdAt: '2023-03-19' },
-        { name: 'CryptoPunks', image: './images/project-image-test.png', createdAt: '2023-03-18' },
+        { name: 'TemplateTest1', image: './images/project-image-test.png', createdAt: '2023-03-18' },
         { name: 'Bored Ape Yacht Club', image: './images/project-image-test.png', createdAt: '2023-03-17' },
         { name: 'Decentraland', image: './images/project-image-test.png', createdAt: '2023-03-16' },
     ];
