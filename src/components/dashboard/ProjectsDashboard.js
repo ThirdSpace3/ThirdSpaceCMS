@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import "./ProjectsDashboard.css"; // Assurez-vous que le chemin est correct pour vos styles
+import "./ProjectsDashboard.css";
 
 export default function ProjectsDashboard() {
     // Options pour le Dropdown
     const dropdownOptions = [
+        { value: 'all', text: 'All', icon: 'bi-grid-3x3-gap-fill' },
         { value: 'option1', text: 'Creation Date', icon: 'bi-arrow-down' },
         { value: 'option2', text: 'Creation Date', icon: 'bi-arrow-up' },
         { value: 'option3', text: 'Alphabetic', icon: 'bi-sort-alpha-down' },
@@ -14,14 +15,53 @@ export default function ProjectsDashboard() {
     // Initialise selectedOption avec la première option
     const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
 
+    // Add an array of projects
+    const projects = [
+        { name: 'ClosedEarth', image: './images/project-image-test.png', createdAt: '2023-03-20' },
+        { name: 'OpenSea', image: './images/project-image-test.png', createdAt: '2023-03-19' },
+        { name: 'CryptoPunks', image: './images/project-image-test.png', createdAt: '2023-03-18' },
+        { name: 'Bored Ape Yacht Club', image: './images/project-image-test.png', createdAt: '2023-03-17' },
+        { name: 'Decentraland', image: './images/project-image-test.png', createdAt: '2023-03-16' },
+    ];
+
+    // Add a new state for the filtered projects
+    const [filteredProjects, setFilteredProjects] = useState(projects);
+
+    // Add a new state for the search input value
+    const [searchValue, setSearchValue] = useState('');
+
     const toggleDropdown = () => setIsOpen(!isOpen);
 
+    // Modify the handleSelect function to filter the projects
     const handleSelect = (option) => {
         setSelectedOption(option);
         setIsOpen(false);
+
+        // Filter the projects based on the selected option
+        if (option.value === 'all') {
+            setFilteredProjects(projects);
+        } else if (option.value === 'option1') {
+            setFilteredProjects(projects.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        } else if (option.value === 'option2') {
+            setFilteredProjects(projects.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
+        } else if (option.value === 'option3') {
+            setFilteredProjects(projects.sort((a, b) => a.name.localeCompare(b.name)));
+        } else if (option.value === 'option4') {
+            setFilteredProjects(projects.sort((a, b) => b.name.localeCompare(a.name)));
+        }
     };
 
-    
+    // Add an event handler for the search input field
+    const handleSearch = (event) => {
+        setSearchValue(event.target.value);
+
+        // Filter the projects based on the search input value
+        if (event.target.value === '') {
+            setFilteredProjects(projects);
+        } else {
+            setFilteredProjects(projects.filter(project => project.name.toLowerCase().includes(event.target.value.toLowerCase())));
+        }
+    };
 
     return (
         <>
@@ -32,17 +72,17 @@ export default function ProjectsDashboard() {
                         <div className="projects-navbar">
                             <div className="projects-navbar-input">
                                 <i className="bi bi-search"></i>
-                                <input placeholder="Search..."></input>
+                                <input placeholder="Search..." value={searchValue} onChange={handleSearch}></input>
                             </div>
                             <div className="project-navbar-dropdown">
                                 <div className="project-navbar-dropdown-header" onClick={toggleDropdown}>
                                     <i className={`bi ${selectedOption.icon} project-navbar-dropdown-icon`}></i>
-                                    <p className="project-navbar-dropdown-option">{selectedOption.text}</p> 
+                                    <p className="project-navbar-dropdown-option">{selectedOption.text}</p>
                                     <i className={`bi bi-caret-down-fill ${isOpen ? 'open' : ''} project-navbar-dropdown-icon`}></i>
                                 </div>
                                 {isOpen && (
                                     <div className="project-navbar-dropdown-list">
-                                        {dropdownOptions.filter(o => o.value !== selectedOption.value).map((option) => (
+                                        {dropdownOptions.map((option) => (
                                             <div key={option.value} className="project-navbar-dropdown-item" onClick={() => handleSelect(option)}>
                                                 <i className={`bi ${option.icon} project-navbar-dropdown-icon`}></i>
                                                 <p className="project-navbar-dropdown-option">{option.text}</p>
@@ -70,55 +110,27 @@ export default function ProjectsDashboard() {
                                     <a href=""><i class="bi bi-three-dots"></i></a>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
 
                     <div className="projects-content-box">
                         <div className="projects-content-title">
-                        <i class="bi bi-folder2"></i>
+                            <i class="bi bi-folder2"></i>
                             <h2>All Projects</h2>
                         </div>
+
+                        {/* Display the filtered projects */}
                         <div className="projects-content-listing">
-                            <div className="projects-content-item">
-                                <img src="./images/project-image-test.png"/>
-                                <div className="projects-content-item-info">
-                                    <p>ClosedEarth</p>
-                                    <a href=""><i class="bi bi-three-dots"></i></a>
+                            {filteredProjects.slice(0, 5).map((project, index) => (
+                                <div key={index} className="projects-content-item">
+                                    <img src={project.image}/>
+                                    <div className="projects-content-item-info">
+                                        <p>{project.name}</p>
+                                        <a href=""><i class="bi bi-three-dots"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="projects-content-item">
-                                <img src="./images/project-image-test.png"/>
-                                <div className="projects-content-item-info">
-                                    <p>ClosedEarth</p>
-                                    <a href=""><i class="bi bi-three-dots"></i></a>
-                                </div>
-                            </div>
-                            <div className="projects-content-item">
-                                <img src="./images/project-image-test.png"/>
-                                <div className="projects-content-item-info">
-                                    <p>ClosedEarth</p>
-                                    <a href=""><i class="bi bi-three-dots"></i></a>
-                                </div>
-                            </div>
-                            <div className="projects-content-item">
-                                <img src="./images/project-image-test.png"/>
-                                <div className="projects-content-item-info">
-                                    <p>ClosedEarth</p>
-                                    <a href=""><i class="bi bi-three-dots"></i></a>
-                                </div>
-                            </div>
-                            <div className="projects-content-item">
-                                <img src="./images/project-image-test.png"/>
-                                <div className="projects-content-item-info">
-                                    <p>ClosedEarth</p>
-                                    <a href=""><i class="bi bi-three-dots"></i></a>
-                                </div>
-                            </div>
-
+                            ))}
                         </div>
-
                     </div>
                 </div>
             </div>
