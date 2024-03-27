@@ -1,21 +1,24 @@
 import React from "react";
-import "../components/dashboard/Dashboard.css"
-import LeftBar from "../components/dashboard/LeftBar";
-import NavBarDashboard from "../components/dashboard/NavBarDashboard";
-import RecentlyViewed from "../components/dashboard/recentlyViewed";
-import Projectlists from "../components/dashboard/ProjectLists";
+import "../components/dashboard/DashboardMain.css";
+import "../components/Root.css";
+import LeftMenuDashboard from "../components/dashboard/LeftMenuDashboard";
+import ProjectsDashboard from "../components/dashboard/ProjectsDashboard";
+
+
 
 export default function Dashboard() {
 return (
      <>
-        <div className="Dahsboard_Wrapper">
-                <LeftBar />
-            <div className="Dashboard_Column">
-                <NavBarDashboard />
-                <RecentlyViewed />
-                <Projectlists />
-            </div>
-        </div>
+     <div className="dashboard-container">
+    <div className="leftMenuDashboard">
+        <LeftMenuDashboard />
+    </div>
+    <div className="projectsDashboard">
+        <ProjectsDashboard />
+    </div>
+</div>
+        
+        
     </>
     
 );

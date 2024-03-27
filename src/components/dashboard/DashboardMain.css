@@ -1,0 +1,101 @@
+/*==== Dashboard ====*/
+.dashboard-container {
+    background-color: var(--white);
+    display: flex;
+    flex-direction: row;
+    height: 100vh; /* Ajustez cette valeur selon vos besoins */
+
+}
+
+.leftMenuDashboard {
+    /* Assurez-vous que la largeur est définie pour que les deux composants ne se chevauchent pas */
+    width: 20%; /* Exemple de largeur */
+    height: 100%; /* Pour s'assurer qu'il s'étend sur toute la hauteur du conteneur */
+    /* Pas besoin de défilement ici */
+}
+
+.projectsDashboard {
+    width: 80%; /* Exemple de largeur */
+    overflow-y: auto; /* Active le défilement vertical si le contenu dépasse la hauteur */
+    max-height: 100vh; /* Ajustez cette valeur selon les besoins, pour s'assurer qu'il ne dépasse pas la hauteur de l'écran */
+}
+
+
+/*==== Left Menu ====*/
+
+.left-menu-container {
+    height: 100vh;
+    width: 230px;
+    background-color: var(--menu-bg);
+    border-radius: 0px 28px 28px 0px;
+    padding: 30px 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.left-menu-top {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+.profile-container {
+display: flex;
+flex-direction: row;
+align-items: center;
+gap: 20px;
+}
+.profile-container img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50px;
+}
+.profile-name {
+    color: var(--white, #FFF);
+    font-family: var(--inter);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+}
+.left-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.left-menu-item {
+    color: var(--white, #FFF);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: var(--inter);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+.left-menu-item i {
+    font-size: 20px;
+}
+.left-menu-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.left-menu-bug {
+    color: var(--text-editor);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: var(--inter);
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    padding: 5px;
+}
