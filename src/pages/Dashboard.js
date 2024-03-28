@@ -3,6 +3,7 @@ import "../components/dashboard/DashboardMain.css";
 import "../components/Root.css";
 import LeftMenuDashboard from "../components/dashboard/LeftMenuDashboard";
 import ProjectsDashboard from "../components/dashboard/ProjectsDashboard";
+import SiteSettingsDashboard from "../components/dashboard/SiteSettingsDashboard";
 
 
 
@@ -14,7 +15,8 @@ return (
         <LeftMenuDashboard />
     </div>
     <div className="projectsDashboard">
-        <ProjectsDashboard />
+        {/* <ProjectsDashboard /> */}
+        <SiteSettingsDashboard />
     </div>
 </div>
         

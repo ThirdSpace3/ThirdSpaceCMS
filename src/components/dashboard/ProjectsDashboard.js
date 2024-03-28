@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ProjectsDashboard.css";
+import "./DashboardMain.css";
 import { useNavigate } from 'react-router-dom';
 
 export default function ProjectsDashboard() {

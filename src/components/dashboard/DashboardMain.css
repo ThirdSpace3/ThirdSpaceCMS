@@ -1,3 +1,212 @@
+
+
+/*====== PAGES ======*/
+
+.dashboard-page-container {
+    width: 100%;
+}
+.dashboard-page-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 50px;
+
+}
+.dashboard-page-content-left {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+/*== header ==*/
+
+.dashboard-header {
+    padding-top: 50px;
+    padding-left: 50px;
+}
+.dashboard-header h1 {
+    color: var(--menu-bg);
+    font-family: var(--inter);
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.dashboard-header i {
+    font-size: 35px;
+}
+.dashboard-title-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.dashboard-settings-item {
+    display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 10px;
+}
+.dashboard-settings-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.dashboard-settings-title h2 {
+    color: var(--black, #131313);
+    font-family: var(--inter);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.dashboard-settings-title-icon {
+    display: flex;
+    width: 16px;
+    height: 16px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 40px;
+border: 1.2px solid #000;
+}
+.dashboard-settings-title-icon p {
+    color: var(--black, #131313);
+    font-family: var(--inter);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.dashboard-settings-item input {
+    display: flex;
+    width: 543px;
+    height: 41px;
+    padding: 4.861px 15px;
+    align-items: center;
+    gap: 3.241px;
+    border-radius: 10px;
+    border: 1px solid var(--not-selected, #64748B);
+}
+.dashboard-settings-item textarea {
+    display: flex;
+    width: 543px;
+    height: 71px;
+    padding: 10px 15px;
+    align-items: flex-start;
+    gap: 3.241px;
+    border-radius: 10px;
+    border: 1px solid var(--not-selected, #64748B);
+    resize: none;
+}
+.dashboard-settings-item input::placeholder,
+.dashboard-settings-item textarea::placeholder {
+    font-family: var(--inter);
+}
+
+.dashboard-settings-item-box {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+}
+.dashboard-settings-favicon {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    border: 1px solid var(--not-selected, #64748B);
+    display: flex;
+    
+}
+.dashboard-settings-favicon img {
+    width: 100%;
+    height: 100%;
+}
+.dashboard-settings-upload-btn {
+    display: flex;
+    height: 41px;
+    padding: 4.861px 15px;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    background: var(--purple, #9600FA);
+    color: var(--white, #FFF);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Inter;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.dashboard-settings-upload-btn-error {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+.dashboard-settings-upload-btn-error .dashboard-settings-title-icon {
+    color: #EA234F;
+    border: 1px solid #EA234F;
+
+}
+.dashboard-settings-upload-btn-error .dashboard-settings-title-icon p {
+    color: #EA234F;
+}
+.dashboard-settings-upload-btn-error p {
+    color: #EA234F;
+text-align: center;
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: Inter;
+font-size: 13px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+.dashboard-page-content-save-btn {
+    display: flex;
+    padding: 5px 15px;
+    align-items: center;
+    gap: 3.241px;
+    border-radius: 5px;
+    border: 1px solid var(--not-selected, #64748B);
+    background: var(--not-selected);  
+    color: var(--white);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Inter;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    cursor: not-allowed;
+}
+.dashboard-page-content-save-btn-activated {
+    display: flex;
+    padding: 5px 15px;
+    align-items: center;
+    gap: 3.241px;
+    border-radius: 5px;
+    border: 1px solid var(--green, #58D7AD);
+    background: var(--green, #58D7AD);    
+    color: var(--white);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Inter;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+
+
+
+
+
 /*==== Dashboard ====*/
 .dashboard-container {
     background-color: var(--white);
