@@ -1,6 +1,6 @@
 .templatebody{
-    width: 100%;
     overflow: auto;
+    width: 80vw;
 }
 .hero-section-1{
     background-color:rgb(240, 240, 240) ;
@@ -8,10 +8,11 @@
     align-items: center
 }
 /* Global stylesheet or scoped stylesheet for SectionHero */
-.heroImage {
-    max-width: 50%; /* Limit the width to the parent container's width */
+.hero-section-1 img {
+    max-width: 400px ; /* Limit the width to the parent container's width */
     max-height: 400px; /* Set a maximum height */
     object-fit: contain; /* Adjust this value to control how images resize */
+    margin-left: 5vw;
   }
   
 .trust-section-1{
