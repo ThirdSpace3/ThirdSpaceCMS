@@ -49,11 +49,11 @@ return (
                             <img src="./images/favicon-placeholder.png"/>
                         </div>
                         <a href="" className="dashboard-settings-upload-btn"><i class="bi bi-cloud-upload"></i>Upload</a>
-                        <div className="dashboard-settings-upload-btn-error">
-                            <div className="dashboard-settings-title-icon">
+                        <div className="dashboard-error">
+                            <div className="dashboard-icon-error">
                                 <p>!</p>
                             </div>
-                            <p>The image must be 64x64 px</p>
+                            <p className="dashboard-msg-error">The image must be 64x64 px</p>
                         </div>
                     </div>
 

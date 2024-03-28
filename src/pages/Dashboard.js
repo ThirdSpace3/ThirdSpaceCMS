@@ -4,6 +4,7 @@ import "../components/Root.css";
 import LeftMenuDashboard from "../components/dashboard/LeftMenuDashboard";
 import ProjectsDashboard from "../components/dashboard/ProjectsDashboard";
 import SiteSettingsDashboard from "../components/dashboard/SiteSettingsDashboard";
+import ProfileDashboard from "../components/dashboard/ProfileDashboard";
 
 
 
@@ -16,7 +17,8 @@ return (
     </div>
     <div className="projectsDashboard">
         {/* <ProjectsDashboard /> */}
-        <SiteSettingsDashboard />
+        {/* <SiteSettingsDashboard /> */}
+        <ProfileDashboard />
     </div>
 </div>
         

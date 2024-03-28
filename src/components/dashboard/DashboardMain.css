@@ -92,7 +92,7 @@ border: 1.2px solid #000;
 }
 .dashboard-settings-item textarea {
     display: flex;
-    width: 543px;
+    width: 100%;
     height: 71px;
     padding: 10px 15px;
     align-items: flex-start;
@@ -112,6 +112,13 @@ border: 1.2px solid #000;
     align-items: flex-start;
     gap: 10px;
 }
+.dashboard-settings-item-box-profile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+}
 .dashboard-settings-favicon {
     width: 100px;
     height: 100px;
@@ -123,6 +130,20 @@ border: 1.2px solid #000;
 .dashboard-settings-favicon img {
     width: 100%;
     height: 100%;
+}
+.dashboard-settings-pp {
+    width: 200px;
+    height: 200px;
+    border-radius: 100px;
+    border: 1px solid var(--not-selected, #64748B);
+    display: flex;
+    
+}
+.dashboard-settings-pp img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+
 }
 .dashboard-settings-upload-btn {
     display: flex;
@@ -141,29 +162,38 @@ border: 1.2px solid #000;
     font-weight: 600;
     line-height: normal;
 }
-.dashboard-settings-upload-btn-error {
+.dashboard-error {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
 }
-.dashboard-settings-upload-btn-error .dashboard-settings-title-icon {
+.dashboard-icon-error {
     color: #EA234F;
     border: 1px solid #EA234F;
+    border-radius: 50px;
+    display: flex;
+    width: 18px;
+    height: 18px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
 
 }
-.dashboard-settings-upload-btn-error .dashboard-settings-title-icon p {
+.dashboard-error .dashboard-icon-error p {
     color: #EA234F;
+    font-size: 11px;
 }
-.dashboard-settings-upload-btn-error p {
+.dashboard-msg-error {
     color: #EA234F;
-text-align: center;
-font-feature-settings: 'clig' off, 'liga' off;
-font-family: Inter;
-font-size: 13px;
-font-style: normal;
-font-weight: 400;
-line-height: normal;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Inter;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .dashboard-page-content-save-btn {
@@ -202,6 +232,25 @@ line-height: normal;
     line-height: normal;
 }
 
+.dashboard-settings-wallet {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+.dashboard-settings-wallet p,
+.dashboard-settings-wallet i {
+    color: var(--black, #131313);
+font-feature-settings: 'clig' off, 'liga' off;
+font-family: var(--inter);
+font-size: 13px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+.dashboard-settings-wallet-copied {
+    background-color: var(--not-selected);
+}
 
 
 
