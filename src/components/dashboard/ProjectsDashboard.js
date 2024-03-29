@@ -18,6 +18,10 @@ export default function ProjectsDashboard({ projects, handleOpenSettings }) {
 
     // Add a new state for the filtered projects
     const [filteredProjects, setFilteredProjects] = useState(projects);
+    useEffect(() => {
+        setFilteredProjects(projects);
+    }, [projects]);
+
 
     // Add a new state for the search input value
     const [searchValue, setSearchValue] = useState('');
@@ -54,6 +58,7 @@ export default function ProjectsDashboard({ projects, handleOpenSettings }) {
             setFilteredProjects(projects.filter(project => project.name.toLowerCase().includes(event.target.value.toLowerCase())));
         }
     };
+
     const navigate = useNavigate();
 
     const handleProjectClick = (projectName) => {

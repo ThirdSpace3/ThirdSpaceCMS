@@ -212,7 +212,7 @@ border: 1.2px solid #000;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    cursor: not-allowed;
+    /* cursor: not-allowed; */
 }
 .dashboard-page-content-save-btn-activated {
     display: flex;

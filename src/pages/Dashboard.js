@@ -33,6 +33,7 @@ export default function Dashboard() {
     // Add more projects as needed
   ]);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [filteredProjects, setFilteredProjects] = useState(projects);
 
   const handleOpenSettings = (index) => {
     setSelectedProject(projects[index]);
@@ -40,10 +41,12 @@ export default function Dashboard() {
   };
 
   const updateProject = (updatedProject) => {
+    console.log("Update project called with:", updatedProject);
     const updatedProjects = projects.map((project) =>
       project.name === updatedProject.name ? updatedProject : project
     );
     setProjects(updatedProjects);
+    setFilteredProjects(updatedProjects);
   };
 
   return (
@@ -55,7 +58,7 @@ export default function Dashboard() {
         <div className="projectsDashboard">
           {activeMenuItem === "projects" && (
             <ProjectsDashboard
-              projects={projects}
+              projects={filteredProjects}
               handleOpenSettings={handleOpenSettings}
             />
           )}

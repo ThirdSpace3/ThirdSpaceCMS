@@ -162,7 +162,7 @@ export default function ProfileDashboard() {
                     copyToClipboard();
                   }}
                 >
-                  <p>{userAccount}</p><i class="bi bi-copy"></i>
+                  <p>{shortenAddress(userAccount)}</p><i class="bi bi-copy"></i>
                 </a>
                 {copied && (
                   <div className="dashboard-settings-wallet-copied">
