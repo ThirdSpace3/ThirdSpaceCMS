@@ -3,7 +3,7 @@ import "./DashboardMain.css";
 import "../Root.css";
 import PopupWallet from "../website/PopupWallet";
 
-export default function LeftMenuDashboard({ onUserLogin }) {
+export default function LeftMenuDashboard({ onUserLogin, setActiveMenuItem }) {
   const [userAccount, setUserAccount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
 
@@ -23,7 +23,12 @@ export default function LeftMenuDashboard({ onUserLogin }) {
   };
 
   const shortenAddress = (address) => {
-    return address.slice(0, 5) + "..." + address.slice(-5);
+    return address.slice(0, 5) + "..." + address.slice(-4);
+  };
+
+  const handleMenuItemClick = (menuItem, event) => {
+    event.preventDefault();
+    setActiveMenuItem(menuItem);
   };
 
   return (
@@ -38,11 +43,11 @@ export default function LeftMenuDashboard({ onUserLogin }) {
             <p className="profile-name">{shortenAddress(userAccount)}</p>
           </div>
           <div className="left-menu-links">
-            <a href="" className="left-menu-item">
+            <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("projects", event)}>
               <i className="bi bi-folder"></i>
               <p>Projects</p>
             </a>
-            <a href="" className="left-menu-item">
+            <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("billing", event)}>
               <i className="bi bi-wallet2"></i>
               <p>Billing</p>
             </a>
@@ -50,11 +55,11 @@ export default function LeftMenuDashboard({ onUserLogin }) {
         </div>
         <div className="left-menu-bottom">
           <div className="left-menu-links">
-            <a href="" className="left-menu-item">
+            <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("profile", event)}>
               <i className="bi bi-person"></i>
               <p>Profile</p>
             </a>
-            <a href="" className="left-menu-item">
+            <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("settings", event)}>
               <i className="bi bi-gear"></i>
               <p>Settings</p>
             </a>
