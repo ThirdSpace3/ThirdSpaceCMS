@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 // Import your template steps and other components
 import TemplateStep1 from "../components/website/TemplateSteps/TemplateStep1";

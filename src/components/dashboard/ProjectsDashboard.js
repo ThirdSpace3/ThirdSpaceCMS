@@ -66,6 +66,11 @@ export default function ProjectsDashboard({ projects, handleOpenSettings }) {
     const handleProjectSettings = (index) => {
         handleOpenSettings(index);
     };
+    const handleNewProjectClick = () => {
+        sessionStorage.setItem('currentStep', '3'); // Directly setting step 3
+        navigate('/templatestep'); // Navigate to the TemplateStep component
+    };
+    
 
     return (
         <>
@@ -96,7 +101,10 @@ export default function ProjectsDashboard({ projects, handleOpenSettings }) {
                                 )}
 
                             </div>
-                            <a href="/new-project" className="projects-navbar-btn"><i className="bi bi-plus-circle"></i> New Project</a>
+                            <button className="projects-navbar-btn" onClick={() => handleNewProjectClick()}>
+                                <i className="bi bi-plus-circle"></i> New Project
+                            </button>
+
                         </div>
                     </div>
                 </div>
