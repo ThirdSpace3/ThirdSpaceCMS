@@ -132,13 +132,13 @@ export default function ProfileDashboard() {
           <div className="dashboard-page-content-left">
             <div className="dashboard-settings-item">
               <div className="dashboard-settings-title">
-                <h2>{shortenAddress(userAccount)}</h2>
+                <h2>Username</h2>
                 <div className="dashboard-settings-title-icon">
                   <p>i</p>
                 </div>
               </div>
               <input
-                placeholder="Enter a username"
+                placeholder={username}
                 value={username}
                 onChange={handleUsernameChange}
               />
@@ -151,7 +151,7 @@ export default function ProfileDashboard() {
             </div>
             <div className="dashboard-settings-item">
               <div className="dashboard-settings-title">
-                <h2>{shortenAddress(userAccount)}</h2>
+                <h2>Wallet Adresse</h2>
               </div>
               <div className="dashboard-settings-wallet-box">
                 <a

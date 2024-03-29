@@ -3,10 +3,9 @@ import "./ProjectsDashboard.css";
 import "./DashboardMain.css";
 import { useNavigate } from 'react-router-dom';
 
-export default function ProjectsDashboard() {
+export default function ProjectsDashboard({ projects, handleOpenSettings }) {
     // Options pour le Dropdown
     const dropdownOptions = [
-        { value: 'all', text: 'None', icon: 'bi-grid-3x3-gap-fill' },
         { value: 'option1', text: 'Creation Date', icon: 'bi-arrow-down' },
         { value: 'option2', text: 'Creation Date', icon: 'bi-arrow-up' },
         { value: 'option3', text: 'Alphabetic', icon: 'bi-sort-alpha-down' },
@@ -16,15 +15,6 @@ export default function ProjectsDashboard() {
     const [isOpen, setIsOpen] = useState(false);
     // Initialise selectedOption avec la première option
     const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
-
-    // Add an array of projects
-    const projects = [
-        { name: 'TemplateFullText', image: './images/project-image-test.png', createdAt: '2023-03-20' },
-        { name: 'TemplateImg_txt', image: './images/project-image-test.png', createdAt: '2023-03-19' },
-        { name: 'TemplateTest1', image: './images/project-image-test.png', createdAt: '2023-03-18' },
-        { name: 'Bored Ape Yacht Club', image: './images/project-image-test.png', createdAt: '2023-03-17' },
-        { name: 'Decentraland', image: './images/project-image-test.png', createdAt: '2023-03-16' },
-    ];
 
     // Add a new state for the filtered projects
     const [filteredProjects, setFilteredProjects] = useState(projects);
@@ -69,6 +59,11 @@ export default function ProjectsDashboard() {
     const handleProjectClick = (projectName) => {
         navigate(`/logiciel/${projectName}`);
     };
+
+    const handleProjectSettings = (index) => {
+        handleOpenSettings(index);
+    };
+
     return (
         <>
             <div className="projects-container">
@@ -88,7 +83,7 @@ export default function ProjectsDashboard() {
                                 </div>
                                 {isOpen && (
                                     <div className="project-navbar-dropdown-list">
-                                        {dropdownOptions.map((option) => (
+                                        {dropdownOptions.filter(option => option.value !== selectedOption.value).map((option) => (
                                             <div key={option.value} className="project-navbar-dropdown-item" onClick={() => handleSelect(option)}>
                                                 <i className={`bi ${option.icon} project-navbar-dropdown-icon`}></i>
                                                 <p className="project-navbar-dropdown-option">{option.text}</p>
@@ -96,6 +91,7 @@ export default function ProjectsDashboard() {
                                         ))}
                                     </div>
                                 )}
+
                             </div>
                             <a href="/new-project" className="projects-navbar-btn"><i className="bi bi-plus-circle"></i> New Project</a>
                         </div>
@@ -110,7 +106,7 @@ export default function ProjectsDashboard() {
                         </div>
                         <div className="projects-content-listing">
                             <div className="projects-content-item">
-                                <img src="./images/project-image-test.png"/>
+                                <img src="./images/project-image-test.png" />
                                 <div className="projects-content-item-info">
                                     <p>ClosedEarth</p>
                                     <a href=""><i class="bi bi-three-dots"></i></a>
@@ -128,11 +124,13 @@ export default function ProjectsDashboard() {
                         {/* Display the filtered projects */}
                         <div className="projects-content-listing">
                             {filteredProjects.slice(0, 5).map((project, index) => (
-                            <div key={index} className="projects-content-item" onClick={() => handleProjectClick(project.name)}>
-                            <img src={project.image}/>
+                                <div key={index} className="projects-content-item">
+                                    <img src={project.image} />
                                     <div className="projects-content-item-info">
-                                        <p>{project.name}</p>
-                                        <a href=""><i class="bi bi-three-dots"></i></a>
+                                        <p onClick={() => handleProjectClick(project.name)} >{project.name}</p>
+                                        <div onClick={() => handleProjectSettings(index)}>
+                                            <i class="bi bi-three-dots"></i>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
