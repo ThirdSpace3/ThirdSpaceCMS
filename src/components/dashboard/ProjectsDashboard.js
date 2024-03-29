@@ -126,20 +126,20 @@ export default function ProjectsDashboard({ projects, handleOpenSettings }) {
 
                         {/* Display the filtered projects */}
                         {/* Display the filtered projects */}
-<div className="projects-content-listing">
-    {filteredProjects.slice(0, 5).map((project, index) => (
-        <div key={index} className="projects-content-item">
-            {/* Conditionally render the favicon if available, otherwise render the default image */}
-            <img src={project.favicon ? project.favicon : project.image} alt={project.name} />
-            <div className="projects-content-item-info">
-                <p onClick={() => handleProjectClick(project.logiciel)}>{project.name}</p>
-                <div onClick={() => handleProjectSettings(index)}>
-                    <i className="bi bi-three-dots"></i>
-                </div>
-            </div>
-        </div>
-    ))}
-</div>
+                        <div className="projects-content-listing">
+                            {filteredProjects.slice(0, 5).map((project, index) => (
+                                <div key={index} className="projects-content-item">
+                                    {/* Conditionally render the favicon if available, otherwise render the default image */}
+                                    <img src={project.favicon ? project.favicon : project.image} alt={project.name} onClick={() => handleProjectClick(project.logiciel)} />
+                                    <div className="projects-content-item-info">
+                                        <p onClick={() => handleProjectClick(project.logiciel)}>{project.name}</p>
+                                        <div onClick={() => handleProjectSettings(index)}>
+                                            <i className="bi bi-three-dots"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
 
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import "./DashboardMain.css";
 import "../Root.css";
 import PopupWallet from "../website/PopupWallet";
 
-export default function LeftMenuDashboard({ onUserLogin, setActiveMenuItem }) {
+export default function LeftMenuDashboard({ setActiveMenuItem, username, profilePicture }) {
   const [userAccount, setUserAccount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [showCopiedMessage, setShowCopiedMessage] = useState(false); // New state for the copied message
@@ -31,6 +31,7 @@ export default function LeftMenuDashboard({ onUserLogin, setActiveMenuItem }) {
     event.preventDefault();
     setActiveMenuItem(menuItem);
   };
+
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(userAccount)
       .then(() => {
@@ -49,14 +50,14 @@ export default function LeftMenuDashboard({ onUserLogin, setActiveMenuItem }) {
       <div className="left-menu-container">
         <div className="left-menu-top">
           <div className="profile-container">
-            <img src="./images/avatar-placeholder.png" />
+          <img src={profilePicture} alt="Profile avatar" />
             <p className="profile-name" onClick={handleCopyAddress}>
-              {shortenAddress(userAccount)}
+              {username} {/* Display the username */}
             </p>
             {showCopiedMessage && (
               <div className="dashboard-settings-wallet-copied">Address Copied!</div>
             )}
-            </div>
+          </div>
           <div className="left-menu-links">
             <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("projects", event)}>
               <i className="bi bi-folder"></i>

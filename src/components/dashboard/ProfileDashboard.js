@@ -4,16 +4,20 @@ import "./ProfileDashboard.css";
 import "./DashboardMain.css";
 import "../Root.css";
 
-export default function ProfileDashboard() {
+export default function ProfileDashboard({ updateUserDetails }) {
   const [userAccount, setUserAccount] = useState("");
-  const [username, setUsername] = useState(""); // new state for username
-  const [description, setDescription] = useState(""); // new state for description
+  const [username, setUsername] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+
+  const [description, setDescription] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
+  const [isEdited, setIsEdited] = useState(false); // Tracks if any edits have been made
+  const [isSaved, setIsSaved] = useState(false); // Tracks if changes have been successfully saved
   const [imageError, setImageError] = useState(null);
   const [copied, setCopied] = useState("");
-  const image = new Image();
 
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const isLoggedIn = sessionStorage.getItem("isLoggedIn");
@@ -24,7 +28,7 @@ export default function ProfileDashboard() {
       const storedProfilePicture = sessionStorage.getItem("profilePicture");
 
       setUserAccount(account);
-      setUsername(storedUsername || "");
+      setUsername(storedUsername || 'My Username');
       setDescription(storedDescription || "");
       setProfilePicture(storedProfilePicture || null);
     } else {
@@ -52,11 +56,29 @@ export default function ProfileDashboard() {
     }
   };
 
-  const fileInputRef = useRef(null);
-
   const handleUploadButtonClick = (event) => {
     event.preventDefault();
     fileInputRef.current.click();
+  };
+
+  // Update handlers to set isEdited to true and isSaved to false upon any edit
+  const handleUsernameChange = (event) => {
+    const inputUsername = event.target.value;
+    if (inputUsername.length <= 15) {
+      setUsername(inputUsername);
+      setIsEdited(true);
+      setIsSaved(false);
+      setUsernameError(""); // Clear any error message
+    } else {
+      // Optionally set an error message if the username exceeds 15 characters
+      setUsernameError("Username must be 15 characters or less.");
+    }
+  };
+
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+    setIsEdited(true);
+    setIsSaved(false);
   };
 
   const handleProfilePictureChange = (event) => {
@@ -67,9 +89,12 @@ export default function ProfileDashboard() {
       image.onload = () => {
         if (image.width > 300 || image.height > 300) {
           setImageError("The image must be smaller than 300x300 px");
+          setIsEdited(false); // Revert isEdited if the image is not valid
         } else {
           setProfilePicture(image.src);
           setImageError(null);
+          setIsEdited(true);
+          setIsSaved(false);
         }
       };
       image.onerror = () => {
@@ -78,46 +103,50 @@ export default function ProfileDashboard() {
     }
   };
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handleDescriptionChange = (event) => {
-    setDescription(event.target.value);
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      const response = await fetch("/api/profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          walletId: userAccount,
-          username: username,
-          description: description,
-          imageUrl: profilePicture,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Profile saved:", data);
-        // Save data to sessionStorage
-        sessionStorage.setItem("username", username);
-        sessionStorage.setItem("description", description);
-        sessionStorage.setItem("profilePicture", profilePicture);
-        // Redirect the user to the profile page or show a success message
-        navigate("/profile");
-      } else {
-        console.error("Error saving profile:", response.statusText);
-      }
-    } catch (err) {
-      console.error("Error saving profile:", err);
+    //Create Behaviour to check DB and save the datas here 
+    if (username.length > 15) {
+      setUsernameError("Username must be 15 characters or less.");
+      return; // Stop the form submission
     }
+    // try {
+    //   const response = await fetch("/api/profile", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       walletId: userAccount,
+    //       username: username,
+    //       description: description,
+    //       imageUrl: profilePicture,
+    //     }),
+    //   });
+
+    //   if (response.ok) {
+    //     const data = await response.json();
+    // console.log("Profile saved:", data);
+    // Save data to sessionStorage
+    setIsEdited(false);
+    setIsSaved(true);
+    updateUserDetails(username, description, profilePicture); // Update user details at the parent level or wherever necessary
+
+    sessionStorage.setItem("username", username);
+    sessionStorage.setItem("description", description);
+    sessionStorage.setItem("profilePicture", profilePicture);
+    // Redirect the user to the profile page or show a success message
+    updateUserDetails(username, description, profilePicture);
+
+    //   } else {
+    //     console.error("Error saving profile:", response.statusText);
+    //   }
+
+    // } catch (err) {
+    //   console.error("Error saving profile:", err);
+    // }
   };
 
   return (
@@ -142,13 +171,18 @@ export default function ProfileDashboard() {
                 value={username}
                 onChange={handleUsernameChange}
               />
-              <div className="dashboard-error">
-                <div className="dashboard-icon-error">
-                  <p>!</p>
+              {usernameError && (
+
+                <div className="dashboard-error">
+                  <div className="dashboard-icon-error">
+                    <p>!</p>
+                  </div>
+                  <p className="dashboard-msg-error">{usernameError}</p>
                 </div>
-                <p className="dashboard-msg-error">Invalid username. Already taken.</p>
-              </div>
+              )}
+
             </div>
+
             <div className="dashboard-settings-item">
               <div className="dashboard-settings-title">
                 <h2>Wallet Adresse</h2>
@@ -186,47 +220,48 @@ export default function ProfileDashboard() {
             </div>
 
             <div className="dashboard-settings-item">
-  <div className="dashboard-settings-title">
-    <h2>Profile picture</h2>
-    <div className="dashboard-settings-title-icon">
-      <p>i</p>
-    </div>
-  </div>
+              <div className="dashboard-settings-title">
+                <h2>Profile picture</h2>
+                <div className="dashboard-settings-title-icon">
+                  <p>i</p>
+                </div>
+              </div>
 
-  <div className="dashboard-settings-item-box-profile">
-    <div className="dashboard-settings-pp">
-      <img src={profilePicture || "./images/favicon-placeholder.png"} alt="Profile" />
-    </div>
-    <input
-      type="file"
-      accept="image/*"
-      onChange={handleProfilePictureChange}
-      ref={fileInputRef}
-      style={{ display: "none" }}
-    />
-    <a
-      href="#"
-      className="dashboard-settings-upload-btn"
-      onClick={handleUploadButtonClick}
-    >
-      <i className="bi bi-cloud-upload"></i>Upload
-    </a>
-    {imageError && (
-      <div className="dashboard-error">
-        <div className="dashboard-icon-error">
-          <p>!</p>
-        </div>
-        <p className="dashboard-msg-error">{imageError}</p>
-      </div>
-    )}
-  </div>
-</div>
+              <div className="dashboard-settings-item-box-profile">
+                <div className="dashboard-settings-pp">
+                  <img src={profilePicture || "./images/favicon-placeholder.png"} alt="Profile" />
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleProfilePictureChange}
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                />
+                <a
+                  href="#"
+                  className="dashboard-settings-upload-btn"
+                  onClick={handleUploadButtonClick}
+                >
+                  <i className="bi bi-cloud-upload"></i>Upload
+                </a>
+                {imageError && (
+                  <div className="dashboard-error">
+                    <div className="dashboard-icon-error">
+                      <p>!</p>
+                    </div>
+                    <p className="dashboard-msg-error">{imageError}</p>
+                  </div>
+                )}
+              </div>
+            </div>
 
           </div>
           <form onSubmit={handleSubmit}>
-            <button type="submit" className="dashboard-page-content-save-btn">
-              Save
+            <button type="submit" className={`dashboard-page-content-save-btn${isEdited ? " edited" : ""}`}>
+              {isSaved ? <i className="bi bi-check"></i> : 'Save'}
             </button>
+
           </form>
         </div>
       </div>

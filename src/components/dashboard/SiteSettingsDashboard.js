@@ -1,45 +1,78 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./SiteSettingsDashboard.css";
 import "./DashboardMain.css";
 import "../Root.css";
 
 export default function SiteSettingsDashboard({ project, updateProject, onReturnToProjects }) {
     const [templateName, setTemplateName] = useState(project ? project.name : "");
-    const [templateDescription, setTemplateDescription] = useState(
-        project ? project.description : ""
-    );
+    const [templateDescription, setTemplateDescription] = useState(project ? project.description : "");
     const [favicon, setFavicon] = useState(project ? project.favicon : "");
+    const [isEdited, setIsEdited] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
+    // New state to track image size error
+    const [isImageError, setIsImageError] = useState(false);
+
+    useEffect(() => {
+        setIsEdited(false);
+        setIsSaved(false);
+        setIsImageError(false); // Reset the image error state as well
+    }, [project]);
 
     const handleTemplateNameChange = (e) => {
         setTemplateName(e.target.value);
-        updateProject({ ...project, name: e.target.value });
+        setIsEdited(true);
+        setIsSaved(false);
     };
 
     const handleTemplateDescriptionChange = (e) => {
         setTemplateDescription(e.target.value);
-        updateProject({ ...project, description: e.target.value });
+        setIsEdited(true);
+        setIsSaved(false);
     };
 
     const handleFaviconUpload = (e) => {
         const file = e.target.files[0];
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-            setFavicon(reader.result);
-            updateProject({ ...project, favicon: reader.result });
-        };
-
         if (file) {
-            reader.readAsDataURL(file);
+            const img = new Image();
+            img.onload = () => {
+                if (img.width > 300 || img.height > 300) {
+                    // If the image is larger than 300x300px, display an error and do not update the faviconv
+
+                    setIsImageError(true);
+                    setIsEdited(false); // Since no valid change is made, revert isEdited to false
+                } else {
+                    setIsImageError(false);
+                    img.src = URL.createObjectURL(file);
+
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        setFavicon(reader.result);
+                        setIsEdited(true);
+                        setIsSaved(false); // Ensure user knows changes need saving
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
         }
     };
 
+    const handleSave = () => {
+        updateProject({
+            ...project,
+            name: templateName,
+            description: templateDescription,
+            favicon: favicon
+        });
+        setIsEdited(false);
+        setIsSaved(true);
+        setIsImageError(false); // Assuming saving resolves any previous error states
+    };
     return (
         <div className="dashboard-page-container">
             <div className="projects-header-sticky">
                 <div className="dashboard-header">
                     <div className="dashboard-title-box">
-                        <div onClick={onReturnToProjects}><i class="bi bi-arrow-left-short"></i></div>
+                        <div onClick={onReturnToProjects}><i className="bi bi-arrow-left-short"></i></div>
                         <h1><span>{templateName}</span> Settings</h1>
                     </div>
                 </div>
@@ -88,30 +121,27 @@ export default function SiteSettingsDashboard({ project, updateProject, onReturn
                                 accept="image/*"
                                 onChange={handleFaviconUpload}
                             />
-                            <div className="dashboard-error">
-                                <div className="dashboard-icon-error">
-                                    <p>!</p>
-                                </div>
-                                <p className="dashboard-msg-error">
-                                    The image must be 64x64 px
-                                </p>
+                            {isImageError && (
+                        <div className="dashboard-error">
+                            <div className="dashboard-icon-error">
+                                <p>!</p>
                             </div>
+                            <p className="dashboard-msg-error">
+                                The image must be 300x300 px or smaller
+                            </p>
+                        </div>
+                    )}
+                           
                         </div>
                     </div>
                 </div>
                 <button
-                    className="dashboard-page-content-save-btn"
-                    type="button" // Changed to "button" since it's not submitting a form
-                    onClick={() => updateProject({
-                        ...project,
-                        name: templateName,
-                        description: templateDescription,
-                        favicon: favicon
-                    })}
-                >
-                    Save
-                </button>
-
+                className={`dashboard-page-content-save-btn${isEdited ? "-activated" : ""}`}
+                type="button"
+                onClick={handleSave}
+            >
+                {isSaved ? <i className="bi bi-check"></i> : 'Save'} 
+            </button>
             </div>
         </div>
     );

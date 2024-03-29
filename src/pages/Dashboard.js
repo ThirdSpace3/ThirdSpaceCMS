@@ -50,7 +50,36 @@ const InitialProjects = [
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [filteredProjects, setFilteredProjects] = useState(projects);
+  const [username, setUsername] = useState(() => {
+    // Load username from local storage or set a default value
+    return localStorage.getItem('username') || 'My Username';
+  });
 
+  const [description, setDescription] = useState(() => {
+    // Load description from local storage or set a default value
+    return localStorage.getItem('description') || '';
+  });
+
+  const [profilePicture, setProfilePicture] = useState(() => {
+    // Load profile picture from local storage or set a default
+    return localStorage.getItem('profilePicture') || './images/avatar-placeholder.png';
+  });
+
+  // Function to update user details
+  const updateUserDetails = (newUsername, newDescription, newProfilePicture) => {
+    setUsername(newUsername);
+    setDescription(newDescription);
+    setProfilePicture(newProfilePicture);
+
+    // Save to local storage
+    localStorage.setItem('username', newUsername);
+    localStorage.setItem('description', newDescription);
+    localStorage.setItem('profilePicture', newProfilePicture);
+  };
+
+  useEffect(() => {
+    // This might be used for other purposes or to handle changes in user details
+  }, [username, description, profilePicture]);
   const handleOpenSettings = (index) => {
     setSelectedProject(projects[index]);
     setActiveMenuItem("settings");
@@ -81,8 +110,11 @@ const InitialProjects = [
     <>
       <div className="dashboard-container">
         <div className="leftMenuDashboard">
-          <LeftMenuDashboard setActiveMenuItem={setActiveMenuItem} />
-        </div>
+        <LeftMenuDashboard
+        setActiveMenuItem={setActiveMenuItem}
+        username={username}
+        profilePicture={profilePicture}
+      />        </div>
         <div className="projectsDashboard">
           {activeMenuItem === "projects" && (
             <ProjectsDashboard
@@ -98,8 +130,9 @@ const InitialProjects = [
             />
           )}
 
-          {activeMenuItem === "profile" && <ProfileDashboard />}
-        </div>
+{activeMenuItem === "profile" && (
+        <ProfileDashboard updateUserDetails={updateUserDetails} />
+      )}        </div>
       </div>
     </>
   );
