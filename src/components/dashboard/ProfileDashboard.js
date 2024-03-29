@@ -162,7 +162,7 @@ export default function ProfileDashboard() {
                     copyToClipboard();
                   }}
                 >
-                  <p>{shortenAddress(userAccount)}</p><i class="bi bi-copy"></i>
+                  <p>{userAccount}</p><i class="bi bi-copy"></i>
                 </a>
                 {copied && (
                   <div className="dashboard-settings-wallet-copied">
@@ -186,39 +186,42 @@ export default function ProfileDashboard() {
             </div>
 
             <div className="dashboard-settings-item">
-              <div className="dashboard-settings-title">
-                <h2>Profile picture</h2>
-                <div className="dashboard-settings-title-icon">
-                  <p>i</p>
-                </div>
-              </div>
+  <div className="dashboard-settings-title">
+    <h2>Profile picture</h2>
+    <div className="dashboard-settings-title-icon">
+      <p>i</p>
+    </div>
+  </div>
 
-              <div className="dashboard-settings-item-box-profile">
-                <div className="dashboard-settings-pp">
-                  <img src={profilePicture || "./images/favicon-placeholder.png"} />
-                </div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleProfilePictureChange}
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                />
-                <a
-                  href=""
-                  className="dashboard-settings-upload-btn"
-                  onClick={handleUploadButtonClick}
-                >
-                  <i class="bi bi-cloud-upload"></i>Upload
-                </a>
-                <div className="dashboard-error">
-                  <div className="dashboard-icon-error">
-                    <p>!</p>
-                  </div>
-                  <p className="dashboard-msg-error">{imageError}</p>
-                </div>
-              </div>
-            </div>
+  <div className="dashboard-settings-item-box-profile">
+    <div className="dashboard-settings-pp">
+      <img src={profilePicture || "./images/favicon-placeholder.png"} alt="Profile" />
+    </div>
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleProfilePictureChange}
+      ref={fileInputRef}
+      style={{ display: "none" }}
+    />
+    <a
+      href="#"
+      className="dashboard-settings-upload-btn"
+      onClick={handleUploadButtonClick}
+    >
+      <i className="bi bi-cloud-upload"></i>Upload
+    </a>
+    {imageError && (
+      <div className="dashboard-error">
+        <div className="dashboard-icon-error">
+          <p>!</p>
+        </div>
+        <p className="dashboard-msg-error">{imageError}</p>
+      </div>
+    )}
+  </div>
+</div>
+
           </div>
           <form onSubmit={handleSubmit}>
             <button type="submit" className="dashboard-page-content-save-btn">

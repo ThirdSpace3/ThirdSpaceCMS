@@ -34,16 +34,14 @@ export default function ProjectsDashboard({ projects, handleOpenSettings }) {
         setIsOpen(false);
 
         // Filter the projects based on the selected option
-        if (option.value === 'all') {
-            setFilteredProjects(projects);
-        } else if (option.value === 'option1') {
-            setFilteredProjects(projects.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        if (option.value === 'option1') {
+            setFilteredProjects([...projects].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
         } else if (option.value === 'option2') {
-            setFilteredProjects(projects.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
+            setFilteredProjects([...projects].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
         } else if (option.value === 'option3') {
-            setFilteredProjects(projects.sort((a, b) => a.name.localeCompare(b.name)));
+            setFilteredProjects([...projects].sort((a, b) => a.name.localeCompare(b.name)));
         } else if (option.value === 'option4') {
-            setFilteredProjects(projects.sort((a, b) => b.name.localeCompare(a.name)));
+            setFilteredProjects([...projects].sort((a, b) => b.name.localeCompare(a.name)));
         }
     };
 
@@ -127,19 +125,22 @@ export default function ProjectsDashboard({ projects, handleOpenSettings }) {
                         </div>
 
                         {/* Display the filtered projects */}
-                        <div className="projects-content-listing">
-                            {filteredProjects.slice(0, 5).map((project, index) => (
-                                <div key={index} className="projects-content-item">
-                                    <img src={project.image} />
-                                    <div className="projects-content-item-info">
-                                        <p onClick={() => handleProjectClick(project.name)} >{project.name}</p>
-                                        <div onClick={() => handleProjectSettings(index)}>
-                                            <i class="bi bi-three-dots"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                        {/* Display the filtered projects */}
+<div className="projects-content-listing">
+    {filteredProjects.slice(0, 5).map((project, index) => (
+        <div key={index} className="projects-content-item">
+            {/* Conditionally render the favicon if available, otherwise render the default image */}
+            <img src={project.favicon ? project.favicon : project.image} alt={project.name} />
+            <div className="projects-content-item-info">
+                <p onClick={() => handleProjectClick(project.logiciel)}>{project.name}</p>
+                <div onClick={() => handleProjectSettings(index)}>
+                    <i className="bi bi-three-dots"></i>
+                </div>
+            </div>
+        </div>
+    ))}
+</div>
+
                     </div>
                 </div>
             </div>

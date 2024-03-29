@@ -3,7 +3,7 @@ import "./SiteSettingsDashboard.css";
 import "./DashboardMain.css";
 import "../Root.css";
 
-export default function SiteSettingsDashboard({ project, updateProject }) {
+export default function SiteSettingsDashboard({ project, updateProject, onReturnToProjects }) {
     const [templateName, setTemplateName] = useState(project ? project.name : "");
     const [templateDescription, setTemplateDescription] = useState(
         project ? project.description : ""
@@ -39,7 +39,7 @@ export default function SiteSettingsDashboard({ project, updateProject }) {
             <div className="projects-header-sticky">
                 <div className="dashboard-header">
                     <div className="dashboard-title-box">
-                        <a href=""><i class="bi bi-arrow-left-short"></i></a>
+                        <div onClick={onReturnToProjects}><i class="bi bi-arrow-left-short"></i></div>
                         <h1><span>{templateName}</span> Settings</h1>
                     </div>
                 </div>
@@ -100,11 +100,17 @@ export default function SiteSettingsDashboard({ project, updateProject }) {
                     </div>
                 </div>
                 <button
-  className="dashboard-page-content-save-btn"
-  onClick={() => updateProject({ name: templateName, description: templateDescription, favicon: favicon })}
->
-  Save
-</button>
+                    className="dashboard-page-content-save-btn"
+                    type="button" // Changed to "button" since it's not submitting a form
+                    onClick={() => updateProject({
+                        ...project,
+                        name: templateName,
+                        description: templateDescription,
+                        favicon: favicon
+                    })}
+                >
+                    Save
+                </button>
 
             </div>
         </div>

@@ -6,6 +6,7 @@ import PopupWallet from "../website/PopupWallet";
 export default function LeftMenuDashboard({ onUserLogin, setActiveMenuItem }) {
   const [userAccount, setUserAccount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const [showCopiedMessage, setShowCopiedMessage] = useState(false); // New state for the copied message
 
   useEffect(() => {
     const isLoggedIn = sessionStorage.getItem("isLoggedIn");
@@ -23,14 +24,23 @@ export default function LeftMenuDashboard({ onUserLogin, setActiveMenuItem }) {
   };
 
   const shortenAddress = (address) => {
-    return address.slice(0, 5) + "..." + address.slice(-4);
+    return address.slice(0, 6) + "..." + address.slice(-4);
   };
 
   const handleMenuItemClick = (menuItem, event) => {
     event.preventDefault();
     setActiveMenuItem(menuItem);
   };
-
+  const handleCopyAddress = () => {
+    navigator.clipboard.writeText(userAccount)
+      .then(() => {
+        setShowCopiedMessage(true); // Show the copied message
+        setTimeout(() => setShowCopiedMessage(false), 3000); // Hide the message after 3 seconds
+      })
+      .catch(err => {
+        console.error("Failed to copy the address: ", err);
+      });
+  };
   return (
     <>
       {showPopup && (
@@ -40,8 +50,13 @@ export default function LeftMenuDashboard({ onUserLogin, setActiveMenuItem }) {
         <div className="left-menu-top">
           <div className="profile-container">
             <img src="./images/avatar-placeholder.png" />
-            <p className="profile-name">{shortenAddress(userAccount)}</p>
-          </div>
+            <p className="profile-name" onClick={handleCopyAddress}>
+              {shortenAddress(userAccount)}
+            </p>
+            {showCopiedMessage && (
+              <div className="dashboard-settings-wallet-copied">Address Copied!</div>
+            )}
+            </div>
           <div className="left-menu-links">
             <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("projects", event)}>
               <i className="bi bi-folder"></i>
