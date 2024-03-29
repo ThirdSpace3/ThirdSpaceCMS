@@ -59,10 +59,14 @@ export default function LeftMenuDashboard({ onUserLogin, setActiveMenuItem }) {
               <i className="bi bi-person"></i>
               <p>Profile</p>
             </a>
+<<<<<<< Updated upstream
             <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("settings", event)}>
+=======
+            {/* <a href="" className="left-menu-item">
+>>>>>>> Stashed changes
               <i className="bi bi-gear"></i>
               <p>Settings</p>
-            </a>
+            </a> */}
           </div>
           <a href="" className="left-menu-bug">
             <i className="bi bi-bug"></i>
