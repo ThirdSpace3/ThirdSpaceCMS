@@ -5,7 +5,7 @@ import LeftMenuDashboard from "../components/dashboard/LeftMenuDashboard";
 import ProjectsDashboard from "../components/dashboard/ProjectsDashboard";
 import SiteSettingsDashboard from "../components/dashboard/SiteSettingsDashboard";
 import ProfileDashboard from "../components/dashboard/ProfileDashboard";
-
+import BillingDashboard from "../components/dashboard/BillingDashboard"
 
 export default function Dashboard() {
 
@@ -127,6 +127,10 @@ const InitialProjects = [
               project={selectedProject}
               updateProject={updateProject}
               onReturnToProjects={handleReturnToProjectsDashboard} // Pass the function as a prop here
+            />
+          )}
+                    {activeMenuItem === "billing" && (
+            <BillingDashboard
             />
           )}
 
