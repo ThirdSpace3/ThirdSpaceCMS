@@ -11,7 +11,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    padding-left: 50px;
+    padding-left: 30px;
     padding-top: 15px;
     align-items: center;
 }
@@ -33,7 +33,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 20px 50px;
+    padding: 15px 30px;
     background-color: var(--menu-bg);
     border-radius: 20px 0px 0px 20px;    
 }
@@ -156,7 +156,7 @@
   
 
  */
-  @media only screen and (max-width: 1140px) {
+  @media only screen and (max-width: 950px) {
     .projects-header {
         flex-direction: column;
         align-items: flex-end;
@@ -216,7 +216,8 @@
     display: flex;
     flex-wrap: wrap; /* Permet aux éléments de passer à la ligne si nécessaire */
     gap: 20px; /* Espace entre les éléments */
-    justify-content: start;    
+    justify-content: space-between;
+    justify-items: center;    
   }
   .projects-content-item {
     display: flex;
