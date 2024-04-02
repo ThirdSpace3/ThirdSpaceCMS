@@ -1,0 +1,17 @@
+.dashboard-page-content-view-more {
+    display: flex;
+    padding: 5px 15px;
+    align-items: center;
+    gap: 3.241px;
+    border-radius: 5px;
+    border: 1px solid var(--not-selected, #64748B);
+    background: var(--white);  
+    color: var(--not-selected);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Inter;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}

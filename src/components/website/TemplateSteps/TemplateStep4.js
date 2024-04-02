@@ -83,8 +83,12 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
         <h2 className="template-title">Choose a template</h2>
         <p className="template-subtitle">You can always explore other templates if you change your mind later.</p>
         
-        <div className='listing-container'>
-          {/* Add the filter options UI here */}
+        
+        
+        </div>
+        <div className='templates-section'>
+          <div className='listing-container'>
+          
           <h3>Type</h3>
           <div className='listing-content'>
             {options.map((option) => (
@@ -93,6 +97,7 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
                 <p className='listing-item-name'>{option}</p>
               </div>
             ))}
+          </div>
           </div>
           <div className='templates-container'>
             
@@ -131,7 +136,7 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
           </div>
         </div>
       </div>
-    </div>
+   
   );
 };
 

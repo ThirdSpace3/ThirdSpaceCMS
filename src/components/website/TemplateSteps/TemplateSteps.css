@@ -32,7 +32,6 @@ nav a img {
     overflow-y: hidden;
 }
 #etape5, 
-#etape4,
 #etape3,
 #etape2,
 #etape1{
@@ -44,6 +43,17 @@ nav a img {
     height: 80vh;
     position: relative;
     padding: 25px;   
+}
+ 
+#etape4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+    position: relative;
+    padding: 25px;
+    
 }
 
 
@@ -81,6 +91,14 @@ nav a img {
     max-width: 900px;
     height: 65vh;
     display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+}
+#etape4 .step-box {
+    max-width: 900px;
+    display: flex;
+    height: auto;
     flex-direction: column;
     gap: 20px;
     justify-content: center;
@@ -371,10 +389,11 @@ line-height: normal;
 
 .templates-container {
     display: flex;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    flex-wrap: wrap;
     gap: 20px;
-    justify-content: center;
+    justify-content: space-between;
     gap: 20px;
+    min-width: 70%;
 }
 .templates-box {
     display: flex;
@@ -386,8 +405,7 @@ line-height: normal;
     position: relative;
     min-height: 300px;
     max-height: 400px;
-    min-width: 200px;
-    max-width: 250px;
+    max-width: 220px;
 }
 .templates-img iframe {
     width: 100%;
