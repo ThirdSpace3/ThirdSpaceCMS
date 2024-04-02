@@ -20,8 +20,10 @@
 /*== header ==*/
 
 .dashboard-header {
-    padding-top: 50px;
-    padding-left: 50px;
+    padding: 50px 50px 0 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .dashboard-header h1 {
     color: var(--menu-bg);
@@ -110,12 +112,18 @@ border: 1.2px solid #000;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 10px;
+    gap: 50px;
 }
 .dashboard-settings-item-box-profile {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+}
+.dashboard-settings-upload-box {
+    display: flex;
+    flex-direction: column;
     align-items: flex-start;
     gap: 10px;
 }
@@ -283,7 +291,6 @@ line-height: normal;
 
 .left-menu-container {
     height: 100vh;
-    width: 230px;
     background-color: var(--menu-bg);
     border-radius: 0px 28px 28px 0px;
     padding: 30px 20px 0 20px;

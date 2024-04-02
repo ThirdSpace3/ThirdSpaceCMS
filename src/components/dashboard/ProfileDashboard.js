@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./ProfileDashboard.css";
 import "./DashboardMain.css";
 import "../Root.css";
 
@@ -155,6 +154,12 @@ export default function ProfileDashboard({ updateUserDetails }) {
         <div className="projects-header-sticky">
           <div className="dashboard-header">
             <h1>Profile</h1>
+            <form onSubmit={handleSubmit}>
+            <button type="submit" className={`dashboard-page-content-save-btn${isEdited ? " edited" : ""}`}>
+              {isSaved ? <i className="bi bi-check"></i> : 'Save'}
+            </button>
+
+          </form>
           </div>
         </div>
         <div className="dashboard-page-content">
@@ -238,31 +243,29 @@ export default function ProfileDashboard({ updateUserDetails }) {
                   ref={fileInputRef}
                   style={{ display: "none" }}
                 />
-                <a
-                  href="#"
-                  className="dashboard-settings-upload-btn"
-                  onClick={handleUploadButtonClick}
-                >
-                  <i className="bi bi-cloud-upload"></i>Upload
-                </a>
-                {imageError && (
-                  <div className="dashboard-error">
-                    <div className="dashboard-icon-error">
-                      <p>!</p>
+                <div className="dashboard-settings-upload-box">
+                    <a
+                    href="#"
+                    className="dashboard-settings-upload-btn"
+                    onClick={handleUploadButtonClick}
+                  >
+                    <i className="bi bi-cloud-upload"></i>Upload
+                  </a>
+                  {imageError && (
+                    <div className="dashboard-error">
+                      <div className="dashboard-icon-error">
+                        <p>!</p>
+                      </div>
+                      <p className="dashboard-msg-error">{imageError}</p>
                     </div>
-                    <p className="dashboard-msg-error">{imageError}</p>
-                  </div>
-                )}
+                  )}
+                </div>
+                
               </div>
             </div>
 
           </div>
-          <form onSubmit={handleSubmit}>
-            <button type="submit" className={`dashboard-page-content-save-btn${isEdited ? " edited" : ""}`}>
-              {isSaved ? <i className="bi bi-check"></i> : 'Save'}
-            </button>
-
-          </form>
+          
         </div>
       </div>
     </>
