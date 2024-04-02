@@ -41,13 +41,14 @@
     flex-direction: row;
     align-items: center;
     gap: 10px;
+
 }
 
 .dashboard-settings-item {
     display: flex;
-flex-direction: column;
-align-items: flex-start;
-gap: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
 }
 .dashboard-settings-title {
     display: flex;
@@ -94,7 +95,7 @@ border: 1.2px solid #000;
 }
 .dashboard-settings-item textarea {
     display: flex;
-    width: 100%;
+    width: 543px;
     height: 71px;
     padding: 10px 15px;
     align-items: flex-start;
@@ -291,6 +292,7 @@ line-height: normal;
 
 .left-menu-container {
     height: 100vh;
+    max-width: 300px;
     background-color: var(--menu-bg);
     border-radius: 0px 28px 28px 0px;
     padding: 30px 20px 0 20px;

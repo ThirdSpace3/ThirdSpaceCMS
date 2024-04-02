@@ -74,7 +74,15 @@ export default function SiteSettingsDashboard({ project, updateProject, onReturn
                     <div className="dashboard-title-box">
                         <div onClick={onReturnToProjects}><i className="bi bi-arrow-left-short"></i></div>
                         <h1><span>{templateName}</span> Settings</h1>
+                        
                     </div>
+                    <button
+                            className={`dashboard-page-content-save-btn${isEdited ? "-activated" : ""}`}
+                            type="button"
+                            onClick={handleSave}
+                        >
+                            {isSaved ? <i className="bi bi-check"></i> : 'Save'} 
+                        </button>
                 </div>
             </div>
             <div className="dashboard-page-content">
@@ -116,6 +124,18 @@ export default function SiteSettingsDashboard({ project, updateProject, onReturn
                             <div className="dashboard-settings-favicon">
                                 <img src={favicon} alt="Favicon" />
                             </div>
+                            <div className="dashboard-settings-upload-box">
+                                <a href="#" className="dashboard-settings-upload-btn">
+                                <i className="bi bi-cloud-upload"></i>Upload</a>
+                            
+                                <div className="dashboard-error">
+                                <div className="dashboard-icon-error">
+                                    <p>!</p>
+                                </div>
+                                <p className="dashboard-msg-error">The image must be 300x300 px or smaller</p>
+                                </div>
+                            
+                            </div>
                             <input
                                 type="file"
                                 accept="image/*"
@@ -135,13 +155,7 @@ export default function SiteSettingsDashboard({ project, updateProject, onReturn
                         </div>
                     </div>
                 </div>
-                <button
-                className={`dashboard-page-content-save-btn${isEdited ? "-activated" : ""}`}
-                type="button"
-                onClick={handleSave}
-            >
-                {isSaved ? <i className="bi bi-check"></i> : 'Save'} 
-            </button>
+                
             </div>
         </div>
     );
