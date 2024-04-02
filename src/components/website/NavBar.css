@@ -111,6 +111,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 }
 .navbar__right {
   display: flex;
@@ -128,7 +129,8 @@ body {
 
 }
 .nav__logo img {
-    width: 70%;
+    width: 100%;
+    max-width: 200px;
 }
 ul.nav__links  {
     display: flex;
