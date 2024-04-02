@@ -49,9 +49,11 @@ footer {
     display: flex;
     gap: 15px;
     align-items: center;
+    justify-content: space-between;
   }
   .footer-credits img {
-    width: 30%;
+    width: 100%;
+    max-width: 150px;
   }
   .footer-credits p {
     color: #858F98;
