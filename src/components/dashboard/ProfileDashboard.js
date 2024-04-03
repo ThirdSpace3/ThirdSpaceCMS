@@ -160,7 +160,11 @@ export default function ProfileDashboard({ updateUserDetails }) {
                   isEdited ? " edited" : ""
                 }`}
               >
-                {isSaved ? <i className="bi bi-check"></i> : "Save"}
+                {isSaved ? (
+                  <i className="bi bi-check2 dashboard-page-content-save-btn-i"></i>
+                ) : (
+                  "Save"
+                )}
               </button>
             </form>
           </div>

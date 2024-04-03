@@ -62,8 +62,7 @@ export default function BillingDashboard() {
 
             {/* <button className="dashboard-page-content-view-more">
               View Transactions History
-              <i className="bi bi-check"></i>
-            </button> */}
+                          </button> */}
           </div>
         </div>
 
