@@ -9,7 +9,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 50px;
+    padding: 30px;
 
 }
 .dashboard-page-content-left {
@@ -20,7 +20,7 @@
 /*== header ==*/
 
 .dashboard-header {
-    padding: 50px 50px 0 50px;
+    padding: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;

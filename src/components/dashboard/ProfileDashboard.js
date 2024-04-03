@@ -27,7 +27,7 @@ export default function ProfileDashboard({ updateUserDetails }) {
       const storedProfilePicture = sessionStorage.getItem("profilePicture");
 
       setUserAccount(account);
-      setUsername(storedUsername || 'My Username');
+      setUsername(storedUsername || "My Username");
       setDescription(storedDescription || "");
       setProfilePicture(storedProfilePicture || null);
     } else {
@@ -102,11 +102,10 @@ export default function ProfileDashboard({ updateUserDetails }) {
     }
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    //Create Behaviour to check DB and save the datas here 
+    //Create Behaviour to check DB and save the datas here
     if (username.length > 15) {
       setUsernameError("Username must be 15 characters or less.");
       return; // Stop the form submission
@@ -155,11 +154,15 @@ export default function ProfileDashboard({ updateUserDetails }) {
           <div className="dashboard-header">
             <h1>Profile</h1>
             <form onSubmit={handleSubmit}>
-            <button type="submit" className={`dashboard-page-content-save-btn${isEdited ? " edited" : ""}`}>
-              {isSaved ? <i className="bi bi-check"></i> : 'Save'}
-            </button>
-
-          </form>
+              <button
+                type="submit"
+                className={`dashboard-page-content-save-btn${
+                  isEdited ? " edited" : ""
+                }`}
+              >
+                {isSaved ? <i className="bi bi-check"></i> : "Save"}
+              </button>
+            </form>
           </div>
         </div>
         <div className="dashboard-page-content">
@@ -177,7 +180,6 @@ export default function ProfileDashboard({ updateUserDetails }) {
                 onChange={handleUsernameChange}
               />
               {usernameError && (
-
                 <div className="dashboard-error">
                   <div className="dashboard-icon-error">
                     <p>!</p>
@@ -185,7 +187,6 @@ export default function ProfileDashboard({ updateUserDetails }) {
                   <p className="dashboard-msg-error">{usernameError}</p>
                 </div>
               )}
-
             </div>
 
             <div className="dashboard-settings-item">
@@ -201,7 +202,8 @@ export default function ProfileDashboard({ updateUserDetails }) {
                     copyToClipboard();
                   }}
                 >
-                  <p>{userAccount}</p><i class="bi bi-copy"></i>
+                  <p>{userAccount}</p>
+                  <i class="bi bi-copy"></i>
                 </a>
                 {copied && (
                   <div className="dashboard-settings-wallet-copied">
@@ -234,7 +236,10 @@ export default function ProfileDashboard({ updateUserDetails }) {
 
               <div className="dashboard-settings-item-box-profile">
                 <div className="dashboard-settings-pp">
-                  <img src={profilePicture || "./images/favicon-placeholder.png"} alt="Profile" />
+                  <img
+                    src={profilePicture || "./images/favicon-placeholder.png"}
+                    alt="Profile"
+                  />
                 </div>
                 <input
                   type="file"
@@ -244,7 +249,7 @@ export default function ProfileDashboard({ updateUserDetails }) {
                   style={{ display: "none" }}
                 />
                 <div className="dashboard-settings-upload-box">
-                    <a
+                  <a
                     href="#"
                     className="dashboard-settings-upload-btn"
                     onClick={handleUploadButtonClick}
@@ -260,12 +265,9 @@ export default function ProfileDashboard({ updateUserDetails }) {
                     </div>
                   )}
                 </div>
-                
               </div>
             </div>
-
           </div>
-          
         </div>
       </div>
     </>
