@@ -8,8 +8,6 @@ const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedBu
         // Temporarily store critical data
         const criticalData = sessionStorage.getItem('stepData');
         
-        // Clear all session storage
-        sessionStorage.clear();
         
         // Restore critical data if it existed
         if (criticalData) {

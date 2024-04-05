@@ -25,6 +25,7 @@ export default function TemplateStep() {
     name: [],
   });
   const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+  console.log(isLoggedIn);
   const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   useEffect(() => {

@@ -4,7 +4,9 @@ import { Navigate } from 'react-router-dom';
 
 const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, walletId, currentStep, inputValue, templateData }) => {
   const [redirectToRoot, setRedirectToRoot] = useState(false);
-  
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+console.log("isLoggedIn:", isLoggedIn); // Add this line
+
   const handleNextClick = async () => {
     if (isNextEnabled) {
       try {

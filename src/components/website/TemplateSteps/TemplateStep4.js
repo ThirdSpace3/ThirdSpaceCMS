@@ -122,7 +122,7 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
                         <Link to={`/template-preview/${template.name}`} state={{ selectedTemplateId }}>
                           View Demo
                         </Link>
-                        <Link to={`/logiciel/${template.name}`}>Start Editing</Link>
+                        {/* <Link to={`/logiciel/${template.name}`}>Start Editing</Link> */}
                       </div>
                     </div>
                   )}

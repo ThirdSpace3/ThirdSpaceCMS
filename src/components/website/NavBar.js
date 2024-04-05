@@ -35,9 +35,9 @@ function Navbar() {
     if (!userIsLoggedIn()) {
       setShowPopup(!showPopup);
     } else {
-      window.location.href = 'https://thirdspace.x/...';
+      //window.location.href = 'https://thirdspace.x/...';
 
-      // navigate('./templatestep');
+       navigate('./templatestep');
     }
     
   };
@@ -87,7 +87,7 @@ function Navbar() {
           ) : (
             <>
               <a
-                href={accounts.length > 0 ? "https://thirdspace.x" : "#"}
+                href={accounts.length > 0 ? "./templatestep" : "#"}
                 className="nav__cta nav-bg"
                 onClick={accounts.length === 0 ? togglePopup : undefined}
               >

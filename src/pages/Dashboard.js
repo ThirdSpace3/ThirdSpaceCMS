@@ -8,7 +8,12 @@ import ProfileDashboard from "../components/dashboard/ProfileDashboard";
 import BillingDashboard from "../components/dashboard/BillingDashboard"
 
 export default function Dashboard() {
+  console.log("Dashboard component rendered");
+  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+  const walletId = sessionStorage.getItem('userAccount');
 
+  console.log("isLoggedIn:", isLoggedIn); // Add this line
+  console.log("walletId:", walletId); // Add this line
   const InitialProjects = [
     {
       id: 1, // Add unique ID
@@ -108,6 +113,7 @@ export default function Dashboard() {
 
   return (
     <>
+     {isLoggedIn && (
       <div className="dashboard-container">
 
         <div className="leftMenuDashboard">
@@ -147,6 +153,7 @@ export default function Dashboard() {
         </div>
 
       </div>
+      )}
     </>
   );
 }
