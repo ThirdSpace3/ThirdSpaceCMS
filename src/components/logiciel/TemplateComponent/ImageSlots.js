@@ -32,7 +32,7 @@ const ImageSlots = ({ styles, imageHistory }) => {
       {Object.entries(imageSlots).map(([slotKey, src], index) => (
         <div key={slotKey} onClick={() => applySelectedImageToSlot(slotKey)}>
           {/* The src attribute might need to be adjusted based on how you handle public assets in your project */}
-          <img src={src} alt={`Slot ${index}`} style={styles.image} />
+          <img src={src} alt={`Slot ${index}`} style={styles} />
         </div>
       ))}
     </>

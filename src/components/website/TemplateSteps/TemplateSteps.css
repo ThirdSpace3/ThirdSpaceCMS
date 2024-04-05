@@ -295,7 +295,7 @@ button.disabled, button.disabled * {
 
 
 /*==================== MOBILE ====================*/
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 767px) {
     .template-mobile {
         height: 80vh;
         display: flex;

@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "./static/css/main.053e027e.css",
+    "main.js": "./static/js/main.5d227cfa.js",
+    "static/media/getintouch-bg.png": "./static/media/getintouch-bg.82a67b95b13de4c3a3ed.png",
+    "static/media/bootstrap-icons.woff?": "./static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
+    "static/media/bootstrap-icons.woff2?": "./static/media/bootstrap-icons.b7bcc075b395c14ce8c2.woff2",
+    "static/media/header-deco.png": "./static/media/header-deco.9c5dc3861392b950517e.png",
+    "index.html": "./index.html",
+    "main.053e027e.css.map": "./static/css/main.053e027e.css.map",
+    "main.5d227cfa.js.map": "./static/js/main.5d227cfa.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.053e027e.css",
+    "static/js/main.5d227cfa.js"
+  ]
+}

@@ -60,7 +60,7 @@ export default function ProjectsDashboard({ projects, handleOpenSettings }) {
     const navigate = useNavigate();
 
     const handleProjectClick = (projectName) => {
-        navigate(`/logiciel/${projectName}`);
+        // navigate(`/logiciel/${projectName}`);
     };
 
     const handleProjectSettings = (index) => {

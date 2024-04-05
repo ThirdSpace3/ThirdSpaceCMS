@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './NavBar.css';
-import PopupWallet from './PopupWallet.js'; // Adjust this path as necessary
-import '../Root.css'
+import PopupWallet from './PopupWallet.js';
+import '../Root.css';
 import TemplateStep1 from './TemplateSteps/TemplateStep1.js';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +18,6 @@ function Navbar() {
   };
 
   useEffect(() => {
-    // Function to check login status
     const checkLoginStatus = () => {
       const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
       const userAccount = sessionStorage.getItem('userAccount');
@@ -30,23 +29,26 @@ function Navbar() {
     };
 
     checkLoginStatus();
-
-    // Optionally, you can listen for changes in localStorage across tabs
-
   }, []);
 
   const togglePopup = () => {
-    console.log(userIsLoggedIn);
-    if (!userIsLoggedIn()) { // If user is not logged in
-      setShowPopup(!showPopup); // Toggle wallet popup
-    } else { // If user is logged in
-      navigate('./templatestep'); // Navigate to './templatestep' route
-    }  };
+    if (!userIsLoggedIn()) {
+      setShowPopup(!showPopup);
+    } else {
+      //window.location.href = 'https://thirdspace.x/...';
+
+       navigate('./templatestep');
+    }
+    
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Additional logic to adjust button display based on URL
+  const is3rdSpaceIO = window.location.hostname.includes('3rd-space.io');
+  const displayLaunchAppInstead = is3rdSpaceIO; // Add your logic for detecting plugins here if needed
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">
@@ -58,35 +60,56 @@ function Navbar() {
             <li><a href="./" className="nav__links-btn">Home</a></li>
             <li className="coming-soon">
               <a href="/about" className="nav__links-btn">About</a>
-               
+
             </li>
             <li className="coming-soon">
               <a href="#" className="nav__links-btn">Ressources</a>
-               
+
             </li>
             <li className="coming-soon">
               <a href="#" className="nav__links-btn">Pricing</a>
-               
+
             </li>
           </ul>
-          <a
-            href={accounts.length > 0 ? "./templatestep" : "#"}
-            className="nav__cta nav-bg"
-            onClick={accounts.length === 0 ? togglePopup : undefined}
-          >
-            Get started
-          </a>
-          {accounts.length === 0 && (
-          <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
-            <span className="material-symbols-outlined">wallet</span>
-            Connect Wallet
-          </a>
-            )}
-            {accounts.length > 0 && (
-              <a href="./dashboard" className="nav__cta nav-bg" id="account-btn">
-                <span className="material-symbols-outlined">account_circle</span>
+
+
+          {/* If .X display tout 
+          If .io Get started => Launch App */}
+          {displayLaunchAppInstead ? (
+            <a
+              href="https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav__cta nav-bg"
+            >
+              Launch App
+            </a>
+          ) : (
+            <>
+              <a
+                href={accounts.length > 0 ? "./templatestep" : "#"}
+                className="nav__cta nav-bg"
+                onClick={accounts.length === 0 ? togglePopup : undefined}
+              >
+                Get Started
               </a>
-            )}
+              {accounts.length === 0 && (
+                <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
+                  <span className="material-symbols-outlined">wallet</span>
+                  Connect Wallet
+                </a>
+              )}
+            </>
+          )}
+          {accounts.length > 0 && (
+            <a href="./dashboard" className="nav__cta nav-bg" id="account-btn">
+              <span className="material-symbols-outlined">account_circle</span>
+            </a>
+          )}
+
+          {/*  */}
+
+
         </div>
       </div>
 
@@ -102,21 +125,21 @@ function Navbar() {
             <li><a href="#" className="nav__links-btn">Home</a></li>
             <li className="coming-soon">
               <a href="#" className="nav__links-btn">About</a>
-               
+
             </li>
             <li className="coming-soon">
               <a href="#" className="nav__links-btn">Ressources</a>
-               
+
             </li>
             <li className="coming-soon">
               <a href="#" className="nav__links-btn">Pricing</a>
-               
+
             </li>
             <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>Get started</a>
             <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
-          <span className="material-symbols-outlined">wallet</span>
-          {accounts.length > 0 ? `Wallet: ${accounts[0].substring(0, 6)}...` : 'Connect Wallet'}
-        </a>
+              <span className="material-symbols-outlined">wallet</span>
+              {accounts.length > 0 ? `Wallet: ${accounts[0].substring(0, 6)}...` : 'Connect Wallet'}
+            </a>
           </ul>
         </div>
       </div>
