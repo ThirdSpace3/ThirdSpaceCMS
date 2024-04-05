@@ -30,24 +30,30 @@ function Navbar() {
 
     checkLoginStatus();
   }, []);
+  const is3rdSpaceIO = window.location.hostname.includes('localhost');
 
   const togglePopup = () => {
     if (!userIsLoggedIn()) {
       setShowPopup(!showPopup);
     } else {
-      //window.location.href = 'https://thirdspace.x/...';
-
-       navigate('./templatestep');
+      if (is3rdSpaceIO === true){
+      window.location.href = 'https://thirdspace.x/...';
+      }else{
+        navigate('./templatestep');
+      }
     }
     
   };
+
+  const redirectWeb3 =() => {
+    window.location.href = 'https://thirdspace.x/...';
+  }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   // Additional logic to adjust button display based on URL
-  const is3rdSpaceIO = window.location.hostname.includes('3rd-space.io');
   const displayLaunchAppInstead = is3rdSpaceIO; // Add your logic for detecting plugins here if needed
   return (
     <nav className="navbar__padding">
@@ -77,13 +83,17 @@ function Navbar() {
           If .io Get started => Launch App */}
           {displayLaunchAppInstead ? (
             <a
-              href="https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav__cta nav-bg"
-            >
-              Launch App
-            </a>
+            href="https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav__cta nav-bg"
+            onClick={() => {
+              window.open('https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl', '_blank');
+              window.location.href = 'https://thirdspace.x/...';
+            }}
+                      >
+            Launch App
+          </a>
           ) : (
             <>
               <a
