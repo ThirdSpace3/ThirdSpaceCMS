@@ -5,7 +5,8 @@
 .hero-section-1{
     background-color:rgb(240, 240, 240) ;
     display: flex;
-    align-items: center
+    align-items: center;
+    justify-content: space-around;
 }
 /* Global stylesheet or scoped stylesheet for SectionHero */
 .hero-section-1 img {

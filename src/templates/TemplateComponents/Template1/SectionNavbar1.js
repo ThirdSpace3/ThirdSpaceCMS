@@ -84,23 +84,23 @@ const SectionNavBar1 = ({ deviceSize, setSelectedElement, isPreviewMode }) => {
     const contentKey = key === 'logoText' ? content[key] : content.linkTexts[index];
     const ref = key === 'logoText' ? logoTextRef : linkTextRefs.current[index];
 
-// Default function definition if not passed as prop
-const handleSelectedElement = setSelectedElement || ((element) => {
-  console.log("Element selected:", element);
-});
+    // Default function definition if not passed as prop
+    const handleSelectedElement = setSelectedElement || ((element) => {
+      console.log("Element selected:", element);
+    });
 
-// Then use handleSelectedElement in place of setSelectedElement
+    // Then use handleSelectedElement in place of setSelectedElement
 
 
-// In SectionNavBar1, guard the usage or provide a default behavior
-const handleTextClick = (elementRef) => {
-  if (typeof setSelectedElement === 'function') {
-    setSelectedElement(elementRef.current);
-  } else {
-    // Default behavior or simply omit this else block if no action is needed
-    console.log("setSelectedElement prop not provided.");
-  }
-};
+    // In SectionNavBar1, guard the usage or provide a default behavior
+    const handleTextClick = (elementRef) => {
+      if (typeof setSelectedElement === 'function') {
+        setSelectedElement(elementRef.current);
+      } else {
+        // Default behavior or simply omit this else block if no action is needed
+        console.log("setSelectedElement prop not provided.");
+      }
+    };
 
 
     return (
@@ -119,7 +119,7 @@ const handleTextClick = (elementRef) => {
 
   return (
     <nav style={styles.navbar}>
-      <ImageSlots styles={{ image: styles.logoImage }} imageHistory={imageHistory} />
+      <ImageSlots styles={styles.logoImage} imageHistory={imageHistory} />
       <ul style={styles.navLinks}>
         {content.linkTexts.map((_, index) => (
           <li key={index} style={styles.navItem}>
@@ -128,11 +128,11 @@ const handleTextClick = (elementRef) => {
         ))}
       </ul>
       <EditableButton
-  initialText="Click Me"
-  onTextChange={(newText) => console.log('New Button Text:', newText)}
-  onEditStyle={() => console.log('Trigger style editing')}
-  style={{ /* Initial button styles */ }}
-/>
+        initialText="Button"
+        onTextChange={(newText) => console.log('New Button Text:', newText)}
+        onEditStyle={() => console.log('Trigger style editing')}
+        style={{ /* Initial button styles */ }}
+      />
     </nav>
   );
 };

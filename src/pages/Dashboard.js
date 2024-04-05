@@ -9,11 +9,11 @@ import BillingDashboard from "../components/dashboard/BillingDashboard"
 
 export default function Dashboard() {
 
-const InitialProjects = [
+  const InitialProjects = [
     {
       id: 1, // Add unique ID
       name: "TemplateFullText",
-      logiciel:"TemplateFullText",
+      logiciel: "TemplateFullText",
       image: "./images/project-image-test.png",
       createdAt: "2023-03-20",
       description: "",
@@ -22,7 +22,7 @@ const InitialProjects = [
     {
       id: 2, // Add unique ID
       name: "TemplateImg_txt",
-      logiciel:"TemplateImg_txt",
+      logiciel: "TemplateImg_txt",
 
       image: "./images/project-image-test.png",
       createdAt: "2023-03-19",
@@ -32,7 +32,7 @@ const InitialProjects = [
     {
       id: 3, // Add unique ID
       name: "TemplateTest1",
-      logiciel:"TemplateTest1",
+      logiciel: "TemplateTest1",
       image: "./images/project-image-test.png",
       createdAt: "2023-03-19",
       description: "",
@@ -84,7 +84,7 @@ const InitialProjects = [
     setSelectedProject(projects[index]);
     setActiveMenuItem("settings");
   };
-  
+
 
   const updateProject = (updatedProject) => {
     const updatedProjects = projects.map(project =>
@@ -93,7 +93,7 @@ const InitialProjects = [
     // Assuming you're using local storage for persistence; otherwise, adapt as necessary.
     localStorage.setItem('projects', JSON.stringify(updatedProjects));
   };
-  
+
   const handleReturnToProjectsDashboard = () => {
     setActiveMenuItem("projects");
   };
@@ -102,26 +102,31 @@ const InitialProjects = [
     console.log('Projects updated:', projects);
     localStorage.setItem('projects', JSON.stringify(projects));
 
-  setFilteredProjects(projects);
-}, [projects]);
+    setFilteredProjects(projects);
+  }, [projects]);
 
 
   return (
     <>
       <div className="dashboard-container">
+
         <div className="leftMenuDashboard">
-        <LeftMenuDashboard
-        setActiveMenuItem={setActiveMenuItem}
-        username={username}
-        profilePicture={profilePicture}
-      />        </div>
+          <LeftMenuDashboard
+            setActiveMenuItem={setActiveMenuItem}
+            username={username}
+            profilePicture={profilePicture}
+          />        
+        </div>
+        
         <div className="projectsDashboard">
+
           {activeMenuItem === "projects" && (
             <ProjectsDashboard
-            projects={projects} // Directly use projects here for simplicity
-            handleOpenSettings={handleOpenSettings}
+              projects={projects} // Directly use projects here for simplicity
+              handleOpenSettings={handleOpenSettings}
             />
           )}
+
           {activeMenuItem === "settings" && (
             <SiteSettingsDashboard
               project={selectedProject}
@@ -129,14 +134,18 @@ const InitialProjects = [
               onReturnToProjects={handleReturnToProjectsDashboard} // Pass the function as a prop here
             />
           )}
-                    {activeMenuItem === "billing" && (
+
+          {activeMenuItem === "billing" && (
             <BillingDashboard
             />
           )}
 
-{activeMenuItem === "profile" && (
-        <ProfileDashboard updateUserDetails={updateUserDetails} />
-      )}        </div>
+          {activeMenuItem === "profile" && (
+            <ProfileDashboard updateUserDetails={updateUserDetails} />
+          )}
+
+        </div>
+
       </div>
     </>
   );
