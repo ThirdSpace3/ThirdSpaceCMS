@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './PopupWallet.css';
 import axios from 'axios';
 import '../Root.css'
-import { ethers } from 'ethers';
 
 
 function PopupWallet({ onClose, onUserLogin }) {
