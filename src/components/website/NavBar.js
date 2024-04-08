@@ -30,7 +30,7 @@ function Navbar() {
 
     checkLoginStatus();
   }, []);
-  const is3rdSpaceIO = window.location.hostname.includes("localhost");
+  const is3rdSpaceIO = window.location.hostname.includes("3rd-space.io/");
 
   const togglePopup = () => {
     if (!userIsLoggedIn()) {
