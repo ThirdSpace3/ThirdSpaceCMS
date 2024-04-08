@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import './NavBar.css';
-import PopupWallet from './PopupWallet.js';
-import '../Root.css';
-import TemplateStep1 from './TemplateSteps/TemplateStep1.js';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import "./NavBar.css";
+import PopupWallet from "./PopupWallet.js";
+import "../Root.css";
+import TemplateStep1 from "./TemplateSteps/TemplateStep1.js";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,14 +13,14 @@ function Navbar() {
   const navigate = useNavigate();
 
   const userIsLoggedIn = () => {
-    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
     return isLoggedIn;
   };
 
   useEffect(() => {
     const checkLoginStatus = () => {
-      const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
-      const userAccount = sessionStorage.getItem('userAccount');
+      const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+      const userAccount = sessionStorage.getItem("userAccount");
       if (isLoggedIn && userAccount) {
         setAccounts([userAccount]);
       } else {
@@ -30,24 +30,23 @@ function Navbar() {
 
     checkLoginStatus();
   }, []);
-  const is3rdSpaceIO = window.location.hostname.includes('localhost');
+  const is3rdSpaceIO = window.location.hostname.includes("localhost");
 
   const togglePopup = () => {
     if (!userIsLoggedIn()) {
       setShowPopup(!showPopup);
     } else {
-      if (is3rdSpaceIO === true){
-      window.location.href = 'https://thirdspace.x/...';
-      }else{
-        navigate('./templatestep');
+      if (is3rdSpaceIO === true) {
+        window.location.href = "https://thirdspace.x/...";
+      } else {
+        navigate("./templatestep");
       }
     }
-    
   };
 
-  const redirectWeb3 =() => {
-    window.location.href = 'https://thirdspace.x/...';
-  }
+  const redirectWeb3 = () => {
+    window.location.href = "https://thirdspace.x/...";
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -58,42 +57,51 @@ function Navbar() {
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">
-        <a href="./" className="nav__logo">
+        <a href="/home" className="nav__logo">
           <img src="./images/3s-logo.png" alt="thirdspace logo" />
         </a>
         <div className="navbar__right">
           <ul className="nav__links nav-bg">
-            <li><a href="./" className="nav__links-btn">Home</a></li>
-            <li className="coming-soon">
-              <a href="/about" className="nav__links-btn">About</a>
-
+            <li>
+              <a href="/home" className="nav__links-btn">
+                Home
+              </a>
             </li>
             <li className="coming-soon">
-              <a href="#" className="nav__links-btn">Ressources</a>
-
+              <a href="/products" className="nav__links-btn">
+                Products
+              </a>
             </li>
             <li className="coming-soon">
-              <a href="#" className="nav__links-btn">Pricing</a>
-
+              <a href="/ressources" className="nav__links-btn">
+                Ressources
+              </a>
+            </li>
+            <li className="coming-soon">
+              <a href="/pricing" className="nav__links-btn">
+                Pricing
+              </a>
             </li>
           </ul>
-
 
           {/* If .X display tout 
           If .io Get started => Launch App */}
           {displayLaunchAppInstead ? (
             <a
-            href="https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="nav__cta nav-bg"
-            onClick={() => {
-              window.open('https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl', '_blank');
-              window.location.href = 'https://thirdspace.x/...';
-            }}
-                      >
-            Launch App
-          </a>
+              href="https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav__cta nav-bg"
+              onClick={() => {
+                window.open(
+                  "https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl",
+                  "_blank"
+                );
+                window.location.href = "https://thirdspace.x/...";
+              }}
+            >
+              Launch App
+            </a>
           ) : (
             <>
               <a
@@ -118,42 +126,69 @@ function Navbar() {
           )}
 
           {/*  */}
-
-
         </div>
       </div>
 
-      <div className={`navbar__mobile ${isMenuOpen ? 'animate__fadeInLeft' : ''}`} style={{ display: isMenuOpen ? 'block' : 'none' }}>
+      <div
+        className={`navbar__mobile ${isMenuOpen ? "animate__fadeInLeft" : ""}`}
+        style={{ display: isMenuOpen ? "block" : "none" }}
+      >
         <div className="navbar__mobile-head">
           <a href="index.html" className="nav__logo">
             <img src="/images/3s-logo.png" alt="thirdspace logo" />
           </a>
-          <img className="navbar__mobile-menuIcon" id="menuIcon" src={isMenuOpen ? "/images/navbar-close.png" : "/images/navbar-burger.png"} alt="" onClick={toggleMenu} />
+          <img
+            className="navbar__mobile-menuIcon"
+            id="menuIcon"
+            src={
+              isMenuOpen
+                ? "/images/navbar-close.png"
+                : "/images/navbar-burger.png"
+            }
+            alt=""
+            onClick={toggleMenu}
+          />
         </div>
         <div className="navbar__mobile-content">
           <ul className="nav__links">
-            <li><a href="#" className="nav__links-btn">Home</a></li>
-            <li className="coming-soon">
-              <a href="#" className="nav__links-btn">About</a>
-
+            <li>
+              <a href="#" className="nav__links-btn">
+                Home
+              </a>
             </li>
             <li className="coming-soon">
-              <a href="#" className="nav__links-btn">Ressources</a>
-
+              <a href="#" className="nav__links-btn">
+                About
+              </a>
             </li>
             <li className="coming-soon">
-              <a href="#" className="nav__links-btn">Pricing</a>
-
+              <a href="#" className="nav__links-btn">
+                Ressources
+              </a>
             </li>
-            <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>Get started</a>
+            <li className="coming-soon">
+              <a href="#" className="nav__links-btn">
+                Pricing
+              </a>
+            </li>
+            <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
+              Get started
+            </a>
             <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
               <span className="material-symbols-outlined">wallet</span>
-              {accounts.length > 0 ? `Wallet: ${accounts[0].substring(0, 6)}...` : 'Connect Wallet'}
+              {accounts.length > 0
+                ? `Wallet: ${accounts[0].substring(0, 6)}...`
+                : "Connect Wallet"}
             </a>
           </ul>
         </div>
       </div>
-      {showPopup && <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} />}
+      {showPopup && (
+        <PopupWallet
+          onClose={() => setShowPopup(false)}
+          onUserLogin={(account) => setAccounts([account])}
+        />
+      )}
       {showTemplateStep1 && <TemplateStep1 />}
     </nav>
   );
