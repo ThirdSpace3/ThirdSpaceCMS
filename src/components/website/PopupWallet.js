@@ -162,16 +162,16 @@ function PopupWallet({ onClose, onUserLogin }) {
           className="close-button"
           onClick={onClose}
         />
-        <h2>Connect a wallet</h2>
+        <div className="popup-wallet-header">
+          <img
+            src="./images/3s-logo-picto.png"
+            className="popup-wallet-main-img"
+          />
+          <h2>Connect to Third Space</h2>
+        </div>
+
         <div className="wallet-list">
-          <button
-            id="metamask"
-            className="wallet-btn"
-            onClick={handleLoginWithMetamask}
-          >
-            <img src="/images/metamask-logo.png" alt="" />
-            Continue with Metamask
-          </button>
+          {/* Phantom */}
           <button
             id="phantom"
             className="wallet-btn"
@@ -180,33 +180,21 @@ function PopupWallet({ onClose, onUserLogin }) {
             <img src="/images/phantom-logo.png" alt="" />
             Continue with Phantom
           </button>
-          <button id="ledger" className="wallet-btn">
-            <img src="/images/ledger-logo.png" alt="" />
-            Continue with Ledger
-          </button>
-          <button id="operatouch" className="wallet-btn">
-            <img src="/images/operatouch-logo.png" alt="" />
-            Continue with Opera Touch
-          </button>
+          {/* Metamask */}
           <button
-            id="coinbase"
-            className={`wallet-btn wallet-more ${
-              showMore ? "" : "wallet-hide"
-            }`}
+            id="metamask"
+            className="wallet-btn"
+            onClick={handleLoginWithMetamask}
           >
-            <img src="/images/coinbase-logo.png" alt="" />
-            Continue with Coinbase
+            <img src="/images/metamask-logo.png" alt="" />
+            Continue with Metamask
           </button>
-          {showMore && (
-            <button id="walletconnect" className="wallet-btn wallet-more">
-              <img src="/images/walletconnect-logo.png" alt="" />
-              Continue with Walletconnect
-            </button>
-          )}
+          {/* Coming Soon */}
+          <button className="wallet-btn wallet-btn-comingsoon">
+            <i class="bi bi-lock-fill"></i>
+            Coming Soon
+          </button>
         </div>
-        <a href="#" className="popup-more-btn" onClick={toggleShowMore}>
-          {showMore ? "Show Less" : "Show More"}
-        </a>
       </div>
     </div>
   );
