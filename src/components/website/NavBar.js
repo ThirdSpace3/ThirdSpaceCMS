@@ -30,14 +30,14 @@ function Navbar() {
 
     checkLoginStatus();
   }, []);
-  const is3rdSpaceIO = window.location.hostname.includes("3rd-space.io/");
+  const is3rdSpaceIO = window.location.hostname.includes("3rd-space");
 
   const togglePopup = () => {
     if (!userIsLoggedIn()) {
       setShowPopup(!showPopup);
     } else {
       if (is3rdSpaceIO === true) {
-        window.location.href = "https://thirdspace.x/...";
+        window.location.href = "https://thirdspace.x";
       } else {
         navigate("./templatestep");
       }
@@ -45,7 +45,7 @@ function Navbar() {
   };
 
   const redirectWeb3 = () => {
-    window.location.href = "https://thirdspace.x/...";
+    window.location.href = "https://thirdspace.x";
   };
 
   const toggleMenu = () => {

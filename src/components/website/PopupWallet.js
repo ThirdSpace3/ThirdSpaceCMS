@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./PopupWallet.css";
 import axios from "axios";
 import "../Root.css";
@@ -10,6 +10,20 @@ function PopupWallet({ onClose, onUserLogin }) {
     e.preventDefault();
     setShowMore(!showMore);
   };
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (e.target.id === "popup") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [onClose]);
 
   const handleLoginWithMetamask = async () => {
     if (window.ethereum) {
