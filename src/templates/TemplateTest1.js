@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import html2canvas from 'html2canvas';
 import './TemplateComponents/Template1/TemplateTest1.css'
 import SectionNavBar1 from '../templates/TemplateComponents/Template1/SectionNavbar1'; // Adjust the path based on your project structure
 import SectionHero1 from './TemplateComponents/Template1/SectionHero1';
@@ -11,7 +12,29 @@ import SectionFAQ1 from './TemplateComponents/Template1/SectionFAQ1';
 import SectionBanner1 from './TemplateComponents/Template1/SectionBanner1';
 import SectionFooter1 from './TemplateComponents/Template1/SectionFooter1';
 const TemplateTest1 = ({ deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, isPreviewMode }) => {
+  const captureScreen = () => {
+    html2canvas(document.querySelector(".templatebody")).then(canvas => {
+      canvas.toBlob(blob => {
+        // Create a FormData object
+        const formData = new FormData();
   
+        // Add the blob to the FormData object
+        formData.append('file', blob);
+  
+        // Send the FormData object to your server
+        fetch('/your-endpoint', {
+          method: 'POST',
+          body: formData
+        });
+      });
+    });
+  }
+  useEffect(() => {
+    // This function will be called when the component is unmounted
+    return () => {
+      captureScreen();
+    };
+  }, []);
   return (
     <div className='templatebody'>
       <SectionNavBar1

@@ -111,7 +111,7 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
                   {/* Replace the img tag with an iframe or the template component */}
                   {/* <img src={template.img} alt={`${template.name} Preview`} /> */}
                   {/* Using iframe */}
-                  <iframe scrolling="no" src={`/template-preview/${template.name}`} title={`${template.name} Preview`} />
+                  <iframe scrolling="no" src={`#/template-preview/${template.name}`} title={`${template.name} Preview`} />
 
                   {/* Or, using the template component directly */}
                   {/* {template.component && <template.component />} */}
@@ -119,7 +119,7 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
                   {isHovered[index] && (
                     <div className='templates-hover'>
                       <div className='templates-hover-content'>
-                        <Link to={`/template-preview/${template.name}`} state={{ selectedTemplateId }}>
+                        <Link to={`#/template-preview/${template.name}`} state={{ selectedTemplateId }}>
                           View Demo
                         </Link>
                         {/* <Link to={`/logiciel/${template.name}`}>Start Editing</Link> */}

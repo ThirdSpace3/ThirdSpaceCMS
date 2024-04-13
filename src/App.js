@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
 import Products from "./pages/Products";
@@ -15,7 +15,7 @@ import { ImageHistoryProvider } from "./hooks/ImageHistoryContext";
 export default function App() {
   return (
     <div>
-      <BrowserRouter>
+      <HashRouter>
         <ImageHistoryProvider>
           <StyleProvider>
             <Routes>
@@ -29,22 +29,16 @@ export default function App() {
               <Route path="/templates" element={<TemplateStep />} />
               <Route path="/templatestep" element={<TemplateStep />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route
-                path="/logiciel/:templateName"
-                element={<Display />}
-              />{" "}
+              <Route path="/logiciel/:templateName" element={<Display />}/>{" "}
               {/* Add this line for the dynamic route */}
-              <Route
-                path="/template-preview/:templateName"
-                element={<TemplatePreview />}
-              />{" "}
+              <Route path="/template-preview/:templateName" element={<TemplatePreview />}/>{" "}
               {/* Add this route for template preview */}
               <Route path="/templates/:step" element={<TemplateStep />} />
               <Route path="*" element={<NoPage />} />
             </Routes>
           </StyleProvider>
         </ImageHistoryProvider>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }

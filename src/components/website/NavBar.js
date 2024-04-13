@@ -57,28 +57,28 @@ function Navbar() {
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">
-        <a href="/home" className="nav__logo">
+        <a href="/#/home" className="nav__logo">
           <img src="./images/3s-logo.png" alt="thirdspace logo" />
         </a>
         <div className="navbar__right">
           <ul className="nav__links nav-bg">
             <li>
-              <a href="/home" className="nav__links-btn">
+              <a href="/#/home" className="nav__links-btn">
                 Home
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/products" className="nav__links-btn">
+              <a href="/#/products" className="nav__links-btn">
                 Products
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/ressources" className="nav__links-btn">
+              <a href="/#/ressources" className="nav__links-btn">
                 Ressources
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/pricing" className="nav__links-btn">
+              <a href="/#/pricing" className="nav__links-btn">
                 Pricing
               </a>
             </li>
@@ -105,7 +105,7 @@ function Navbar() {
           ) : (
             <>
               <a
-                href={accounts.length > 0 ? "./templatestep" : "#"}
+                href={accounts.length > 0 ? ".#/templatestep" : "#"}
                 className="nav__cta nav-bg"
                 onClick={accounts.length === 0 ? togglePopup : undefined}
               >
@@ -120,7 +120,7 @@ function Navbar() {
             </>
           )}
           {accounts.length > 0 && (
-            <a href="./dashboard" className="nav__cta nav-bg" id="account-btn">
+            <a href=".#/dashboard" className="nav__cta nav-bg" id="account-btn">
               <span className="material-symbols-outlined">account_circle</span>
             </a>
           )}
