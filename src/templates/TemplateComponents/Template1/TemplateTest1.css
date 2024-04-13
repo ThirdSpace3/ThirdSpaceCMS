@@ -1,6 +1,6 @@
 .templatebody{
     overflow: auto;
-    width: 80vw;
+    width: auto;
 }
 .hero-section-1{
     background-color:rgb(240, 240, 240) ;

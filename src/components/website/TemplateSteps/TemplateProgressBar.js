@@ -14,7 +14,7 @@ export default function TemplateProgressBar({ currentStep }) {
                     {/* Repeat this structure for each step, adjust the `isActiveStep` check as needed */}
                     <div className={`progressbar ${isActiveStep(1) ? 'actual-step' : ''}`}>
                         <div className='progressbar-number'>
-                            <p className={isActiveStep(1) ? 'actual-step' : ''}>1</p>
+                        <p className={`progressbar-text ${isActiveStep(1) ? 'actual-step' : ''}`}>1</p>
                         </div>
                         <p className={`progressbar-text ${isActiveStep(1) ? 'actual-step' : ''}`}>Topic</p>
                         <div className='progressbar-dot-box'>
@@ -31,7 +31,7 @@ export default function TemplateProgressBar({ currentStep }) {
                             <div className={`progressbar-dot ${isActiveStep(2) ? 'actual-step' : ''}`}></div>
                         </div>
                         <div className='progressbar-number'>
-                            <p className={isActiveStep(2) ? 'actual-step' : ''}>2</p>
+                        <p className={`progressbar-text ${isActiveStep(2) ? 'actual-step' : ''}`}>2</p>
                         </div>
                         <p className={`progressbar-text ${isActiveStep(2) ? 'actual-step' : ''}`}>Features</p>
                         <div className='progressbar-dot-box'>
@@ -47,7 +47,7 @@ export default function TemplateProgressBar({ currentStep }) {
                             <div className={`progressbar-dot ${isActiveStep(3) ? 'actual-step' : ''}`}></div>
                         </div>
                         <div className='progressbar-number'>
-                            <p className={isActiveStep(3) ? 'actual-step' : ''}>3</p>
+                            <p className={`progressbar-text ${isActiveStep(3) ? 'actual-step' : ''}`}>3</p>
                         </div>
                         <p className={`progressbar-text ${isActiveStep(3) ? 'actual-step' : ''}`}>Product</p>
                         <div className='progressbar-dot-box'>

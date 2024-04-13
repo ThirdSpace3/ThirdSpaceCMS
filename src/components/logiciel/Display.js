@@ -114,7 +114,9 @@ export default function Display() {
     TemplateTest1 : TemplateTest1,
     // Add more templates here as needed
   };
-  const SelectedTemplate = templateComponents[templateName];
+  const FallbackTemplate = () => <div>Template not found.</div>;
+  const SelectedTemplate = templateComponents[templateName] || FallbackTemplate;
+  console.log(SelectedTemplate); // This should log a function or class if correctly imported
 
 
   return (

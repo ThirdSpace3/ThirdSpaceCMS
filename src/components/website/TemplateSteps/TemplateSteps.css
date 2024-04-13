@@ -400,14 +400,18 @@ line-height: normal;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+    
 }
 .templates-img {
     position: relative;
     min-height: 300px;
-    max-height: 400px;
+    max-height: 300px;
     max-width: 220px;
+    overflow: hidden;
+    border-radius: 20px;
 }
-.templates-img iframe {
+
+.templates-box img {
     width: 100%;
     height: 100%;
     border-radius: 20px;
