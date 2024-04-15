@@ -1,66 +1,75 @@
 .topbar-wrapper {
-    height: 45px;
-    width: 550px;
-    background-color: var(--menu-bg);
-    border-radius: 0 0 30px 30px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 11px 32px;
-    position: absolute;
-    top: 20px;
-    right: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  height: 45px;
+  width: 550px;
+  background-color: var(--menu-bg);
+  border-radius: 0 0 30px 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 32px;
+  position: absolute;
+  top: 20px;
+  right: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .topbar-left {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 13px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 13px;
 }
 .topbar-left hr {
-    height: 20px;
-    width: 2px;
-    background-color: var(--not-selected);
-    border: 1px var(--not-selected);
+  height: 20px;
+  width: 2px;
+  background-color: var(--not-selected);
+  border: 1px var(--not-selected);
 }
 .topbar-left a {
-    color: var(--not-selected);
-    font-size: 20px;
+  color: var(--not-selected);
+  font-size: 20px;
 }
 .topbar-left a:hover {
-    color: var(--white);
+  color: var(--white);
+  cursor: pointer;
 }
 .topbar-propulse-btn {
-    font-family: var(--inter);
-    font-size: 16px;
-    color: var(--white);
-    display: flex;
-    padding: 6px 16px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    background-color: var(--main-color);
-    border-radius: 30px;
-    border: none;
+  font-family: var(--inter);
+  font-size: 14px;
+  color: var(--white);
+  display: flex;
+  padding: 6px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--main-color);
+  border-radius: 30px;
+  border: none;
+}
+.topbar-propulse-btn:hover {
+  color: var(--white);
+  display: flex;
+  background-color: #4f4dd1;
+  cursor: pointer;
 }
 .topbar-device-btn {
-    color: var(--not-selected);
-    font-size: 20px;
-    padding: 4px;
-    border-radius: 4px;
+  color: var(--not-selected);
+  font-size: 20px;
+  padding: 4px;
+  border-radius: 4px;
 }
 .topbar-device-btn:hover {
-    background-color: var(--dark-grey);
-    color: var(--white);
+  background-color: var(--dark-grey);
+  color: var(--white);
+  cursor: pointer;
 }
+
 .topbar-mid {
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
 }
