@@ -337,7 +337,11 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
     // Assuming `updateStyle` updates the global context
     updateStyle({ [styleProperty]: newValue });
   };
-
+  useEffect(() => {
+    if (selectedElement && selectedElement.type === 'navbar') {
+      setIsOpen(prevState => ({...prevState, background: true}));
+    }
+  }, [selectedElement]);
 
   return (
     <>

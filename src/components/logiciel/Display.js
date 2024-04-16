@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
-import LeftBar from "./LeftBar";
-import TopBar from "./TopBar";
-import RightBar from "./RightBar";
-import ActualPageParametersBTN from "./ActualPageParametersBTN";
-import "./Display.css";
-import { StyleProvider } from "../../hooks/StyleContext";
-import TemplateFullText from "../../templates/TemplateFullText";
-import TemplateImg_txt from "../../templates/TemplateImg_txt";
-import { TemplateTest1 } from "../../templates";
-import axios from "axios";
-import { ImageHistoryProvider } from "../../hooks/ImageHistoryContext";
-import { useParams } from "react-router-dom"; // Import useParams
+import React, { useState, useEffect } from 'react';
+import LeftBar from './LeftBar';
+import TopBar from './TopBar';
+import RightBar from './RightBar';
+import ActualPageParametersBTN from './ActualPageParametersBTN';
+import './Display.css';
+import { StyleProvider } from '../../hooks/StyleContext';
+import TemplateFullText from '../../templates/TemplateFullText';
+import TemplateImg_txt from '../../templates/TemplateImg_txt';
+import { Template2 } from '../../templates';
+import { TemplateTest1 } from '../../templates';
+import axios from 'axios';
+import { ImageHistoryProvider } from '../../hooks/ImageHistoryContext';
+import { useParams } from 'react-router-dom'; // Import useParams
 
 export default function Display() {
   const [settings, setSettings] = useState({});
@@ -105,7 +106,8 @@ export default function Display() {
   const templateComponents = {
     TemplateFullText: TemplateFullText,
     TemplateImg_txt: TemplateImg_txt,
-    TemplateTest1: TemplateTest1,
+    TemplateTest1 : TemplateTest1,
+    Template2:Template2,
     // Add more templates here as needed
   };
   const FallbackTemplate = () => <div>Template not found.</div>;

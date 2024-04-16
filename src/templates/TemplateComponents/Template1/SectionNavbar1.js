@@ -5,7 +5,7 @@ import EditableButton from '../../../components/logiciel/TemplateComponent/Edita
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
-const SectionNavBar1 = ({ deviceSize, setSelectedElement, isPreviewMode }) => {
+const SectionNavBar1 = ({ deviceSize, setSelectedElement, isPreviewMode, handleSettingsChange }) => {
   const { style } = useStyle();
   const { imageHistory } = useImageHistory();
 
@@ -79,7 +79,10 @@ const SectionNavBar1 = ({ deviceSize, setSelectedElement, isPreviewMode }) => {
       setContent(savedContent);
     }
   }, []);
-
+  const handleNavbarSelection = () => {
+    // Call the setSelectedElement with a reference or identifier for the navbar
+    setSelectedElement({type: 'navbar', id: 'navbar'}); // Adjust based on your state management
+  };
   const renderEditableText = (key, index, tagName, style) => {
     const contentKey = key === 'logoText' ? content[key] : content.linkTexts[index];
     const ref = key === 'logoText' ? logoTextRef : linkTextRefs.current[index];
@@ -118,7 +121,7 @@ const SectionNavBar1 = ({ deviceSize, setSelectedElement, isPreviewMode }) => {
   };
 
   return (
-    <nav style={styles.navbar}>
+    <nav style={styles.navbar} onClick={handleNavbarSelection}>
       <ImageSlots styles={styles.logoImage} imageHistory={imageHistory} />
       <ul style={styles.navLinks}>
         {content.linkTexts.map((_, index) => (

@@ -58,7 +58,9 @@ export default function SiteSettingsDashboard({ project, updateProject, onReturn
         }
     };
 
-    const handleUploadButtonClick = () => {
+    const handleUploadButtonClick = (e) => {
+      e.preventDefault(); // This line prevents the default anchor action
+
         fileInputRef.current.click();
     };
 

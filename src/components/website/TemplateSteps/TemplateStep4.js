@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import TemplateFullText from '../../../templates/TemplateFullText';
 import TemplateImg_txt from '../../../templates/TemplateImg_txt';
 import { TemplateTest1 } from '../../../templates';
+import {Template2} from '../../../templates';
 import NavbarSteps from './TemplateNavbar';
 import html2canvas from 'html2canvas';
 
@@ -23,6 +24,12 @@ const initialTemplates = [
     id: 'TemplateTest1',
     name: 'TemplateTest1',
     component: TemplateTest1,
+    screenshot: './images/TemplateTest1screenshot.png', // Add this line
+  },
+  {
+    id: 'Template2',
+    name: 'Template2',
+    component: Template2,
     screenshot: './images/TemplateTest1screenshot.png', // Add this line
   },
 ];

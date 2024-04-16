@@ -5,13 +5,13 @@ import { useParams } from 'react-router-dom';
 import TemplateFullText from '../templates/TemplateFullText';
 import TemplateImg_txt from '../templates/TemplateImg_txt';
 import TemplateTest1  from '../templates/TemplateTest1';
-
+import  {Template2}  from '../templates';
 // Map template names to components for easy lookup
 const templateComponents = {
   TemplateFullText: TemplateFullText,
   TemplateImg_txt: TemplateImg_txt,
   TemplateTest1 : TemplateTest1,
-
+  Template2 : Template2,
   // Add other templates as needed
 };
 

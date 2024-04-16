@@ -10,9 +10,11 @@ import PanelPlus from './PanelPlus';
 export default function LeftBar({ handleEditorChange, imageHistory }) {
     const [visiblePanel, setVisiblePanel] = useState(null);
 
-    const togglePanel = (panel) => {
+    const togglePanel = (e, panel) => {
+        e.preventDefault(); // Prevent the default anchor action
         setVisiblePanel(visiblePanel === panel ? null : panel);
     };
+    
 
     // Ajout d'une condition pour appliquer une classe différente
     const mainClass = `navbar-wrapper-main ${visiblePanel ? 'no-border-radius' : ''}`;
@@ -30,14 +32,14 @@ export default function LeftBar({ handleEditorChange, imageHistory }) {
             <div className='navbar-wrapper'>
                 <div className={mainClass}>
                     <div className='navbar-home-btn'>
-                        <a href="../dashboard"><img src='/images/3s-logo-picto.png' alt="Home"/></a>
+                        <a href="./#/dashboard"><img src='/images/3s-logo-picto.png' alt="Home"/></a>
                         <hr />
                     </div>
                     <div className='navbar-icon-container'>
-                        <a href="#" className={buttonClass('plus')} onClick={() => togglePanel('plus')}><i className="bi bi-plus-lg"></i></a>
-                        <a href="#" className={buttonClass('file')} onClick={() => togglePanel('file')}><i className="bi bi-file-earmark"></i></a>
-                        <a href="#" className={buttonClass('layers')} onClick={() => togglePanel('layers')}><i className="bi bi-layers"></i></a>
-                        <a href="#" className={buttonClass('images')} onClick={() => togglePanel('images')}><i className="bi bi-images"></i></a>
+                        <a href="#" className={buttonClass('plus')} onClick={(e) => togglePanel(e,'plus')}><i className="bi bi-plus-lg"></i></a>
+                        <a href="#" className={buttonClass('file')} onClick={(e) => togglePanel(e,'file')}><i className="bi bi-file-earmark"></i></a>
+                        <a href="#" className={buttonClass('layers')} onClick={(e) => togglePanel(e,'layers')}><i className="bi bi-layers"></i></a>
+                        <a href="#" className={buttonClass('images')} onClick={(e) => togglePanel(e,'images')}><i className="bi bi-images"></i></a>
                     </div>
                     <a href="#" className='navbar-bugicon'><i className="bi bi-bug"></i></a>
                 </div>
