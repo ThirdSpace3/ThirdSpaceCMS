@@ -60,22 +60,40 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
       ));
     }
   };
-  const handleTemplateSelect = (templateId) => {
-    console.log(`Template selected: ${templateId}`);
-    setSelectedId(templateId);
-    setSelectedButtons((prevSelectedButtons) => ({
-      ...prevSelectedButtons,
-      [currentStep]: [templateId],
-    }));
+const handleTemplateSelect = (initialTemplatesId) => {
+  console.log(`Template selected: ${initialTemplatesId}`);
+  sessionStorage.setItem('selectedTemplateId', initialTemplatesId);
 
-    let newSelectedDots = selectedDots.includes(templateId) ? selectedDots.filter((id) => id !== templateId) : [...selectedDots, templateId];
-    setSelectedDots(newSelectedDots);
+  setSelectedId(initialTemplatesId);
+  setSelectedButtons((prevSelectedButtons) => ({
+    ...prevSelectedButtons,
+    [currentStep]: [initialTemplatesId],
+  }));
 
-    sessionStorage.setItem('selectedTemplateName', templateId);
-    updateNextButtonState(true);
-    
-    // navigate(`/template-preview/${templateId}`, { state: { selectedTemplateId: templateId } });
-  };
+  let newSelectedDots = selectedDots.includes(initialTemplatesId) ? selectedDots.filter((id) => id !== initialTemplatesId) : [...selectedDots, initialTemplatesId];
+  setSelectedDots(newSelectedDots);
+
+  updateNextButtonState(true);
+
+  // Check if the user has already saved a template
+  const savedTemplates = JSON.parse(sessionStorage.getItem('savedTemplates')) || [];
+  if (savedTemplates.length === 1) {
+    // Create a new template with a unique ID
+    const newTemplate = {
+      id: `Template${savedTemplates.length + 1}`,
+      name: `Template${savedTemplates.length + 1}`,
+      component: TemplateTest1,
+      screenshot: './images/TemplateTest1screenshot.png',
+    };
+
+    // Add the new template to the saved templates
+    savedTemplates.push(newTemplate);
+    sessionStorage.setItem('savedTemplates', JSON.stringify(savedTemplates));
+
+    // Update the templates state with the new template
+    setTemplates([...templates, newTemplate]);
+  }
+};
 
   const handleHover = (index, state) => {
     const updatedHoverStates = [...isHovered];
@@ -84,8 +102,6 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
   };
 
   useEffect(() => {
-    console.log('Current Step:', currentStep, 'Selected Template ID:', selectedTemplateId);
-    sessionStorage.setItem('selectedTemplateId', selectedTemplateId);
 
     if (selectedTemplateId) {
       const currentStepData = JSON.parse(sessionStorage.getItem('stepData')) || {};

@@ -71,10 +71,19 @@ export default function TemplateStep() {
     }
     if (currentStep < 5) {
       // Proceed to the next step if it's not the last step
+
       setCurrentStep(currentStep + 1);
-    } else if (currentStep === 5) {
+    } 
+    if (currentStep === 5) {
       // If it's the last step, set `isTemplateCompleted` to false and redirect
+      console.log("Current Step: ", currentStep);
+
       sessionStorage.setItem('isTemplateCompleted', 'false');
+      const selectedTemplateId = sessionStorage.getItem('selectedTemplateId');
+      const projectName = sessionStorage.getItem('projectName');
+      console.log("Saving template: ", selectedTemplateId);
+      console.log("Saving project name: ", projectName);
+      
       // Perform any additional operations needed before redirecting to the dashboard
       navigate('/dashboard');
     }

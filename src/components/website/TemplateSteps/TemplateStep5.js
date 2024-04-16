@@ -31,6 +31,8 @@ const TemplateStep5 = ({ updateNextButtonState, currentStep, setSelectedButtons 
         [currentStep]: [newData]
       }));
       saveDataToSession(newData);
+      sessionStorage.setItem('projectName', newData);
+
     }
   };
 
