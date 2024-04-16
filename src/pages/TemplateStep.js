@@ -38,7 +38,7 @@ export default function TemplateStep() {
 
   // Retrieve or initialize the walletId
   let walletId = sessionStorage.getItem('userAccount');
- console.log(walletId)
+  console.log(walletId)
   useEffect(() => {
     // Redirect if template process is completed
     const isTemplateCompleted = sessionStorage.getItem('isTemplateCompleted') === 'true';
@@ -69,20 +69,22 @@ export default function TemplateStep() {
       sessionData[currentStep].inputValue = inputValue.trim();
       sessionStorage.setItem('stepData', JSON.stringify(sessionData));
     }
-    if (currentStep === 5) {
-      setSelectedButtons(prevSelectedButtons => ({
-        ...prevSelectedButtons,
-        5: [projectName],
-      }));
-    }
     if (currentStep < 5) {
+      // Proceed to the next step if it's not the last step
       setCurrentStep(currentStep + 1);
+    } else if (currentStep === 5) {
+      // If it's the last step, set `isTemplateCompleted` to false and redirect
+      sessionStorage.setItem('isTemplateCompleted', 'false');
+      // Perform any additional operations needed before redirecting to the dashboard
+      navigate('/dashboard');
     }
+  
     // Re-set the walletId to ensure it's not lost during navigation
     if (walletId) {
       sessionStorage.setItem('userAccount', walletId);
     }
   };
+  
 
   const handleIgnore = () => {
     if (currentStep <= 6) {
@@ -123,7 +125,7 @@ export default function TemplateStep() {
               setInputValue={setInputValue}
             />
           )}
-  
+
           {currentStep === 2 && (
             <TemplateStep2
               updateNextButtonState={updateNextButtonState}
@@ -132,7 +134,7 @@ export default function TemplateStep() {
               currentStep={currentStep}
             />
           )}
-  
+
           {currentStep === 3 && (
             <TemplateStep3
               updateNextButtonState={updateNextButtonState}
@@ -141,7 +143,7 @@ export default function TemplateStep() {
               currentStep={currentStep}
             />
           )}
-  
+
           {currentStep === 4 && (
             <TemplateStep4
               updateNextButtonState={updateNextButtonState}
@@ -150,7 +152,7 @@ export default function TemplateStep() {
               setProjectName={setProjectName}
             />
           )}
-  
+
           {currentStep === 5 && (
             <TemplateStep5
               updateNextButtonState={updateNextButtonState}
@@ -159,7 +161,7 @@ export default function TemplateStep() {
               currentStep={currentStep}
             />
           )}
-  
+
           {currentStep <= 5 && (
             <TemplateStepsBTN
               onNext={handleNext}
@@ -173,12 +175,11 @@ export default function TemplateStep() {
           )}
         </>
       )}
-  
+
       {/* Components outside the conditional rendering remain unchanged */}
       <ReportBugBTN />
-      <TemplateProgressBar currentStep={currentStep} />
+      {currentStep !== 5 && <TemplateProgressBar currentStep={currentStep} />}
       <img src="./images/template-deco-1.png" alt="" className="template-deco-bot" />
-      <img src="./images/template-deco-2.png" alt="" className="template-deco-top" />
-    </>
+      <img src="./images/template-deco-2.png" alt="" className="template-deco-top" />    </>
   );
 }  

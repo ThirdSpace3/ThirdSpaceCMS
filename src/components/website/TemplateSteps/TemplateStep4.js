@@ -32,6 +32,7 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
   const location = useLocation();
   const [templates, setTemplates] = useState(initialTemplates);
   const { selectedTemplateId } = location.state || {};
+
   const [isHovered, setIsHovered] = useState(Array(templates.length).fill(false));
 
   const [selectedId, setSelectedId] = useState(selectedTemplateId || '');
@@ -65,6 +66,7 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
 
     sessionStorage.setItem('selectedTemplateName', templateId);
     updateNextButtonState(true);
+    
     // navigate(`/template-preview/${templateId}`, { state: { selectedTemplateId: templateId } });
   };
 
@@ -76,6 +78,8 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
 
   useEffect(() => {
     console.log('Current Step:', currentStep, 'Selected Template ID:', selectedTemplateId);
+    sessionStorage.setItem('selectedTemplateId', selectedTemplateId);
+
     if (selectedTemplateId) {
       const currentStepData = JSON.parse(sessionStorage.getItem('stepData')) || {};
       currentStepData[currentStep] = [selectedTemplateId];

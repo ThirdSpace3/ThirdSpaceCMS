@@ -88,17 +88,17 @@ function Navbar() {
           If .io Get started => Launch App */}
           {displayLaunchAppInstead ? (
             <a
-              href="https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl"
+              href="ipfs://thirdspace.x"
               target="_blank"
               rel="noopener noreferrer"
               className="nav__cta nav-bg"
               onClick={() => {
-                window.open(
-                  "https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl",
+                window.open("ipfs://thirdspace.x",
                   "_blank"
                 );
-                window.location.href = "https://thirdspace.x/...";
-              }}
+                window.location.href = "https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl";
+              }}                  
+
             >
               Launch App
             </a>

@@ -65,7 +65,7 @@ export default function TemplateProgressBar({ currentStep }) {
                         <div className='progressbar-number'>
                             <p className={`progressbar-text ${isActiveStep(4) ? 'actual-step' : ''}`}>4</p>
                         </div>
-                        <p className={`progressbar-text ${isActiveStep(4) ? 'actual-step' : ''}`}>Name</p>
+                        <p className={`progressbar-text ${isActiveStep(4) ? 'actual-step' : ''}`}>Create</p>
 
                     </div>
                 </div>
