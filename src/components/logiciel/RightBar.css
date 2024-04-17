@@ -421,3 +421,36 @@
 .parameters-content-line-row .parameters-content-line-container {
   max-width: 80px;
 }
+.parameters-color-picker:hover {
+  cursor: pointer;
+}
+.custom-file-upload {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+  border: 1px solid var(--not-selected, #64748b);
+  background: var(--not-selected, #64748b);
+  color: #fff; /* White text color */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  padding: 2px 4px;
+  font-family: var(--inter);
+  font-size: 12px;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload .file-name {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  display: none;
+}
