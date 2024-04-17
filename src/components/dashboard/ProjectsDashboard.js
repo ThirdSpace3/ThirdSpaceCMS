@@ -3,7 +3,7 @@ import "./ProjectsDashboard.css";
 import "./DashboardMain.css";
 import { useNavigate } from 'react-router-dom';
 
-export default function ProjectsDashboard({ projects, handleOpenSettings, createNewTemplate }) {
+export default function ProjectsDashboard({ projects, handleOpenSettings, setProjects }) {
   // Options pour le Dropdown
   const dropdownOptions = [
     { value: 'option1', text: 'Creation Date', icon: 'bi-arrow-down' },
@@ -67,13 +67,34 @@ export default function ProjectsDashboard({ projects, handleOpenSettings, create
     handleOpenSettings(index);
   };
   const handleNewProjectClick = () => {
-    createNewTemplate(); // Create a new template
-
-    sessionStorage.setItem('currentStep', '3'); // Directly setting step 3
+    // Clear the selected template and project name from the session storage
+    sessionStorage.removeItem('selectedTemplateId');
+    sessionStorage.removeItem('projectName');
+  
+    // Set the current step and isTemplateCompleted flag in the session storage
+    sessionStorage.setItem('currentStep', '4');
     sessionStorage.setItem('isTemplateCompleted', 'false');
-
-    navigate('/templatestep'); // Navigate to the TemplateStep component
+  
+    // Create a new project object with a unique ID, name, and the default values
+    const newProject = {
+      id: projects.length + 1,
+      name: '',
+      logiciel: '',
+      image: '',
+      createdAt: new Date().toISOString().slice(0, 10),
+      description: '',
+      favicon: '',
+    };
+  
+    // Add the new project to the projects state
+    setProjects([...projects, newProject]);
+  
+    // Navigate to the TemplateStep component
+    navigate('/templatestep');
   };
+  
+
+
   const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   useEffect(() => {
@@ -115,7 +136,7 @@ export default function ProjectsDashboard({ projects, handleOpenSettings, create
                 )}
 
               </div>
-              <button className="projects-navbar-btn" onClick={() => handleNewProjectClick()}>
+              <button className="projects-navbar-btn" onClick={handleNewProjectClick} disabled={projects.length >= 3}>
                 <i className="bi bi-plus-circle"></i> New Project
               </button>
 
@@ -171,6 +192,8 @@ export default function ProjectsDashboard({ projects, handleOpenSettings, create
           </div>
         </div>
       </div>
+      {projects.length >= 3 && <p className="projects-navbar-btn-disabled-message">You can't create more than 3 projects.</p>}
+
     </>
   );
 }

@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import TemplateFullText from '../../../templates/TemplateFullText';
 import TemplateImg_txt from '../../../templates/TemplateImg_txt';
 import { TemplateTest1 } from '../../../templates';
-import {Template2} from '../../../templates';
+import { Template2 } from '../../../templates';
 import NavbarSteps from './TemplateNavbar';
 import html2canvas from 'html2canvas';
 
@@ -18,7 +18,7 @@ const initialTemplates = [
     id: 'TemplateImg_txt',
     name: 'TemplateImg_txt',
     component: TemplateImg_txt,
-    screenshot: './images/TemplateImageTextscreenshot.png', // Add this line
+    screenshot: './images/TemplateImg_txtscreenshot.png', // Add this line
   },
   {
     id: 'TemplateTest1',
@@ -41,59 +41,78 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
   const { selectedTemplateId } = location.state || {};
 
   const [isHovered, setIsHovered] = useState(Array(templates.length).fill(false));
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   const [selectedId, setSelectedId] = useState(selectedTemplateId || '');
   const [selectedDots, setSelectedDots] = useState([]);
-
+  const [projects, setProjects] = useState(() => {
+    const storedProjects = JSON.parse(sessionStorage.getItem('projects'));
+    return storedProjects || [];
+  });
   const options = ['Portfolio', 'Online Shop', 'Marketplace', 'Services', 'Courses', 'One Page'];
-  const navigate = useNavigate();
 
-  const captureAndSaveTemplate = async (templateId) => {
-    const templateElement = document.getElementById(templateId); // Your template needs an identifiable container
-    if (templateElement) {
-      const canvas = await html2canvas(templateElement);
-      const image = canvas.toDataURL("image/png");
-
-      // Here we simply update the state, but you might upload the image and get a URL back
-      setTemplates(prevTemplates => prevTemplates.map(template =>
-        template.id === templateId ? { ...template, screenshot: image } : template
-      ));
+  const handleTemplateSelect = (initialTemplatesId) => {
+    console.log(`Template selected: ${initialTemplatesId}`);
+    sessionStorage.setItem('selectedTemplateId', initialTemplatesId);
+    
+    // Create a new project object with the selected template and an empty name
+    const newProject = {
+      id: projects.length + 1,
+      name: sessionStorage.getItem('projectName'),
+      logiciel: initialTemplatesId,
+      image: `./images/${initialTemplatesId}screenshot.png`,
+      createdAt: new Date().toISOString().slice(0, 10),
+      description: '',
+      favicon: '',
+    };
+  
+    // Add the new project to the projects state
+    setProjects([...projects, newProject]);
+  
+    // Store the updated projects state in the sessionStorage
+    sessionStorage.setItem('projects', JSON.stringify([...projects, newProject]));
+  
+    if (projects.length >= 3) {
+      alert('You can only create up to 3 projects.');
+      return;
+    }
+  
+    setSelectedId(initialTemplatesId);
+    setSelectedButtons((prevSelectedButtons) => ({
+      ...prevSelectedButtons,
+      [currentStep]: [initialTemplatesId],
+    }));
+  
+    let newSelectedDots = selectedDots.includes(initialTemplatesId) ? selectedDots.filter((id) => id !== initialTemplatesId) : [...selectedDots, initialTemplatesId];
+    setSelectedDots(newSelectedDots);
+  
+    updateNextButtonState(true);
+  
+    // Check if the user has already saved a template
+    const savedTemplates = JSON.parse(sessionStorage.getItem('savedTemplates')) || [];
+    if (savedTemplates.length === 1) {
+      // Create a new template with a unique ID
+      const newTemplate = {
+        id: `Template${savedTemplates.length + 1}`,
+        name: `Template${savedTemplates.length + 1}`,
+        component: TemplateTest1,
+        screenshot: './images/TemplateTest1screenshot.png',
+      };
+  
+      // Add the new template to the saved templates
+      savedTemplates.push(newTemplate);
+      sessionStorage.setItem('savedTemplates', JSON.stringify(savedTemplates));
+  
+      // Add the new template to the projects state
+      setProjects([...projects, newTemplate]);
+  
+      // Store the updated projects state in the sessionStorage
+      sessionStorage.setItem('projects', JSON.stringify([...projects, newTemplate]));
+  
+      setSelectedTemplate(initialTemplates.find(template => template.id === initialTemplatesId));
     }
   };
-const handleTemplateSelect = (initialTemplatesId) => {
-  console.log(`Template selected: ${initialTemplatesId}`);
-  sessionStorage.setItem('selectedTemplateId', initialTemplatesId);
-
-  setSelectedId(initialTemplatesId);
-  setSelectedButtons((prevSelectedButtons) => ({
-    ...prevSelectedButtons,
-    [currentStep]: [initialTemplatesId],
-  }));
-
-  let newSelectedDots = selectedDots.includes(initialTemplatesId) ? selectedDots.filter((id) => id !== initialTemplatesId) : [...selectedDots, initialTemplatesId];
-  setSelectedDots(newSelectedDots);
-
-  updateNextButtonState(true);
-
-  // Check if the user has already saved a template
-  const savedTemplates = JSON.parse(sessionStorage.getItem('savedTemplates')) || [];
-  if (savedTemplates.length === 1) {
-    // Create a new template with a unique ID
-    const newTemplate = {
-      id: `Template${savedTemplates.length + 1}`,
-      name: `Template${savedTemplates.length + 1}`,
-      component: TemplateTest1,
-      screenshot: './images/TemplateTest1screenshot.png',
-    };
-
-    // Add the new template to the saved templates
-    savedTemplates.push(newTemplate);
-    sessionStorage.setItem('savedTemplates', JSON.stringify(savedTemplates));
-
-    // Update the templates state with the new template
-    setTemplates([...templates, newTemplate]);
-  }
-};
+  
 
   const handleHover = (index, state) => {
     const updatedHoverStates = [...isHovered];
@@ -130,30 +149,30 @@ const handleTemplateSelect = (initialTemplatesId) => {
             </div>
           </div>
           <div className='templates-container'>
-  {templates.map((template, index) => (
-    <div className='templates-box' key={template.id} onClick={() => handleTemplateSelect(template.id)}>
-      <div className='templates-img'
-        onMouseEnter={() => handleHover(index, true)}
-        onMouseLeave={() => handleHover(index, false)}>
-        <img src={template.screenshot} alt={`${template.name} Preview`} style={{ width: '100%', height: 'auto' }} />
-        {isHovered[index] && (
-          <div className='templates-hover'>
-            <div className='templates-hover-content'>
-              {/* Prevent event propagation */}
-              <Link to={`/template-preview/${template.id}`} state={{ selectedTemplateId: template.id }}
-                onClick={(e) => e.stopPropagation()}>
-                View Demo
-              </Link>
-            </div>
+            {templates.map((template, index) => (
+              <div className='templates-box' key={template.id} onClick={() => handleTemplateSelect(template.id)}>
+                <div className='templates-img'
+                  onMouseEnter={() => handleHover(index, true)}
+                  onMouseLeave={() => handleHover(index, false)}>
+                  <img src={template.screenshot} alt={`${template.name} Preview`} style={{ width: '100%', height: 'auto' }} />
+                  {isHovered[index] && (
+                    <div className='templates-hover'>
+                      <div className='templates-hover-content'>
+                        {/* Prevent event propagation */}
+                        <Link to={`/template-preview/${template.id}`} state={{ selectedTemplateId: template.id }}
+                          onClick={(e) => e.stopPropagation()}>
+                          View Demo
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className='templates-infos'>
+                  <h3>{template.name}</h3>
+                </div>
+              </div>
+            ))}
           </div>
-        )}
-      </div>
-      <div className='templates-infos'>
-        <h3>{template.name}</h3>
-      </div>
-    </div>
-  ))}
-</div>
 
 
 

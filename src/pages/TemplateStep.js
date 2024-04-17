@@ -24,6 +24,8 @@ export default function TemplateStep() {
     templateselected: [],
     name: [],
   });
+  const [projects, setProjects] = useState([]);
+
   const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
   console.log(isLoggedIn);
   const navigate = useNavigate();
@@ -35,6 +37,31 @@ export default function TemplateStep() {
     // Cleanup listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+
+  const createProjectAndRedirect = () => {
+    const selectedTemplateId = sessionStorage.getItem('selectedTemplateId');
+    const selectedTemplateName = sessionStorage.getItem('selectedTemplateName');
+    const projectName = sessionStorage.getItem('projectName');
+
+    // Create a new project object with the selected template and name
+    const newProject = {
+      id: projects.length + 1,
+      name: projectName,
+      logiciel: selectedTemplateId,
+      image: `./images/${selectedTemplateId}screenshot.png`,
+      createdAt: new Date().toISOString().slice(0, 10),
+      description: '',
+      favicon: '',
+    };
+
+    // Add the new project to the projects state
+    setProjects([...projects, newProject]);
+    sessionStorage.setItem('projects', JSON.stringify([...projects, newProject]));
+
+    // Perform any additional operations needed before redirecting to the dashboard
+    navigate('/dashboard');
+  };
 
   // Retrieve or initialize the walletId
   let walletId = sessionStorage.getItem('userAccount');
@@ -73,27 +100,17 @@ export default function TemplateStep() {
       // Proceed to the next step if it's not the last step
 
       setCurrentStep(currentStep + 1);
-    } 
-    if (currentStep === 5) {
-      // If it's the last step, set `isTemplateCompleted` to false and redirect
-      console.log("Current Step: ", currentStep);
-
-      sessionStorage.setItem('isTemplateCompleted', 'false');
-      const selectedTemplateId = sessionStorage.getItem('selectedTemplateId');
-      const projectName = sessionStorage.getItem('projectName');
-      console.log("Saving template: ", selectedTemplateId);
-      console.log("Saving project name: ", projectName);
-      
-      // Perform any additional operations needed before redirecting to the dashboard
-      navigate('/dashboard');
     }
-  
+    if (currentStep === 5) {
+      createProjectAndRedirect();
+    }
+
     // Re-set the walletId to ensure it's not lost during navigation
     if (walletId) {
       sessionStorage.setItem('userAccount', walletId);
     }
   };
-  
+
 
   const handleIgnore = () => {
     if (currentStep <= 6) {
@@ -180,7 +197,11 @@ export default function TemplateStep() {
               walletId={walletId}
               currentStep={currentStep}
               inputValue={inputValue}
+              projects={projects}
+              setProjects={setProjects}
+
             />
+
           )}
         </>
       )}
