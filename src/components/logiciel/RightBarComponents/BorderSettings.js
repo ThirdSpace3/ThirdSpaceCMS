@@ -93,7 +93,7 @@ export default function BorderSettings({
                 <div className="parameters-content-line-container">
                   {/* Icon-based selection for Border Style */}
                   <i
-                    className={`bi bi-slash-circle ${
+                    className={`bi bi-x ${
                       selectedBorderStyle === "none" ? "selected-icon" : ""
                     }`}
                     onClick={() => handleBorderStyleChange("none")}
