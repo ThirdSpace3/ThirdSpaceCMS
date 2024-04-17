@@ -32,11 +32,18 @@ export default function Dashboard({ selectedTemplateId }) {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    const storedProjects = JSON.parse(sessionStorage.getItem('projects'));
-    if (storedProjects) {
+    // Load projects from localStorage on initial load
+    const storedProjects = JSON.parse(localStorage.getItem('projects')) || [];
+    if (storedProjects.length > 0) {
       setProjects(storedProjects);
     }
   }, []);
+  
+  useEffect(() => {
+    // Update localStorage whenever the projects state changes
+    localStorage.setItem('projects', JSON.stringify(projects));
+  }, [projects]);
+  
 
   const addNewProject = (newProject) => {
     setProjects((prevProjects) => [...prevProjects, newProject]);
@@ -86,9 +93,9 @@ export default function Dashboard({ selectedTemplateId }) {
     const updatedProjects = projects.map(project =>
       project.id === updatedProject.id ? updatedProject : project);
     setProjects(updatedProjects);
-    // Assuming you're using local storage for persistence; otherwise, adapt as necessary.
-    localStorage.setItem('projects', JSON.stringify(updatedProjects));
+    setSelectedProject(updatedProject); // Update selected project
   };
+  
 
   const handleReturnToProjectsDashboard = () => {
     setActiveMenuItem("projects");
