@@ -17,6 +17,7 @@ export default function TemplateStep() {
   const [currentStep, setCurrentStep] = useState(initialStep);
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  
   const [selectedButtons, setSelectedButtons] = useState({
     1: [],
     2: [],
@@ -176,6 +177,7 @@ export default function TemplateStep() {
               setSelectedButtons={setSelectedButtons}
               currentStep={currentStep}
               setProjectName={setProjectName}
+              projectName={projectName}
             />
           )}
 
@@ -185,6 +187,8 @@ export default function TemplateStep() {
               selectedButtons={selectedButtons}
               setSelectedButtons={setSelectedButtons}
               currentStep={currentStep}
+              projects={projects}
+              setProjects={setProjects}
             />
           )}
 
@@ -199,7 +203,7 @@ export default function TemplateStep() {
               inputValue={inputValue}
               projects={projects}
               setProjects={setProjects}
-
+              setProjectName={setProjectName}
             />
 
           )}

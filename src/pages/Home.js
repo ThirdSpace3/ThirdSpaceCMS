@@ -10,8 +10,6 @@ import ReportBugBTN from "../components/website/ReportBugBTN"
 export default function Home() {
     const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
     // Clearing the entire session storage
-    sessionStorage.clear();
-
     return (
         <>
             <NavBar />

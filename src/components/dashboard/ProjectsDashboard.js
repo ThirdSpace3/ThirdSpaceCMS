@@ -179,9 +179,10 @@ export default function ProjectsDashboard({ projects, handleOpenSettings, setPro
                     onClick={() => handleProjectClick(project.logiciel)}
                   />
                   <div className="projects-content-item-info">
-                    <p onClick={() => handleProjectClick(project.logiciel)}>
-                      {project.name}
-                    </p>
+                  <p onClick={() => handleProjectClick(project.name)}>
+  {project.name} 
+</p>
+
                     <div onClick={() => handleProjectSettings(index)}>
                       <i className="bi bi-three-dots"></i>
                     </div>

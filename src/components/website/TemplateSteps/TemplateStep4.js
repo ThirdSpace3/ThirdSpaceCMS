@@ -54,28 +54,6 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
   const handleTemplateSelect = (initialTemplatesId) => {
     console.log(`Template selected: ${initialTemplatesId}`);
     sessionStorage.setItem('selectedTemplateId', initialTemplatesId);
-    
-    // Create a new project object with the selected template and an empty name
-    const newProject = {
-      id: projects.length + 1,
-      name: sessionStorage.getItem('projectName'),
-      logiciel: initialTemplatesId,
-      image: `./images/${initialTemplatesId}screenshot.png`,
-      createdAt: new Date().toISOString().slice(0, 10),
-      description: '',
-      favicon: '',
-    };
-  
-    // Add the new project to the projects state
-    setProjects([...projects, newProject]);
-  
-    // Store the updated projects state in the sessionStorage
-    sessionStorage.setItem('projects', JSON.stringify([...projects, newProject]));
-  
-    if (projects.length >= 3) {
-      alert('You can only create up to 3 projects.');
-      return;
-    }
   
     setSelectedId(initialTemplatesId);
     setSelectedButtons((prevSelectedButtons) => ({
@@ -87,31 +65,8 @@ const TemplateStep4 = ({ updateNextButtonState, setSelectedButtons, currentStep 
     setSelectedDots(newSelectedDots);
   
     updateNextButtonState(true);
-  
-    // Check if the user has already saved a template
-    const savedTemplates = JSON.parse(sessionStorage.getItem('savedTemplates')) || [];
-    if (savedTemplates.length === 1) {
-      // Create a new template with a unique ID
-      const newTemplate = {
-        id: `Template${savedTemplates.length + 1}`,
-        name: `Template${savedTemplates.length + 1}`,
-        component: TemplateTest1,
-        screenshot: './images/TemplateTest1screenshot.png',
-      };
-  
-      // Add the new template to the saved templates
-      savedTemplates.push(newTemplate);
-      sessionStorage.setItem('savedTemplates', JSON.stringify(savedTemplates));
-  
-      // Add the new template to the projects state
-      setProjects([...projects, newTemplate]);
-  
-      // Store the updated projects state in the sessionStorage
-      sessionStorage.setItem('projects', JSON.stringify([...projects, newTemplate]));
-  
-      setSelectedTemplate(initialTemplates.find(template => template.id === initialTemplatesId));
-    }
   };
+  
   
 
   const handleHover = (index, state) => {
