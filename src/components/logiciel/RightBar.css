@@ -22,6 +22,12 @@
 
 .parameters-wrapper-content {
   display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: space-between;
+}
+.parameters-wrapper-content-group {
+  display: flex;
   flex-direction: row;
   gap: 5px;
   justify-content: space-between;
@@ -144,4 +150,209 @@
 .parameters-content-line-button i:hover {
   color: var(--text-editor);
   cursor: pointer;
+}
+
+/*======SPACING CSS======*/
+.spacing-label {
+  position: absolute;
+  color: var(--text-editor);
+  text-align: center;
+  font-family: var(--inter);
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 6.496px */
+  text-transform: uppercase;
+  top: 2px;
+  left: 2px;
+}
+.spacing-input {
+  background-color: transparent;
+  border: none;
+  color: white;
+  width: 20px;
+  text-align: center;
+}
+
+.spacing-margin-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.spacing-margin-top-box {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  position: relative;
+}
+.spacing-separator-1 {
+  width: 15%;
+  background: linear-gradient(
+    214deg,
+    #353535 11.67%,
+    #383838 50%,
+    #444 50%,
+    #4d4d4d 88.33%
+  );
+}
+.spacing-separator-2 {
+  width: 15%;
+  background: linear-gradient(
+    146deg,
+    #353535 11.62%,
+    #383838 50%,
+    #444 50%,
+    #4d4d4d 88.38%
+  );
+}
+.spacing-separator-3 {
+  width: 15%;
+  background: linear-gradient(
+    329deg,
+    #353535 11.52%,
+    #383838 50%,
+    #444 50%,
+    #4d4d4d 88.48%
+  );
+}
+.spacing-separator-4 {
+  min-width: 15%;
+  background: linear-gradient(
+    34deg,
+    #353535 11.56%,
+    #383838 50%,
+    #444 50%,
+    #4d4d4d 88.44%
+  );
+}
+.spacing-margin-top {
+  min-width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background-color: #353535;
+}
+.spacing-margin-bottom {
+  min-width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background-color: #353535;
+}
+.spacing-margin-sides {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  align-items: stretch;
+  gap: 6px;
+}
+.spacing-margin-sides-left,
+.spacing-margin-sides-right {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background-color: #4d4d4d;
+  min-height: 100%;
+}
+
+/* ===PADDING=== */
+
+.spacing-padding-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.spacing-padding-top-box {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 6px;
+  position: relative;
+}
+.spacing-padding-bottom-box {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-bottom: 6px;
+}
+.spacing-separator-1 {
+  width: 15%;
+  background: linear-gradient(
+    214deg,
+    #353535 11.67%,
+    #383838 50%,
+    #444 50%,
+    #4d4d4d 88.33%
+  );
+}
+.spacing-separator-2 {
+  width: 15%;
+  background: linear-gradient(
+    146deg,
+    #353535 11.62%,
+    #383838 50%,
+    #444 50%,
+    #4d4d4d 88.38%
+  );
+}
+.spacing-separator-3 {
+  width: 15%;
+  background: linear-gradient(
+    329deg,
+    #353535 11.52%,
+    #383838 50%,
+    #444 50%,
+    #4d4d4d 88.48%
+  );
+}
+.spacing-separator-4 {
+  min-width: 15%;
+  background: linear-gradient(
+    34deg,
+    #353535 11.56%,
+    #383838 50%,
+    #444 50%,
+    #4d4d4d 88.44%
+  );
+}
+.spacing-padding-top {
+  min-width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background-color: #353535;
+}
+.spacing-padding-bottom {
+  min-width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background-color: #353535;
+}
+.spacing-padding-sides {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  align-items: stretch;
+  gap: 8px;
+}
+.spacing-padding-sides-left,
+.spacing-padding-sides-right {
+  width: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background-color: #4d4d4d;
+  min-height: 100%;
 }
