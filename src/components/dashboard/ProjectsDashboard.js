@@ -70,11 +70,11 @@ export default function ProjectsDashboard({ projects, handleOpenSettings, setPro
     // Clear the selected template and project name from the session storage
     sessionStorage.removeItem('selectedTemplateId');
     sessionStorage.removeItem('projectName');
-  
+
     // Set the current step and isTemplateCompleted flag in the session storage
     sessionStorage.setItem('currentStep', '4');
     sessionStorage.setItem('isTemplateCompleted', 'false');
-  
+
     // Create a new project object with a unique ID, name, and the default values
     const newProject = {
       id: projects.length + 1,
@@ -85,14 +85,14 @@ export default function ProjectsDashboard({ projects, handleOpenSettings, setPro
       description: '',
       favicon: '',
     };
-  
+
     // Add the new project to the projects state
     setProjects([...projects, newProject]);
-  
+
     // Navigate to the TemplateStep component
     navigate('/templatestep');
   };
-  
+
 
 
   const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -106,7 +106,21 @@ export default function ProjectsDashboard({ projects, handleOpenSettings, setPro
       setSelectedTemplate(selectedTemplate);
     }
   }, []);
+  // New state for the most recently updated project
+  const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
 
+  useEffect(() => {
+    setFilteredProjects(projects);
+
+    // Determine the most recently updated project
+    const mostRecentProject = projects.reduce((acc, project) => {
+      const currentProjectDate = new Date(project.lastUpdated || project.createdAt);
+      const accDate = new Date(acc.lastUpdated || acc.createdAt);
+      return currentProjectDate > accDate ? project : acc;
+    }, projects[0]);
+
+    setRecentlyUpdatedProject(mostRecentProject);
+  }, [projects]);
   return (
     <>
       <div className="projects-container">
@@ -150,15 +164,15 @@ export default function ProjectsDashboard({ projects, handleOpenSettings, setPro
               <i class="bi bi-clock-history"></i>
               <h2>Recently viewed</h2>
             </div>
-            <div className="projects-content-listing">
-              <div className="projects-content-item">
-                <img src="./images/project-image-test.png" />
+            {recentlyUpdatedProject && (
+              <div className="projects-content-item" onClick={() => handleProjectClick(recentlyUpdatedProject.logiciel)}>
+                <img src={recentlyUpdatedProject.favicon ? recentlyUpdatedProject.favicon : recentlyUpdatedProject.image} alt={recentlyUpdatedProject.name} />
                 <div className="projects-content-item-info">
-                  <p>ClosedEarth</p>
-                  <a href=""><i class="bi bi-three-dots"></i></a>
+                  <p>{recentlyUpdatedProject.name}</p>
+                  {/* Other project details */}
                 </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className="projects-content-box">
@@ -179,9 +193,9 @@ export default function ProjectsDashboard({ projects, handleOpenSettings, setPro
                     onClick={() => handleProjectClick(project.logiciel)}
                   />
                   <div className="projects-content-item-info">
-                  <p onClick={() => handleProjectClick(project.name)}>
-  {project.name} 
-</p>
+                    <p onClick={() => handleProjectClick(project.name)}>
+                      {project.name}
+                    </p>
 
                     <div onClick={() => handleProjectSettings(index)}>
                       <i className="bi bi-three-dots"></i>

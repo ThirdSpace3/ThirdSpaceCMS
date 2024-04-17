@@ -65,17 +65,40 @@ export default function SiteSettingsDashboard({ project, updateProject, onReturn
     };
 
     const handleSave = () => {
-        updateProject({
-            ...project,
-            name: newTemplateName || project.name,
-            description: templateDescription,
-            favicon: favicon,
-        });
-        setTemplateName(newTemplateName || project.name);
-        setIsEdited(false);
-        setIsSaved(true);
-        setIsImageError(false);
-    };
+      const lastUpdated = new Date().toISOString();
+
+      const updatedProject = {
+          ...project,
+          name: newTemplateName || project.name,
+          description: templateDescription,
+          favicon: favicon,
+          lastUpdated: lastUpdated, // Update the lastUpdated field with the new timestamp
+
+      };
+      
+      updateProject(updatedProject);
+  
+      // Save to localStorage
+      localStorage.setItem('projectData', JSON.stringify(updatedProject));
+  
+      setTemplateName(newTemplateName || project.name);
+      setIsEdited(false);
+      setIsSaved(true);
+      setIsImageError(false);
+  };
+  useEffect(() => {
+    const savedProjectData = JSON.parse(localStorage.getItem('projectData'));
+    if (savedProjectData && savedProjectData.id === project.id) {
+        setTemplateName(savedProjectData.name);
+        setTemplateDescription(savedProjectData.description);
+        setFavicon(savedProjectData.favicon);
+        setFaviconPreview(savedProjectData.favicon);
+    }
+    setIsEdited(false);
+    setIsSaved(false);
+    setIsImageError(false);
+}, [project]);
+
     return (
         <div className="dashboard-page-container">
           <div className="projects-header-sticky">
@@ -104,7 +127,7 @@ export default function SiteSettingsDashboard({ project, updateProject, onReturn
                 </div>
                 <input
                   type="text"
-                  value={newTemplateName || templateName}
+                  value={newTemplateName}
                   onChange={handleTemplateNameChange}
                 />
               </div>
