@@ -105,6 +105,25 @@
   color: var(--not-selected);
 }
 
+.popup-wallet-warning {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+.popup-wallet-warning p,
+.popup-wallet-warning a {
+  color: var(--white);
+  font-family: var(--inter);
+  text-align: center;
+  justify-content: center;
+  font-size: 15px;
+}
+.popup-wallet-warning a {
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--white);
+}
+
 /* @media screen and (max-width: 600px) {
   .popup-wallet-header {
     scale: 0.9;

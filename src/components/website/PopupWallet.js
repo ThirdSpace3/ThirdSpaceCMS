@@ -5,6 +5,17 @@ import "../Root.css";
 
 function PopupWallet({ onClose, onUserLogin }) {
   const [showMore, setShowMore] = useState(false);
+  const [hasWallet, setHasWallet] = useState(false);
+
+  useEffect(() => {
+    const checkForWallet = () => {
+      if (window.ethereum || "solana" in window) {
+        setHasWallet(true);
+      }
+    };
+
+    checkForWallet();
+  }, []);
 
   const toggleShowMore = (e) => {
     e.preventDefault();
@@ -183,6 +194,18 @@ function PopupWallet({ onClose, onUserLogin }) {
           />
           <h2>Connect to Third Space</h2>
         </div>
+        {!hasWallet && (
+          <div className="popup-wallet-warning">
+            <p>
+              To use Third Space, you need to connect via a wallet.We haven't
+              found one on your browser.
+            </p>
+            <a href="https://phantom.app/" target="__blank">
+              Create a wallet with Phantom{" "}
+              <i class="bi bi-arrow-right-short"></i>
+            </a>
+          </div>
+        )}
 
         <div className="wallet-list">
           {/* Phantom */}
