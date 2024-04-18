@@ -65,6 +65,8 @@ export default function SpacingSettings({
             isOpen.spacing ? "open" : ""
           }`}
         >
+
+          {/* INPUT I WANT TO USE  */}
           <div className="spacing-margin-box">
             <div className="spacing-margin-top-box">
               <div className="spacing-separator-1"></div>
@@ -125,6 +127,9 @@ export default function SpacingSettings({
             </div>
           </div>
 
+
+
+{/* INPUTS TO REMOVE  */}
           <div className="parameters-content-line">
             <p className="parameters-content-line-title">Margin Top</p>
             <div className="parameters-content-line-container">
