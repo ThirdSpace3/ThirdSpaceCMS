@@ -58,14 +58,14 @@ export default function TemplateProgressBar({ currentStep }) {
                     </div>
                     <div className='progressbar'>
                         <div className='progressbar-dot-box'>
-                        <div className={`progressbar-dot ${isActiveStep(4) ? 'actual-step' : ''}`}></div>
-                            <div className={`progressbar-dot ${isActiveStep(4) ? 'actual-step' : ''}`}></div>
-                            <div className={`progressbar-dot ${isActiveStep(4) ? 'actual-step' : ''}`}></div>
+                        <div className={`progressbar-dot ${isActiveStep(5) ? 'actual-step' : ''}`}></div>
+                            <div className={`progressbar-dot ${isActiveStep(5) ? 'actual-step' : ''}`}></div>
+                            <div className={`progressbar-dot ${isActiveStep(5) ? 'actual-step' : ''}`}></div>
                         </div>
                         <div className='progressbar-number'>
-                            <p className={`progressbar-text ${isActiveStep(4) ? 'actual-step' : ''}`}>4</p>
+                            <p className={`progressbar-text ${isActiveStep(5) ? 'actual-step' : ''}`}>4</p>
                         </div>
-                        <p className={`progressbar-text ${isActiveStep(4) ? 'actual-step' : ''}`}>Create</p>
+                        <p className={`progressbar-text ${isActiveStep(5) ? 'actual-step' : ''}`}>Name</p>
 
                     </div>
                 </div>
