@@ -212,7 +212,7 @@ export default function TemplateStep() {
 
       {/* Components outside the conditional rendering remain unchanged */}
       <ReportBugBTN />
-      {currentStep !== 5 && <TemplateProgressBar currentStep={currentStep} />}
+      {currentStep !== 4 && <TemplateProgressBar currentStep={currentStep} />}
       <img src="./images/template-deco-1.png" alt="" className="template-deco-bot" />
       <img src="./images/template-deco-2.png" alt="" className="template-deco-top" />    </>
   );
