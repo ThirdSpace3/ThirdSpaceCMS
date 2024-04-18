@@ -32,23 +32,29 @@ export default function Dashboard({ selectedTemplateId }) {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    // Load projects from localStorage on initial load
     const storedProjects = JSON.parse(localStorage.getItem('projects')) || [];
-    if (storedProjects.length > 0) {
+    if (storedProjects.length === 0 && projectName && selectedTemplate) {
+      const newProject = {
+        ...initialProject,
+        name: projectName,
+        logiciel: selectedTemplate,
+        image: `./images/${selectedTemplate}screenshot.png`,
+      };
+      setProjects([newProject]);
+    } else {
       setProjects(storedProjects);
     }
   }, []);
-  
+
   useEffect(() => {
     // Update localStorage whenever the projects state changes
     localStorage.setItem('projects', JSON.stringify(projects));
   }, [projects]);
-  
 
   const addNewProject = (newProject) => {
     setProjects((prevProjects) => [...prevProjects, newProject]);
   };
-  
+
   const shortenAddress = (address) => {
     return address.slice(0, 6) + "..." + address.slice(-4);
   };
@@ -69,7 +75,7 @@ export default function Dashboard({ selectedTemplateId }) {
 
   const [profilePicture, setProfilePicture] = useState(() => {
     // Load profile picture from local storage or set a default
-    return  '../images/avatar-placeholder.png' || localStorage.getItem('profilePicture') ;
+    return localStorage.getItem('profilePicture') || '../images/avatar-placeholder.png';
   });
 
   // Function to update user details
@@ -89,11 +95,17 @@ export default function Dashboard({ selectedTemplateId }) {
     setActiveMenuItem("settings");
   };
 
+  // Add a function to update the project in the projects state
   const updateProject = (updatedProject) => {
-    const updatedProjects = projects.map(project =>
-      project.id === updatedProject.id ? updatedProject : project);
+    // Find the index of the project to update
+    const index = projects.findIndex(project => project.id === updatedProject.id);
+    // Update the project in the array
+    let updatedProjects = [...projects];
+    updatedProjects[index] = updatedProject;
+    
+    // Update global state and localStorage
     setProjects(updatedProjects);
-    setSelectedProject(updatedProject); // Update selected project
+    localStorage.setItem('projects', JSON.stringify(updatedProjects));
   };
   
 

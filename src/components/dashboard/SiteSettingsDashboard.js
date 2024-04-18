@@ -4,25 +4,35 @@ import "./DashboardMain.css";
 import "../Root.css";
 
 export default function SiteSettingsDashboard({ project, updateProject, onReturnToProjects }) {
-    const [newTemplateName, setNewTemplateName] = useState("");
-    const [templateName, setTemplateName] = useState(project ? project.name : "");
+  const [templateName, setTemplateName] = useState(() => {
+    const storedName = localStorage.getItem('templateName');
+    return storedName || project?.name || "";
+  });
 
-    const [templateDescription, setTemplateDescription] = useState(project ? project.description : "");
-    const [favicon, setFavicon] = useState(project ? project.favicon : "");
-    const [faviconPreview, setFaviconPreview] = useState(project ? project.favicon : "");
+  const [templateDescription, setTemplateDescription] = useState(() => {
+    const storedDescription = localStorage.getItem('templateDescription');
+    return storedDescription || project?.description || "";
+  });
+
+  const [favicon, setFavicon] = useState(() => {
+    const storedFavicon = localStorage.getItem('favicon');
+    return storedFavicon || project?.favicon || "";
+  });
+    const [faviconPreview, setFaviconPreview] = useState(() => favicon || project?.favicon);
     const [isEdited, setIsEdited] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
     const [isImageError, setIsImageError] = useState(false);
     const fileInputRef = useRef(null);
 
     useEffect(() => {
+        // Reset flags when project changes
         setIsEdited(false);
         setIsSaved(false);
         setIsImageError(false);
     }, [project]);
 
     const handleTemplateNameChange = (e) => {
-        setNewTemplateName(e.target.value);
+        setTemplateName(e.target.value);
         setIsEdited(true);
         setIsSaved(false);
     };
@@ -59,45 +69,31 @@ export default function SiteSettingsDashboard({ project, updateProject, onReturn
     };
 
     const handleUploadButtonClick = (e) => {
-      e.preventDefault(); // This line prevents the default anchor action
-
+        e.preventDefault();
         fileInputRef.current.click();
     };
 
     const handleSave = () => {
-      const lastUpdated = new Date().toISOString();
-
       const updatedProject = {
-          ...project,
-          name: newTemplateName || project.name,
-          description: templateDescription,
-          favicon: favicon,
-          lastUpdated: lastUpdated, // Update the lastUpdated field with the new timestamp
-
+        ...project,
+        name: templateName,
+        description: templateDescription,
+        favicon: favicon,
       };
-      
+    
+      // Call the updateProject function passed as a prop
       updateProject(updatedProject);
-  
-      // Save to localStorage
-      localStorage.setItem('projectData', JSON.stringify(updatedProject));
-  
-      setTemplateName(newTemplateName || project.name);
+    
+      // Optionally, directly update localStorage here or ensure it's updated in updateProject
+      localStorage.setItem(`project-${project.id}`, JSON.stringify(updatedProject));
+    
       setIsEdited(false);
       setIsSaved(true);
-      setIsImageError(false);
-  };
-  useEffect(() => {
-    const savedProjectData = JSON.parse(localStorage.getItem('projectData'));
-    if (savedProjectData && savedProjectData.id === project.id) {
-        setTemplateName(savedProjectData.name);
-        setTemplateDescription(savedProjectData.description);
-        setFavicon(savedProjectData.favicon);
-        setFaviconPreview(savedProjectData.favicon);
-    }
-    setIsEdited(false);
-    setIsSaved(false);
-    setIsImageError(false);
-}, [project]);
+    };
+    
+    
+    
+  
 
     return (
         <div className="dashboard-page-container">
@@ -127,7 +123,7 @@ export default function SiteSettingsDashboard({ project, updateProject, onReturn
                 </div>
                 <input
                   type="text"
-                  value={newTemplateName}
+                  value={templateName}
                   onChange={handleTemplateNameChange}
                 />
               </div>

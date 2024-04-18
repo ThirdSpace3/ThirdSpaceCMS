@@ -4,123 +4,137 @@ import "./DashboardMain.css";
 import { useNavigate } from 'react-router-dom';
 
 export default function ProjectsDashboard({ projects, handleOpenSettings, setProjects }) {
-  // Options pour le Dropdown
-  const dropdownOptions = [
-    { value: 'option1', text: 'Creation Date', icon: 'bi-arrow-down' },
-    { value: 'option2', text: 'Creation Date', icon: 'bi-arrow-up' },
-    { value: 'option3', text: 'Alphabetic', icon: 'bi-sort-alpha-down' },
-    { value: 'option4', text: 'Alphabetic', icon: 'bi-sort-alpha-up-alt' }
-  ];
+    // Options pour le Dropdown
+    const dropdownOptions = [
+        { value: 'option1', text: 'Creation Date', icon: 'bi-arrow-down' },
+        { value: 'option2', text: 'Creation Date', icon: 'bi-arrow-up' },
+        { value: 'option3', text: 'Alphabetic', icon: 'bi-sort-alpha-down' },
+        { value: 'option4', text: 'Alphabetic', icon: 'bi-sort-alpha-up-alt' }
+    ];
 
-  const [isOpen, setIsOpen] = useState(false);
-  // Initialise selectedOption avec la première option
-  const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
+    const [isOpen, setIsOpen] = useState(false);
+    // Initialise selectedOption avec la première option
+    const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
 
-  // Add a new state for the filtered projects
-  const [filteredProjects, setFilteredProjects] = useState(projects);
-  useEffect(() => {
-    setFilteredProjects(projects);
-  }, [projects]);
+    // Add a new state for the filtered projects
+    const [filteredProjects, setFilteredProjects] = useState(projects);
+    useEffect(() => {
+        setFilteredProjects(projects);
+    }, [projects]);
 
+    // Add a new state for the search input value
+    const [searchValue, setSearchValue] = useState('');
 
-  // Add a new state for the search input value
-  const [searchValue, setSearchValue] = useState('');
+    const toggleDropdown = () => setIsOpen(!isOpen);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+    // Modify the handleSelect function to filter the projects
+    const handleSelect = (option) => {
+        setSelectedOption(option);
+        setIsOpen(false);
 
-  // Modify the handleSelect function to filter the projects
-  const handleSelect = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false);
-
-    // Filter the projects based on the selected option
-    if (option.value === 'option1') {
-      setFilteredProjects([...projects].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
-    } else if (option.value === 'option2') {
-      setFilteredProjects([...projects].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
-    } else if (option.value === 'option3') {
-      setFilteredProjects([...projects].sort((a, b) => a.name.localeCompare(b.name)));
-    } else if (option.value === 'option4') {
-      setFilteredProjects([...projects].sort((a, b) => b.name.localeCompare(a.name)));
-    }
-  };
-
-  // Add an event handler for the search input field
-  const handleSearch = (event) => {
-    setSearchValue(event.target.value);
-
-    // Filter the projects based on the search input value
-    if (event.target.value === '') {
-      setFilteredProjects(projects);
-    } else {
-      setFilteredProjects(projects.filter(project => project.name.toLowerCase().includes(event.target.value.toLowerCase())));
-    }
-  };
-
-  const navigate = useNavigate();
-
-  const handleProjectClick = (projectName) => {
-    navigate(`/logiciel/${projectName}`);
-  };
-
-  const handleProjectSettings = (index) => {
-    handleOpenSettings(index);
-  };
-  const handleNewProjectClick = () => {
-    // Clear the selected template and project name from the session storage
-    sessionStorage.removeItem('selectedTemplateId');
-    sessionStorage.removeItem('projectName');
-
-    // Set the current step and isTemplateCompleted flag in the session storage
-    sessionStorage.setItem('currentStep', '4');
-    sessionStorage.setItem('isTemplateCompleted', 'false');
-
-    // Create a new project object with a unique ID, name, and the default values
-    const newProject = {
-      id: projects.length + 1,
-      name: '',
-      logiciel: '',
-      image: '',
-      createdAt: new Date().toISOString().slice(0, 10),
-      description: '',
-      favicon: '',
+        // Filter the projects based on the selected option
+        if (option.value === 'option1') {
+            setFilteredProjects([...projects].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+        } else if (option.value === 'option2') {
+            setFilteredProjects([...projects].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
+        } else if (option.value === 'option3') {
+            setFilteredProjects([...projects].sort((a, b) => a.name.localeCompare(b.name)));
+        } else if (option.value === 'option4') {
+            setFilteredProjects([...projects].sort((a, b) => b.name.localeCompare(a.name)));
+        }
     };
 
-    // Add the new project to the projects state
-    setProjects([...projects, newProject]);
+    // Add an event handler for the search input field
+    const handleSearch = (event) => {
+        setSearchValue(event.target.value);
 
-    // Navigate to the TemplateStep component
-    navigate('/templatestep');
-  };
+        // Filter the projects based on the search input value
+        if (event.target.value === '') {
+            setFilteredProjects(projects);
+        } else {
+            setFilteredProjects(projects.filter(project => project.name.toLowerCase().includes(event.target.value.toLowerCase())));
+        }
+    };
+
+    const navigate = useNavigate();
+
+    const handleProjectClick = (projectName) => {
+        navigate(`/logiciel/${projectName}`);
+    };
+
+    const handleProjectSettings = (index) => {
+        handleOpenSettings(index);
+    };
 
 
+  
 
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
+    const handleNewProjectClick = () => {
+        // Clear the selected template and project name from the session storage
+        sessionStorage.removeItem('selectedTemplateId');
+        sessionStorage.removeItem('projectName');
 
-  useEffect(() => {
-    const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
-    if (selectedTemplateId) {
-      const selectedTemplate = projects.find(
-        (project) => project.id === selectedTemplateId
-      );
-      setSelectedTemplate(selectedTemplate);
-    }
-  }, []);
-  // New state for the most recently updated project
-  const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
+        // Set the current step and isTemplateCompleted flag in the session storage
+        sessionStorage.setItem('currentStep', '4');
+        sessionStorage.setItem('isTemplateCompleted', 'false');
 
-  useEffect(() => {
-    setFilteredProjects(projects);
+        // Create a new project object with a unique ID, name, and the default values
+        const newProject = {
+            id: projects.length + 1,
+            name: '',
+            logiciel: '',
+            image: '',
+            createdAt: new Date().toISOString().slice(0, 10),
+            description: '',
+            favicon: '',
+        };
 
-    // Determine the most recently updated project
-    const mostRecentProject = projects.reduce((acc, project) => {
-      const currentProjectDate = new Date(project.lastUpdated || project.createdAt);
-      const accDate = new Date(acc.lastUpdated || acc.createdAt);
-      return currentProjectDate > accDate ? project : acc;
-    }, projects[0]);
+        // Add the new project to the projects state
+        setProjects([...projects, newProject]);
 
-    setRecentlyUpdatedProject(mostRecentProject);
-  }, [projects]);
+        // Navigate to the TemplateStep component
+        navigate('/templatestep');
+    };
+
+    const [selectedTemplate, setSelectedTemplate] = useState(null);
+
+    useEffect(() => {
+        const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
+        if (selectedTemplateId) {
+            const selectedTemplate = projects.find(
+                (project) => project.id === selectedTemplateId
+            );
+            setSelectedTemplate(selectedTemplate);
+        }
+    }, []);
+
+    // New state for the most recently updated project
+    const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
+
+    useEffect(() => {
+        setFilteredProjects(projects);
+
+        // Determine the most recently updated project
+        const mostRecentProject = projects.reduce((acc, project) => {
+            const currentProjectDate = new Date(project.lastUpdated || project.createdAt);
+            const accDate = new Date(acc.lastUpdated || acc.createdAt);
+            return currentProjectDate > accDate ? project : acc;
+        }, projects[0]);
+
+        setRecentlyUpdatedProject(mostRecentProject);
+    }, [projects]);
+
+    useEffect(() => {
+      const storedProjects = JSON.parse(localStorage.getItem('projects')) || [];
+      setProjects(storedProjects);
+    }, []);
+    
+
+    useEffect(() => {
+        localStorage.setItem('projects', JSON.stringify(projects));
+    }, [projects]);
+  
+  
   return (
     <>
       <div className="projects-container">
@@ -181,7 +195,6 @@ export default function ProjectsDashboard({ projects, handleOpenSettings, setPro
               <h2>All Projects</h2>
             </div>
 
-            {/* Display the filtered projects */}
             {/* Display the filtered projects */}
             <div className="projects-content-listing">
               {filteredProjects.slice(0, 5).map((project, index) => (
