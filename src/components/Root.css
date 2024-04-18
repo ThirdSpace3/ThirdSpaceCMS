@@ -1,38 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
 
 :root {
+  /*========== Color ==========*/
+  --menu-bg: #131313;
+  --not-selected: #64748b;
+  --main-color: #5956e8;
+  --purple: #9600fa;
+  --text-editor: #cbd5e1;
+  --item-selected: #217bf4;
+  --dark-grey: #334155;
+  --white: #f9f9f9;
+  --deep-purple: #421660;
+  --body-purple: #131313;
+  --green: #58d7ad;
 
-    /*========== Color ==========*/
-    --menu-bg: #131313;
-    --not-selected: #64748B;
-    --main-color: #5956E8;
-    --purple: #9600FA;
-    --text-editor: #CBD5E1;
-    --item-selected: #217BF4;
-    --dark-grey: #334155;
-    --white: #f9f9f9;
-    --deep-purple: #421660;
-    --body-purple: #131313;
-    --green: #58D7AD;
-
-
-    /*========== Font family ==========*/
-    --inter: 'Inter', sans-serif;
-    --montserrat: 'Montserrat', sans-serif;
+  /*========== Font family ==========*/
+  --inter: "Inter", sans-serif;
+  --montserrat: "Montserrat", sans-serif;
 }
 
 /*==================== BASE ====================*/
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 html {
-    scroll-behavior: smooth;
-    overflow-y: auto;
-    overflow-x: hidden ;
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 ul {
@@ -42,15 +40,14 @@ ul {
 a {
   text-decoration: none;
 }
-input:focus{
-    outline: none;
+input:focus {
+  outline: none;
 }
 
 img {
   max-width: 100%;
   height: auto;
 }
-
 
 body {
   background-color: var(--body-purple);
@@ -62,7 +59,7 @@ body {
 }
 
 .section {
-    padding: 80px 10%;
+  padding: 80px 10%;
 }
 .section-title {
   color: var(--white);
@@ -88,8 +85,8 @@ body {
   font-style: normal;
   font-weight: 400;
   border-radius: 15px;
-  background: rgba(100, 116, 139, 0.60);
-  }
+  background: rgba(100, 116, 139, 0.6);
+}
 .purple-btn {
   display: flex;
   padding: 15px 30px;
@@ -117,31 +114,33 @@ body {
   font-weight: 600;
   line-height: normal;
   border-radius: 28px;
-  background: rgba(150, 0, 250, 0.40);
+  background: rgba(150, 0, 250, 0.4);
   gap: 10px;
   border: none;
+}
+.purple-light-btn:hover {
+  cursor: pointer;
 }
 .cta-icon {
   width: 27px;
 }
 
-
 @media only screen and (max-width: 850px) {
-    .section {
-        padding: 40px 5%;
-    }
-    .section__text {
-      text-align: center;
-      font-size: 16px;
-    }
-    .section-label,
-    .purple-btn,
-    .purple-light-btn {
-      font-size: 16px;
-    }
-    .section-title {
-      font-size: 5vw;
-    }
+  .section {
+    padding: 40px 5%;
+  }
+  .section__text {
+    text-align: center;
+    font-size: 16px;
+  }
+  .section-label,
+  .purple-btn,
+  .purple-light-btn {
+    font-size: 16px;
+  }
+  .section-title {
+    font-size: 5vw;
+  }
 }
 
 /*==================== BODY DECO ====================*/
@@ -201,7 +200,4 @@ body {
     bottom: -30px;
     display: none;
   }
-
 }
-
-
