@@ -29,11 +29,11 @@ export default function SiteSettingsDashboard({
     setIsImageError(false);
   }, [project]);
 
-  const handleTemplateNameChange = (e) => {
-    setNewTemplateName(e.target.value);
-    setIsEdited(true);
-    setIsSaved(false);
-  };
+const handleTemplateNameChange = (e) => {
+  setTemplateName(e.target.value);
+  setIsEdited(true);
+  setIsSaved(false);
+};
 
   const handleTemplateDescriptionChange = (e) => {
     setTemplateDescription(e.target.value);
@@ -119,9 +119,8 @@ export default function SiteSettingsDashboard({
             </h1>
           </div>
           <button
-            className={`dashboard-page-content-save-btn${
-              isEdited ? "-activated" : ""
-            }`}
+            className={`dashboard-page-content-save-btn${isEdited ? "-activated" : ""
+              }`}
             type="button"
             onClick={handleSave}
           >
@@ -139,10 +138,10 @@ export default function SiteSettingsDashboard({
               </div>
             </div>
             <input
-              type="text"
-              value={newTemplateName}
-              onChange={handleTemplateNameChange}
-            />
+  type="text"
+  value={templateName}
+  onChange={handleTemplateNameChange}
+/>
           </div>
           <div className="dashboard-settings-item">
             <div className="dashboard-settings-title">

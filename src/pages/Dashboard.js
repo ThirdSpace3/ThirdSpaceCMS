@@ -27,9 +27,9 @@ export default function Dashboard({ selectedTemplateId }) {
     image: `./images/${selectedTemplate}screenshot.png`,
     createdAt: new Date().toISOString().slice(0, 10),
     description: "",
-    favicon: "",
+    favicon: "./images/favicon-placeholder.png", // Replace this with the path to your default favicon
   };
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState([initialProject]);
 
   useEffect(() => {
     // Load projects from localStorage on initial load
