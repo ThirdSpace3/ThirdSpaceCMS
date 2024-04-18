@@ -116,6 +116,9 @@
   object-fit: cover; /* Ensures the image covers the area, might crop */
   border-radius: 4px; /* Optional: Rounds corners of the image */
 }
+.image-preview img:hover {
+  cursor: pointer;
+}
 /*== ASSET PANEL ==*/
 .btn-box {
   display: flex;

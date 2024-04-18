@@ -60,9 +60,10 @@
   border-radius: 4px;
   border: 1px solid var(--Not-selectionned, #64748b);
   display: flex;
-  padding: 5px 8px;
+  padding: 4px 4px;
   align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 .px-label {
   color: var(--white);
@@ -72,7 +73,7 @@
 }
 .parameters-content-line-container i {
   color: var(--not-selected);
-  font-size: 12px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -453,4 +454,43 @@
   text-overflow: ellipsis;
   width: 100%;
   display: none;
+}
+
+/* ====TYPOGRAPHIE CSS==== */
+
+.font-family-dropdown {
+  position: relative;
+}
+
+.font-family-dropdown select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: transparent;
+  border: 1px solid var(--not-selected);
+  color: var(--text-editor);
+  text-align: center;
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.font-family-dropdown select:focus {
+  outline: none;
+}
+
+.font-family-dropdown select::-ms-expand {
+  display: none;
+}
+.font-family-dropdown select {
+  background-color: black;
+  color: white;
+}
+
+.font-family-dropdown select option {
+  background-color: black;
+  color: white;
 }
