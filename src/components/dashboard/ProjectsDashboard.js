@@ -262,14 +262,15 @@ export default function ProjectsDashboard({
                 </div>
               ))}
             </div>
+            {projects.length >= 3 && (
+              <p className="dashboard-billing-header-warning">
+                <i class="bi bi-exclamation-triangle"></i>
+                You can't create more than 3 projects.
+              </p>
+            )}
           </div>
         </div>
       </div>
-      {projects.length >= 3 && (
-        <p className="projects-navbar-btn-disabled-message">
-          You can't create more than 3 projects.
-        </p>
-      )}
     </>
   );
 }

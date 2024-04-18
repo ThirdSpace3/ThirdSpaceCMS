@@ -242,6 +242,11 @@
   font-weight: 500;
   line-height: normal;
 }
+.projects-navbar-btn-disabled-message {
+  color: var(--black);
+  font-family: var(--inter);
+  font-size: 15px;
+}
 
 @media (max-width: 950px) {
   .projects-content-listing {
