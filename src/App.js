@@ -10,6 +10,7 @@ import TemplateStep from "./pages/TemplateStep";
 import Dashboard from "./pages/Dashboard";
 import Display from "./components/logiciel/Display";
 import TemplatePreview from "./pages/TemplatePreview";
+import IntegrationTODO from "./components/logiciel/IntegrationTODO/IntegrationTODO";
 import { StyleProvider } from "./hooks/StyleContext";
 import { ImageHistoryProvider } from "./hooks/ImageHistoryContext";
 export default function App() {
@@ -29,9 +30,16 @@ export default function App() {
               <Route path="/templates" element={<TemplateStep />} />
               <Route path="/templatestep" element={<TemplateStep />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/logiciel/:templateName" element={<Display />}/>{" "}
+              <Route path="/test" element={<IntegrationTODO />} />
+              <Route
+                path="/logiciel/:templateName"
+                element={<Display />}
+              />{" "}
               {/* Add this line for the dynamic route */}
-              <Route path="/template-preview/:templateName" element={<TemplatePreview />}/>{" "}
+              <Route
+                path="/template-preview/:templateName"
+                element={<TemplatePreview />}
+              />{" "}
               {/* Add this route for template preview */}
               <Route path="/templates/:step" element={<TemplateStep />} />
               <Route path="*" element={<NoPage />} />

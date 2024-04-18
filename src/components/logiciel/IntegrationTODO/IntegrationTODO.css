@@ -1,0 +1,88 @@
+body {
+  background-color: white;
+}
+.integration-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+h1 {
+  color: black;
+}
+
+/* ====IMAGE==== */
+.image-component:hover {
+  border: 2px solid #217bf4;
+}
+.image-component:focus-within {
+  border: 2px solid #217bf4;
+}
+.image-container {
+  position: relative;
+}
+
+.image-component {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.popup-button {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--main-color);
+  color: white;
+  font-family: var(--inter);
+  font-size: 12px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.image-component:focus-within + .popup-button {
+  opacity: 1;
+}
+
+/* ====TEXT==== */
+.text-component:hover {
+  border: 2px solid #217bf4;
+}
+.text-component:focus-within {
+  border: 2px solid #217bf4;
+}
+
+/* ====TEXT==== */
+.button-component:hover {
+  border: 2px solid #217bf4;
+}
+.button-component:focus-within {
+  border: 2px solid #217bf4;
+}
+
+/* ====DIV==== */
+.div-component {
+  width: 70%;
+  background-color: aquamarine;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.div-component:hover {
+  border: 2px solid #217bf4;
+}
+.div-component:focus-within {
+  border: 2px solid #217bf4;
+}

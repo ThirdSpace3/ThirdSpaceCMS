@@ -129,6 +129,9 @@
   font-weight: 700;
   line-height: normal;
 }
+.projects-navbar-btn:hover {
+  cursor: pointer;
+}
 
 /* @media only screen and (max-width: 1140px) {
     .projects-header h1 {
