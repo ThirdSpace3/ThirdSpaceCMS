@@ -1,0 +1,318 @@
+/*==================== IMPORT ====================*/
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+/*==================== BASE ====================*/
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+input:focus {
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/*==================== BODY ====================*/
+.sss-product-container {
+  background-color: #060b27;
+}
+body {
+  overflow: auto; /* Set the default overflow */
+}
+
+.no-scroll {
+  overflow: hidden; /* Disable scrolling when this class is applied */
+}
+
+/*==================== NAVBAR ====================*/
+.sss-product-navbar-container {
+  width: 100%;
+  border-bottom: 1px solid var(--Neutral-gray-600, #151934);
+}
+.sss-product-navbar-navbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 30px;
+  z-index: 100;
+}
+.sss-product-navbar-logo {
+  max-height: 30px;
+}
+.sss-product-navbar-links-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.sss-product-navbar-links {
+  color: #8f9bb7;
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+.sss-product-navbar-cta {
+  border-radius: 36px;
+  background: #7214ff;
+  display: flex;
+  padding: 10px 25px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+.sss-product-navbar-mobile-toggle,
+.sss-product-navbar-mobile-links-box {
+  display: none;
+}
+/* Pour les mobiles */
+@media (max-width: 767px) {
+  .sss-product-navbar-cta,
+  .sss-product-navbar-links-box {
+    display: none;
+  }
+  .sss-product-navbar-mobile-toggle {
+    max-width: 30px;
+    display: block;
+  }
+  .sss-product-navbar-mobile-toggle:hover {
+    cursor: pointer;
+  }
+  .sss-product-navbar-mobile-links-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background-color: #060b27;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+  }
+
+  .sss-product-navbar-mobile-links-box.show {
+    transform: translateX(0);
+    margin-top: 50px;
+  }
+
+  .sss-product-navbar-mobile-links-box.hide {
+    transform: translateX(-100%);
+  }
+  .sss-product-navbar-mobile-cta {
+    border-radius: 36px;
+    background: #7214ff;
+    display: inline-flex;
+    padding: 10px 25px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+  }
+}
+
+/*==================== HERO ====================*/
+.sss-product-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 70px;
+}
+.sss-product-hero-title {
+  color: #f6f6f7;
+  text-align: center;
+  font-family: Outfit;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 72px;
+  letter-spacing: -1.92px;
+}
+.sss-product-hero-text {
+  color: var(--Neutral-gray-300, #8f9bb7);
+  text-align: center;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  max-width: 800px;
+}
+.sss-product-hero-cta {
+  border-radius: 36px;
+  background: #7214ff;
+  display: flex;
+  padding: 10px 25px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+.sss-product-hero-img {
+  max-width: 800px;
+  width: 80%;
+}
+
+/*==================== PARTNERS ====================*/
+.sss-product-partners {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 70px;
+}
+.sss-product-partners-title {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: Outfit;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+}
+.sss-product-partners-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+}
+.sss-product-partners-box-img {
+  height: 20px;
+  width: auto;
+}
+
+/*==================== ABOUT ====================*/
+.sss-product-about {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 70px;
+}
+.sss-product-about-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.sss-product-about-title {
+  color: #f6f6f7;
+  font-family: Outfit;
+  font-size: 56px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 64px;
+  letter-spacing: -1.68px;
+}
+.sss-product-about-text {
+  color: #8f9bb7;
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+.sss-product-about-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+/* Pour les écrans de bureau */
+@media (min-width: 992px) {
+  .sss-product-about-item {
+    width: calc(
+      33.333% - 20px
+    ); /* 3 éléments par ligne, avec une marge de 20px entre eux */
+  }
+}
+
+/* Pour les tablettes */
+@media (min-width: 768px) and (max-width: 991px) {
+  .sss-product-about-item {
+    width: calc(
+      50% - 20px
+    ); /* 2 éléments par ligne, avec une marge de 20px entre eux */
+  }
+}
+
+/* Pour les mobiles */
+@media (max-width: 767px) {
+  .sss-product-about-item {
+    width: 100%; /* 1 élément par ligne */
+  }
+}
+.sss-product-about-item {
+  display: flex;
+  padding: 30px 40px 30px 30px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  border-radius: 4px;
+  border: 1px solid #282d45;
+  background: #0e1330;
+}
+.sss-product-about-item-img {
+  height: 35px;
+  width: auto;
+}
+.sss-product-about-item-title {
+  color: #f6f6f7;
+  font-family: Outfit;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.72px;
+}
+.sss-product-about-item-text {
+  color: #8f9bb7;
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}

@@ -1,6 +1,3 @@
-body {
-  background-color: white;
-}
 .integration-container {
   width: 100%;
   display: flex;
@@ -8,6 +5,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 15px;
+  background-color: white;
 }
 h1 {
   color: black;
