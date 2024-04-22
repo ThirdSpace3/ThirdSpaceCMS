@@ -23,11 +23,6 @@ export default function SiteSettingsDashboard({
   const [isImageError, setIsImageError] = useState(false);
   const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    setIsEdited(false);
-    setIsSaved(false);
-    setIsImageError(false);
-  }, [project]);
 
   const handleTemplateNameChange = (e) => {
     setTemplateName(e.target.value);
@@ -48,7 +43,7 @@ export default function SiteSettingsDashboard({
       img.onload = () => {
         if (img.width > 300 || img.height > 300) {
           setIsImageError(true);
-          setIsEdited(false);
+          // setIsEdited(false);
         } else {
           setIsImageError(false);
           setFaviconPreview(URL.createObjectURL(file));
@@ -91,24 +86,35 @@ const handleSave = () => {
   // Save to sessionStorage
   sessionStorage.setItem("projectName", templateName);
 
-  setIsEdited(false);
+  setIsEdited(true);
   setIsSaved(true);
   setIsImageError(false);
+  
+  setTimeout(() => {
+    setIsSaved(false);
+    setIsEdited(false);
+
+  }, 3000);
 };
 
+  // useEffect(() => {
+  //   const savedProjectData = JSON.parse(localStorage.getItem("projectData"));
+  //   if (savedProjectData && savedProjectData.id === project.id) {
+  //     setTemplateName(savedProjectData.name);
+  //     setTemplateDescription(savedProjectData.description);
+  //     setFavicon(savedProjectData.favicon);
+  //     setFaviconPreview(savedProjectData.favicon);
+  //   }
+  //   setIsEdited(false);
+  //   setIsSaved(false);
+  //   setIsImageError(false);
+  // }, [project]);
 
-  useEffect(() => {
-    const savedProjectData = JSON.parse(localStorage.getItem("projectData"));
-    if (savedProjectData && savedProjectData.id === project.id) {
-      setTemplateName(savedProjectData.name);
-      setTemplateDescription(savedProjectData.description);
-      setFavicon(savedProjectData.favicon);
-      setFaviconPreview(savedProjectData.favicon);
-    }
-    setIsEdited(false);
-    setIsSaved(false);
-    setIsImageError(false);
-  }, [project]);
+  // useEffect(() => {
+  //   setIsEdited(false);
+  //   setIsSaved(false);
+  //   setIsImageError(false);
+  // }, [project]);
 
   return (
     <div className="dashboard-page-container">
@@ -180,23 +186,7 @@ const handleSave = () => {
                   <i className="bi bi-cloud-upload"></i>Upload
                 </a>
 
-                <div className="dashboard-error">
-                  <div className="dashboard-icon-error">
-                    <p>!</p>
-                  </div>
-                  <p className="dashboard-msg-error">
-                    The image must be 300x300 px or smaller
-                  </p>
-                </div>
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFaviconUpload}
-                ref={fileInputRef}
-                style={{ display: "none" }}
-              />
-              {isImageError && (
+                {isImageError && (
                 <div className="dashboard-error">
                   <div className="dashboard-icon-error">
                     <p>!</p>
@@ -206,6 +196,15 @@ const handleSave = () => {
                   </p>
                 </div>
               )}
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleFaviconUpload}
+                ref={fileInputRef}
+                style={{ display: "none" }}
+              />
+             
             </div>
           </div>
           <div className="dashboard-settings-item">

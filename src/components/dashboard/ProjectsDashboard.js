@@ -111,7 +111,15 @@ export default function ProjectsDashboard({
     // Navigate to the TemplateStep component
     navigate("/templatestep");
   };
+  useEffect(() => {
+    // Check if there's any project with a name of null or undefined
+    const hasInvalidProjectName = projects.some(project => project.name === null || project.name === undefined);
 
+    // If found, navigate to the templatestep page
+    if (hasInvalidProjectName) {
+      navigate('/templatestep');
+    }
+  }, [projects, navigate]); // 
   const [selectedTemplate, setSelectedTemplate] = useState(null);
 
   useEffect(() => {
@@ -232,9 +240,7 @@ export default function ProjectsDashboard({
               >
                 <img
                   src={
-                    recentlyUpdatedProject.favicon
-                      ? recentlyUpdatedProject.favicon
-                      : recentlyUpdatedProject.image
+                    recentlyUpdatedProject.image
                   }
                   alt={recentlyUpdatedProject.name}
                 />
@@ -253,13 +259,12 @@ export default function ProjectsDashboard({
             </div>
 
             {/* Display the filtered projects */}
-            {/* Display the filtered projects */}
             <div className="projects-content-listing">
               {filteredProjects.slice(0, 5).map((project, index) => (
                 <div key={index} className="projects-content-item">
                   {/* Conditionally render the favicon if available, otherwise render the default image */}
                   <img
-                    src={project.favicon ? project.favicon : project.image}
+                    src={project.image}
                     alt={project.name}
                     onClick={() => handleProjectClick(project.logiciel)}
                   />

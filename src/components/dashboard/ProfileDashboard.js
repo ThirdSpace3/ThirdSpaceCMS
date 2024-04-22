@@ -13,7 +13,7 @@ export default function ProfileDashboard({ updateUserDetails }) {
     // Attempt to load profile picture from local storage, fallback to default
     return localStorage.getItem("profilePicture") || "../images/avatar-placeholder.png";
   });
-    const [isEdited, setIsEdited] = useState(false); // Tracks if any edits have been made
+  const [isEdited, setIsEdited] = useState(false); // Tracks if any edits have been made
   const [isSaved, setIsSaved] = useState(false); // Tracks if changes have been successfully saved
   const [imageError, setImageError] = useState(null);
   const [copied, setCopied] = useState("");
@@ -104,7 +104,7 @@ export default function ProfileDashboard({ updateUserDetails }) {
       };
     }
   };
-  
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -149,6 +149,14 @@ export default function ProfileDashboard({ updateUserDetails }) {
     // } catch (err) {
     //   console.error("Error saving profile:", err);
     // }
+    setTimeout(() => {
+      setIsSaved(false);
+      
+      // Optional: If you need to automatically switch back to the edited state
+      // based on certain conditions, you can set `isEdited` here as well.
+      // For example:
+      // setIsEdited(!!(username || description || profilePicture));
+  }, 3000);
   };
 
   return (
@@ -160,9 +168,8 @@ export default function ProfileDashboard({ updateUserDetails }) {
             <form onSubmit={handleSubmit}>
               <button
                 type="submit"
-                className={`dashboard-page-content-save-btn${
-                  isEdited ? " edited" : ""
-                }`}
+                className={`dashboard-page-content-save-btn${isEdited ? " dashboard-page-content-save-btn-activated" : ""
+                  }`}
               >
                 {isSaved ? (
                   <i className="bi bi-check2 dashboard-page-content-save-btn-i"></i>
@@ -170,6 +177,7 @@ export default function ProfileDashboard({ updateUserDetails }) {
                   "Save"
                 )}
               </button>
+
             </form>
           </div>
         </div>
