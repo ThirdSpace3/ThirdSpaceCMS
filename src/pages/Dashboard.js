@@ -6,8 +6,12 @@ import ProjectsDashboard from "../components/dashboard/ProjectsDashboard";
 import SiteSettingsDashboard from "../components/dashboard/SiteSettingsDashboard";
 import ProfileDashboard from "../components/dashboard/ProfileDashboard";
 import BillingDashboard from "../components/dashboard/BillingDashboard";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard({ selectedTemplateId }) {
+
+  const navigate = useNavigate();
+
   console.log("Dashboard component rendered");
   const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
   const walletId = sessionStorage.getItem("userAccount");
@@ -18,6 +22,12 @@ export default function Dashboard({ selectedTemplateId }) {
   const projectName = sessionStorage.getItem("projectName");
   console.log("Retrieved template: ", selectedTemplate);
   console.log("Retrieved project name: ", projectName);
+  useEffect(() => {
+    // Load projects from localStorage on initial load
+    if(projectName == null){
+      navigate("../templatestep")
+    }
+  }, []);
 
   const initialProject = {
     id: 1,
