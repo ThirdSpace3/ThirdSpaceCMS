@@ -4,7 +4,7 @@ import "../Root.css";
 import PropulsePopup from "./PropulsePopup";
 
 const deviceSizes = {
-  tv: "100%",
+  tv: "1760px",
   tablet: "991px",
   smartphone: "767px",
 };
@@ -19,6 +19,7 @@ const TopBar = ({
   const [eyeIcon, setEyeIcon] = useState("bi bi-eye");
   const [showPopup, setShowPopup] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [focusedDevice, setFocusedDevice] = useState(null); // New state for focused device
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -54,6 +55,7 @@ const TopBar = ({
 
   const handleDeviceClick = (size) => {
     onDeviceChange(size);
+    setFocusedDevice(size); // Set the focused device
   };
 
   const topBarStyle = isCollapsed ? { top: "-14px", transition: "top 0.3s ease-in-out" } : { top: "35px", transition: "top 0.3s ease-in-out" };
@@ -76,13 +78,13 @@ const TopBar = ({
           </div>
           <div className="topbar-mid">
             {/* Change onClick handlers to call handleDeviceClick with the device size */}
-            <a onClick={() => handleDeviceClick(deviceSizes.tv)} className="topbar-device-btn">
+            <a onClick={() => handleDeviceClick(deviceSizes.tv)} className={`topbar-device-btn ${focusedDevice === deviceSizes.tv ? 'selected' : ''}`}>
               <i className="bi bi-tv"></i>
             </a>
-            <a onClick={() => handleDeviceClick(deviceSizes.tablet)} className="topbar-device-btn">
+            <a onClick={() => handleDeviceClick(deviceSizes.tablet)} className={`topbar-device-btn ${focusedDevice === deviceSizes.tablet ? 'selected' : ''}`}>
               <i className="bi bi-tablet-landscape"></i>
             </a>
-            <a onClick={() => handleDeviceClick(deviceSizes.smartphone)} className="topbar-device-btn">
+            <a onClick={() => handleDeviceClick(deviceSizes.smartphone)} className={`topbar-device-btn ${focusedDevice === deviceSizes.smartphone ? 'selected' : ''}`}>
               <i className="bi bi-phone"></i>
             </a>
           </div>

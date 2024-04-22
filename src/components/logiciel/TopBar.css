@@ -46,6 +46,12 @@
   color: var(--white);
   cursor: pointer;
 }
+.topbar-device-btn.selected{
+  background-color: var(--dark-grey);
+  color: var(--white);
+  cursor: pointer;
+
+}
 .topbar-propulse-btn {
   font-family: var(--inter);
   font-size: 14px;
