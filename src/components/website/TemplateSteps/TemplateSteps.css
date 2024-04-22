@@ -159,23 +159,14 @@ body {
   background: rgba(255, 255, 255, 0.6);
 }
 
-.ignore-btn.disabled:hover,
-.ignore-btn:disabled:hover {
-  cursor: not-allowed;
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.purple-btn:hover {
-  cursor: pointer;
-}
-
-button.disabled,
-button.disabled * {
+.disabled,
+.disabled * {
   cursor: not-allowed;
 }
 
 .purple-light-btn:not(.disabled):hover {
   background: rgba(150, 0, 250, 1); /* Example hover background */
+  cursor: pointer;
   /* other hover styles here */
 }
 

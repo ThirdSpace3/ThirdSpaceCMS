@@ -61,18 +61,18 @@
     
     
 
-    const saveDataToSession = (newData) => {
-      try {
-        const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
-        if (!sessionData[currentStep]) {
-          sessionData[currentStep] = [];
-        }
-        sessionData[currentStep] = [newData]; // Simplify to always keep only the latest entry
-        sessionStorage.setItem('stepData', JSON.stringify(sessionData));
-      } catch (error) {
-        console.error('Error saving data to sessionStorage:', error);
-      }
-    };
+    // const saveDataToSession = (newData) => {
+    //   try {
+    //     const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
+    //     if (!sessionData[currentStep]) {
+    //       sessionData[currentStep] = [];
+    //     }
+    //     sessionData[currentStep] = [newData]; // Simplify to always keep only the latest entry
+    //     sessionStorage.setItem('stepData', JSON.stringify(sessionData));
+    //   } catch (error) {
+    //     console.error('Error saving data to sessionStorage:', error);
+    //   }
+    // };
     useEffect(() => {
       sessionStorage.setItem('projectName', inputValue);
     }, [inputValue]);

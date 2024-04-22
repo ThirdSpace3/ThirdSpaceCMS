@@ -22,31 +22,49 @@ export default function Dashboard({ selectedTemplateId }) {
   const projectName = sessionStorage.getItem("projectName");
   console.log("Retrieved template: ", selectedTemplate);
   console.log("Retrieved project name: ", projectName);
-  useEffect(() => {
-    // Load projects from localStorage on initial load
-    if(projectName == null){
-      navigate("../templatestep")
-    }
-  }, []);
 
-  const initialProject = {
-    id: 1,
-    name: projectName,
-    logiciel: selectedTemplate,
-    image: `./images/${selectedTemplate}screenshot.png`,
-    createdAt: new Date().toISOString().slice(0, 10),
-    description: "",
-    favicon: `./images/${selectedTemplate}screenshot.png`, // Replace this with the path to your default favicon
-  };
-  const [projects, setProjects] = useState([initialProject]);
 
-  useEffect(() => {
-    // Load projects from localStorage on initial load
-    const storedProjects = JSON.parse(localStorage.getItem("projects")) || [];
-    if (storedProjects.length > 0) {
-      setProjects(storedProjects);
-    }
-  }, []);
+
+const handleReturnToProjectsDashboard = () => {
+  setActiveMenuItem("projects");
+  checkProjectAndNavigate();
+};
+
+const checkProjectAndNavigate = () => {
+  if(!selectedTemplate || !projectName){
+    navigate("../templatestep")
+  }
+}
+
+useEffect(() => {
+  // Load projects from localStorage on initial load
+  checkProjectAndNavigate();
+}, [selectedTemplate, projectName, navigate]);
+
+  
+
+const initialProject = {
+  id: 1,
+  name: projectName,
+  logiciel: selectedTemplate,
+  image: `./images/${selectedTemplate}screenshot.png`,
+  createdAt: new Date().toISOString().slice(0, 10),
+  description: "",
+  favicon: `./images/${selectedTemplate}screenshot.png`, // Replace this with the path to your default favicon
+};
+
+const [projects, setProjects] = useState([]);
+
+useEffect(() => {
+  // Load projects from localStorage on initial load
+  const storedProjects = JSON.parse(localStorage.getItem("projects")) || [];
+  if (storedProjects.length === 0) {
+    setProjects([initialProject]);
+  } else {
+    setProjects(storedProjects);
+  }
+}, []);
+
 
   useEffect(() => {
     // Update localStorage whenever the projects state changes
@@ -113,10 +131,6 @@ export default function Dashboard({ selectedTemplateId }) {
     setSelectedProject(updatedProject); // Update selected project
   };
 
-
-  const handleReturnToProjectsDashboard = () => {
-    setActiveMenuItem("projects");
-  };
 
   useEffect(() => {
     console.log("Projects updated:", projects);

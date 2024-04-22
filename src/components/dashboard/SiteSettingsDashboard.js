@@ -72,26 +72,30 @@ export default function SiteSettingsDashboard({
     fileInputRef.current.click();
   };
 
-  const handleSave = () => {
-    const lastUpdated = new Date().toISOString();
+const handleSave = () => {
+  const lastUpdated = new Date().toISOString();
 
-    const updatedProject = {
-      ...project,
-      name: templateName,
-      description: templateDescription,
-      favicon: favicon,
-      lastUpdated: lastUpdated, // Update the lastUpdated field with the new timestamp
-    };
-
-    updateProject(updatedProject);
-
-    // Save to localStorage
-    localStorage.setItem("projectData", JSON.stringify(updatedProject));
-
-    setIsEdited(false);
-    setIsSaved(true);
-    setIsImageError(false);
+  const updatedProject = {
+    ...project,
+    name: templateName,
+    description: templateDescription,
+    favicon: favicon,
+    lastUpdated: lastUpdated, // Update the lastUpdated field with the new timestamp
   };
+
+  updateProject(updatedProject);
+
+  // Save to localStorage
+  localStorage.setItem("projectData", JSON.stringify(updatedProject));
+
+  // Save to sessionStorage
+  sessionStorage.setItem("projectName", templateName);
+
+  setIsEdited(false);
+  setIsSaved(true);
+  setIsImageError(false);
+};
+
 
   useEffect(() => {
     const savedProjectData = JSON.parse(localStorage.getItem("projectData"));

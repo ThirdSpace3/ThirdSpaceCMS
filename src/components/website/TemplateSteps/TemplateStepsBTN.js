@@ -65,7 +65,6 @@ const handleNextClick = async () => {
       <button
         className={`purple-light-btn ${!isNextEnabled ? 'disabled' : ''}`}
         onClick={handleNextClick}
-        disabled={!isNextEnabled}
       >
         Next
       </button>
