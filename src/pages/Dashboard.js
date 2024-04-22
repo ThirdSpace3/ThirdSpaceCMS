@@ -31,9 +31,9 @@ const handleReturnToProjectsDashboard = () => {
 };
 
 const checkProjectAndNavigate = () => {
-  if(!selectedTemplate || !projectName){
-    navigate("../templatestep")
-  }
+  // if(!selectedTemplate || !projectName){
+  //   navigate("../templatestep")
+  // }
 }
 
 useEffect(() => {

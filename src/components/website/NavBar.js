@@ -54,6 +54,7 @@ function Navbar() {
 
   // Additional logic to adjust button display based on URL
   const displayLaunchAppInstead = is3rdSpaceIO; // Add your logic for detecting plugins here if needed
+  
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">
@@ -129,9 +130,8 @@ function Navbar() {
         </div>
       </div>
 
-      <div
-        className={`navbar__mobile ${isMenuOpen ? "animate__fadeInLeft" : ""}`}
-        style={{ display: isMenuOpen ? "block" : "none" }}
+      <div className="navbar__mobile"
+        
       >
         <div className="navbar__mobile-head">
           <a href="index.html" className="nav__logo">
@@ -149,36 +149,33 @@ function Navbar() {
             onClick={toggleMenu}
           />
         </div>
-        <div className="navbar__mobile-content">
+        <div 
+        className={`navbar__mobile-content ${isMenuOpen ? "animate__fadeInLeft" : ""}`}
+        style={{ display: isMenuOpen ? "block" : "none", left: isMenuOpen ? '-11%' : '-150%' }}
+        >
           <ul className="nav__links">
             <li>
-              <a href="#" className="nav__links-btn">
+              <a href="/#/home" className="nav__links-btn">
                 Home
               </a>
             </li>
             <li className="coming-soon">
-              <a href="#" className="nav__links-btn">
-                About
+              <a href="/#/products" className="nav__links-btn">
+              Products
               </a>
             </li>
             <li className="coming-soon">
-              <a href="#" className="nav__links-btn">
+              <a href="/#/ressources" className="nav__links-btn">
                 Ressources
               </a>
             </li>
             <li className="coming-soon">
-              <a href="#" className="nav__links-btn">
+              <a href="/#/pricing" className="nav__links-btn">
                 Pricing
               </a>
             </li>
-            <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
+            <a href="/#/get-started-mobile" className="nav__cta nav-bg">
               Get started
-            </a>
-            <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
-              <span className="material-symbols-outlined">wallet</span>
-              {accounts.length > 0
-                ? `Wallet: ${accounts[0].substring(0, 6)}...`
-                : "Connect Wallet"}
             </a>
           </ul>
         </div>

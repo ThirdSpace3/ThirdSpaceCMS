@@ -5,8 +5,8 @@ import React from 'react';
 function Solutions() {
     return (
         <section class="solutions section">
-        <img src="./images/body-deco-1.png" alt="" class="body-deco-1"/>
-        <p class="section-label">Solutions</p>
+                    <p className="section-label">Solutions</p>
+
         <h2 class="section-title">Our solution to boost your creativity</h2>
         <div class="solutions-row">
             <div class="solutions-card">
@@ -31,7 +31,6 @@ function Solutions() {
                 <p class="solutions-card-text">Create your entire site from nothing and be free from template constraints</p>
            </div>
         </div>
-        <img src="./images/body-deco-2.png" alt="" class="body-deco-2"/>
     
     </section>
     );

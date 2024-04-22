@@ -177,6 +177,7 @@ ul.nav__links li.nav__logo {
     position: sticky;
     top: 0;
     z-index: 9999;
+    width: 100%;
   }
   .navbar__mobile-head {
     display: flex;
@@ -184,6 +185,7 @@ ul.nav__links li.nav__logo {
     align-items: center;
     padding-top: 10px;
     padding-bottom: 10px;
+    width: 100%;
   }
   .nav__logo a {
     padding-right: 50px;
@@ -238,6 +240,7 @@ ul.nav__links li.nav__logo {
     height: 100vh;
     padding-top: 30%;
     z-index: 1000;
+    transition: left 0.3s ease-in-out;
   }
 
   .navbar__mobile-content ul {

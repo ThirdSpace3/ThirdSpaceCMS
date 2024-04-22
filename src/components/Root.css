@@ -13,7 +13,7 @@
   --white: #f9f9f9;
   --deep-purple: #421660;
   --body-purple: #131313;
-  --green: #58d7ad;
+  --green: #10843A;
 
   /*========== Font family ==========*/
   --inter: "Inter", sans-serif;
@@ -67,7 +67,6 @@ body {
   font-size: 2vw;
   font-weight: 800;
   text-align: center;
-  max-width: 500px;
 }
 .section__text {
   color: #797979;
@@ -78,14 +77,13 @@ body {
 }
 .section-label {
   display: inline-flex;
-  padding: 5px 30px;
+  padding: 5px;
   color: var(--white);
   font-family: Montserrat;
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
-  border-radius: 15px;
-  background: rgba(100, 116, 139, 0.6);
+  font-weight: 800;
+  border-bottom: 1px solid var(--purple);
 }
 .purple-btn {
   display: flex;
@@ -143,61 +141,3 @@ body {
   }
 }
 
-/*==================== BODY DECO ====================*/
-
-.body-deco-1 {
-  position: absolute;
-  max-width: 500px;
-  top: -200px;
-  left: -250px;
-  z-index: -1;
-}
-.body-deco-2 {
-  position: absolute;
-  max-width: 350px;
-  bottom: -150px;
-  right: -150px;
-  z-index: -1;
-}
-.body-deco-3 {
-  position: absolute;
-  max-width: 350px;
-  top: -100px;
-  left: -50px;
-  z-index: -1;
-}
-.body-deco-4 {
-  position: absolute;
-  max-width: 350px;
-  bottom: -150px;
-  right: -150px;
-  z-index: -1;
-}
-
-@media screen and (max-width: 850px) {
-  .body-deco-1,
-  .body-deco-2,
-  .body-deco-3,
-  .body-deco-4 {
-    scale: 0.8;
-  }
-  .body-deco-1 {
-    max-width: 450px;
-    left: -280px;
-  }
-  .body-deco-2 {
-    max-width: 300px;
-    right: -180px;
-    display: none;
-  }
-  .body-deco-3 {
-    max-width: 250px;
-    left: -130px;
-  }
-  .body-deco-4 {
-    max-width: 200px;
-    right: -100px;
-    bottom: -30px;
-    display: none;
-  }
-}

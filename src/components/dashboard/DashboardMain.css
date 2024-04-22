@@ -287,7 +287,7 @@
   max-width: 300px;
   background-color: var(--menu-bg);
   border-radius: 0px 28px 28px 0px;
-  padding: 30px 20px 0 20px;
+  padding: 30px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -357,4 +357,44 @@
   width: 100%;
   justify-content: center;
   padding: 5px;
+}
+.dashboard-return-icon {
+  font-size: 40px;
+}
+.dashboard-return-icon:hover {
+cursor: pointer;
+}
+.left-menu-top-header {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.left-menu-return {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: var(--text-editor);
+  font-family: var(--inter);
+  font-size: 12px;
+  padding-bottom: 2px;
+  width: max-content;
+  gap: 10px;
+}
+.left-menu-return i {
+  font-size: 14px;
+}
+.left-menu-return:hover {
+  cursor: pointer;
+  color: var(--white);
+}
+.dashboard-settings-delete {
+  color: red;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  font-family: var(--inter);
+  padding-bottom: 2px;
+  border-bottom: 1px solid red;
 }

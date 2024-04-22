@@ -11,8 +11,11 @@ import Dashboard from "./pages/Dashboard";
 import Display from "./components/logiciel/Display";
 import TemplatePreview from "./pages/TemplatePreview";
 import IntegrationTODO from "./components/logiciel/IntegrationTODO/IntegrationTODO"
+import Terms from "./pages/legal/Terms";
 import { StyleProvider } from "./hooks/StyleContext";
 import { ImageHistoryProvider } from "./hooks/ImageHistoryContext";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import GetStartedMobile from "./components/website/GetStartedMobile";
 export default function App() {
   return (
     <div>
@@ -31,6 +34,11 @@ export default function App() {
               <Route path="/templatestep" element={<TemplateStep />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/IntegrationTODO" element={<IntegrationTODO />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/get-started-mobile" element={<GetStartedMobile />} />
+
+
 
               <Route
                 path="/logiciel/:templateName"

@@ -1,13 +1,13 @@
 /*==================== HEADER ====================*/
 
 .header {
-    height: 90vh;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     gap: 24px;
     z-index: 10;
+    overflow: hidden;
   }
   .header__left {
     display: flex;
@@ -22,7 +22,13 @@
     font-weight: 800;
   }
   .header__right {
-    width: 50%;
+    min-width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .header__right img {
+    width: 80%;
   }
   .header__cta {
     display: flex;
@@ -41,9 +47,10 @@
   }
   .header-deco {
     position: absolute;
-    width: 100vw;
+    width: 100%;
     z-index: -2;
-    top: 50px;
+    top: -300px;
+    right: -570px;
   }
   
   

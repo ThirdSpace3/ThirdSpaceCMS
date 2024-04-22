@@ -6,16 +6,15 @@ function Roadmap()  {
     return (
         
         <section class="roadmap section" id="roadmap">
-    <img src="./images/body-deco-3.png" alt="" class="body-deco-3"/>
 
  <p class="section-label">Features Roadmap</p>
     <h2 class="section-title">Want to know what is comming ?</h2>
 
     <div class="roadmap-content">
         <div class="roadmap-content-row">
-            <div class="roadmap-dot"></div>
+            <div class="roadmap-dot-live"></div>
             <div class="roadmap-content-right">
-                <p class="roadmap-label">Coming Soon</p>
+                <p class="roadmap-label-live">Live</p>
                 <h3 class="roadmap-feature">Editable Template</h3>
             </div>
         </div>
@@ -63,7 +62,6 @@ function Roadmap()  {
             </div>
         </div>
     </div>
-    <img src="./images/body-deco-4.png" alt="" class="body-deco-4"/>
 
 </section>
 

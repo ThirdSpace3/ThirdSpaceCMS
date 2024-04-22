@@ -116,7 +116,7 @@ const handleSave = () => {
         <div className="dashboard-header">
           <div className="dashboard-title-box">
             <div onClick={onReturnToProjects}>
-              <i className="bi bi-arrow-left-short"></i>
+              <i className="bi bi-arrow-left-short dashboard-return-icon"></i>
             </div>
             <h1>
               <span>{templateName}</span> Settings
@@ -207,6 +207,15 @@ const handleSave = () => {
                 </div>
               )}
             </div>
+          </div>
+          <div className="dashboard-settings-item">
+            <div className="dashboard-settings-title">
+              {/* <h2>Delete website</h2>
+              */}
+           
+            </div>
+            <a href="" className="dashboard-settings-delete"><i class="bi bi-trash3"></i>
+              <p>Delete my website</p></a>
           </div>
         </div>
       </div>

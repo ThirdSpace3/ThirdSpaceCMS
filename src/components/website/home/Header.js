@@ -28,7 +28,6 @@ function Header() {
   };
   return (
     <>
-    <img src="./images/header-bg.png" alt="" class="header-bg"/>
 
       <section className="header section">
         <div className="header__left">
@@ -41,9 +40,13 @@ function Header() {
             </a>
           </div>
         </div>
-        <img src="./images/header-img.png" alt="" className="header__right" />
+        <div className="header__right" >
+        <img src="./images/header-img.png" alt=""/>
+
+        </div>
+        {/* <img src="./images/header-deco.png" alt="" className="header-deco" /> */}
+
       </section>
-      <img src="./images/header-deco.png" alt="" className="header-deco" />
       {showWalletPopup && <PopupWallet onClose={toggleWalletPopup} onUserLogin={handleUserLogin} />}
 
     </>

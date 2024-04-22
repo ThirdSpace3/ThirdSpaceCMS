@@ -7,16 +7,17 @@
   gap: 15px;
   background-color: white;
 }
-h1 {
-  color: black;
-}
+
 
 /* ====IMAGE==== */
 .image-component:hover {
   border: 2px solid #217bf4;
+  cursor: pointer;
 }
 .image-component:focus-within {
   border: 2px solid #217bf4;
+  cursor: pointer;
+
 }
 .image-container {
   position: relative;
@@ -56,17 +57,25 @@ h1 {
 /* ====TEXT==== */
 .text-component:hover {
   border: 2px solid #217bf4;
+  cursor: pointer;
+
 }
 .text-component:focus-within {
   border: 2px solid #217bf4;
+  cursor: pointer;
+
 }
 
 /* ====TEXT==== */
 .button-component:hover {
   border: 2px solid #217bf4;
+  cursor: pointer;
+
 }
 .button-component:focus-within {
   border: 2px solid #217bf4;
+  cursor: pointer;
+
 }
 
 /* ====DIV==== */
@@ -80,7 +89,11 @@ h1 {
 }
 .div-component:hover {
   border: 2px solid #217bf4;
+  cursor: pointer;
+
 }
 .div-component:focus-within {
   border: 2px solid #217bf4;
+  cursor: pointer;
+
 }
