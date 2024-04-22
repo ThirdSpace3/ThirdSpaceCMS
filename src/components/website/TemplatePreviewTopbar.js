@@ -3,11 +3,6 @@ import "./TemplatePreviewTopbar.css";
 import "../Root.css";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 
-const deviceSizes = {
-  tv: "100%",
-  tablet: "768px",
-  smartphone: "375px",
-};
 
 export default function TemplatePreviewTopbar({
 

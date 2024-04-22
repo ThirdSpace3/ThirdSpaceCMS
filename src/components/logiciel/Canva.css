@@ -4,7 +4,7 @@
     background-color: white;
     overflow-y: auto;
     overflow-x: auto;
-
+    position: relative;
 }
 
 /* Track */

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Canva.css';
 import '../Root.css';
 
@@ -23,16 +23,26 @@ export default function Canva({ templateName, deviceSize, settings, handleSettin
   const FallbackTemplate = () => <div>Template not found.</div>;
   const SelectedTemplate = templateComponents[templateName] || FallbackTemplate;
 
+  // State to control the size of the canvas wrapper
+  const [canvasSize, setCanvasSize] = useState({ width: deviceSize, height: '100vh' });
+
+  useEffect(() => {
+    setCanvasSize((prevState) => ({ ...prevState, width: deviceSize }));
+  }, [deviceSize]);
+
   return (
-    <div className='canva-wrapper'>
-      <SelectedTemplate
-        deviceSize={deviceSize}
-        settings={settings}
-        handleSettingsChange={handleSettingsChange}
-        selectedElement={selectedElement}
-        setSelectedElement={setSelectedElement}
-        isPreviewMode={isPreviewMode}
-      />
+    <div>
+      {/* Render the canvas wrapper with the canvasSize state as inline style and overflow-y set to auto */}
+      <div className='canva-wrapper' style={{ ...canvasSize, overflowY: 'auto' }}>
+        <SelectedTemplate
+          deviceSize={deviceSize}
+          settings={settings}
+          handleSettingsChange={handleSettingsChange}
+          selectedElement={selectedElement}
+          setSelectedElement={setSelectedElement}
+          isPreviewMode={isPreviewMode}
+        />
+      </div>
     </div>
   );
 }
