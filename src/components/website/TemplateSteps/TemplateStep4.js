@@ -6,7 +6,7 @@ import TemplateFullText from "../../../templates/EditableDiv";
 import TemplateImg_txt from "../../../templates/TemplateImg_txt";
 import { TemplateTest1 } from "../../../templates";
 import { Template2 } from "../../../templates";
-import SSSProduct from "../../../templates/templates-po/3s-Product";
+import SSSProduct from "../../../templates/3s-Product";
 // Assuming html2canvas is used elsewhere in your component or project
 
 const initialTemplates = [

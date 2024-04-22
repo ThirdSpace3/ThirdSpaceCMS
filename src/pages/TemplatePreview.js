@@ -4,7 +4,7 @@ import TemplateFullText from '../templates/EditableDiv';
 import TemplateImg_txt from '../templates/TemplateImg_txt';
 import TemplateTest1 from '../templates/TemplateTest1';
 import { Template2 } from '../templates';
-import SSSProduct from '../templates/templates-po/3s-Product';
+import SSSProduct from '../templates/3s-Product';
 import TemplatePreviewTopbar from '../components/website/TemplatePreviewTopbar';
 import { useLocation } from 'react-router-dom';
 
