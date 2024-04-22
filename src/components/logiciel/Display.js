@@ -9,6 +9,7 @@ import TemplateFullText from '../../templates/TemplateFullText';
 import TemplateImg_txt from '../../templates/TemplateImg_txt';
 import { Template2 } from '../../templates';
 import { TemplateTest1 } from '../../templates';
+import TemplatePo1 from '../../templates/templates-po/templatepo-1';
 import axios from 'axios';
 import { ImageHistoryProvider } from '../../hooks/ImageHistoryContext';
 import { useParams } from 'react-router-dom'; // Import useParams
@@ -108,6 +109,7 @@ export default function Display() {
     TemplateImg_txt: TemplateImg_txt,
     TemplateTest1 : TemplateTest1,
     Template2:Template2,
+    TemplatePo1:TemplatePo1,
     // Add more templates here as needed
   };
   const FallbackTemplate = () => <div>Template not found.</div>;

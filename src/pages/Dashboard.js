@@ -27,7 +27,7 @@ export default function Dashboard({ selectedTemplateId }) {
     image: `./images/${selectedTemplate}screenshot.png`,
     createdAt: new Date().toISOString().slice(0, 10),
     description: "",
-    favicon: "./images/favicon-placeholder.png", // Replace this with the path to your default favicon
+    favicon:  `./images/${selectedTemplate}screenshot.png`, // Replace this with the path to your default favicon
   };
   const [projects, setProjects] = useState([initialProject]);
 

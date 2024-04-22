@@ -4,6 +4,7 @@ import TemplateFullText from "../../../templates/TemplateFullText";
 import TemplateImg_txt from "../../../templates/TemplateImg_txt";
 import { TemplateTest1 } from "../../../templates";
 import { Template2 } from "../../../templates";
+import TemplatePo1 from "../../../templates/templates-po/templatepo-1";
 import NavbarSteps from "./TemplateNavbar";
 import html2canvas from "html2canvas";
 
@@ -30,6 +31,12 @@ const initialTemplates = [
     id: "Template2",
     name: "Template2",
     component: Template2,
+    screenshot: "./images/TemplateTest1screenshot.png", // Add this line
+  },
+  {
+    id: "TemplatePo1",
+    name: "TemplatePo1",
+    component: TemplatePo1,
     screenshot: "./images/TemplateTest1screenshot.png", // Add this line
   },
 ];
