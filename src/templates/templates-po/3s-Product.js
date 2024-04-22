@@ -87,7 +87,7 @@ const SSSProduct = () => {
         {/* ===HERO=== */}
         <div className="sss-product-hero">
           <h1 className="sss-product-hero-title">
-            A CRM dashboard for engineering teams
+          The first user-friendly website builder
           </h1>
           <p className="sss-product-hero-text">
             Rorem ipsum dolor sit amet consectetur. Gravida convallis orci
@@ -144,7 +144,7 @@ const SSSProduct = () => {
         <div className="sss-product-about">
           <div className="sss-product-about-header">
             <h2 className="sss-product-about-title">
-              Powerful features to help you manage all your leads
+            The best features to help you create all your projects
             </h2>
             <p className="sss-product-about-text">
               Apsum dolor sit amet consectetur. Aliquam elementum elementum in

@@ -7,6 +7,7 @@ import TemplateImg_txt from '../templates/TemplateImg_txt';
 import TemplateTest1  from '../templates/TemplateTest1';
 import  {Template2}  from '../templates';
 import SSSProduct from '../templates/templates-po/3s-Product';
+import TemplatePreviewTopbar from '../components/website/TemplatePreviewTopbar'
 // Map template names to components for easy lookup
 const templateComponents = {
   TemplateFullText: TemplateFullText,
@@ -25,6 +26,7 @@ const TemplatePreview = () => {
   return (
     <div>
       {/* <h2>Template Preview: {templateName}</h2> */}
+      <TemplatePreviewTopbar />
       {TemplateComponent ? <TemplateComponent /> : <p>Template not found.</p>}
     </div>
   );

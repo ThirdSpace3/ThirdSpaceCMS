@@ -18,6 +18,8 @@ export default function TopBar({
 }) {
   const [eyeIcon, setEyeIcon] = useState("bi bi-eye");
   const [showPopup, setShowPopup] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -47,46 +49,48 @@ export default function TopBar({
     onSaveClick();
   };
 
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);  // Toggle l'état de repli
+  };
+  // Ajoutez ce style conditionnellement dans votre JSX
+// Modifier le style ici pour inclure une transition
+const topBarStyle = isCollapsed ? { top: "-14px", transition: "top 0.3s ease-in-out" } : { top: "35px", transition: "top 0.3s ease-in-out" };
+
   return (
     <>
-      <div className="topbar-wrapper">
-        <div className="topbar-left">
-          <a className="topbar-undo-btn" onClick={onUndoClick}>
-            <i className="bi bi-arrow-return-left"></i>
-          </a>
-          <a className="topbar-redo-btn" onClick={onRedoClick}>
-            <i className="bi bi-arrow-return-right"></i>
-          </a>
-
-          <hr />
-          <a onClick={handleEyeIconClick}>
-            <i className={eyeIcon}></i>
-          </a>
+      <div className="topbar-wrapper" style={topBarStyle}>
+        <div className="topbar-wrapper-top">
+          <div className="topbar-left">
+            <a className="topbar-undo-btn" onClick={onUndoClick}>
+              <i className="bi bi-arrow-return-left"></i>
+            </a>
+            <a className="topbar-redo-btn" onClick={onRedoClick}>
+              <i className="bi bi-arrow-return-right"></i>
+            </a>
+            <hr />
+            <a onClick={handleEyeIconClick}>
+              <i className={eyeIcon}></i>
+            </a>
+          </div>
+          <div className="topbar-mid">
+            <a onClick={() => onDeviceChange(deviceSizes.tv)} className="topbar-device-btn">
+              <i className="bi bi-tv"></i>
+            </a>
+            <a onClick={() => onDeviceChange(deviceSizes.tablet)} className="topbar-device-btn">
+              <i className="bi bi-tablet-landscape"></i>
+            </a>
+            <a onClick={() => onDeviceChange(deviceSizes.smartphone)} className="topbar-device-btn">
+              <i className="bi bi-phone"></i>
+            </a>
+          </div>
+          <button className="topbar-propulse-btn" onClick={handlePropulseClick}>
+            Propulse
+            <i className="bi bi-rocket-takeoff"></i>
+          </button>
         </div>
-        <div className="topbar-mid">
-          <a
-            onClick={() => onDeviceChange(deviceSizes.tv)}
-            className="topbar-device-btn"
-          >
-            <i className="bi bi-tv"></i>
-          </a>
-          <a
-            onClick={() => onDeviceChange(deviceSizes.tablet)}
-            className="topbar-device-btn"
-          >
-            <i className="bi bi-tablet-landscape"></i>
-          </a>
-          <a
-            onClick={() => onDeviceChange(deviceSizes.smartphone)}
-            className="topbar-device-btn"
-          >
-            <i className="bi bi-phone"></i>
-          </a>
+        <div className="topbar-wrapper-bottom">
+          <i className={isCollapsed ? "bi bi-chevron-down" : "bi bi-chevron-up"} onClick={toggleCollapse}></i>
         </div>
-        <button className="topbar-propulse-btn" onClick={handlePropulseClick}>
-          Propulse
-          <i class="bi bi-rocket-takeoff"></i>
-        </button>
       </div>
       {showPopup && <PropulsePopup />}
     </>
