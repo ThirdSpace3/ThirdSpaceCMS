@@ -10,8 +10,7 @@ const TemplateFullText = ({
   onToggleTemplate1OnDo,
   showOnlyTemplate1OnDo
 }) => {
-  const { style } = useStyle();
-
+  const { style, setSelectedComponent } = useStyle();
   const [walletId, setWalletId] = useState('');
   const [content, setContent] = useState({
     title: 'Your Landing Page Title',
@@ -74,21 +73,22 @@ const TemplateFullText = ({
       textAlign: 'left',
     },
   };
-  const fetchStyleForKey = (key) => {
-    // Mapping keys to their respective style properties
-    const keyStyleMap = {
-      title: styles.title,
-      subtitle: styles.subtitle,
-      introParagraph: styles.paragraph,
-      section1Title: styles.sectionTitle,
-      section1Content: styles.sectionContent,
-      section2Title: styles.sectionTitle,
-      section2Content: styles.sectionContent,
-    };
 
-    // Fetch and return the style for the given key
-    return keyStyleMap[key] || {};
-  };
+  // const fetchStyleForKey = (key) => {
+  //   // Mapping keys to their respective style properties
+  //   const keyStyleMap = {
+  //     title: styles.title,
+  //     subtitle: styles.subtitle,
+  //     introParagraph: styles.paragraph,
+  //     section1Title: styles.sectionTitle,
+  //     section1Content: styles.sectionContent,
+  //     section2Title: styles.sectionTitle,
+  //     section2Content: styles.sectionContent,
+  //   };
+
+  //   // Fetch and return the style for the given key
+  //   return keyStyleMap[key] || {};
+  // };
 
   // Use useRef to create references for the title and paragraph elements
   const titleRef = useRef(null);
@@ -99,17 +99,11 @@ const TemplateFullText = ({
   const section2TitleRef = useRef(null);
   const section2ContentRef = useRef(null);
 
-  const getContentAndStyles = useCallback(() => {
-    return { content, styles };
-  }, [content, styles]);
+  // const getContentAndStyles = useCallback(() => {
+  //   return { content, styles };
+  // }, [content, styles]);
   
-  useEffect(() => {
-    // Retrieve the walletId from session storage
-    const storedWalletId = sessionStorage.getItem('userAccount');
-    if (storedWalletId) {
-      setWalletId(storedWalletId);
-    }
-  }, []);
+
 
   const handleContentChange = (key, newValue) => {
     setContent((prevContent) => ({
@@ -118,14 +112,31 @@ const TemplateFullText = ({
     }));
   };
 
-  const handleTextClick = (elementRef) => {
-    setSelectedElement(elementRef.current);
-  };
+const { updateStyle } = useStyle();
+
+const handleTextClick = (elementRef) => {
+  setSelectedElement(elementRef.current);
+};
  
   const handleReturnClick = useCallback(() => {
     onToggleTemplate1OnDo();
   }, [onToggleTemplate1OnDo]);
 
+  // Function to merge base styles with dynamic styles from context
+  const getCombinedStyles = (styles) => {
+    const combinedStyles = { ...styles, ...style }; // Merge base style with context style
+    console.log("Combined Styles:", combinedStyles); // Log combined styles
+    return combinedStyles;
+  };
+
+
+  useEffect(() => {
+    // Retrieve the walletId from session storage
+    const storedWalletId = sessionStorage.getItem('userAccount');
+    if (storedWalletId) {
+      setWalletId(storedWalletId);
+    }
+  }, []);
 
   useEffect(() => {
     // Apply styles to the selected element
@@ -135,15 +146,15 @@ const TemplateFullText = ({
       });
     }
   }, [style, selectedElement]);
-  // Function to merge base styles with dynamic styles from context
-  const getCombinedStyles = (styles) => {
-    const combinedStyles = { ...styles, ...style }; // Merge base style with context style
-    console.log("Combined Styles:", combinedStyles); // Log combined styles
-    return combinedStyles;
-  };
 
+
+  
+  const handleClick = () => {
+    setSelectedComponent('TemplateFullText');
+    console.log('Component Selected');
+  };
   return (
-    <div style={styles.templateWrapper}>
+    <div style={{ ...styles.templateWrapper, ...style }} onClick={handleClick}>
       {showOnlyTemplate1OnDo && <button onClick={handleReturnClick}>Return</button>}
       <p>Wallet ID: {walletId}</p>
 

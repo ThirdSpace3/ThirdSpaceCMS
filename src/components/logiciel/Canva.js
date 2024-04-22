@@ -3,7 +3,7 @@ import './Canva.css';
 import '../Root.css';
 
 // Import all template components
-import TemplateFullText from '../../templates/TemplateFullText';
+import TemplateFullText from '../../templates/EditableDiv';
 import TemplateImg_txt from '../../templates/TemplateImg_txt';
 import Template2 from '../../templates/Template2';
 import TemplateTest1 from '../../templates/TemplateTest1';

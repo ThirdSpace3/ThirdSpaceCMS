@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import TemplateFullText from "../../../templates/TemplateFullText";
+import TemplateFullText from "../../../templates/EditableDiv";
 import TemplateImg_txt from "../../../templates/TemplateImg_txt";
 import { TemplateTest1 } from "../../../templates";
 import { Template2 } from "../../../templates";
@@ -19,7 +19,7 @@ const initialTemplates = [
     id: "SSSProduct",
     name: "SSSProduct",
     component: SSSProduct,
-    screenshot: `./images/TemplatePo1screenshot.png`, // Add this line
+    screenshot: `./images/SSSProductscreenshot.png`, // Add this line
   },
   {
     id: "TemplateImg_txt",

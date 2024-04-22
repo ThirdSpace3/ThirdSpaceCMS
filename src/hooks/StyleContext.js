@@ -4,13 +4,16 @@ const StyleContext = createContext();
 
 export const StyleProvider = ({ children }) => {
   const [style, setStyle] = useState({});
+  const [selectedComponent, setSelectedComponent] = useState(null);
 
   const updateStyle = (newStyles) => {
-    setStyle(newStyles);
+    if (selectedComponent === 'SectionHero') {
+      setStyle(prevStyles => ({ ...prevStyles, ...newStyles }));
+    }
   };
 
   return (
-    <StyleContext.Provider value={{ style, updateStyle }}>
+    <StyleContext.Provider value={{ style, updateStyle, setSelectedComponent }}>
       {children}
     </StyleContext.Provider>
   );

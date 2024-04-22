@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 // Import your template components here
-import TemplateFullText from '../templates/TemplateFullText';
+import TemplateFullText from '../templates/EditableDiv';
 import TemplateImg_txt from '../templates/TemplateImg_txt';
 import TemplateTest1  from '../templates/TemplateTest1';
 import  {Template2}  from '../templates';

@@ -4,7 +4,7 @@ import ImageSlots from '../../../components/logiciel/TemplateComponent/ImageSlot
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 const SectionHero = ({ isPreviewMode, setSelectedElement }) => {
-  const { style } = useStyle();
+  const { style, setSelectedComponent } = useStyle();
   const { imageHistory } = useImageHistory();
 
   // Default content structure for the hero section
@@ -37,11 +37,14 @@ const SectionHero = ({ isPreviewMode, setSelectedElement }) => {
     }
   };
 
+  const handleClick = () => {
+    setSelectedComponent('SectionHero');
+  };
   // Dynamic styles for the hero section, possibly enhanced by useStyle
   const dynamicStyles = {
     hero: {
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       height: '90vh',
@@ -78,9 +81,9 @@ const SectionHero = ({ isPreviewMode, setSelectedElement }) => {
   }, []);
 
   return (
-    <div className='hero-section-1'>
+    <div className='hero-section-1' onClick={handleClick} style={dynamicStyles.hero}>
       <ImageSlots styles={dynamicStyles} imageHistory={imageHistory} className={dynamicStyles.heroImage}/>
-      <section style={dynamicStyles.hero}>
+      <section >
         <EditableText
           isEditable={!isPreviewMode}
           tagName="h1"

@@ -14,39 +14,39 @@ import SectionFooter1 from './TemplateComponents/Template1/SectionFooter1';
 
 const TemplateTest1 = ({ deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, isPreviewMode }) => {
 
-  // Function to take a screenshot
-  const takeScreenshot = () => {
-    html2canvas(document.body).then((canvas) => {
-      // Create an image element
-      const img = document.createElement('img');
-      // Set the source of the image to the canvas data URL
-      img.src = canvas.toDataURL('image/png');
-      // Append the image to the body, or handle it as needed
-      // For demonstration, we'll log the URL to the console
-      console.log(img.src);
-      // Here, you might want to upload the image to a server, save it locally, etc.
-    });
-  };
+  // // Function to take a screenshot
+  // const takeScreenshot = () => {
+  //   html2canvas(document.body).then((canvas) => {
+  //     // Create an image element
+  //     const img = document.createElement('img');
+  //     // Set the source of the image to the canvas data URL
+  //     img.src = canvas.toDataURL('image/png');
+  //     // Append the image to the body, or handle it as needed
+  //     // For demonstration, we'll log the URL to the console
+  //     console.log(img.src);
+  //     // Here, you might want to upload the image to a server, save it locally, etc.
+  //   });
+  // };
 
-  useEffect(() => {
-    // Function to handle the beforeunload event
-    const handleBeforeUnload = (e) => {
-      // Prevent the default unload behavior
-      e.preventDefault();
-      // Take a screenshot before leaving the page
-      takeScreenshot();
-      // Chrome requires returnValue to be set
-      e.returnValue = '';
-    };
+  // useEffect(() => {
+  //   // Function to handle the beforeunload event
+  //   const handleBeforeUnload = (e) => {
+  //     // Prevent the default unload behavior
+  //     e.preventDefault();
+  //     // Take a screenshot before leaving the page
+  //     takeScreenshot();
+  //     // Chrome requires returnValue to be set
+  //     e.returnValue = '';
+  //   };
 
-    // Add the event listener
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  //   // Add the event listener
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
 
-    // Cleanup function to remove the event listener
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
+  //   // Cleanup function to remove the event listener
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // }, []);
 
   return (
     <div className='templatebody'>

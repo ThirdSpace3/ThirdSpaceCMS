@@ -162,8 +162,16 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
     console.log("Input change for:", styleProperty, "value:", value);
   };
 
-  const onSettingsChange = (element, newSettings) => {
-    if (element) {
+  const onSettingsChange = (elementAttributes, newSettings) => {
+    if (!elementAttributes || !elementAttributes.id) return;
+    
+    const element = document.getElementById(elementAttributes.id);
+    if (!element) return;
+  
+    // Now `element` is your DOM element, and you can apply styles to it as you were doing before.
+    // Apply background settings, typography settings, etc., as you have in your existing method.
+  
+    else if (element) {
       // Apply background settings
       if (newSettings.background) {
         const {
@@ -317,39 +325,43 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
 
   // Set the initial state of the RightBar component based on the selected element's current styles
   useEffect(() => {
-    if (selectedElement) {
-      const elementStyle = window.getComputedStyle(selectedElement);
-
-      setBackgroundStyle({
-        backgroundColor: elementStyle.backgroundColor,
-        backgroundImage: elementStyle.backgroundImage,
-      });
-
-      setBorderStyle({
-        borderColor: elementStyle.borderColor,
-        borderWidth: parseInt(elementStyle.borderWidth, 10),
-      });
-
-      setTypographyStyle({
-        fontFamily: elementStyle.fontFamily,
-        fontSize: parseInt(elementStyle.fontSize, 10),
-        color: elementStyle.color,
-        fontStyle: elementStyle.fontStyle,
-        textDecoration: elementStyle.textDecoration,
-        textAlign: elementStyle.textAlign,
-      });
-
-      // Capture initial width and height
-      setSizeStyle({
-        width: selectedElement.style.width,
-        height: selectedElement.style.height,
-      });
-      updateStyle(style);
+    if (selectedElement && selectedElement.id) {
+      const element = document.getElementById(selectedElement.id);
+      if (element) {
+        const elementStyle = window.getComputedStyle(element);
+  
+        setBackgroundStyle({
+          backgroundColor: elementStyle.backgroundColor,
+          backgroundImage: elementStyle.backgroundImage,
+        });
+  
+        setBorderStyle({
+          borderColor: elementStyle.borderColor,
+          borderWidth: parseInt(elementStyle.borderWidth, 10),
+        });
+  
+        setTypographyStyle({
+          fontFamily: elementStyle.fontFamily,
+          fontSize: parseInt(elementStyle.fontSize, 10),
+          color: elementStyle.color,
+          fontStyle: elementStyle.fontStyle,
+          textDecoration: elementStyle.textDecoration,
+          textAlign: elementStyle.textAlign,
+        });
+  
+        // Capture initial width and height
+        setSizeStyle({
+          width: element.style.width,
+          height: element.style.height,
+        });
+        // Note: You might need to adjust or add more style settings based on your needs.
+      }
     }
   }, [selectedElement]);
+  
 
   const handleBackgroundChange = (e, styleProperty) => {
-    let value;
+    let value = e.target.value; // For simplicity, assuming this is always the correct way to get the value
 
     if (styleProperty === "backgroundColor") {
       value = e.target.value;
@@ -380,6 +392,8 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
     onSettingsChange(selectedElement, {
       background: { [styleProperty]: value },
     });
+    updateStyle({ value });
+
   };
 
   const handleTextDecoration = (decorationType) => {
