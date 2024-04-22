@@ -94,12 +94,10 @@ useEffect(() => {
   });
 
   const [profilePicture, setProfilePicture] = useState(() => {
-    // Load profile picture from local storage or set a default
-    return (
-      "../images/avatar-placeholder.png" ||
-      localStorage.getItem("profilePicture")
-    );
+    // Attempt to load profile picture from local storage, fallback to default
+    return localStorage.getItem("profilePicture") || "../images/avatar-placeholder.png";
   });
+  
 
   // Function to update user details
   const updateUserDetails = (

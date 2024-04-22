@@ -9,8 +9,11 @@ export default function ProfileDashboard({ updateUserDetails }) {
   const [usernameError, setUsernameError] = useState("");
 
   const [description, setDescription] = useState("");
-  const [profilePicture, setProfilePicture] = useState(null);
-  const [isEdited, setIsEdited] = useState(false); // Tracks if any edits have been made
+  const [profilePicture, setProfilePicture] = useState(() => {
+    // Attempt to load profile picture from local storage, fallback to default
+    return localStorage.getItem("profilePicture") || "../images/avatar-placeholder.png";
+  });
+    const [isEdited, setIsEdited] = useState(false); // Tracks if any edits have been made
   const [isSaved, setIsSaved] = useState(false); // Tracks if changes have been successfully saved
   const [imageError, setImageError] = useState(null);
   const [copied, setCopied] = useState("");
@@ -86,11 +89,11 @@ export default function ProfileDashboard({ updateUserDetails }) {
       const image = new Image();
       image.src = URL.createObjectURL(file);
       image.onload = () => {
+        // Check dimensions before setting
         if (image.width > 300 || image.height > 300) {
           setImageError("The image must be smaller than 300x300 px");
-          setIsEdited(false); // Revert isEdited if the image is not valid
         } else {
-          setProfilePicture(image.src);
+          setProfilePicture(image.src); // Set the image URL for preview
           setImageError(null);
           setIsEdited(true);
           setIsSaved(false);
@@ -101,6 +104,7 @@ export default function ProfileDashboard({ updateUserDetails }) {
       };
     }
   };
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -241,7 +245,7 @@ export default function ProfileDashboard({ updateUserDetails }) {
               <div className="dashboard-settings-item-box-profile">
                 <div className="dashboard-settings-pp">
                   <img
-                    src={profilePicture || "./images/favicon-placeholder.png"}
+                    src={profilePicture}
                     alt="Profile"
                   />
                 </div>
