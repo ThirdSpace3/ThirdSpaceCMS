@@ -10,10 +10,16 @@ import html2canvas from "html2canvas";
 
 const initialTemplates = [
   {
-    id: "TemplateFullText",
-    name: "TemplateFullText",
-    component: TemplateFullText,
-    screenshot: "./images/TemplateFullTextscreenshot.png", // Add this line
+    id: "TemplateTest1",
+    name: "TemplateTest1",
+    component: TemplateTest1,
+    screenshot: "./images/TemplateTest1screenshot.png", // Add this line
+  },
+  {
+    id: "TemplatePo1",
+    name: "TemplatePo1",
+    component: TemplatePo1,
+    screenshot: `./images/TemplatePo1screenshot.png`, // Add this line
   },
   {
     id: "TemplateImg_txt",
@@ -21,11 +27,11 @@ const initialTemplates = [
     component: TemplateImg_txt,
     screenshot: "./images/TemplateImg_txtscreenshot.png", // Add this line
   },
-  {
-    id: "TemplateTest1",
-    name: "TemplateTest1",
-    component: TemplateTest1,
-    screenshot: "./images/TemplateTest1screenshot.png", // Add this line
+ {
+    id: "TemplateFullText",
+    name: "TemplateFullText",
+    component: TemplateFullText,
+    screenshot: "./images/TemplateFullTextscreenshot.png", // Add this line
   },
   {
     id: "Template2",
@@ -33,12 +39,7 @@ const initialTemplates = [
     component: Template2,
     screenshot: "./images/TemplateTest1screenshot.png", // Add this line
   },
-  {
-    id: "TemplatePo1",
-    name: "TemplatePo1",
-    component: TemplatePo1,
-    screenshot: "./images/TemplateTest1screenshot.png", // Add this line
-  },
+ 
 ];
 
 const TemplateStep4 = ({
@@ -80,6 +81,8 @@ const TemplateStep4 = ({
       [currentStep]: [initialTemplatesId],
     }));
 
+    setSelectedTemplate(initialTemplatesId); // Add this line
+
     let newSelectedDots = selectedDots.includes(initialTemplatesId)
       ? selectedDots.filter((id) => id !== initialTemplatesId)
       : [...selectedDots, initialTemplatesId];
@@ -87,6 +90,7 @@ const TemplateStep4 = ({
 
     updateNextButtonState(true);
   };
+
 
   const handleHover = (index, state) => {
     const updatedHoverStates = [...isHovered];
@@ -127,7 +131,7 @@ const TemplateStep4 = ({
           <div className="templates-container">
             {templates.map((template, index) => (
               <div
-                className="templates-box"
+                className={`templates-box`}
                 key={template.id}
                 onClick={() => handleTemplateSelect(template.id)}
               >

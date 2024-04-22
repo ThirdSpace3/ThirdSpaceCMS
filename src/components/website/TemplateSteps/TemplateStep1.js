@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../../Root.css';
 
 const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedButtons, setSelectedButtons, currentStep }) => {
     const [inputValue, setInputValue] = useState('');

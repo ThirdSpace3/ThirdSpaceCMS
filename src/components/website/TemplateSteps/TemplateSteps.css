@@ -113,7 +113,9 @@ body {
   cursor: pointer;
   background: rgba(255, 255, 255, 0.6);
 }
-
+.selectable-button.selected {
+  background: rgba(255, 255, 255, 0.6) !important;
+}
 .template-input-box {
   display: flex;
   flex-direction: column;
@@ -424,6 +426,9 @@ button.disabled * {
   overflow: hidden;
 }
 
+.templates-box.selected {
+  border: 2px solid var(--text-editor);
+}
 .templates-hover {
   display: none; /* Cacher la div par défaut */
   position: absolute;

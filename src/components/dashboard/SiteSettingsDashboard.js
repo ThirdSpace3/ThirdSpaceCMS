@@ -29,11 +29,11 @@ export default function SiteSettingsDashboard({
     setIsImageError(false);
   }, [project]);
 
-const handleTemplateNameChange = (e) => {
-  setTemplateName(e.target.value);
-  setIsEdited(true);
-  setIsSaved(false);
-};
+  const handleTemplateNameChange = (e) => {
+    setTemplateName(e.target.value);
+    setIsEdited(true);
+    setIsSaved(false);
+  };
 
   const handleTemplateDescriptionChange = (e) => {
     setTemplateDescription(e.target.value);
@@ -77,7 +77,7 @@ const handleTemplateNameChange = (e) => {
 
     const updatedProject = {
       ...project,
-      name: newTemplateName || project.name,
+      name: templateName,
       description: templateDescription,
       favicon: favicon,
       lastUpdated: lastUpdated, // Update the lastUpdated field with the new timestamp
@@ -88,11 +88,11 @@ const handleTemplateNameChange = (e) => {
     // Save to localStorage
     localStorage.setItem("projectData", JSON.stringify(updatedProject));
 
-    setTemplateName(newTemplateName || project.name);
     setIsEdited(false);
     setIsSaved(true);
     setIsImageError(false);
   };
+
   useEffect(() => {
     const savedProjectData = JSON.parse(localStorage.getItem("projectData"));
     if (savedProjectData && savedProjectData.id === project.id) {
@@ -138,10 +138,10 @@ const handleTemplateNameChange = (e) => {
               </div>
             </div>
             <input
-  type="text"
-  value={templateName}
-  onChange={handleTemplateNameChange}
-/>
+              type="text"
+              value={templateName}
+              onChange={handleTemplateNameChange}
+            />
           </div>
           <div className="dashboard-settings-item">
             <div className="dashboard-settings-title">

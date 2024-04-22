@@ -140,6 +140,19 @@ export default function ProjectsDashboard({
 
     setRecentlyUpdatedProject(mostRecentProject);
   }, [projects]);
+
+  useEffect(() => {
+    const storedProjects = JSON.parse(localStorage.getItem("projects"));
+    if (storedProjects) {
+      setProjects(storedProjects);
+    }
+  }, []);
+
+  // Update the state of the projects in localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("projects", JSON.stringify(projects));
+  }, [projects]);
+  
   return (
     <>
       <div className="projects-container">

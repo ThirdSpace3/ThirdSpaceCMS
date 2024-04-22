@@ -44,22 +44,22 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
 
     const handleButtonClick = (buttonId) => {
         setSelectedButtons((prevSelections) => {
-          const updatedSelections = { ...prevSelections };
-          const buttonIndex = updatedSelections[currentStep]?.indexOf(buttonId);
-      
-          if (buttonIndex !== -1) {
-            // If the button is already selected, remove it
-            updatedSelections[currentStep].splice(buttonIndex, 1);
-          } else {
-            // If the button is not selected, add it
-            updatedSelections[currentStep] = [...(updatedSelections[currentStep] || []), buttonId];
-          }
-      
-          return updatedSelections;
+            const updatedSelections = { ...prevSelections };
+            const buttonIndex = updatedSelections[currentStep]?.indexOf(buttonId);
+
+            if (buttonIndex !== -1) {
+                // If the button is already selected, remove it
+                updatedSelections[currentStep].splice(buttonIndex, 1);
+            } else {
+                // If the button is not selected, add it
+                updatedSelections[currentStep] = [...(updatedSelections[currentStep] || []), buttonId];
+            }
+
+            return updatedSelections;
         });
-      };
-      
-      
+    };
+
+
 
     useEffect(() => {
         const isNextEnabled = selectedButtons[currentStep]?.length > 0 || inputValue.trim() !== '';
@@ -85,13 +85,13 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
                             {pair.map((buttonLabel) => {
                                 const buttonId = buttonLabel.replace(/\s+/g, '').toLowerCase();
                                 return (
-<button
-  key={buttonId}
-  className={`selectable-button-2 ${selectedButtons[currentStep]?.some(id => id === buttonId) ? 'selected' : ''}`}
-  onClick={() => handleButtonClick(buttonId)}
->
-  {buttonLabel}
-</button>
+                                    <button
+                                        key={buttonId}
+                                        className={`selectable-button-2 ${selectedButtons[currentStep]?.some(id => id === buttonId) ? 'selected' : ''}`}
+                                        onClick={() => handleButtonClick(buttonId)}
+                                    >
+                                        {buttonLabel}
+                                    </button>
 
                                 );
                             })}

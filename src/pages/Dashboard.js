@@ -12,7 +12,6 @@ export default function Dashboard({ selectedTemplateId }) {
   const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
   const walletId = sessionStorage.getItem("userAccount");
   const [newTemplateName, setNewTemplateName] = useState("");
-
   console.log("isLoggedIn:", isLoggedIn); // Add this line
   console.log("walletId:", walletId); // Add this line
   const selectedTemplate = sessionStorage.getItem("selectedTemplateId");
@@ -27,7 +26,7 @@ export default function Dashboard({ selectedTemplateId }) {
     image: `./images/${selectedTemplate}screenshot.png`,
     createdAt: new Date().toISOString().slice(0, 10),
     description: "",
-    favicon:  `./images/${selectedTemplate}screenshot.png`, // Replace this with the path to your default favicon
+    favicon: `./images/${selectedTemplate}screenshot.png`, // Replace this with the path to your default favicon
   };
   const [projects, setProjects] = useState([initialProject]);
 
@@ -99,9 +98,11 @@ export default function Dashboard({ selectedTemplateId }) {
     const updatedProjects = projects.map((project) =>
       project.id === updatedProject.id ? updatedProject : project
     );
-    setProjects(updatedProjects);
+    setProjects(updatedProjects); // Update the state with the new array of projects
+    localStorage.setItem("projects", JSON.stringify(updatedProjects));
     setSelectedProject(updatedProject); // Update selected project
   };
+
 
   const handleReturnToProjectsDashboard = () => {
     setActiveMenuItem("projects");
@@ -129,11 +130,12 @@ export default function Dashboard({ selectedTemplateId }) {
           <div className="projectsDashboard">
             {activeMenuItem === "projects" && (
               <ProjectsDashboard
-                projects={projects}
+                projects={projects} // Pass the projects state instead of filteredProjects
                 handleOpenSettings={handleOpenSettings}
                 setProjects={setProjects}
               />
             )}
+
 
             {activeMenuItem === "settings" && (
               <SiteSettingsDashboard
