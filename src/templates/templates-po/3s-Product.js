@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom"; // This is assuming you want SPA style navigation.
 import "./templatepo-1.css";
 
-const TemplatePo1 = () => {
+const SSSProduct = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [bodyOverflow, setBodyOverflow] = useState("auto");
   const [menuToggleImg, setMenuToggleImg] = useState(
@@ -368,4 +368,4 @@ const TemplatePo1 = () => {
   );
 };
 
-export default TemplatePo1;
+export default SSSProduct;

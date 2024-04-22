@@ -10,7 +10,6 @@ import TemplateStep from "./pages/TemplateStep";
 import Dashboard from "./pages/Dashboard";
 import Display from "./components/logiciel/Display";
 import TemplatePreview from "./pages/TemplatePreview";
-import TemplatePo1 from "./templates/templates-po/templatepo-1";
 import IntegrationTODO from "./components/logiciel/IntegrationTODO/IntegrationTODO"
 import { StyleProvider } from "./hooks/StyleContext";
 import { ImageHistoryProvider } from "./hooks/ImageHistoryContext";
@@ -31,7 +30,6 @@ export default function App() {
               <Route path="/templates" element={<TemplateStep />} />
               <Route path="/templatestep" element={<TemplateStep />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/templatepo1" element={<TemplatePo1 />} />
               <Route path="/IntegrationTODO" element={<IntegrationTODO />} />
 
               <Route
