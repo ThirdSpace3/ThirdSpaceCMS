@@ -181,6 +181,7 @@ export default function TemplateStep() {
               currentStep={currentStep}
               setProjectName={setProjectName}
               projectName={projectName}
+              setCurrentStep={setCurrentStep}
             />
           )}
 
@@ -195,7 +196,7 @@ export default function TemplateStep() {
             />
           )}
 
-          {currentStep <= 5 && (
+          {currentStep <= 5 && currentStep !== 4 && (
             <TemplateStepsBTN
               onNext={handleNext}
               onIgnore={handleIgnore}
@@ -213,7 +214,7 @@ export default function TemplateStep() {
       )}
       {/* Components outside the conditional rendering remain unchanged */}
       <ReportBugBTN />
-      {currentStep !== 4 && <TemplateProgressBar currentStep={currentStep} />}
+      {currentStep !== 4 &&  <TemplateProgressBar currentStep={currentStep} />}
     </>
   );
 }

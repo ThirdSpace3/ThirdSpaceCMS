@@ -1,112 +1,85 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import NavbarSteps from "./TemplateNavbar";
+// Import your template components
 import TemplateFullText from "../../../templates/EditableDiv";
 import TemplateImg_txt from "../../../templates/TemplateImg_txt";
 import { TemplateTest1 } from "../../../templates";
 import { Template2 } from "../../../templates";
 import SSSProduct from "../../../templates/templates-po/3s-Product";
-import NavbarSteps from "./TemplateNavbar";
-import html2canvas from "html2canvas";
+// Assuming html2canvas is used elsewhere in your component or project
 
 const initialTemplates = [
   {
     id: "TemplateTest1",
     name: "TemplateTest1",
     component: TemplateTest1,
-    screenshot: "./images/TemplateTest1screenshot.png", // Add this line
+    screenshot: "./images/TemplateTest1screenshot.png",
   },
   {
     id: "SSSProduct",
     name: "SSSProduct",
     component: SSSProduct,
-    screenshot: `./images/SSSProductscreenshot.png`, // Add this line
+    screenshot: "./images/SSSProductscreenshot.png",
   },
   {
     id: "TemplateImg_txt",
     name: "TemplateImg_txt",
     component: TemplateImg_txt,
-    screenshot: "./images/TemplateImg_txtscreenshot.png", // Add this line
+    screenshot: "./images/TemplateImg_txtscreenshot.png",
   },
- {
+  {
     id: "TemplateFullText",
     name: "TemplateFullText",
     component: TemplateFullText,
-    screenshot: "./images/TemplateFullTextscreenshot.png", // Add this line
+    screenshot: "./images/TemplateFullTextscreenshot.png",
   },
   {
     id: "Template2",
     name: "Template2",
     component: Template2,
-    screenshot: "./images/TemplateTest1screenshot.png", // Add this line
+    screenshot: "./images/TemplateTest1screenshot.png",
   },
- 
 ];
 
 const TemplateStep4 = ({
   updateNextButtonState,
   setSelectedButtons,
   currentStep,
+  setCurrentStep, // Make sure to pass setCurrentStep from the parent component
 }) => {
   const location = useLocation();
   const [templates, setTemplates] = useState(initialTemplates);
-  const { selectedTemplateId } = location.state || {};
+  const [isHovered, setIsHovered] = useState(Array(templates.length).fill(false));
+  const [selectedId, setSelectedId] = useState(location.state?.selectedTemplateId || "");
 
-  const [isHovered, setIsHovered] = useState(
-    Array(templates.length).fill(false)
-  );
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
-
-  const [selectedId, setSelectedId] = useState(selectedTemplateId || "");
-  const [selectedDots, setSelectedDots] = useState([]);
-  const [projects, setProjects] = useState(() => {
-    const storedProjects = JSON.parse(sessionStorage.getItem("projects"));
-    return storedProjects || [];
-  });
-  const options = [
-    "Portfolio",
-    "Online Shop",
-    "Marketplace",
-    "Services",
-    "Courses",
-    "One Page",
-  ];
-
-  const handleTemplateSelect = (initialTemplatesId) => {
-    console.log(`Template selected: ${initialTemplatesId}`);
-    sessionStorage.setItem("selectedTemplateId", initialTemplatesId);
-
-    setSelectedId(initialTemplatesId);
-    setSelectedButtons((prevSelectedButtons) => ({
-      ...prevSelectedButtons,
-      [currentStep]: [initialTemplatesId],
-    }));
-
-    setSelectedTemplate(initialTemplatesId); // Add this line
-
-    let newSelectedDots = selectedDots.includes(initialTemplatesId)
-      ? selectedDots.filter((id) => id !== initialTemplatesId)
-      : [...selectedDots, initialTemplatesId];
-    setSelectedDots(newSelectedDots);
-
+  const handleTemplateSelect = (templateId) => {
+    console.log(`Template selected: ${templateId}`);
+    setSelectedId(templateId);
+    sessionStorage.setItem("selectedTemplateId", templateId);
     updateNextButtonState(true);
-  };
 
+    const additionalData = { selectedTemplateId: templateId };
+    advanceToNextStep(currentStep, setCurrentStep, additionalData);
+  };
 
   const handleHover = (index, state) => {
-    const updatedHoverStates = [...isHovered];
-    updatedHoverStates[index] = state;
-    setIsHovered(updatedHoverStates);
+    setIsHovered(isHovered.map((hoverState, i) => (i === index ? state : hoverState)));
   };
 
-  useEffect(() => {
-    if (selectedTemplateId) {
-      const currentStepData =
-        JSON.parse(sessionStorage.getItem("stepData")) || {};
-      currentStepData[currentStep] = [selectedTemplateId];
-      sessionStorage.setItem("stepData", JSON.stringify(currentStepData));
-      console.log("Updated session storage:", currentStepData);
+  const advanceToNextStep = (currentStep, setCurrentStep, additionalData = {}) => {
+    const sessionData = JSON.parse(sessionStorage.getItem('stepData')) || {};
+    Object.assign(sessionData, { [currentStep]: additionalData });
+    sessionStorage.setItem('stepData', JSON.stringify(sessionData));
+  
+    const nextStep = currentStep + 1;
+    if (nextStep <= 5) {
+      setCurrentStep(nextStep);
+    } else {
+      // Handle final step logic here, if any
+      console.log("Final step reached or logic for handling steps beyond 5.");
     }
-  }, [selectedTemplateId, currentStep]);
+  };
 
   return (
     <div id="etape4">
@@ -117,21 +90,10 @@ const TemplateStep4 = ({
           You can always explore other templates if you change your mind later.
         </p>
         <div className="templates-section">
-          {/* <div className='listing-container'>
-            <h3>Type</h3>
-            <div className='listing-content'>
-              {options.map((option) => (
-                <div key={option} className='listing-item' onClick={() => handleTemplateSelect(option)}>
-                  <div className={`listing-dot ${selectedDots.includes(option) ? 'listing-dot-selected' : ''}`}></div>
-                  <p className='listing-item-name'>{option}</p>
-                </div>
-              ))}
-            </div>
-          </div> */}
           <div className="templates-container">
             {templates.map((template, index) => (
               <div
-                className={`templates-box`}
+                className={`templates-box ${template.id === selectedId ? 'selected' : ''}`}
                 key={template.id}
                 onClick={() => handleTemplateSelect(template.id)}
               >
@@ -148,7 +110,6 @@ const TemplateStep4 = ({
                   {isHovered[index] && (
                     <div className="templates-hover">
                       <div className="templates-hover-content">
-                        {/* Prevent event propagation */}
                         <Link
                           to={`/template-preview/${template.id}`}
                           state={{ selectedTemplateId: template.id }}
@@ -156,7 +117,15 @@ const TemplateStep4 = ({
                         >
                           View Demo
                         </Link>
-                        <Link>Start Editing</Link>
+                        <Link
+                          className="start-editing-link"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleTemplateSelect(template.id);
+                          }}
+                        >
+                          Start Editing
+                        </Link>
                       </div>
                     </div>
                   )}

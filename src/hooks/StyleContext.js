@@ -7,7 +7,7 @@ export const StyleProvider = ({ children }) => {
   const [selectedComponent, setSelectedComponent] = useState(null);
 
   const updateStyle = (newStyles) => {
-    if (selectedComponent === 'SectionHero') {
+    if (selectedComponent === 'TemplateFullText') {
       setStyle(prevStyles => ({ ...prevStyles, ...newStyles }));
     }
   };
