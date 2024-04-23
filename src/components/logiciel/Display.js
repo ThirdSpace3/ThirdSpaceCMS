@@ -45,10 +45,6 @@ export default function Display() {
       return updatedSettings;
     });
   };
-  
-  
-  
-
   const selectElement = (elementId) => {
     console.log('selectElement elementId:', elementId);
 
@@ -108,6 +104,7 @@ export default function Display() {
     setIsPreviewMode(!isPreviewMode);
   };
 
+  console.log('selectElement prop in Display:', selectElement);
 
   return (
     <ImageHistoryProvider>

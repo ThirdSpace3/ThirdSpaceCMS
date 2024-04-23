@@ -24,6 +24,7 @@ export default function Canva({ templateName, deviceSize, settings, handleSettin
   useEffect(() => {
     setCanvasSize({ width: deviceSize, height: '100vh' });
   }, [deviceSize]);
+  console.log('selectElement prop in Canva:', selectElement);
 
   return (
     <div className='canva-wrapper' style={{ ...canvasSize, overflowY: 'auto' }}>

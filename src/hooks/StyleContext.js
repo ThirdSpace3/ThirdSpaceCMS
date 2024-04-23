@@ -14,13 +14,17 @@ export const StyleProvider = ({ children }) => {
       [selectedElement]: { ...prevStyle[selectedElement], ...newStyle },
     }));
   };
-  
+
+  const getComponentStyle = (component) => {
+    return style[component] || {};
+  };
 
   return (
-    <StyleContext.Provider value={{ style, updateStyle, setSelectedComponent }}>
+    <StyleContext.Provider value={{ style, updateStyle, setSelectedComponent, getComponentStyle }}>
       {children}
     </StyleContext.Provider>
   );
 };
+
 
 export const useStyle = () => useContext(StyleContext);

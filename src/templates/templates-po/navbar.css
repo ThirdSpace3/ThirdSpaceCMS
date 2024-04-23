@@ -6,6 +6,9 @@
     --navbar-link-color: #8f9bb7;
     --navbar-cta-background-color: #7214ff;
     --background-color: #200627;
+
+    --navbar-text-color: #8f9bb7;
+
   }
   
   .sss-product-navbar-container {
@@ -31,7 +34,7 @@
     gap: 10px;
   }
   .sss-product-navbar-links {
-    color:var(--navbar-link-color);
+    color: var(--navbar-text-color);
     font-family: Outfit;
     font-size: 16px;
     font-style: normal;

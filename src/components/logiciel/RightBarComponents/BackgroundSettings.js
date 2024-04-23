@@ -26,6 +26,33 @@ const BackgroundSettings = ({
     
     }
 
+    if (selectedElement === 'partners') {
+      const partnersElement = document.querySelector('.sss-product-partners');
+      partnersElement.style.setProperty('background-color', value);
+    
+    }
+
+    if (selectedElement === 'features') {
+      const featuresElement = document.querySelector('.sss-product-features');
+      featuresElement.style.setProperty('background-color', value);
+    
+    }
+
+    if (selectedElement === 'about') {
+      const aboutElement = document.querySelector('.sss-product-about');
+      aboutElement.style.setProperty('background-color', value);
+    
+    }
+    if (selectedElement === 'joinus') {
+      const joinusElement = document.querySelector('.sss-product-joinus-main');
+      joinusElement.style.setProperty('background-color', value);
+    
+    }       
+    if (selectedElement === 'footer') {
+      const footerElement = document.querySelector('.sss-product-footer');
+      footerElement.style.setProperty('background-color', value);
+    
+    }
     updateStyle(selectedElement, { [property]: value });
 
     if (property === 'backgroundImage') {

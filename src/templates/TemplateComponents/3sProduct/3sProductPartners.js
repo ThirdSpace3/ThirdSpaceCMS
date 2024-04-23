@@ -1,14 +1,34 @@
-// PartnersSection.js
-import React from 'react';
-import '../../templates-po/partners.css'
-const PartnersSection = ({onClick}) => {
+import React, { useState, useContext } from 'react';
+import '../../templates-po/partners.css';
+import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
+import { useStyle } from '../../../hooks/StyleContext';
+
+const PartnersSection = ({ onClick, handleSettingsChange, selectElement  }) => {
+  const { getComponentStyle } = useStyle();
+  const [partnersTitleText, setPartnersTitleText] = useState('Trusted by teams at over 1,000 of the world\'s leading organizations');
+  const [partnersTitleStyle, setPartnersTitleStyle] = useState({ fontFamily: 'Outfit', fontSize: '24px', fontWeight: '600', color: '#333', textAlign: 'center' });
+
+  const handleTextChange = (newText) => {
+    setPartnersTitleText(newText);
+  };
+
+  const handleTextStyleChange = (newStyle) => {
+    setPartnersTitleStyle(newStyle);
+  };
+
   return (
     <div className="sss-product-partners" onClick={onClick}>
       <h2 className="sss-product-partners-title">
-        Trusted by teams at over 1,000 of the world's leading organizations
+        <EditableText
+          text={partnersTitleText}
+          style={partnersTitleStyle}
+          onChange={handleTextChange}
+          onStyleChange={handleTextStyleChange}
+          selectElement={selectElement} // Ensuring prop is passed
+
+        />
       </h2>
       <div className="sss-product-partners-box">
-        {/* Assuming a static list of images, dynamically rendered content could also be considered */}
         {[1, 2, 3, 4, 5, 6, 7].map((num) => (
           <img
             key={num}

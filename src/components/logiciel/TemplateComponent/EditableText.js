@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const EditableText = ({ text, onChange, style }) => {
+const EditableText = ({ text, onChange, style, handleSettingsChange, textType, selectElement }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text);
   const [error, setError] = useState(false);
@@ -22,15 +22,23 @@ const EditableText = ({ text, onChange, style }) => {
   const handleBlur = () => {
     if (!currentText.trim()) {
       setError(true);
+      setCurrentText(text); // revert to original text or keep the changed text
     } else {
       setIsEditing(false);
       onChange(currentText);
+      if (typeof handleSettingsChange === 'function') {
+        handleSettingsChange(textType, { text: currentText });
+      }
     }
   };
+  
 
   const handleSpanClick = (event) => {
     event.preventDefault();
     event.stopPropagation();
+    selectElement(textType);
+    setIsEditing(true);
+  
     // Capture styles when the span is clicked and before editing begins
     if (spanRef.current) {
       const styles = window.getComputedStyle(spanRef.current);
@@ -46,15 +54,30 @@ const EditableText = ({ text, onChange, style }) => {
         border: 'none', // Add custom properties for the input
       };
     }
-    setIsEditing(true);
   };
+  
 
   useEffect(() => {
     if (error && inputRef.current) {
       inputRef.current.focus();
     }
   }, [error]);
-
+  useEffect(() => {
+    if (!isEditing && spanRef.current) {
+      const styles = window.getComputedStyle(spanRef.current);
+      computedStyle.current = {
+        width: `${spanRef.current.offsetWidth}px`,
+        height: `${spanRef.current.offsetHeight}px`,
+        fontFamily: styles.fontFamily,
+        fontSize: styles.fontSize,
+        fontWeight: styles.fontWeight,
+        color: styles.color,
+        textAlign: styles.textAlign,
+        backgroundColor: styles.backgroundColor,
+      };
+    }
+  }, [text, isEditing]);
+  
   if (isEditing) {
     return (
       <input
@@ -65,8 +88,8 @@ const EditableText = ({ text, onChange, style }) => {
         autoFocus
         ref={inputRef}
         className={`editable-text-input ${error ? 'error' : ''}`}
-        style={{...style, ...computedStyle.current}} // Apply captured styles along with any additional inline styles
-      />
+        style={{...style, ...computedStyle.current}}
+        />
     );
   }
 
