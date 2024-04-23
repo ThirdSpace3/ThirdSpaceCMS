@@ -14,12 +14,18 @@ export default function TypographySettings({
   const [typographyStyle, setTypographyStyle] = useState({});
 
   const handleTypographyChange = (e, styleProperty) => {
-    setTypographyStyle((prevState) => ({
-      ...prevState,
-      [styleProperty]: e.target.value,
-    }));
+    console.log(`handleTypographyChange called with styleProperty: ${styleProperty}`);
+    setTypographyStyle((prevState) => {
+      console.log(`Updating typographyStyle with ${styleProperty}: ${e.target.value}`);
+      return {
+        ...prevState,
+        [styleProperty]: e.target.value,
+      };
+    });
     updateStyle({ [styleProperty]: e.target.value });
   };
+  
+  
 
   return (
     <div>
@@ -44,7 +50,7 @@ export default function TypographySettings({
             <p className="parameters-content-line-title">Font Family</p>
             <div className="font-family-dropdown">
               <select
-                onChange={(e) => handleInputChange(e, "fontFamily", "select")}
+                onChange={(e) => handleTypographyChange(e, "fontFamily", "select")}
               >
                 <option>Arial</option>
                 <option>Verdana</option>
@@ -57,7 +63,7 @@ export default function TypographySettings({
             <p className="parameters-content-line-title">Font Weight</p>
             <div className="font-family-dropdown">
               <select
-                onChange={(e) => handleInputChange(e, "fontWeight", "select")}
+                onChange={(e) => handleTypographyChange(e, "fontWeight", "select")}
               >
                 <option value="100">Light</option>
                 <option value="500">Normal</option>
@@ -76,7 +82,7 @@ export default function TypographySettings({
                 max="72"
                 step="1"
                 defaultValue="14"
-                onChange={(e) => handleInputChange(e, "fontSize", "number")}
+                onChange={(e) => handleTypographyChange(e, "fontSize", "number")}
               />
               <span className="px-label">px</span>
             </div>
@@ -86,7 +92,7 @@ export default function TypographySettings({
             <p className="parameters-content-line-title">Color</p>
             <input
               type="color"
-              onChange={(e) => handleInputChange(e, "color")}
+              onChange={(e) => handleTypographyChange(e, "color")}
             />
           </div>
 

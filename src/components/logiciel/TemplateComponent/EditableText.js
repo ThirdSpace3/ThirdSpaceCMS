@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const EditableText = ({ text, onChange }) => {
+const EditableText = ({ text, onChange, style }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text);
   const [error, setError] = useState(false);
   const spanRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Capture the computed styles of the span to apply to the input
+  const computedStyle = useRef({});
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -28,6 +31,21 @@ const EditableText = ({ text, onChange }) => {
   const handleSpanClick = (event) => {
     event.preventDefault();
     event.stopPropagation();
+    // Capture styles when the span is clicked and before editing begins
+    if (spanRef.current) {
+      const styles = window.getComputedStyle(spanRef.current);
+      computedStyle.current = {
+        width: `${spanRef.current.offsetWidth}px`, // Maintain width
+        height: `${spanRef.current.offsetHeight}px`, // Maintain height
+        fontFamily: styles.fontFamily,
+        fontSize: styles.fontSize,
+        fontWeight: styles.fontWeight,
+        color: styles.color,
+        textAlign: styles.textAlign,
+        backgroundColor: styles.backgroundColor,
+        border: 'none', // Add custom properties for the input
+      };
+    }
     setIsEditing(true);
   };
 
@@ -36,11 +54,6 @@ const EditableText = ({ text, onChange }) => {
       inputRef.current.focus();
     }
   }, [error]);
-
-  const inputStyles = {
-    width: spanRef.current ? spanRef.current.offsetWidth : 'auto',
-    minWidth: '100px', // Set the minimum width you desire
-  };
 
   if (isEditing) {
     return (
@@ -52,13 +65,13 @@ const EditableText = ({ text, onChange }) => {
         autoFocus
         ref={inputRef}
         className={`editable-text-input ${error ? 'error' : ''}`}
-        style={inputStyles}
+        style={{...style, ...computedStyle.current}} // Apply captured styles along with any additional inline styles
       />
     );
   }
 
   return (
-    <span ref={spanRef} onClick={handleSpanClick}>
+    <span ref={spanRef} onClick={handleSpanClick} style={style}>
       {text}
     </span>
   );

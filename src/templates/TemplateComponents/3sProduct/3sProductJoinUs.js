@@ -1,6 +1,6 @@
 // JoinUsSection.js
 import React from 'react';
-
+import '../../templates-po/joinus.css'
 const JoinUsSection = ({onClick}) => {
   return (
     <div className="sss-product-joinus" onClick={onClick}>

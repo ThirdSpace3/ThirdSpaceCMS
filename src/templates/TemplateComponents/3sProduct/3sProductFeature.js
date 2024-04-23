@@ -1,6 +1,6 @@
 // FeaturesSection.js
 import React from 'react';
-
+import '../../templates-po/feature.css'
 const FeaturesSection = ({onClick}) => {
   return (
     <div className="sss-product-features" onClick={onClick}>

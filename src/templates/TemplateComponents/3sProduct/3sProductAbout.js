@@ -1,6 +1,6 @@
 // AboutSection.js
 import React from 'react';
-
+import '../../templates-po/about.css'
 const AboutSection = ({onClick}) => {
   return (
     <div className="sss-product-about" onClick={onClick}>

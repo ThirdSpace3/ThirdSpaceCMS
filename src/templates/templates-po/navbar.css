@@ -1,12 +1,11 @@
 /* navbar.css */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
 :root {
-    --navbar-background-color: #200627;
     --navbar-border-color: #151934;
     --navbar-link-color: #8f9bb7;
     --navbar-cta-background-color: #7214ff;
     --background-color: #200627;
-    --white : #fff;
   }
   
   .sss-product-navbar-container {

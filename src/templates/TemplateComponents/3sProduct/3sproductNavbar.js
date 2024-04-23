@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // If you're using react-router for SPA navigation
 import '../../templates-po/navbar.css'
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
 
-const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style }) => {
+const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, settings }) => {
   const [homeText, setHomeText] = useState('Home');
   const [aboutText, setAboutText] = useState('About');
   const [featuresText, setFeaturesText] = useState('Features');
   const [joinUsText, setJoinUsText] = useState('Join Us');
+  const [homeTextStyle, setHomeTextStyle] = useState({});
+  const [aboutTextStyle, setAboutTextStyle] = useState({});
+  const [featuresTextStyle, setFeaturesTextStyle] = useState({});
+  const [joinUsTextStyle, setJoinUsTextStyle] = useState({});
 
+  const updateCSSVariables = (settings) => {
+    const root = document.documentElement;
+    root.style.setProperty('--background-color', settings.backgroundColor || '#200627');
+    root.style.setProperty('--navbar-border-color', settings.navbarBorderColor || '#151934');
+    root.style.setProperty('--primary-btn-bg', settings.primaryBtnBg || '#7214ff');
+  };
+  
+  useEffect(() => {
+    updateCSSVariables(settings);
+  }, [settings]);
   const handleTextChange = (newText, textType) => {
     switch (textType) {
       case 'home':
@@ -22,6 +36,24 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style }) => {
         break;
       case 'joinUs':
         setJoinUsText(newText);
+        break;
+      default:
+        break;
+    }
+  };
+  const handleStyleChange = (newStyle, textType) => {
+    switch (textType) {
+      case 'home':
+        setHomeTextStyle(newStyle);
+        break;
+      case 'about':
+        setAboutTextStyle(newStyle);
+        break;
+      case 'features':
+        setFeaturesTextStyle(newStyle);
+        break;
+      case 'joinUs':
+        setJoinUsTextStyle(newStyle);
         break;
       default:
         break;
@@ -42,9 +74,14 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style }) => {
           alt="Logo"
         />
         <ul className="sss-product-navbar-links-box">
-          <li>
-            <Link to="/" className="sss-product-navbar-links">
-              <EditableText text={homeText} onChange={(newText) => handleTextChange(newText, 'home')} />
+          <li onClick={onClick}>
+            <Link to="/" className="sss-product-navbar-links" >
+              <EditableText
+                text={homeText}
+                style={homeTextStyle}
+                onChange={(newText) => handleTextChange(newText, 'home')}
+                onStyleChange={(newStyle) => handleStyleChange(newStyle, 'home')}
+              />
             </Link>
           </li>
           <li>

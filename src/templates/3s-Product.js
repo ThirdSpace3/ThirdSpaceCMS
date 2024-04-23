@@ -11,16 +11,7 @@ import Footer from "./TemplateComponents/3sProduct/3sProductFooter";
 const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChange, selectedElement }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
-  const updateCSSVariables = (settings) => {
-    const root = document.documentElement;
-    root.style.setProperty('--background-color', settings.backgroundColor || '#200627');
-    root.style.setProperty('--navbar-border-color', settings.navbarBorderColor || '#151934');
-    root.style.setProperty('--primary-btn-bg', settings.primaryBtnBg || '#7214ff');
-  };
-  
-  useEffect(() => {
-    updateCSSVariables(settings);
-  }, [settings]);
+
   
   const toggleMenu = (event) => {
     event.preventDefault();
@@ -42,13 +33,15 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         toggleMenu={toggleMenu}
         menuToggleImg={menuToggleImg}
         onClick={() => selectElement('navbar')}
-        style={settings.navbar}      />
+        style={settings.navbar}      
+        settings={settings}
+        />
 
-      <HeaderSection onClick={() => selectElement('header')} style={settings['header']} />
+    <HeaderSection onClick={() => selectElement('header')} style={settings['header']} settings={settings} />
       <PartnersSection onClick={() => selectElement('partners')} style={settings['partners']} />
       <AboutSection onClick={() => selectElement('about')} style={settings['about']} />
       <FeaturesSection onClick={() => selectElement('features')} style={settings['features']} />
-      <JoinUsSection onClick={() => selectElement('joinUs')} style={settings['joinUs']} />
+      <JoinUsSection onClick={() => selectElement('joinus')} style={settings['joinus']} />
       <Footer onClick={() => selectElement('footer')} style={settings['footer']} />
     </div>
   );

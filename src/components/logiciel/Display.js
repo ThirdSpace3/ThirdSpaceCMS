@@ -50,7 +50,8 @@ export default function Display() {
   
 
   const selectElement = (elementId) => {
-    console.log("Element selected:", elementId);
+    console.log('selectElement elementId:', elementId);
+
     setSelectedElement(elementId);
   };
   

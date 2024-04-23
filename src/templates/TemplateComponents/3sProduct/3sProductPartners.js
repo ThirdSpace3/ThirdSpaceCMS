@@ -1,6 +1,6 @@
 // PartnersSection.js
 import React from 'react';
-
+import '../../templates-po/partners.css'
 const PartnersSection = ({onClick}) => {
   return (
     <div className="sss-product-partners" onClick={onClick}>

@@ -1,5 +1,6 @@
 // Footer.js
 import React from 'react';
+import '../../templates-po/footer.css'
 
 const Footer = ({onClick}) => {
   return (

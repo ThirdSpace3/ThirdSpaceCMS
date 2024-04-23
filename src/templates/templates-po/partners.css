@@ -1,0 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+:root {
+    --navbar-border-color: #151934;
+    --navbar-link-color: #8f9bb7;
+    --navbar-cta-background-color: #7214ff;
+    --background-color: #200627;
+  }
+
+
+  /*==================== PARTNERS ====================*/
+.sss-product-partners {
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 70px;
+  }
+  .sss-product-partners-title {
+    color: rgba(255, 255, 255, 0.8);
+    font-family: Outfit;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: center;
+  }
+  .sss-product-partners-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+  }
+  .sss-product-partners-box-img {
+    height: 20px;
+    width: auto;
+  }
+  
+  /* Pour les mobiles */
+  @media (max-width: 767px) {
+    .sss-product-partners {
+      padding: 30px;
+      gap: 20px;
+    }
+    .sss-product-partners-box {
+      gap: 20px;
+    }
+  }
+  
