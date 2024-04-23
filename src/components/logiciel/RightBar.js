@@ -80,19 +80,19 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
     ) {
       const updatedStyle = selectedSide
         ? {
-            ...borderStyle,
-            [selectedSide]: {
-              ...borderStyle[selectedSide],
-              [styleProperty]: value,
-            },
-          }
+          ...borderStyle,
+          [selectedSide]: {
+            ...borderStyle[selectedSide],
+            [styleProperty]: value,
+          },
+        }
         : {
-            ...borderStyle,
-            top: value,
-            right: value,
-            bottom: value,
-            left: value,
-          };
+          ...borderStyle,
+          top: value,
+          right: value,
+          bottom: value,
+          left: value,
+        };
 
       setBorderStyle(updatedStyle);
       onSettingsChange(selectedElement, { border: updatedStyle });
@@ -164,13 +164,13 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
 
   const onSettingsChange = (elementAttributes, newSettings) => {
     if (!elementAttributes || !elementAttributes.id) return;
-    
+
     const element = document.getElementById(elementAttributes.id);
     if (!element) return;
-  
+
     // Now `element` is your DOM element, and you can apply styles to it as you were doing before.
     // Apply background settings, typography settings, etc., as you have in your existing method.
-  
+
     else if (element) {
       // Apply background settings
       if (newSettings.background) {
@@ -329,17 +329,17 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
       const element = document.getElementById(selectedElement.id);
       if (element) {
         const elementStyle = window.getComputedStyle(element);
-  
+
         setBackgroundStyle({
           backgroundColor: elementStyle.backgroundColor,
           backgroundImage: elementStyle.backgroundImage,
         });
-  
+
         setBorderStyle({
           borderColor: elementStyle.borderColor,
           borderWidth: parseInt(elementStyle.borderWidth, 10),
         });
-  
+
         setTypographyStyle({
           fontFamily: elementStyle.fontFamily,
           fontSize: parseInt(elementStyle.fontSize, 10),
@@ -348,7 +348,7 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
           textDecoration: elementStyle.textDecoration,
           textAlign: elementStyle.textAlign,
         });
-  
+
         // Capture initial width and height
         setSizeStyle({
           width: element.style.width,
@@ -358,7 +358,7 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
       }
     }
   }, [selectedElement]);
-  
+
 
   const handleBackgroundChange = (e, styleProperty) => {
     let value = e.target.value; // For simplicity, assuming this is always the correct way to get the value
@@ -473,6 +473,8 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
             sizeStyle={sizeStyle}
             onSettingsChange={onSettingsChange}
             selectedElement={selectedElement}
+            updateStyle={updateStyle}
+
           />
 
           {/* Section Border */}
@@ -492,10 +494,9 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
           <BackgroundSettings
             isOpen={isOpen}
             toggleSection={toggleSection}
-            handleBackgroundChange={handleBackgroundChange}
-            backgroundStyle={backgroundStyle}
-            addImageToHistory={addImageToHistory}
+            selectedElement={selectedElement} // Pass selectedElement as a prop
           />
+
 
           {/* Section Typographie */}
 

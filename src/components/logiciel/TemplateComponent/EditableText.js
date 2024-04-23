@@ -1,89 +1,67 @@
-import React, { useRef, useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-const EditableText = forwardRef(
-  ({ tagName, content, onContentChange, style, innerRef, onClick, isEditable }, ref) => {
-    const [editing, setEditing] = useState(false);
-    const contentRef = useRef(content);
-    const [cursorPosition, setCursorPosition] = useState(null);
+const EditableText = ({ text, onChange }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentText, setCurrentText] = useState(text);
+  const [error, setError] = useState(false);
+  const spanRef = useRef(null);
+  const inputRef = useRef(null);
 
-    useEffect(() => {
-      contentRef.current = content;
-    }, [content]);
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
 
-    const handleEdit = () => {
-      if (isEditable && !editing) {
-        setEditing(true);
-        setTimeout(() => {
-          if (innerRef.current) {
-            innerRef.current.focus();
-          }
-        }, 0);
-      }
-    };
+  const handleInputChange = (event) => {
+    setCurrentText(event.target.value);
+    setError(false);
+  };
 
-    const handleContentChange = (event) => {
-      event.preventDefault();
-      const newContent = event.currentTarget.textContent;
-      contentRef.current = newContent;
-      const cursorPos = window.getSelection().getRangeAt(0).startOffset;
-      setCursorPosition(cursorPos);
-    };
+  const handleBlur = () => {
+    if (!currentText.trim()) {
+      setError(true);
+    } else {
+      setIsEditing(false);
+      onChange(currentText);
+    }
+  };
 
-    const handleSave = () => {
-      onContentChange(contentRef.current);
-      setEditing(false);
-      setCursorPosition(null);
-    };
+  const handleSpanClick = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsEditing(true);
+  };
 
-    useImperativeHandle(ref, () => ({
-      getContent: () => contentRef.current,
-    }));
+  useEffect(() => {
+    if (error && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [error]);
 
-    const TagName = tagName;
+  const inputStyles = {
+    width: spanRef.current ? spanRef.current.offsetWidth : 'auto',
+    minWidth: '100px', // Set the minimum width you desire
+  };
 
-// Inside EditableText component
-useEffect(() => {
-  if (editing) {
-    const focusAndSetCursor = () => {
-      const textNode = innerRef.current.childNodes[0];
-      if (textNode) {
-        const range = document.createRange();
-        const sel = window.getSelection();
-        range.setStart(textNode, cursorPosition || textNode.length);
-        range.collapse(true);
-        sel.removeAllRanges();
-        sel.addRange(range);
-      }
-      innerRef.current.focus();
-    };
-    
-    focusAndSetCursor();
-  }
-}, [editing, innerRef, cursorPosition]);
-
-
+  if (isEditing) {
     return (
-      <div className={`editable-text-container${editing ? ' editing' : ''}`} onClick={() => onClick(innerRef)}>
-        {editing ? (
-          <TagName
-            ref={innerRef}
-            contentEditable={true}
-            suppressContentEditableWarning={true}
-            className="editable-text-input"
-            style={style}
-            onInput={handleContentChange}
-            onBlur={handleSave}
-          >
-            {contentRef.current}
-          </TagName>
-        ) : (
-          <TagName ref={innerRef} className="editable-text" style={style} onClick={handleEdit}>
-            {contentRef.current}
-          </TagName>
-        )}
-      </div>
+      <input
+        type="text"
+        value={currentText}
+        onChange={handleInputChange}
+        onBlur={handleBlur}
+        autoFocus
+        ref={inputRef}
+        className={`editable-text-input ${error ? 'error' : ''}`}
+        style={inputStyles}
+      />
     );
   }
-);
+
+  return (
+    <span ref={spanRef} onClick={handleSpanClick}>
+      {text}
+    </span>
+  );
+};
 
 export default EditableText;

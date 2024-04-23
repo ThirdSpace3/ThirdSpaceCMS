@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./templates-po/templatepo-1.css";
+// import "./templates-po/templatepo-1.css";
 import Navbar from "./TemplateComponents/3sProduct/3sproductNavbar";
 import HeaderSection from "./TemplateComponents/3sProduct/3sProductHeader";
 import PartnersSection from "./TemplateComponents/3sProduct/3sProductPartners";

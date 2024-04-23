@@ -48,7 +48,7 @@ body {
 }
 
 /*==================== NAVBAR ====================*/
-.sss-product-navbar-container {
+/* .sss-product-navbar-container {
   width: 100%;
   border-bottom: 1px solid var(--Neutral-gray-600, var(--navbar-border-color));
 }
@@ -145,7 +145,7 @@ body {
     font-style: normal;
     font-weight: 400;
   }
-}
+} */
 
 /*==================== HERO ====================*/
 .sss-product-hero {

@@ -6,11 +6,13 @@ export const StyleProvider = ({ children }) => {
   const [style, setStyle] = useState({});
   const [selectedComponent, setSelectedComponent] = useState(null);
 
-  const updateStyle = (newStyles) => {
-    if (selectedComponent === 'TemplateFullText') {
-      setStyle(prevStyles => ({ ...prevStyles, ...newStyles }));
-    }
+  const updateStyle = (selectedElement, newStyle) => {
+    setStyle((prevStyle) => ({
+      ...prevStyle,
+      [selectedElement]: { ...prevStyle[selectedElement], ...newStyle },
+    }));
   };
+  
 
   return (
     <StyleContext.Provider value={{ style, updateStyle, setSelectedComponent }}>
