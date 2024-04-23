@@ -1,9 +1,9 @@
 // PartnersSection.js
 import React from 'react';
 
-const PartnersSection = () => {
+const PartnersSection = ({onClick}) => {
   return (
-    <div className="sss-product-partners">
+    <div className="sss-product-partners" onClick={onClick}>
       <h2 className="sss-product-partners-title">
         Trusted by teams at over 1,000 of the world's leading organizations
       </h2>

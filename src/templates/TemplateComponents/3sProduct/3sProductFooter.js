@@ -1,9 +1,9 @@
 // Footer.js
 import React from 'react';
 
-const Footer = () => {
+const Footer = ({onClick}) => {
   return (
-    <div className="sss-product-footer">
+    <div className="sss-product-footer" onClick={onClick}>
       <div className="sss-product-footer-top">
         <img
           src="./images/templates-img/3sproduct/3sproduct-logo.png"

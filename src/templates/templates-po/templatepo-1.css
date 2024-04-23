@@ -7,6 +7,11 @@
   padding: 0;
   margin: 0;
 }
+:root {
+  --background-color: #200627; /* Default background color for sss-product-container */
+  --navbar-border-color: #151934; /* Default border color */
+  --primary-btn-bg: #7214ff; /* Background color for primary buttons */
+}
 
 html {
   scroll-behavior: smooth;
@@ -32,7 +37,7 @@ img {
 
 /*==================== BODY ====================*/
 .sss-product-container {
-  background-color: #200627;
+  background-color: var(--background-color);
 }
 body {
   overflow: auto; /* Set the default overflow */
@@ -45,7 +50,7 @@ body {
 /*==================== NAVBAR ====================*/
 .sss-product-navbar-container {
   width: 100%;
-  border-bottom: 1px solid var(--Neutral-gray-600, #151934);
+  border-bottom: 1px solid var(--Neutral-gray-600, var(--navbar-border-color));
 }
 .sss-product-navbar-navbar {
   display: flex;
@@ -128,7 +133,7 @@ body {
   }
   .sss-product-navbar-mobile-cta {
     border-radius: 36px;
-    background: #7214ff;
+    background: var(--primary-btn-bg);
     display: inline-flex;
     padding: 10px 25px;
     justify-content: center;

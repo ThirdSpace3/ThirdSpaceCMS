@@ -27,16 +27,33 @@ export default function Display() {
   const { templateName } = useParams();
 
   useEffect(() => {
-    console.log(templateName);
+    console.log('Active template:', templateName);
     setActiveEditor(templateName);
   }, [templateName]);
 
   const handleSettingsChange = (elementId, newSettings) => {
-    setSettings((prevSettings) => {
-      const updatedSettings = { ...prevSettings, [elementId]: newSettings };
+    console.log("Updating settings for:", elementId, "new settings received:", newSettings);
+    setSettings(prevSettings => {
+      const updatedSettings = {
+        ...prevSettings,
+        [elementId]: {
+          ...prevSettings[elementId],
+          ...newSettings
+        }
+      };
+      console.log("Updated settings:", updatedSettings);
       return updatedSettings;
     });
   };
+  
+  
+  
+
+  const selectElement = (elementId) => {
+    console.log("Element selected:", elementId);
+    setSelectedElement(elementId);
+  };
+  
 
   const undo = () => {
     if (currentHistoryIndex > 0) {
@@ -61,18 +78,10 @@ export default function Display() {
 
     try {
       console.log("Sending settings to backend:", settings);
-
       await axios.post(
         "http://localhost:5000/api/settings",
-        {
-          userId: walletId,
-          settings: settings,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        { userId: walletId, settings: settings },
+        { headers: { "Content-Type": "application/json" } }
       );
       alert("Settings saved successfully");
       setHasUnsavedChanges(false);
@@ -90,23 +99,22 @@ export default function Display() {
     setSelectedDeviceSize(size);
   };
 
-  const handlePreview = () => {
-    setIsPreviewMode(!isPreviewMode);
-  };
-
   const addImageToHistory = (imageURL) => {
     setImageHistory((prevHistory) => [...prevHistory, imageURL]);
   };
 
+  const handlePreview = () => {
+    setIsPreviewMode(!isPreviewMode);
+  };
+
+
   return (
     <ImageHistoryProvider>
       <StyleProvider>
-        <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={handleDeviceChange} onPreview={handlePreview} />
+        <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
         <div className="displayWrapper">
           {!isPreviewMode && (
-            <>
-              <LeftBar handleEditorChange={handleEditorChange} addImageToHistory={addImageToHistory} />
-            </>
+            <LeftBar handleEditorChange={(editor) => setActiveEditor(editor)} addImageToHistory={(imageURL) => setImageHistory(prev => [...prev, imageURL])} />
           )}
           <div className="displayColumnWrapper">
             <Canva
@@ -116,13 +124,12 @@ export default function Display() {
               handleSettingsChange={handleSettingsChange}
               selectedElement={selectedElement}
               setSelectedElement={setSelectedElement}
+              selectElement={selectElement}
               isPreviewMode={isPreviewMode}
             />
           </div>
           {!isPreviewMode && (
-            <>
-              <RightBar onSettingsChange={handleSettingsChange} selectedElement={selectedElement} addImageToHistory={addImageToHistory} />
-            </>
+            <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} addImageToHistory={(imageURL) => setImageHistory(prev => [...prev, imageURL])} />
           )}
         </div>
       </StyleProvider>

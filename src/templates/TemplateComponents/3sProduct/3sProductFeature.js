@@ -1,9 +1,9 @@
 // FeaturesSection.js
 import React from 'react';
 
-const FeaturesSection = () => {
+const FeaturesSection = ({onClick}) => {
   return (
-    <div className="sss-product-features">
+    <div className="sss-product-features" onClick={onClick}>
       <h2 className="sss-product-features-title">Essential apps that protect your documents</h2>
       <div className="sss-product-features-box">
         {/* Assuming static content, this could also be generated dynamically */}

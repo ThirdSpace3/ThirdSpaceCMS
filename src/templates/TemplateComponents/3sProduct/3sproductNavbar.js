@@ -2,9 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // If you're using react-router for SPA navigation
 
-const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg }) => {
+const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style }) => {
+
+  const handleToggleClick = (event) => {
+    event.stopPropagation(); // This stops the click from bubbling up to the parent div
+    toggleMenu();
+  };
   return (
-    <div className="sss-product-navbar-container">
+    <div className="sss-product-navbar-container" style={style} onClick={onClick}>
       <nav className="sss-product-navbar-navbar">
         <img
           src="./images/templates-img/3sproduct/3sproduct-logo.png"
@@ -26,7 +31,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg }) => {
         <img
           src={menuToggleImg}
           className="sss-product-navbar-mobile-toggle"
-          onClick={toggleMenu}
+          onClick={handleToggleClick}
           alt="Menu Toggle"
         />
       </nav>

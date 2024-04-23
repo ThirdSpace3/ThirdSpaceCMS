@@ -1,9 +1,9 @@
 // AboutSection.js
 import React from 'react';
 
-const AboutSection = () => {
+const AboutSection = ({onClick}) => {
   return (
-    <div className="sss-product-about">
+    <div className="sss-product-about" onClick={onClick}>
       <div className="sss-product-about-header">
         <h2 className="sss-product-about-title">The best features to help you create all your projects</h2>
         <p className="sss-product-about-text">

@@ -1,9 +1,9 @@
 // JoinUsSection.js
 import React from 'react';
 
-const JoinUsSection = () => {
+const JoinUsSection = ({onClick}) => {
   return (
-    <div className="sss-product-joinus">
+    <div className="sss-product-joinus" onClick={onClick}>
       <img
         src="./images/templates-img/3sproduct/3sproduct-joinus-1.png"
         className="sss-product-joinus-logo"
