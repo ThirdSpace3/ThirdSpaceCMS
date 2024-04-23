@@ -8,15 +8,18 @@
   }
 
 
-.sss-product-hero {
+  .sss-product-hero {
     background-color: var(--background-color);
+    background-image: var(--background-image);
+    background-size: cover;
+    background-position: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 30px;
     padding: 70px;
-  }
+}
   .sss-product-hero-title {
     color: #f6f6f7;
     text-align: center;

@@ -360,41 +360,15 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
   }, [selectedElement]);
 
 
-  const handleBackgroundChange = (e, styleProperty) => {
-    let value = e.target.value; // For simplicity, assuming this is always the correct way to get the value
-
-    if (styleProperty === "backgroundColor") {
-      value = e.target.value;
-    } else if (styleProperty === "backgroundImage") {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        value = `url(${reader.result})`;
-        setBackgroundStyle((prevState) => ({
-          ...prevState,
-          [styleProperty]: value,
-        }));
-        onSettingsChange(selectedElement, {
-          background: { [styleProperty]: value },
-        });
-      };
-
-      if (file) {
-        reader.readAsDataURL(file);
+  const handleBackgroundColorChange = (color) => {
+    if (selectedElement && selectedElement.id) {
+      const element = document.getElementById(selectedElement.id);
+      if (element) {
+        element.style.backgroundColor = color;
       }
     }
-
-    setBackgroundStyle((prevState) => ({
-      ...prevState,
-      [styleProperty]: value,
-    }));
-    onSettingsChange(selectedElement, {
-      background: { [styleProperty]: value },
-    });
-    updateStyle({ value });
-
   };
+  
 
   const handleTextDecoration = (decorationType) => {
     if (selectedElement) {
@@ -495,6 +469,7 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
             isOpen={isOpen}
             toggleSection={toggleSection}
             selectedElement={selectedElement} // Pass selectedElement as a prop
+            handleBackgroundColorChange={handleBackgroundColorChange}
           />
 
 

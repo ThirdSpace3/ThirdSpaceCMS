@@ -37,7 +37,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         settings={settings}
         />
 
-    <HeaderSection onClick={() => selectElement('header')} style={settings['header']} settings={settings} />
+    <HeaderSection onClick={() => selectElement('header')} style={settings.header} settings={settings} />
       <PartnersSection onClick={() => selectElement('partners')} style={settings['partners']} />
       <AboutSection onClick={() => selectElement('about')} style={settings['about']} />
       <FeaturesSection onClick={() => selectElement('features')} style={settings['features']} />

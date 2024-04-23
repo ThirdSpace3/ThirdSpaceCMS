@@ -41,24 +41,6 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
         break;
     }
   };
-  const handleStyleChange = (newStyle, textType) => {
-    switch (textType) {
-      case 'home':
-        setHomeTextStyle(newStyle);
-        break;
-      case 'about':
-        setAboutTextStyle(newStyle);
-        break;
-      case 'features':
-        setFeaturesTextStyle(newStyle);
-        break;
-      case 'joinUs':
-        setJoinUsTextStyle(newStyle);
-        break;
-      default:
-        break;
-    }
-  };
 
   const handleToggleClick = (event) => {
     event.stopPropagation(); // This stops the click from bubbling up to the parent div
@@ -78,9 +60,9 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
             <Link to="/" className="sss-product-navbar-links" >
               <EditableText
                 text={homeText}
-                style={homeTextStyle}
+                // style={homeTextStyle}
                 onChange={(newText) => handleTextChange(newText, 'home')}
-                onStyleChange={(newStyle) => handleStyleChange(newStyle, 'home')}
+                // onStyleChange={(newStyle) => handleStyleChange(newStyle, 'home')}
               />
             </Link>
           </li>

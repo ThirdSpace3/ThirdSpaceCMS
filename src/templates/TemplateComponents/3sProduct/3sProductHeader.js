@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../templates-po/header.css';
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
 
-const HeaderSection = ({ onClick, style, settings }) => {
+const HeaderSection = ({ onClick, style, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement }) => {
+  const headerRef = useRef("header");
+
   const [heroTitleText, setHeroTitleText] = useState('The first user-friendly website builder');
   const [heroDescriptionText, setHeroDescriptionText] = useState('Rorem ipsum dolor sit amet consectetur. Gravida convallis orci ultrices non. Ultricies tempor at ut cursus mi. Aliquam sed amet vitae orci ac penatibus consectetur.');
   const [joinUsText, setJoinUsText] = useState('Join Us');
@@ -11,11 +13,10 @@ const HeaderSection = ({ onClick, style, settings }) => {
 
   const updateCSSVariables = (settings) => {
     const root = document.documentElement;
-    root.style.setProperty('--background-color', settings?.backgroundColor || '#200627');
-    root.style.setProperty('--hero-title-color', settings?.heroTitleColor || '#ffffff');
+    root.style.setProperty('--background-color', settings.backgroundColor || '#200627');
+    root.style.setProperty('--background-image', `url(${settings.backgroundImage})` || 'none');
   };
-  
-  
+
   useEffect(() => {
     updateCSSVariables(settings);
   }, [settings]);
@@ -49,8 +50,12 @@ const HeaderSection = ({ onClick, style, settings }) => {
     }
   };
 
+  const handleBackgroundColorChange = (color) => {
+    handleSettingsChange({ backgroundColor: color });
+  };
+
   return (
-    <div className="sss-product-hero" onClick={onClick} style={style}>
+    <div className="sss-product-hero" ref={headerRef} onClick={onClick} style={{ ...style, backgroundColor: settings.backgroundColor }}>
       <h1 className="sss-product-hero-title">
         <EditableText
           text={heroTitleText}

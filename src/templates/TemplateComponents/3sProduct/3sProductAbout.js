@@ -1,9 +1,9 @@
 // AboutSection.js
 import React from 'react';
 import '../../templates-po/about.css'
-const AboutSection = ({onClick}) => {
+const AboutSection = ({onClick, style}) => {
   return (
-    <div className="sss-product-about" onClick={onClick}>
+    <div className="sss-product-about" onClick={onClick} style={style}>
       <div className="sss-product-about-header">
         <h2 className="sss-product-about-title">The best features to help you create all your projects</h2>
         <p className="sss-product-about-text">

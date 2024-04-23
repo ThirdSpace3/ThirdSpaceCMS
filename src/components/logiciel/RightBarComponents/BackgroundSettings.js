@@ -1,11 +1,12 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useImageHistory } from "../../../hooks/ImageHistoryContext";
 import { useStyle } from "../../../hooks/StyleContext";
 
 const BackgroundSettings = ({
   isOpen,
   toggleSection,
-  selectedElement, // Add selectedElement as a prop
+  selectedElement,
+  handleBackgroundColorChange,
 }) => {
   const { updateStyle } = useStyle();
   const fileInputRef = useRef(null);
@@ -13,11 +14,20 @@ const BackgroundSettings = ({
 
   const handleBackgroundChange = (e, property) => {
     const value = property === "backgroundColor" ? e.target.value : `url(${URL.createObjectURL(e.target.files[0])})`;
+
     if (selectedElement === 'navbar') {
       const navbarElement = document.querySelector('.sss-product-navbar-navbar');
       navbarElement.style.setProperty('background-color', value);
     }
-    updateStyle(selectedElement, { [property]: value }); // Pass selectedElement and update the style of that element only
+
+    if (selectedElement === 'header') {
+      const headerElement = document.querySelector('.sss-product-hero');
+      headerElement.style.setProperty('background-color', value);
+    
+    }
+
+    updateStyle(selectedElement, { [property]: value });
+
     if (property === 'backgroundImage') {
       addImageToHistory(value);
     }
@@ -50,7 +60,6 @@ const BackgroundSettings = ({
         </div>
       </div>
       <hr className="parameters-wrapper-separation" />
-
     </div>
   );
 };
