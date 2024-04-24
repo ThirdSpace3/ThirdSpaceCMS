@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import "./LeftBar.css";
 import "../Root.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useImageHistory } from "../../hooks/ImageHistoryContext"; // Adjust as necessary
+import { useImageHistory } from "../../hooks/ImageHistoryContext";
 
 export default function PanelAsset() {
-  const { addImageToHistory, imageHistory, selectImage, selectedImage } =
+  const { addImageToHistory, imageHistory, selectImage, selectedImage, setSelectedImage } =
     useImageHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Assets");
@@ -54,6 +54,7 @@ export default function PanelAsset() {
 
   const handleImageSelect = (image) => {
     selectImage(image.url);
+    // setSelectedImage(image.url);
   };
 
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -152,9 +153,8 @@ export default function PanelAsset() {
         {filteredHistory.map((image, index) => (
           <div
             key={index}
-            className={`image-preview ${
-              image.url === selectedImage ? "selected" : ""
-            }`}
+            className={`image-preview ${image.url === selectedImage ? "selected" : ""
+              }`}
             onClick={() => handleImageSelect(image)}
           >
             {renderPreview(image)}

@@ -1,0 +1,47 @@
+.image-container {
+    position: relative;
+  }
+  
+  .image-component {
+    display: block;
+    width: 100px; /* Set a fixed width */
+    height: 100px; /* Set a fixed height */
+    object-fit: contain;
+  }
+  
+  
+  .image-component:hover {
+    border: 2px solid #217bf4;
+    cursor: pointer;
+  }
+  
+  .image-component:focus-within {
+    border: 2px solid #217bf4;
+    cursor: pointer;
+  }
+  
+  .popup-button {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--main-color);
+    color: white;
+    font-family: var(--inter);
+    font-size: 12px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+  
+  .image-component:focus-within + .popup-button {
+    opacity: 1;
+  }
+  

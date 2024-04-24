@@ -4,9 +4,9 @@ import "../Root.css";
 import PropulsePopup from "./PropulsePopup";
 
 const deviceSizes = {
-  tv: "1760px",
-  tablet: "991px",
-  smartphone: "767px",
+  tv: "100%",
+  tablet: "60%",
+  smartphone: "30%",
 };
 
 const TopBar = ({

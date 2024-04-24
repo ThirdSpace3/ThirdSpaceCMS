@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ImageSlots from '../components/logiciel/TemplateComponent/ImageSlots';
+import ImageSlots from '../components/logiciel/TemplateComponent/ReusableImage';
 import EditableText from '../components/logiciel/TemplateComponent/EditableText';
 import { useStyle } from '../hooks/StyleContext';
 import { useImageHistory } from '../hooks/ImageHistoryContext';

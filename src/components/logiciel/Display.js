@@ -1,17 +1,12 @@
-// Import React and necessary hooks
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
-// Import other components and contexts
 import LeftBar from './LeftBar';
 import TopBar from './TopBar';
 import RightBar from './RightBar';
 import './Display.css';
 import { StyleProvider } from '../../hooks/StyleContext';
 import { ImageHistoryProvider } from '../../hooks/ImageHistoryContext';
-
-// Import the Canva component
 import Canva from './Canva';
 
 export default function Display() {
@@ -25,6 +20,7 @@ export default function Display() {
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [imageHistory, setImageHistory] = useState([]);
   const { templateName } = useParams();
+  const [activePanel, setActivePanel] = useState(null);
 
   useEffect(() => {
     console.log('Active template:', templateName);
@@ -50,7 +46,6 @@ export default function Display() {
 
     setSelectedElement(elementId);
   };
-  
 
   const undo = () => {
     if (currentHistoryIndex > 0) {
@@ -103,7 +98,9 @@ export default function Display() {
   const handlePreview = () => {
     setIsPreviewMode(!isPreviewMode);
   };
-
+  const openImagePanel = () => {
+    setActivePanel("images");
+  };
   console.log('selectElement prop in Display:', selectElement);
 
   return (
@@ -112,7 +109,11 @@ export default function Display() {
         <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
         <div className="displayWrapper">
           {!isPreviewMode && (
-            <LeftBar handleEditorChange={(editor) => setActiveEditor(editor)} addImageToHistory={(imageURL) => setImageHistory(prev => [...prev, imageURL])} />
+            <LeftBar
+              handleEditorChange={(editor) => setActiveEditor(editor)}
+              visiblePanel={activePanel}
+              setVisiblePanel={setActivePanel}
+            />
           )}
           <div className="displayColumnWrapper">
             <Canva
@@ -124,6 +125,8 @@ export default function Display() {
               setSelectedElement={setSelectedElement}
               selectElement={selectElement}
               isPreviewMode={isPreviewMode}
+              openImagePanel={openImagePanel}
+              
             />
           </div>
           {!isPreviewMode && (

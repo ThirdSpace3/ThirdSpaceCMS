@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
-import ImageSlots from '../../../components/logiciel/TemplateComponent/ImageSlots';
+import ImageSlots from '../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 const SectionHero = ({ isPreviewMode, setSelectedElement }) => {

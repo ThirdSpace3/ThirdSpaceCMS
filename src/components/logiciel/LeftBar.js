@@ -6,9 +6,10 @@ import PanelAsset from "./PanelAsset";
 import PanelFile from "./PanelFile";
 import PanelLayers from "./PanelLayers";
 import PanelPlus from "./PanelPlus";
+import { useImageHistory } from "../../hooks/ImageHistoryContext";
 
-export default function LeftBar({ handleEditorChange, imageHistory }) {
-  const [visiblePanel, setVisiblePanel] = useState(null);
+export default function LeftBar({ handleEditorChange, visiblePanel, setVisiblePanel }) {
+  const { imageHistory, setSelectedImage } = useImageHistory();
 
   const togglePanel = (e, panel) => {
     e.preventDefault(); // Prevent the default anchor action
@@ -64,7 +65,7 @@ export default function LeftBar({ handleEditorChange, imageHistory }) {
         {visiblePanel === "file" && <PanelFile handleSwitch={handleSwitch} />}
         {visiblePanel === "layers" && <PanelLayers />}
         {visiblePanel === "images" && (
-          <PanelAsset imageHistory={imageHistory} />
+          <PanelAsset imageHistory={imageHistory} setSelectedImage={setSelectedImage} />
         )}
       </div>
     </>

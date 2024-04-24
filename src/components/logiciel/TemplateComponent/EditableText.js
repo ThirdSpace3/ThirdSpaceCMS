@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-
+import './EditableText.css'
 const EditableText = ({ text, onChange, style, handleSettingsChange, textType, selectElement }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text);
   const [error, setError] = useState(false);
   const spanRef = useRef(null);
   const inputRef = useRef(null);
+  const [isActive, setIsActive] = useState(false);
 
   // Capture the computed styles of the span to apply to the input
   const computedStyle = useRef({});
@@ -24,6 +25,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
       setError(true);
       setCurrentText(text); // revert to original text or keep the changed text
     } else {
+      setIsActive(false);
       setIsEditing(false);
       onChange(currentText);
       if (typeof handleSettingsChange === 'function') {
@@ -37,6 +39,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
     event.preventDefault();
     event.stopPropagation();
     selectElement(textType);
+    setIsActive(true);
     setIsEditing(true);
   
     // Capture styles when the span is clicked and before editing begins
@@ -49,12 +52,12 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         fontSize: styles.fontSize,
         fontWeight: styles.fontWeight,
         color: styles.color,
-        textAlign: styles.textAlign,
         backgroundColor: styles.backgroundColor,
-        border: 'none', // Add custom properties for the input
+        // Remove the border property
       };
     }
   };
+  
   
 
   useEffect(() => {
@@ -74,6 +77,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         color: styles.color,
         textAlign: styles.textAlign,
         backgroundColor: styles.backgroundColor,
+        cursor: 'pointer',
       };
     }
   }, [text, isEditing]);
@@ -87,14 +91,14 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         onBlur={handleBlur}
         autoFocus
         ref={inputRef}
-        className={`editable-text-input ${error ? 'error' : ''}`}
+        className={`editable-text-input ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}
         style={{...style, ...computedStyle.current}}
         />
     );
   }
 
   return (
-    <span ref={spanRef} onClick={handleSpanClick} style={style}>
+    <span ref={spanRef} onClick={handleSpanClick} style={style} className={`editable-text-span ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}>
       {text}
     </span>
   );

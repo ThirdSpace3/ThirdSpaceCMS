@@ -26,16 +26,16 @@
 .image-component {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .popup-button {
-  position: absolute;
+  position: relative;
   display: flex;
   flex-direction: row;
   gap: 5px;
   align-items: center;
-  bottom: -25px;
+  bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--main-color);
@@ -46,7 +46,7 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.3s ease;
 }
 

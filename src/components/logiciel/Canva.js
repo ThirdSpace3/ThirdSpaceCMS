@@ -7,7 +7,7 @@ import Template2 from '../../templates/Template2';
 import TemplateTest1 from '../../templates/TemplateTest1';
 import SSSProduct from '../../templates/3s-Product';
 
-export default function Canva({ templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode }) {
+export default function Canva({ templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel }) {
   const templateComponents = {
     TemplateFullText,
     TemplateImg_txt,
@@ -19,7 +19,7 @@ export default function Canva({ templateName, deviceSize, settings, handleSettin
   const FallbackTemplate = () => <div>Template not found.</div>;
   const SelectedTemplate = templateComponents[templateName] || FallbackTemplate;
 
-  const [canvasSize, setCanvasSize] = useState({ width: deviceSize, height: '100vh' });
+  const [canvasSize, setCanvasSize] = useState({ width: deviceSize, height: '100%' });
 
   useEffect(() => {
     setCanvasSize({ width: deviceSize, height: '100vh' });
@@ -27,7 +27,7 @@ export default function Canva({ templateName, deviceSize, settings, handleSettin
   console.log('selectElement prop in Canva:', selectElement);
 
   return (
-    <div className='canva-wrapper' style={{ ...canvasSize, overflowY: 'auto' }}>
+    <div className='canva-wrapper' style={{ width: canvasSize.width, height: canvasSize.height, overflowY: 'auto' }}>
       <SelectedTemplate
         deviceSize={deviceSize}
         settings={settings}
@@ -36,6 +36,7 @@ export default function Canva({ templateName, deviceSize, settings, handleSettin
         setSelectedElement={setSelectedElement}
         selectElement={selectElement}
         isPreviewMode={isPreviewMode}
+        openImagePanel={openImagePanel}
       />
     </div>
   );
