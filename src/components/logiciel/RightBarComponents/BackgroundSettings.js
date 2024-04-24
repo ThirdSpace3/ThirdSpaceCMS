@@ -6,12 +6,12 @@ const BackgroundSettings = ({
   isOpen,
   toggleSection,
   selectedElement,
-  handleBackgroundColorChange,
 }) => {
   const { updateStyle } = useStyle();
   const fileInputRef = useRef(null);
   const { addImageToHistory } = useImageHistory();
 
+  
   const handleBackgroundChange = (e, property) => {
     const value = property === "backgroundColor" ? e.target.value : `url(${URL.createObjectURL(e.target.files[0])})`;
 

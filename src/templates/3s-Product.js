@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "./TemplateComponents/3sProduct/3sproductNavbar";
 import HeaderSection from "./TemplateComponents/3sProduct/3sProductHeader";
 import PartnersSection from "./TemplateComponents/3sProduct/3sProductPartners";
@@ -32,16 +32,15 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         onClick={() => selectElement('navbar')}
         style={settings.navbar}
         settings={settings}
-        selectElement={selectElement}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
       />
-      <HeaderSection onClick={() => selectElement('header')} style={settings.header} settings={settings} selectElement={selectElement}/>
-      <PartnersSection onClick={() => selectElement('partners')} style={settings['partners']} selectElement={selectElement} />
-      <AboutSection onClick={() => selectElement('about')} style={settings['about']} selectElement={selectElement}/>
-      <FeaturesSection onClick={() => selectElement('features')} style={settings['features']} selectElement={selectElement}/>
-      <JoinUsSection onClick={() => selectElement('joinus')} style={settings['joinus']} selectElement={selectElement}/>
-      <Footer onClick={() => selectElement('footer')} style={settings['footer']} selectElement={selectElement}/>
+      <HeaderSection onClick={() => selectElement('header')} style={settings.header} settings={settings}/>
+      <PartnersSection onClick={() => selectElement('partners')} style={settings['partners']} />
+      <AboutSection onClick={() => selectElement('about')} style={settings['about']} />
+      <FeaturesSection onClick={() => selectElement('features')} style={settings['features']} />
+      <JoinUsSection onClick={() => selectElement('joinus')} style={settings['joinus']} />
+      <Footer onClick={() => selectElement('footer')} style={settings['footer']} />
     </div>
   );
 };

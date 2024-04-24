@@ -11,9 +11,13 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
   const [aboutText, setAboutText] = useState('About');
   const [featuresText, setFeaturesText] = useState('Features');
   const [joinUsText, setJoinUsText] = useState('Join Us');
-  const { getComponentStyle } = useStyle();
+  const { updateStyle, getComponentStyle } = useStyle();
   const [showReplaceButton, setShowReplaceButton] = useState(false);
   const { selectedImage } = useImageHistory();
+
+  useEffect(() => {
+    console.log("Settings updated in Navbar:", settings);
+  }, [settings]);
 
   const handleImageClick = () => {
     setShowReplaceButton(true); // Toggle visibility based on your needs
@@ -41,6 +45,11 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
   }, []);
 
   const navbarStyle = getComponentStyle('navbar');
+
+  useEffect(() => {
+    console.log("Navbar styles updated:", navbarStyle);
+  }, [navbarStyle]);
+
 
   useEffect(() => {
     const root = document.documentElement;
@@ -97,16 +106,18 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
 
 
   return (
-    <div className="sss-product-navbar-container" style={navbarStyle} onClick={onClick}>
+<div className="sss-product-navbar-container" style={{...navbarStyle, ...settings.navbar}} onClick={onClick}>
       <nav className="sss-product-navbar-navbar">
         <div className="image-container" ref={imageContainerRef}>
-        <ReusableImage
-          src={selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png"}
-          alt="Logo"
-          onClick={handleImageClick}
-          openImagePanel={openImagePanel}
-          imageHeight={imageHeight} // Set the image height here
-        />
+          <ReusableImage
+            src={selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png"}
+            alt="Logo"
+            onClick={handleImageClick}
+            openImagePanel={openImagePanel}
+            imageHeight={imageHeight} // Set the image height here
+            selectElement={selectElement}
+
+          />
 
         </div>
 
@@ -117,10 +128,11 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
                 text={homeText}
                 onChange={(newText) => handleTextChange(newText, 'home')}
                 handleSettingsChange={(newStyle) => handleTextStyleChange('home', newStyle)}
-                style={settings.textStyles?.homeText}
+                style={{...navbarStyle, ...settings.textStyles?.homeText}}
                 textType="homeText"
                 selectElement={selectElement}
               />
+
             </Link>
           </li>
           <li>

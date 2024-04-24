@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './EditableText.css'
+import './EditableText.css';
+
 const EditableText = ({ text, onChange, style, handleSettingsChange, textType, selectElement }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text);
@@ -10,10 +11,6 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
 
   // Capture the computed styles of the span to apply to the input
   const computedStyle = useRef({});
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
 
   const handleInputChange = (event) => {
     setCurrentText(event.target.value);
@@ -33,38 +30,36 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
       }
     }
   };
-  
 
   const handleSpanClick = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    selectElement(textType);
+    if (typeof selectElement === 'function') {
+      selectElement(textType);
+    }
     setIsActive(true);
     setIsEditing(true);
-  
     // Capture styles when the span is clicked and before editing begins
     if (spanRef.current) {
       const styles = window.getComputedStyle(spanRef.current);
       computedStyle.current = {
-        width: `${spanRef.current.offsetWidth}px`, // Maintain width
-        height: `${spanRef.current.offsetHeight}px`, // Maintain height
+        width: `${spanRef.current.offsetWidth}px`,
+        height: `${spanRef.current.offsetHeight}px`,
         fontFamily: styles.fontFamily,
         fontSize: styles.fontSize,
         fontWeight: styles.fontWeight,
         color: styles.color,
         backgroundColor: styles.backgroundColor,
-        // Remove the border property
       };
     }
   };
-  
-  
 
   useEffect(() => {
     if (error && inputRef.current) {
       inputRef.current.focus();
     }
   }, [error]);
+
   useEffect(() => {
     if (!isEditing && spanRef.current) {
       const styles = window.getComputedStyle(spanRef.current);
@@ -81,7 +76,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
       };
     }
   }, [text, isEditing]);
-  
+
   if (isEditing) {
     return (
       <input
@@ -93,7 +88,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         ref={inputRef}
         className={`editable-text-input ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}
         style={{...style, ...computedStyle.current}}
-        />
+      />
     );
   }
 

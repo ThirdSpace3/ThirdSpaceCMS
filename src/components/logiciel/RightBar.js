@@ -10,14 +10,21 @@ import BackgroundSettings from "./RightBarComponents/BackgroundSettings";
 import TypographySettings from "./RightBarComponents/TypographySettings";
 
 export default function RightBar({ selectedElement, addImageToHistory }) {
-  const [typographyStyle, setTypographyStyle] = useState({});
 
   const [isOpen, setIsOpen] = useState({
     size: false,
     background: false,
     typographie: false,
     border: false,
-  });
+  });  
+    const toggleSection = (section) => {
+    setIsOpen((prevState) => ({
+      ...prevState,
+      [section]: !prevState[section],
+    }));
+  };
+  const [typographyStyle, setTypographyStyle] = useState({});
+
   const [selectedAlign, setSelectedAlign] = useState(null);
   const [selectedDecoration, setSelectedDecoration] = useState(null);
   const { updateStyle } = useStyle(); // Get the function to update the style
@@ -50,12 +57,7 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
     overflow: "",
   });
 
-  const toggleSection = (section) => {
-    setIsOpen((prevState) => ({
-      ...prevState,
-      [section]: !prevState[section],
-    }));
-  };
+
 
   const saveStateInSessionStorage = (stateName, state) => {
     sessionStorage.setItem(stateName, JSON.stringify(state));
@@ -360,15 +362,7 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
   }, [selectedElement]);
 
 
-  const handleBackgroundColorChange = (color) => {
-    if (selectedElement && selectedElement.id) {
-      const element = document.getElementById(selectedElement.id);
-      if (element) {
-        element.style.backgroundColor = color;
-      }
-    }
-  };
-  
+
 
   const handleTextDecoration = (decorationType) => {
     if (selectedElement) {
@@ -469,7 +463,6 @@ export default function RightBar({ selectedElement, addImageToHistory }) {
             isOpen={isOpen}
             toggleSection={toggleSection}
             selectedElement={selectedElement} // Pass selectedElement as a prop
-            handleBackgroundColorChange={handleBackgroundColorChange}
           />
 
 

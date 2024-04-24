@@ -1,18 +1,25 @@
 import React, { useState } from "react";
+import { useStyle } from "../../../hooks/StyleContext";
 
 export default function TypographySettings({
   selectedElement,
-  updateStyle,
   toggleSection,
   isOpen,
-  handleInputChange,
   selectedDecoration,
   handleTextDecoration,
   selectedAlign,
   handleTextAlign,
 }) {
   const [typographyStyle, setTypographyStyle] = useState({});
-
+  const { updateStyle } = useStyle();
+  const handleInputChange = (e, styleProperty, type) => {
+    let value = e.target.value;
+    if (type === 'select' || type === 'number') {
+      updateStyle(selectedElement, { [styleProperty]: value });
+    } else {
+      updateStyle(selectedElement, { [styleProperty]: e.target.value });
+    }
+  };
   const handleTypographyChange = (e, styleProperty) => {
     setTypographyStyle((prevState) => ({
       ...prevState,
