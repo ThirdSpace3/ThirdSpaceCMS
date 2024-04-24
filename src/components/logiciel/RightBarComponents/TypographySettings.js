@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useStyle } from "../../../hooks/StyleContext";
 
-function TypographySettings({
+export default function TypographySettings({
   selectedElement,
+  updateStyle,
   toggleSection,
   isOpen,
   handleInputChange,
@@ -12,106 +12,166 @@ function TypographySettings({
   handleTextAlign,
 }) {
   const [typographyStyle, setTypographyStyle] = useState({});
-  const { updateStyle, selectedComponent } = useStyle();
 
-  // Handles typography style changes and updates the context
   const handleTypographyChange = (e, styleProperty) => {
-    const value = e.target.value;
-    console.log(`Updating typographyStyle with ${styleProperty}: ${value}`);
-
-    setTypographyStyle((prevState) => {
-        const updatedTypographyStyle = { ...prevState, [styleProperty]: value };
-        updateStyle(selectedComponent, { typography: updatedTypographyStyle }); // Ensure selectedComponent is defined
-        console.log(`Updated style for ${selectedComponent || 'no component selected'}:`, { typography: updatedTypographyStyle });
-        return updatedTypographyStyle;
-    });
-};
+    setTypographyStyle((prevState) => ({
+      ...prevState,
+      [styleProperty]: e.target.value,
+    }));
+    updateStyle({ [styleProperty]: e.target.value });
+  };
 
   return (
-    <div className="typography-settings-container">
+    <div>
       <div className="parameters-wrapper">
         <div
           className="parameters-wrapper-title-box"
           onClick={() => toggleSection("typographie")}
         >
           <p className="parameters-wrapper-title">Typographie</p>
-          <i className={`bi bi-caret-down-fill ${isOpen.typographie ? "rotate" : ""}`}></i>
+          <i
+            className={`bi bi-caret-down-fill ${
+              isOpen.typographie ? "rotate" : ""
+            }`}
+          ></i>
         </div>
-
-        <div className={`parameters-wrapper-content ${isOpen.typographie ? "open" : ""}`}>
+        <div
+          className={`parameters-wrapper-content ${
+            isOpen.typographie ? "open" : ""
+          }`}
+        >
           <div className="parameters-content-line-row">
             <p className="parameters-content-line-title">Font Family</p>
-            <select onChange={(e) => handleTypographyChange(e, "fontFamily")}>
-              <option value="Arial">Arial</option>
-              <option value="Verdana">Verdana</option>
-              <option value="Helvetica">Helvetica</option>
-            </select>
+            <div className="font-family-dropdown">
+              <select
+                onChange={(e) => handleInputChange(e, "fontFamily", "select")}
+              >
+                <option>Arial</option>
+                <option>Verdana</option>
+                <option>Helvetica</option>
+              </select>
+            </div>
           </div>
 
           <div className="parameters-content-line-row">
             <p className="parameters-content-line-title">Font Weight</p>
-            <select onChange={(e) => handleTypographyChange(e, "fontWeight")}>
-              <option value="100">Light</option>
-              <option value="400">Normal</option>
-              <option value="700">Bold</option>
-              <option value="900">Extra Bold</option>
-            </select>
+            <div className="font-family-dropdown">
+              <select
+                onChange={(e) => handleInputChange(e, "fontWeight", "select")}
+              >
+                <option value="100">Light</option>
+                <option value="500">Normal</option>
+                <option value="800">Bold</option>
+                <option value="1000">Extra Bold</option>
+              </select>
+            </div>
           </div>
 
-          
           <div className="parameters-content-line-row">
-                <p className="parameters-content-line-title">Font Size</p>
-                <div className="parameters-content-line-container">
-                  <input
-                    type="number"
-                    min="0"
-                    max="20"
-                    step="1"
-                    defaultValue="0"
-                    onChange={(e) => handleInputChange(e, "borderWidth")}
-                  />
-                  <span className="px-label">px</span>
-                </div>
-              </div>
+            <p className="parameters-content-line-title">Font Size</p>
+            <div className="parameters-content-line-container">
+              <input
+                type="number"
+                min="8"
+                max="72"
+                step="1"
+                defaultValue="14"
+                onChange={(e) => handleInputChange(e, "fontSize", "number")}
+              />
+              <span className="px-label">px</span>
+            </div>
+          </div>
 
           <div className="parameters-content-line-row">
             <p className="parameters-content-line-title">Color</p>
             <input
               type="color"
-              defaultValue="#000000"
-              onChange={(e) => handleTypographyChange(e, "color")}
+              onChange={(e) => handleInputChange(e, "color")}
             />
           </div>
 
           <div className="parameters-content-line">
             <p className="parameters-content-line-title">Text Decoration</p>
             <div className="parameters-content-line-container">
-              {["italic", "underline", "line-through"].map((decoration) => (
-                <a
-                  key={decoration}
-                  href="#"
-                  className={`parameters-content-line-item ${selectedDecoration === decoration ? "selected" : ""}`}
-                  onClick={() => handleTextDecoration(decoration)}
-                >
-                  <i className={`bi bi-type-${decoration}`}></i>
-                </a>
-              ))}
+              <a
+                href="#"
+                className={`parameters-content-line-item ${
+                  selectedDecoration === "italic" ? "selected" : ""
+                }`}
+                onClick={() => handleTextDecoration("italic")}
+              >
+                <i className="bi bi-type-italic"></i>
+              </a>
+              <hr className="parameters-content-line-separation" />
+              <a
+                href="#"
+                className={`parameters-content-line-item ${
+                  selectedDecoration === "underline" ? "selected" : ""
+                }`}
+                onClick={() => handleTextDecoration("underline")}
+              >
+                <i className="bi bi-type-underline"></i>
+              </a>
+              <hr className="parameters-content-line-separation" />
+              <a
+                href="#"
+                className={`parameters-content-line-item ${
+                  selectedDecoration === "line-through" ? "selected" : ""
+                }`}
+                onClick={() => handleTextDecoration("line-through")}
+              >
+                <i className="bi bi-type-strikethrough"></i>
+              </a>
             </div>
           </div>
-
           <div className="parameters-content-line">
             <p className="parameters-content-line-title">Text Align</p>
             <div className="parameters-content-line-container">
-              {["left", "center", "right", "justify"].map((align) => (
-                <a
-                  key={align}
-                  href="#"
-                  className={`parameters-content-line-item ${selectedAlign === align ? "selected" : ""}`}
-                  onClick={() => handleTextAlign(align)}
-                >
-                  <i className={`bi bi-text-${align}`}></i>
-                </a>
-              ))}
+              <a
+                href="#"
+                className={`parameters-content-line-item ${
+                  selectedAlign === "left" ? "selected" : ""
+                }`}
+                onClick={() => handleTextAlign("left")}
+              >
+                <i className="bi bi-text-left"></i>
+              </a>
+
+              <hr className="parameters-content-line-separation" />
+
+              <a
+                href="#"
+                className={`parameters-content-line-item ${
+                  selectedAlign === "center" ? "selected" : ""
+                }`}
+                onClick={() => handleTextAlign("center")}
+              >
+                <i className="bi bi-text-center"></i>
+              </a>
+
+              <hr className="parameters-content-line-separation" />
+
+              <a
+                href="#"
+                className={`parameters-content-line-item ${
+                  selectedAlign === "right" ? "selected" : ""
+                }`}
+                onClick={() => handleTextAlign("right")}
+              >
+                <i className="bi bi-text-right"></i>
+              </a>
+
+              <hr className="parameters-content-line-separation" />
+
+              <a
+                href="#"
+                className={`parameters-content-line-item ${
+                  selectedAlign === "justify" ? "selected" : ""
+                }`}
+                onClick={() => handleTextAlign("justify")}
+              >
+                <i className="bi bi-justify"></i>
+              </a>
             </div>
           </div>
         </div>
@@ -120,5 +180,3 @@ function TypographySettings({
     </div>
   );
 }
-
-export default TypographySettings;
