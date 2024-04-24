@@ -58,18 +58,21 @@ function TypographySettings({
             </select>
           </div>
 
+          
           <div className="parameters-content-line-row">
-            <p className="parameters-content-line-title">Font Size</p>
-            <input
-              type="number"
-              min="8"
-              max="72"
-              step="1"
-              defaultValue="14"
-              onChange={(e) => handleTypographyChange(e, "fontSize")}
-            />
-            <span className="px-label">px</span>
-          </div>
+                <p className="parameters-content-line-title">Font Size</p>
+                <div className="parameters-content-line-container">
+                  <input
+                    type="number"
+                    min="0"
+                    max="20"
+                    step="1"
+                    defaultValue="0"
+                    onChange={(e) => handleInputChange(e, "borderWidth")}
+                  />
+                  <span className="px-label">px</span>
+                </div>
+              </div>
 
           <div className="parameters-content-line-row">
             <p className="parameters-content-line-title">Color</p>
