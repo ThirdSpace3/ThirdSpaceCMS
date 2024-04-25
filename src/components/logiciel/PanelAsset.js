@@ -4,8 +4,8 @@ import "../Root.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useImageHistory } from "../../hooks/ImageHistoryContext";
 
-export default function PanelAsset() {
-  const { addImageToHistory, imageHistory, selectImage, selectedImage, setSelectedImage } =
+export default function PanelAsset(selectImage) {
+  const { addImageToHistory, imageHistory,  selectedImage, setSelectedImage } =
     useImageHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Assets");
@@ -30,7 +30,6 @@ export default function PanelAsset() {
     files.forEach((file) => {
       const mimeType = file.type;
       let category = "Unknown";
-
       if (mimeType.startsWith("image/")) {
         category = "Photo";
       } else if (mimeType.startsWith("video/")) {
@@ -42,7 +41,6 @@ export default function PanelAsset() {
       ) {
         category = "Document";
       }
-
       const newImageUrl = URL.createObjectURL(file);
       addImageToHistory({ url: newImageUrl, category });
     });
@@ -52,10 +50,11 @@ export default function PanelAsset() {
     fileInputRef.current.click();
   };
 
-  const handleImageSelect = (image) => {
+  const handleImageSelect = (image, index) => {
     selectImage(image.url);
+    console.log("Image selected with index:", index); // For debugging
+    // If needed, update state or perform actions with the selected image index
   };
-  
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -70,7 +69,6 @@ export default function PanelAsset() {
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -82,24 +80,11 @@ export default function PanelAsset() {
       case "Photo":
         return <img src={image.url} alt="Preview" />;
       case "Video":
-        return (
-          <video width="120" height="90" controls>
-            <source src={image.url} type="video/mp4" />{" "}
-            {/* Adjust type accordingly */}
-            Your browser does not support the video tag.
-          </video>
-        );
+        return <video width="120" height="90" controls><source src={image.url} type="video/mp4" />Your browser does not support the video tag.</video>;
       case "Document":
-        return (
-          <i
-            className="bi bi-file-earmark-text-fill"
-            style={{ fontSize: "48px" }}
-          ></i>
-        );
+        return <i className="bi bi-file-earmark-text-fill" style={{ fontSize: "48px" }}></i>;
       default:
-        return (
-          <i className="bi bi-file-earmark" style={{ fontSize: "48px" }}></i>
-        );
+        return <i className="bi bi-file-earmark" style={{ fontSize: "48px" }}></i>;
     }
   };
 
@@ -118,44 +103,26 @@ export default function PanelAsset() {
           Upload
         </button>
         <div className="dropdown" ref={dropdownRef}>
-          <button
-            className={`dropdown-button ${isOpen ? "open" : ""}`}
-            onClick={toggleDropdown}
-          >
-            {selectedOption}{" "}
-            <i
-              className={`bi bi-caret-down-fill ${isOpen ? "rotate" : ""}`}
-            ></i>
+          <button className={`dropdown-button ${isOpen ? "open" : ""}`} onClick={toggleDropdown}>
+            {selectedOption} <i className={`bi bi-caret-down-fill ${isOpen ? "rotate" : ""}`}></i>
           </button>
           {isOpen && (
             <ul className="dropdown-options open">
-              {options
-                .filter((option) => option !== selectedOption)
-                .map(
-                  (
-                    option // Filter out the selected option
-                  ) => (
-                    <li
-                      key={option}
-                      className="dropdown-option"
-                      onClick={() => handleOptionClick(option)}
-                    >
-                      {option}
-                    </li>
-                  )
-                )}
+              {options.filter((option) => option !== selectedOption).map((option) => (
+                <li key={option} className="dropdown-option" onClick={() => handleOptionClick(option)}>
+                  {option}
+                </li>
+              ))}
             </ul>
           )}
         </div>
       </div>
-
       <div className="ImagePreview">
         {filteredHistory.map((image, index) => (
           <div
             key={index}
-            className={`image-preview ${image.url === selectedImage ? "selected" : ""
-              }`}
-            onClick={() => handleImageSelect(image)}
+            className={`image-preview ${image.url === selectedImage ? "selected" : ""}`}
+            onClick={() => handleImageSelect(image, index)}
           >
             {renderPreview(image)}
           </div>
