@@ -10,7 +10,6 @@ import Footer from "./TemplateComponents/3sProduct/3sProductFooter";
 const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
-  console.log('selectElement prop in SSSProduct:', selectElement);
 
   const toggleMenu = (event) => {
     event.preventDefault();
@@ -20,7 +19,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         ? "./images/templates-img/3sproduct/3sproduct-menu-close.png"
         : "./images/templates-img/3sproduct/3sproduct-menu-open.png"
     );
-    document.body.style.overflow = isMenuOpen ? "auto" : "hidden";
+    document.body.style.overflow = isMenuOpen ? "hidden" : "auto";
   };
 
   return (
@@ -35,12 +34,43 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
       />
-      <HeaderSection onClick={() => selectElement('header')} style={settings.header} settings={settings}/>
-      <PartnersSection onClick={() => selectElement('partners')} style={settings['partners']} />
-      <AboutSection onClick={() => selectElement('about')} style={settings['about']} />
-      <FeaturesSection onClick={() => selectElement('features')} style={settings['features']} />
-      <JoinUsSection onClick={() => selectElement('joinus')} style={settings['joinus']} />
-      <Footer onClick={() => selectElement('footer')} style={settings['footer']} />
+      <HeaderSection
+        onClick={() => selectElement('header')}
+        style={settings.header}
+        settings={settings}
+        handleSettingsChange={handleSettingsChange}
+        openImagePanel={openImagePanel}
+      />
+      <PartnersSection
+        onClick={() => selectElement('partners')}
+        style={settings.partners}
+        handleSettingsChange={handleSettingsChange}
+        openImagePanel={openImagePanel}
+      />
+      <AboutSection
+        onClick={() => selectElement('about')}
+        style={settings.about}
+        handleSettingsChange={handleSettingsChange}
+        openImagePanel={openImagePanel}
+      />
+      <FeaturesSection
+        onClick={() => selectElement('features')}
+        style={settings.features}
+        handleSettingsChange={handleSettingsChange}
+        openImagePanel={openImagePanel}
+      />
+      <JoinUsSection
+        onClick={() => selectElement('joinus')}
+        style={settings.joinus}
+        handleSettingsChange={handleSettingsChange}
+        openImagePanel={openImagePanel}
+      />
+      <Footer
+        onClick={() => selectElement('footer')}
+        style={settings.footer}
+        handleSettingsChange={handleSettingsChange}
+        openImagePanel={openImagePanel}
+      />
     </div>
   );
 };

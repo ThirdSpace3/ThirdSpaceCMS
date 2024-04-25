@@ -29,7 +29,8 @@
     max-height: 30px;
     width: auto;
   }
-  .sss-product-footer-top-links-box {
+  .sss-product-footer-top-links-box,
+  .sss-product-footer-top-links-box li {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -67,6 +68,7 @@
     border: 1px solid #282d45;
   }
   .sss-product-footer-bottom-text,
+  .sss-product-footer-bottom-text li,
   .sss-product-footer-bottom-text a {
     color: var(--Neutral-gray-300, #8f9bb7);
     font-family: Inter;

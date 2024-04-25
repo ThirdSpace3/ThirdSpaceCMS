@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import '../../templates-po/about.css';
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
+import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../hooks/StyleContext';
+import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
-const AboutSection = ({ onClick, handleSettingsChange, selectElement }) => {
+const AboutSection = ({ onClick, handleSettingsChange, selectElement, openImagePanel }) => {
   const { getComponentStyle } = useStyle();
+  const { selectedImage, updateSelectedImage } = useImageHistory();
+
   const [aboutTitleText, setAboutTitleText] = useState('The best features to help you create all your projects');
   const [aboutTitleStyle, setAboutTitleStyle] = useState({ fontFamily: 'Outfit', fontSize: '24px', fontWeight: '600', color: '#333', textAlign: 'center' });
   const [aboutDescriptionText, setAboutDescriptionText] = useState('Apsum dolor sit amet consectetur. Aliquam elementum elementum in ultrices. Dui maecenas ut eros turpis ultrices metus morbi aliquet vel.');
@@ -46,14 +50,27 @@ const AboutSection = ({ onClick, handleSettingsChange, selectElement }) => {
       <div className="sss-product-about-box">
         {[1, 2, 3, 4, 5, 6].map((num) => (
           <div key={num} className="sss-product-about-item">
-            <img
+            <ReusableImage
               src={`./images/templates-img/3sproduct/3sproduct-about-${num}.png`}
-              className="sss-product-about-item-img"
               alt={`Feature ${num}`}
+              openImagePanel={openImagePanel}
+              selectElement={() => updateSelectedImage(`./images/templates-img/3sproduct/3sproduct-about-${num}.png`)}
             />
-            <h3 className="sss-product-about-item-title">Feature Title {num}</h3>
+            <h3 className="sss-product-about-item-title">
+              <EditableText
+                text={`Feature Title ${num}`}
+                onChange={(newText) => handleTextChange(newText, `featureTitle${num}`)}
+                style={{ fontFamily: 'Outfit', fontSize: '24px', fontWeight: '700', color: '#f6f6f7' }}
+                selectElement={selectElement}
+              />
+            </h3>
             <p className="sss-product-about-item-text">
-              Feature description here. It can vary depending on the feature number {num}.
+              <EditableText
+                text={`Feature description here. It can vary depending on the feature number ${num}.`}
+                onChange={(newText) => handleTextChange(newText, `featureDescription${num}`)}
+                style={{ fontFamily: 'Outfit', fontSize: '16px', fontWeight: '400', color: '#8f9bb7' }}
+                selectElement={selectElement}
+              />
             </p>
           </div>
         ))}

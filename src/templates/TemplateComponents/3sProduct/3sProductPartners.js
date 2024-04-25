@@ -1,19 +1,37 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import '../../templates-po/partners.css';
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
+import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../hooks/StyleContext';
 
-const PartnersSection = ({ onClick, handleSettingsChange, selectElement  }) => {
-  const { getComponentStyle } = useStyle();
+const PartnersSection = ({ onClick, handleSettingsChange, selectElement, settings, openImagePanel }) => {
+  const { getComponentStyle, updateStyle } = useStyle();
   const [partnersTitleText, setPartnersTitleText] = useState('Trusted by teams at over 1,000 of the world\'s leading organizations');
   const [partnersTitleStyle, setPartnersTitleStyle] = useState({ fontFamily: 'Outfit', fontSize: '24px', fontWeight: '600', color: '#333', textAlign: 'center' });
+  const [partnerImages, setPartnerImages] = useState(Array(7).fill().map((_, i) => `./images/templates-img/3sproduct/3sproduct-partners-${i+1}.png`));
+  const partnerStyle = getComponentStyle('partners');
+
+  useEffect(() => {
+    updateStyle(settings);
+  }, [settings]);
 
   const handleTextChange = (newText) => {
     setPartnersTitleText(newText);
   };
 
   const handleTextStyleChange = (newStyle) => {
-    setPartnersTitleStyle(newStyle);
+    const updatedStyle = {
+      ...partnersTitleStyle,
+      ...newStyle
+    };
+    setPartnersTitleStyle(updatedStyle);
+    handleSettingsChange('partnersTitle', updatedStyle);
+  };
+
+  const handleImageChange = (newSrc, index) => {
+    const updatedImages = [...partnerImages];
+    updatedImages[index] = newSrc;
+    setPartnerImages(updatedImages);
   };
 
   return (
@@ -21,20 +39,22 @@ const PartnersSection = ({ onClick, handleSettingsChange, selectElement  }) => {
       <h2 className="sss-product-partners-title">
         <EditableText
           text={partnersTitleText}
-          style={partnersTitleStyle}
+          style={{...partnerStyle, partnersTitleStyle}}
+
           onChange={handleTextChange}
           onStyleChange={handleTextStyleChange}
-          selectElement={selectElement} // Ensuring prop is passed
-
+          selectElement={selectElement}
         />
       </h2>
       <div className="sss-product-partners-box">
-        {[1, 2, 3, 4, 5, 6, 7].map((num) => (
-          <img
-            key={num}
-            src={`./images/templates-img/3sproduct/3sproduct-partners-${num}.png`}
-            className="sss-product-partners-box-img"
-            alt={`Partner ${num}`}
+        {partnerImages.map((src, index) => (
+          <ReusableImage
+            key={index}
+            src={src}
+            alt={`Partner ${index + 1}`}
+            onClick={() => selectElement(`partnerImage-${index}`)}
+            openImagePanel={() => openImagePanel(index, handleImageChange)}
+            selectElement={selectElement}
           />
         ))}
       </div>

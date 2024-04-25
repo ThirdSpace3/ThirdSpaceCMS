@@ -141,7 +141,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
                 text={aboutText}
                 onChange={(newText) => handleTextChange(newText, 'about')}
                 handleSettingsChange={(newStyle) => handleTextStyleChange('about', newStyle)}
-                style={settings.textStyles?.aboutText}
+                style={{...navbarStyle, ...settings.textStyles?.aboutText}}
                 textType="aboutText"
                 selectElement={selectElement}
               />
@@ -153,7 +153,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
                 text={featuresText}
                 onChange={(newText) => handleTextChange(newText, 'features')}
                 handleSettingsChange={(newStyle) => handleTextStyleChange('features', newStyle)}
-                style={settings.textStyles?.featuresText}
+                style={{...navbarStyle, ...settings.textStyles?.featuresText}}
                 textType="featuresText"
                 selectElement={selectElement}
               />
