@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../templates-po/feature.css';
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
 import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
@@ -7,7 +7,7 @@ import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openImagePanel }) => {
   const { getComponentStyle } = useStyle();
-  const { selectedImage, updateSelectedImage } = useImageHistory();
+  const { enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
   // State for text fields including descriptions
   const [featuresTitleText, setFeaturesTitleText] = useState('Essential apps that protect your documents');
@@ -31,6 +31,48 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
   const [feature1Image, setFeature1Image] = useState('./images/templates-img/3sproduct/3sproduct-feature-1.png');
   const [feature2Image, setFeature2Image] = useState('./images/templates-img/3sproduct/3sproduct-feature-2.png');
   const [feature3Image, setFeature3Image] = useState('./images/templates-img/3sproduct/3sproduct-feature-3.png');
+  const [imageHeight1, setImage1Height] = useState(null);
+  const [imageHeight2, setImage2Height] = useState(null);
+  const [imageHeight3, setImage3Height] = useState(null);
+
+  const getImageHeight = (src) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => resolve(img.height);
+    });
+  };
+  useEffect(() => {
+    getImageHeight(feature1Image).then((height) => setImage1Height(height));
+    getImageHeight(feature2Image).then((height) => setImage2Height(height));
+    getImageHeight(feature3Image).then((height) => setImage3Height(height));
+
+  }, []);
+
+
+  const handleImageClick = (index) => {
+    const identifier = `featureImage-${index}`;
+    enterReplacementMode(identifier);
+  };
+
+  const handleImageChange = (newSrc, index) => {
+    if (activeComponent === `featureImage-${index}`) {
+      switch (index) {
+        case 1:
+          setFeature1Image(newSrc);
+          break;
+        case 2:
+          setFeature2Image(newSrc);
+          break;
+        case 3:
+          setFeature3Image(newSrc);
+          break;
+        default:
+          break;
+      }
+      selectImage(newSrc);
+    }
+  };
 
   return (
     <div className="sss-product-features" onClick={onClick}>
@@ -65,10 +107,14 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
           <div className="sss-product-features-box-top-right">
             <ReusableImage
               src={feature1Image}
-              onClick={() => setFeature1Image(selectedImage || feature1Image)}
+              onClick={() => handleImageClick(1)}
               openImagePanel={openImagePanel}
-              selectElement={selectElement}
+              onImageChange={(newSrc) => handleImageChange(newSrc, 1)}
+              selectedImage={activeComponent === 'featureImage-1' ? feature1Image : null}
               alt="Feature 1"
+              identifier={"Feature1"}
+              imageHeight={imageHeight1}
+
             />
           </div>
         </div>
@@ -77,10 +123,14 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
           <div className="sss-product-features-box-bottom-left">
             <ReusableImage
               src={feature2Image}
-              onClick={() => setFeature2Image(selectedImage || feature2Image)}
+              onClick={() => handleImageClick(2)}
               openImagePanel={openImagePanel}
-              selectElement={selectElement}
+              onImageChange={(newSrc) => handleImageChange(newSrc, 2)}
+              selectedImage={activeComponent === 'featureImage-2' ? feature2Image : null}
               alt="Mobile applications"
+              identifier={"Feature2"}
+              imageHeight={imageHeight2}
+
             />
             <h3 className="sss-product-features-box-bottom-left-title">
               <EditableText
@@ -114,10 +164,14 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
             />
             <ReusableImage
               src={feature3Image}
-              onClick={() => setFeature3Image(selectedImage || feature3Image)}
+              onClick={() => handleImageClick(3)}
               openImagePanel={openImagePanel}
-              selectElement={selectElement}
+              onImageChange={(newSrc) => handleImageChange(newSrc, 3)}
+              selectedImage={activeComponent === 'featureImage-3' ? feature3Image : null}
               alt="Feature 3"
+              identifier={"Feature3"}
+              imageHeight={imageHeight3}
+
             />
           </div>
         </div>

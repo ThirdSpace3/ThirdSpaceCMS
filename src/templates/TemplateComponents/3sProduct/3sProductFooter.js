@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../templates-po/footer.css';
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
 import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../hooks/StyleContext';
+import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
-const Footer = ({ settings, handleSettingsChange, selectElement, onClick, openImagePanel }) => {
+const Footer = ({ handleSettingsChange, onClick, openImagePanel }) => {
   const { getComponentStyle, updateStyle } = useStyle();
+  const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
   // State for editable texts
   const [footerText, setFooterText] = useState('Copyright © 3S.Product | Designed inspired by Webocean LTD - Powered by Third Space');
@@ -14,71 +16,100 @@ const Footer = ({ settings, handleSettingsChange, selectElement, onClick, openIm
   const [featuresText, setFeaturesText] = useState('Features');
 
   const defaultFooterStyle = getComponentStyle('footer') || {
-    fontFamily: 'Arial', 
-    fontSize: '14px', 
-    fontWeight: 'normal', 
-    color: '#666', 
+    fontFamily: 'Arial',
+    fontSize: '14px',
+    fontWeight: 'normal',
+    color: '#666',
     textAlign: 'center'
   };
 
+  // Image states
+  const [footerLogoSrc, setFooterLogoSrc] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
+  const [footerTwitterSrc, setFooterTwitterSrc] = useState("./images/templates-img/3sproduct/3sproduct-footer-1.png");
+  const [footerLinkedInSrc, setFooterLinkedInSrc] = useState("./images/templates-img/3sproduct/3sproduct-footer-4.png");
+
+  // Handle text changes
   const handleTextChange = (text, setter) => {
     setter(text);
   };
 
+  // Handle style changes for texts
   const handleTextStyleChange = (textType, newStyle) => {
     const updatedStyle = { ...defaultFooterStyle, ...newStyle };
     updateStyle(textType, updatedStyle);
   };
 
+  // Effect for handling image replacement in the footer
+  useEffect(() => {
+    if (activeComponent === 'Footer' && selectedImage) {
+      switch (activeComponent) {
+        case "FooterLogo":
+          setFooterLogoSrc(selectedImage);
+          break;
+        case "FooterTwitter":
+          setFooterTwitterSrc(selectedImage);
+          break;
+        case "FooterLinkedIn":
+          setFooterLinkedInSrc(selectedImage);
+          break;
+        default:
+          break;
+      }
+    }
+  }, [selectedImage, activeComponent]);
+
   return (
     <div className="sss-product-footer" onClick={onClick}>
       <div className="sss-product-footer-top">
         <ReusableImage 
-          src="./images/templates-img/3sproduct/3sproduct-logo.png" 
+          src={footerLogoSrc} 
           alt="Footer Logo" 
-          openImagePanel={openImagePanel}
+          openImagePanel={() => enterReplacementMode('FooterLogo')}
+          identifier="FooterLogo"
           imageHeight="50px"
         />
         <ul className="sss-product-footer-top-links-box">
-          <li>
+        <li className='sss-product-footer-top-links'>
             <EditableText
               text={homeText}
               onChange={(text) => handleTextChange(text, setHomeText)}
               style={defaultFooterStyle}
               textType="homeText"
-              selectElement={selectElement}
+              selectElement={() => selectImage('homeText')}
             />
           </li>
-          <li>
+          <li className='sss-product-footer-top-links'>
             <EditableText
               text={aboutText}
               onChange={(text) => handleTextChange(text, setAboutText)}
               style={defaultFooterStyle}
               textType="aboutText"
-              selectElement={selectElement}
+              selectElement={() => selectImage('aboutText')}
             />
           </li>
-          <li>
+          <li className='sss-product-footer-top-links'>
             <EditableText
               text={featuresText}
               onChange={(text) => handleTextChange(text, setFeaturesText)}
               style={defaultFooterStyle}
               textType="featuresText"
-              selectElement={selectElement}
+              selectElement={() => selectImage('featuresText')}
             />
           </li>
         </ul>
         <div className="sss-product-footer-top-rs">
           <ReusableImage 
-            src="./images/templates-img/3sproduct/3sproduct-footer-1.png" 
+            src={footerTwitterSrc} 
             alt="Twitter" 
-            openImagePanel={openImagePanel}
+            openImagePanel={() => enterReplacementMode('FooterTwitter')}
+            identifier="FooterTwitter"
             imageHeight="30px"
           />
           <ReusableImage 
-            src="./images/templates-img/3sproduct/3sproduct-footer-4.png" 
+            src={footerLinkedInSrc} 
             alt="LinkedIn" 
-            openImagePanel={openImagePanel}
+            openImagePanel={() => enterReplacementMode('FooterLinkedIn')}
+            identifier="FooterLinkedIn"
             imageHeight="30px"
           />
         </div>
@@ -92,7 +123,7 @@ const Footer = ({ settings, handleSettingsChange, selectElement, onClick, openIm
             onStyleChange={(newStyle) => handleTextStyleChange('footerText', newStyle)}
             style={defaultFooterStyle}
             textType="footerText"
-            selectElement={selectElement}
+            selectElement={() => selectImage('footerText')}
           />
         </p>
       </div>

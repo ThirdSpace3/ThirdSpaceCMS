@@ -17,6 +17,21 @@ const HeaderSection = ({
   const { getComponentStyle, updateStyle } = useStyle();
   const headerStyle = getComponentStyle('header');
 
+
+  const [imageHeight, setImageHeight] = useState(null);
+  const getImageHeight = (src) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => resolve(img.height);
+    });
+  };
+  useEffect(() => {
+    getImageHeight(headerImage).then((height) => setImageHeight(height));
+  }, []);
+
+
+  
   useEffect(() => {
     updateStyle(settings);
   }, [settings]);
@@ -90,6 +105,7 @@ const HeaderSection = ({
         openImagePanel={openImagePanel}
         onImageChange={handleNewImageSrc}
         identifier="HeaderSection"
+        imageHeight={imageHeight}
 
       />
     </div>

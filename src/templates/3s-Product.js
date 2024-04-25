@@ -45,15 +45,15 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
 
       />
       <PartnersSection
-        onClick={() => selectElement('partners')}
         style={settings.partners}
+        settings={settings}
+
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
         setSelectedImage={setSelectedImage}
 
       />
       <AboutSection
-        onClick={() => selectElement('about')}
         style={settings.about}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
@@ -63,10 +63,10 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
 
       />
       <FeaturesSection
-        onClick={() => selectElement('features')}
         style={settings.features}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
+        selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
 
       />
