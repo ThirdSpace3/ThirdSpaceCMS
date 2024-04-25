@@ -13,7 +13,7 @@ const Navbar = ({
     handleSettingsChange,
     openImagePanel
 }) => {
-  const { selectedImage, isReplacementMode, enterReplacementMode, selectImage } = useImageHistory();
+    const { selectedImage, isReplacementMode, enterReplacementMode, selectImage, activeComponent } = useImageHistory();
   const [homeText, setHomeText] = useState('Home');
     const [aboutText, setAboutText] = useState('About');
     const [featuresText, setFeaturesText] = useState('Features');
@@ -34,18 +34,28 @@ const Navbar = ({
       getImageHeight("./images/templates-img/3sproduct/3sproduct-logo.png").then((height) => setImageHeight(height));
     }, []);
   
-    const handleImageClick = () => {
-      if (isReplacementMode) {
-          // Only allow entering replacement mode if not already in it
-          enterReplacementMode('Navbar');
+  
+    useEffect(() => {
+      if (isReplacementMode && activeComponent === 'Navbar') {
+          setNavbarImage(selectedImage);
       }
-  };
-
-  const handleNewImageSrc = (newSrc) => {
-    if (isReplacementMode) {
-        selectImage(newSrc);
-    }
-};
+    }, [selectedImage, isReplacementMode, activeComponent]);
+    useEffect(() => {
+        console.log(`Component: Navbar, Active: ${activeComponent}, Image: ${selectedImage}`);
+        if (activeComponent === 'Navbar' && selectedImage) {
+            setNavbarImage(selectedImage);
+        }
+    }, [selectedImage, activeComponent]);
+    
+    const handleImageClick = () => {
+        enterReplacementMode('Navbar');
+    };
+  
+    const handleNewImageSrc = (newSrc) => {
+      if (activeComponent === 'Navbar') {
+          selectImage(newSrc);
+      }
+    };
 
     useEffect(() => {
         const img = new Image();
@@ -90,14 +100,6 @@ const Navbar = ({
             }
         });
     };
-
-    useEffect(() => {
-      if (isReplacementMode) {
-          setNavbarImage(selectedImage);
-      }
-  }, [selectedImage, isReplacementMode]);
-
-
  
     useEffect(() => {
       console.log("Component Name: Reacting to new selected image", selectedImage);
@@ -110,11 +112,14 @@ const Navbar = ({
                     <ReusableImage
                         src={navbarImage}
                         alt="Navbar Logo"
-                        onClick={handleImageClick}
+                        handleImageClick={handleImageClick}
                         openImagePanel={openImagePanel}
                         imageHeight={imageHeight}
                         selectedImage={selectedImage}
                         onImageChange={handleNewImageSrc}
+                        onClick={handleImageClick}
+                        identifier="NavbarImage"
+
                         />
                 </div>
                 <ul className="sss-product-navbar-links-box">

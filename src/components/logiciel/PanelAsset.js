@@ -5,8 +5,10 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import { useImageHistory } from "../../hooks/ImageHistoryContext";
 
 export default function PanelAsset() {
-  const { addImageToHistory, imageHistory, selectImage, selectedImage, setSelectedImage } =
-    useImageHistory();
+  const {
+    addImageToHistory, imageHistory, selectImage, selectedImage,
+    setSelectedImage, componentImageUsage, clearSelectedImage, activeComponent, enterReplacementMode
+  } = useImageHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Assets");
   const [filteredHistory, setFilteredHistory] = useState(imageHistory);
@@ -53,9 +55,16 @@ export default function PanelAsset() {
   };
 
   const handleImageSelect = (image) => {
+    // Here you need to ensure that `enterReplacementMode` is called with the correct component identifier.
+    // This identifier should be the one from the component that is currently active or about to be made active.
+    // For demonstration, let's assume `PanelAsset` can determine the active component somehow or receives it as a prop.
+    enterReplacementMode(activeComponent); // Make sure activeComponent is correctly managed.
     selectImage(image.url);
-  };
-  
+};
+useEffect(() => {
+  console.log(`Active Component: ${activeComponent}, Selected Image: ${selectedImage}`);
+}, [activeComponent, selectedImage]);
+
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -78,27 +87,25 @@ export default function PanelAsset() {
   }, []);
 
   const renderPreview = (image) => {
+    const isUsed = Object.values(componentImageUsage).includes(image.url);
+    const previewClass = isUsed ? "image-used" : "image-preview";
     switch (image.category) {
       case "Photo":
-        return <img src={image.url} alt="Preview" />;
+        return <img src={image.url} alt="Preview" className={previewClass} />;
       case "Video":
         return (
-          <video width="120" height="90" controls>
-            <source src={image.url} type="video/mp4" />{" "}
-            {/* Adjust type accordingly */}
+          <video className={previewClass} width="120" height="90" controls>
+            <source src={image.url} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         );
       case "Document":
         return (
-          <i
-            className="bi bi-file-earmark-text-fill"
-            style={{ fontSize: "48px" }}
-          ></i>
+          <i className={`bi bi-file-earmark-text-fill ${previewClass}`} style={{ fontSize: "48px" }}></i>
         );
       default:
         return (
-          <i className="bi bi-file-earmark" style={{ fontSize: "48px" }}></i>
+          <i className={`bi bi-file-earmark ${previewClass}`} style={{ fontSize: "48px" }}></i>
         );
     }
   };
@@ -122,28 +129,15 @@ export default function PanelAsset() {
             className={`dropdown-button ${isOpen ? "open" : ""}`}
             onClick={toggleDropdown}
           >
-            {selectedOption}{" "}
-            <i
-              className={`bi bi-caret-down-fill ${isOpen ? "rotate" : ""}`}
-            ></i>
+            {selectedOption} <i className={`bi bi-caret-down-fill ${isOpen ? "rotate" : ""}`}></i>
           </button>
           {isOpen && (
-            <ul className="dropdown-options open">
-              {options
-                .filter((option) => option !== selectedOption)
-                .map(
-                  (
-                    option // Filter out the selected option
-                  ) => (
-                    <li
-                      key={option}
-                      className="dropdown-option"
-                      onClick={() => handleOptionClick(option)}
-                    >
-                      {option}
-                    </li>
-                  )
-                )}
+            <ul className = "dropdown-options open">
+              {options.filter(option => option !== selectedOption).map(option => (
+                <li key={option} className="dropdown-option" onClick={() => handleOptionClick(option)}>
+                  {option}
+                </li>
+              ))}
             </ul>
           )}
         </div>
@@ -151,12 +145,7 @@ export default function PanelAsset() {
 
       <div className="ImagePreview">
         {filteredHistory.map((image, index) => (
-          <div
-            key={index}
-            className={`image-preview ${image.url === selectedImage ? "selected" : ""
-              }`}
-            onClick={() => handleImageSelect(image)}
-          >
+          <div key={index} className={`image-preview ${image.url === selectedImage ? "selected" : ""}`} onClick={() => handleImageSelect(image)}>
             {renderPreview(image)}
           </div>
         ))}

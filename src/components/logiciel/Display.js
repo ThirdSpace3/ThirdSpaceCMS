@@ -6,7 +6,7 @@ import TopBar from './TopBar';
 import RightBar from './RightBar';
 import './Display.css';
 import { StyleProvider } from '../../hooks/StyleContext';
-import { ImageHistoryProvider } from '../../hooks/ImageHistoryContext';
+import { ImageHistoryProvider, useImageHistory } from '../../hooks/ImageHistoryContext';
 import Canva from './Canva';
 
 export default function Display() {
@@ -22,6 +22,7 @@ export default function Display() {
   const { templateName } = useParams();
   const [activePanel, setActivePanel] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const { clearFocus } = useImageHistory(); // Use the clearFocus method from context
 
 
 
@@ -104,9 +105,26 @@ export default function Display() {
     console.log('Active template:', templateName);
 
   }, [templateName]);
+
+
+// In Display.js
+useEffect(() => {
+  const handleGlobalClick = (event) => {
+    if (event.target.closest('.image-container')) {
+      // Don't clear focus if the click is inside an image container
+      return;
+    }
+    clearFocus();  // This will now work properly
+  };
+
+  document.addEventListener('click', handleGlobalClick);
+  return () => {
+    document.removeEventListener('click', handleGlobalClick);
+  };
+}, [clearFocus]);  // Including clearFocus to handle changes correctly
+
   return (
-    <ImageHistoryProvider>
-      <StyleProvider>
+    <>
         <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
         <div className="displayWrapper">
           {!isPreviewMode && (
@@ -138,7 +156,6 @@ export default function Display() {
             <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
           )}
         </div>
-      </StyleProvider>
-    </ImageHistoryProvider>
+    </>
   );
 }

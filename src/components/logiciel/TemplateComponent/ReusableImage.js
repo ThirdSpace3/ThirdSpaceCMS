@@ -1,73 +1,57 @@
+// ReusableImage.js
 import React, { useState, useRef, useEffect } from "react";
 import "./ReusableImage.css";
+import { useImageHistory } from "../../../hooks/ImageHistoryContext";
 
 const ReusableImage = ({
   src,
   alt,
-  onClick,
+  identifier, // This prop identifies the component
   openImagePanel,
   imageHeight,
-  selectedImage,
-  onImageChange,
 }) => {
   const [showReplaceButton, setShowReplaceButton] = useState(false);
+  const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
+  const [currentSrc, setCurrentSrc] = useState(src);
   const imageContainerRef = useRef(null);
 
-  const handleImageClick = () => {
-    if (typeof onClick === "function") {
-      onClick(); // Call the onClick prop, which should handle entering replacement mode
+  useEffect(() => {
+    // This ensures that the image updates only if this component is active
+    if (activeComponent === identifier && selectedImage && currentSrc !== selectedImage) {
+      setCurrentSrc(selectedImage);
     }
+  }, [selectedImage, activeComponent, identifier]);
+
+  const handleImageClick = () => {
+    enterReplacementMode(identifier);
     setShowReplaceButton(true);
   };
 
-  const handleButtonClick = () => {
-    if (typeof openImagePanel === "function") {
-      openImagePanel(); // Open the panel to select a new image
+  const handleClickOutside = (event) => {
+    if (!imageContainerRef.current.contains(event.target)) {
+      setShowReplaceButton(false);
     }
-    setShowReplaceButton(true);
   };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!imageContainerRef.current.contains(event.target)) {
-        setShowReplaceButton(false);
-      }
-    };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  const handleNewImageSrc = (newSrc) => {
-    if (typeof onImageChange === "function") {
-      onImageChange(newSrc);
-    }
-  };
-
-  const handleImageSelect = () => {
-    handleNewImageSrc(selectedImage);
-    setShowReplaceButton(false); // Hide the replace button after selecting a new image
-  };
-
   return (
     <div className="image-container" ref={imageContainerRef}>
       <img
-        src={src}
+        src={currentSrc}
         alt={alt}
         onClick={handleImageClick}
         style={{ height: imageHeight }}
       />
       {showReplaceButton && (
-        <button className="popup-button" onClick={handleButtonClick}>
+        <button className="popup-button" onClick={openImagePanel}>
           Replace Image <i className="bi bi-arrow-repeat"></i>
         </button>
-      )}
-      {selectedImage && (
-        <div className="selected-image" onClick={handleImageSelect}>
-          <img src={selectedImage} alt="Selected Image" />
-        </div>
       )}
     </div>
   );

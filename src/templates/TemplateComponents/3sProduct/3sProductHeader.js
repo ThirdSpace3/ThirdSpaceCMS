@@ -21,8 +21,9 @@ const HeaderSection = ({
     updateStyle(settings);
   }, [settings]);
 
+  // Ensure the header image updates to the selected image when this component is active
   useEffect(() => {
-    if (activeComponent === 'HeaderSection' && selectedImage !== headerImage) {
+    if (activeComponent === 'HeaderSection' && selectedImage && selectedImage !== headerImage) {
       setHeaderImage(selectedImage);
     }
   }, [selectedImage, activeComponent, headerImage]);
@@ -43,16 +44,21 @@ const HeaderSection = ({
     }
   };
 
-  const handleImageClick = () => {
-    enterReplacementMode('HeaderSection');
-  };
 
+
+
+  // This function now will ensure image change only when this component is active
   const handleNewImageSrc = (newSrc) => {
     if (activeComponent === 'HeaderSection') {
       selectImage(newSrc);
     }
   };
-
+  useEffect(() => {
+    console.log(`Component: HeaderSection, Active: ${activeComponent}, Image: ${selectedImage}`);
+    if (activeComponent === 'HeaderSection' && selectedImage) {
+        setHeaderImage(selectedImage);
+    }
+}, [selectedImage, activeComponent]);
   return (
     <div className="sss-product-hero" style={{ ...style, ...settings.header }}>
       
@@ -80,9 +86,11 @@ const HeaderSection = ({
       <ReusableImage
         src={headerImage}
         alt="Hero Image"
-        onClick={handleImageClick}
+        onClick={() => enterReplacementMode('HeaderSection')}
         openImagePanel={openImagePanel}
         onImageChange={handleNewImageSrc}
+        identifier="HeaderSection"
+
       />
     </div>
   );

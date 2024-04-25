@@ -223,3 +223,9 @@
   background-color: white; /* Fond blanc */
   border: 1px solid #ddd; /* Bordure subtile (optionnel) */
 }
+
+
+.image-used {
+  opacity: 0.5;
+  pointer-events: none; /* Disable clicking on used images */
+}
