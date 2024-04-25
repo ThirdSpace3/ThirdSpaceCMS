@@ -4,13 +4,13 @@
     --about-border-color: #151934;
     --about-link-color: #8f9bb7;
     --about-cta-background-color: #7214ff;
-    --background-color: #200627;
+    --about-background-color: #200627;
   }
 
   
   /*==================== ABOUT ====================*/
   .sss-product-about {
-    background-color: var(--background-color);
+    background-color: var(--about-background-color);
     display: flex;
     flex-direction: column;
     gap: 40px;

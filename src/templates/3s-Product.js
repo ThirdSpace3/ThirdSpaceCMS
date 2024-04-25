@@ -38,53 +38,70 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedElement ={setSelectedElement }
       />
       <HeaderSection
-        style={settings.header}
+        style={settings.navbar}
         settings={settings}
-        handleSettingsChange={handleSettingsChange}
-        openImagePanel={openImagePanel}
-        setSelectedImage={setSelectedImage}
-
-      />
-      <PartnersSection
-        style={settings.partners}
-        settings={settings}
-
-        handleSettingsChange={handleSettingsChange}
-        openImagePanel={openImagePanel}
-        setSelectedImage={setSelectedImage}
-
-      />
-      <AboutSection
-        style={settings.about}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
+        selectElement={selectElement}
+        setSelectedElement ={setSelectedElement }
+
+      />
+      <PartnersSection
+        style={settings.navbar}
+        settings={settings}
+        handleSettingsChange={handleSettingsChange}
+        openImagePanel={openImagePanel}
+        selectedImage={selectedImage} // Pass down the selectedImage prop
+        setSelectedImage={setSelectedImage}
+        selectElement={selectElement}
+        setSelectedElement ={setSelectedElement }
+
+      />
+      <AboutSection
+        style={settings.navbar}
+        settings={settings}
+        handleSettingsChange={handleSettingsChange}
+        openImagePanel={openImagePanel}
+        selectedImage={selectedImage} // Pass down the selectedImage prop
+        setSelectedImage={setSelectedImage}
+        selectElement={selectElement}
+        setSelectedElement ={setSelectedElement }
 
 
       />
       <FeaturesSection
-        style={settings.features}
+        style={settings.navbar}
+        settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
+        selectElement={selectElement}
+        setSelectedElement ={setSelectedElement }
 
       />
       <JoinUsSection
-        onClick={() => selectElement('joinus')}
-        style={settings.joinus}
+        style={settings.navbar}
+        settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
+        selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
+        selectElement={selectElement}
+        setSelectedElement ={setSelectedElement }
 
       />
       <Footer
-        onClick={() => selectElement('footer')}
-        style={settings.footer}
+        style={settings.navbar}
+        settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
+        selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
+        selectElement={selectElement}
+        setSelectedElement ={setSelectedElement }
 
       />
     </div>

@@ -7,24 +7,21 @@ import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openImagePanel }) => {
   const { getComponentStyle } = useStyle();
-  const { enterReplacementMode, activeComponent, selectImage } = useImageHistory();
+  const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
 
   // State for text fields including descriptions
   const [featuresTitleText, setFeaturesTitleText] = useState('Essential apps that protect your documents');
   const [endToEndText, setEndToEndText] = useState('End-to-end encrypted inbox and messages');
   const [endToEndDesc, setEndToEndDesc] = useState({
     text: 'Rorem ipsum dolor sit amet consectetur. Proin dignissim tortor mauris viverra sed volutpat mauris. Amet nisi amet commodo adipiscing ut imperdiet nunc.',
-    style: { color: '#8f9bb7', fontFamily: 'Inter', fontSize: '16px', fontWeight: '400' }
   });
   const [mobileAppsText, setMobileAppsText] = useState('Mobile applications');
   const [mobileAppsDesc, setMobileAppsDesc] = useState({
     text: 'Prem ipsum dolor sit amet consectetur. Viverra sed dignissim risus aliquet condimentum. Vulputate varius feugiat egestas congue.',
-    style: { color: '#8f9bb7', fontFamily: 'Inter', fontSize: '16px', fontWeight: '400' }
   });
   const [uploadShareText, setUploadShareText] = useState('Upload, share, and preview any file');
   const [uploadShareDesc, setUploadShareDesc] = useState({
     text: 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.',
-    style: { color: '#8f9bb7', fontFamily: 'Inter', fontSize: '16px', fontWeight: '400' }
   });
 
   // State for image sources
@@ -46,9 +43,36 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
     getImageHeight(feature1Image).then((height) => setImage1Height(height));
     getImageHeight(feature2Image).then((height) => setImage2Height(height));
     getImageHeight(feature3Image).then((height) => setImage3Height(height));
-
   }, []);
 
+  useEffect(() => {
+    if (activeComponent === 'featureImage-1' && selectedImage !== feature1Image) {
+      setFeature1Image(selectedImage);
+    }
+    if (activeComponent === 'featureImage-2' && selectedImage !== feature2Image) {
+      setFeature2Image(selectedImage);
+    }
+    if (activeComponent === 'featureImage-3' && selectedImage !== feature3Image) {
+      setFeature3Image(selectedImage);
+    }
+  }, [selectedImage, activeComponent, feature1Image, feature2Image, feature3Image]);
+
+  const handleFeaturesClick = () => {
+    console.log("Features clicked, setting selected element to 'features'");
+    selectElement('features');
+  };
+
+  useEffect(() => {
+    const featuresElement = document.querySelector('.sss-product-features');
+    if (featuresElement) {
+      featuresElement.addEventListener('click', handleFeaturesClick);
+    }
+    return () => {
+      if (featuresElement) {
+        featuresElement.removeEventListener('click', handleFeaturesClick);
+      }
+    };
+  }, []);
 
   const handleImageClick = (index) => {
     const identifier = `featureImage-${index}`;
@@ -96,12 +120,14 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
                 selectElement={selectElement}
               />
             </h3>
+            <p className='sss-product-features-box-top-left-text'>
             <EditableText
               text={endToEndDesc.text}
               onChange={(newText) => setEndToEndDesc({...endToEndDesc, text: newText})}
               style={endToEndDesc.style}
               selectElement={selectElement}
             />
+            </p>
             <a href="" className="sss-product-features-box-top-left-cta">Join Us</a>
           </div>
           <div className="sss-product-features-box-top-right">
@@ -114,7 +140,6 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
               alt="Feature 1"
               identifier={"Feature1"}
               imageHeight={imageHeight1}
-
             />
           </div>
         </div>
@@ -130,7 +155,6 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
               alt="Mobile applications"
               identifier={"Feature2"}
               imageHeight={imageHeight2}
-
             />
             <h3 className="sss-product-features-box-bottom-left-title">
               <EditableText
@@ -140,12 +164,14 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
                 selectElement={selectElement}
               />
             </h3>
+            <p className='sss-product-features-box-top-left-text'>
             <EditableText
               text={mobileAppsDesc.text}
               onChange={(newText) => setMobileAppsDesc({...mobileAppsDesc, text: newText})}
               style={mobileAppsDesc.style}
               selectElement={selectElement}
             />
+            </p>
           </div>
           <div className="sss-product-features-box-bottom-right">
             <h3 className="sss-product-features-box-bottom-right-title">
@@ -156,12 +182,14 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
                 selectElement={selectElement}
               />
             </h3>
+            <p className='sss-product-features-box-top-left-text'>
             <EditableText
               text={uploadShareDesc.text}
               onChange={(newText) => setUploadShareDesc({...uploadShareDesc, text: newText})}
               style={uploadShareDesc.style}
               selectElement={selectElement}
             />
+            </p>
             <ReusableImage
               src={feature3Image}
               onClick={() => handleImageClick(3)}
@@ -171,7 +199,6 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
               alt="Feature 3"
               identifier={"Feature3"}
               imageHeight={imageHeight3}
-
             />
           </div>
         </div>

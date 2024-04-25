@@ -4,13 +4,13 @@
     --navbar-border-color: #151934;
     --navbar-link-color: #8f9bb7;
     --navbar-cta-background-color: #7214ff;
-    --background-color: #200627;
+    --partners-background-color: #200627;
   }
 
 
   /*==================== PARTNERS ====================*/
 .sss-product-partners {
-    background-color: var(--background-color);
+  background-color: var(--partners-background-color);
     display: flex;
     flex-direction: column;
     gap: 40px;

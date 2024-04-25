@@ -22,10 +22,24 @@ const BackgroundSettings = ({
         cssVarName = '--navbar-background-color';
       } else if (componentName === 'header') {
         cssVarName = '--header-background-color';
+      } else if (componentName === 'partners') {
+        cssVarName = '--partners-background-color';
+      } else if (componentName === 'about') { // Add this condition
+        cssVarName = '--about-background-color';
+      } else if (componentName === 'features') { // Add this condition
+        cssVarName = '--features-background-color';
+      } else if (componentName === 'joinUs') { // Add this condition
+        cssVarName = '--joinus-background-color';
+      } else if (componentName === 'footer') { // Add this condition
+        cssVarName = '--footer-background-color';
       }
+      
+      
       document.documentElement.style.setProperty(cssVarName, value);
     }
   };
+  
+  
   
   
 

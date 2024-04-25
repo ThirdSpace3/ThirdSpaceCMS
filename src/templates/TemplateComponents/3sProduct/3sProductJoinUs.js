@@ -1,16 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../templates-po/joinus.css';
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
 import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../hooks/StyleContext';
-import { useImageHistory } from '../../../hooks/ImageHistoryContext'; // Import the image history context
+import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 import { Link } from 'react-router-dom';
 
 const JoinUsSection = ({ handleSettingsChange, selectElement, openImagePanel }) => {
   const { getComponentStyle, updateStyle } = useStyle();
-  const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory(); // Use context for image handling
+  const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
 
-  // States for texts and their styles
   const [joinUsTitleText, setJoinUsTitleText] = useState('Join the community');
   const [joinUsDescriptionText, setJoinUsDescriptionText] = useState('Join our 400,000+ person community and contribute to a more private and decentralized internet. Start for free.');
   const [joinUsCta, setjoinUsCta] = useState('Join Us');
@@ -35,9 +34,32 @@ const JoinUsSection = ({ handleSettingsChange, selectElement, openImagePanel }) 
     }
   };
 
+  const handleJoinUsClick = () => {
+    console.log("JoinUs clicked, setting selected element to 'joinUs'");
+    selectElement('joinUs');
+  };
+
+  useEffect(() => {
+    const joinUsElement = document.querySelector('.sss-product-joinus');
+    if (joinUsElement) {
+      joinUsElement.addEventListener('click', handleJoinUsClick);
+    }
+    return () => {
+      if (joinUsElement) {
+        joinUsElement.removeEventListener('click', handleJoinUsClick);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (activeComponent === 'JoinUsImage' && selectedImage !== joinUsImageUrl) {
+      setJoinUsImageUrl(selectedImage);
+    }
+  }, [selectedImage, activeComponent, joinUsImageUrl]);
+
   return (
-    <div className='sss-product-joinus-main'>
-      <div className="sss-product-joinus">
+    <div className='sss-product-joinus-main' onClick={handleJoinUsClick}>
+      <div className="sss-product-joinus" >
         <ReusableImage
           src={joinUsImageUrl}
           alt="Join Us Logo"

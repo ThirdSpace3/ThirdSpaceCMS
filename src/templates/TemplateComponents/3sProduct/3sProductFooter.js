@@ -5,7 +5,7 @@ import ReusableImage from '../../../components/logiciel/TemplateComponent/Reusab
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
-const Footer = ({ handleSettingsChange, onClick, openImagePanel }) => {
+const Footer = ({ handleSettingsChange, onClick, openImagePanel, selectElement }) => {
   const { getComponentStyle, updateStyle } = useStyle();
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
@@ -39,37 +39,62 @@ const Footer = ({ handleSettingsChange, onClick, openImagePanel }) => {
     updateStyle(textType, updatedStyle);
   };
 
+  // Effect for handling clicks on the footer
+  useEffect(() => {
+    const footerElement = document.querySelector('.sss-product-footer');
+    if (footerElement) {
+      footerElement.addEventListener('click', () => {
+        console.log("Footer clicked, setting selected element to 'footer'");
+        selectElement('footer');
+      });
+    }
+    return () => {
+      if (footerElement) {
+        footerElement.removeEventListener('click', () => {
+          console.log("Footer clicked, setting selected element to 'footer'");
+          selectElement('footer');
+        });
+      }
+    };
+  }, []);
+
   // Effect for handling image replacement in the footer
   useEffect(() => {
-    if (activeComponent === 'Footer' && selectedImage) {
+    if (activeComponent && selectedImage) {
       switch (activeComponent) {
         case "FooterLogo":
-          setFooterLogoSrc(selectedImage);
+          if (selectedImage !== footerLogoSrc) {
+            setFooterLogoSrc(selectedImage);
+          }
           break;
         case "FooterTwitter":
-          setFooterTwitterSrc(selectedImage);
+          if (selectedImage !== footerTwitterSrc) {
+            setFooterTwitterSrc(selectedImage);
+          }
           break;
         case "FooterLinkedIn":
-          setFooterLinkedInSrc(selectedImage);
+          if (selectedImage !== footerLinkedInSrc) {
+            setFooterLinkedInSrc(selectedImage);
+          }
           break;
         default:
           break;
       }
     }
-  }, [selectedImage, activeComponent]);
+  }, [selectedImage, activeComponent, footerLogoSrc, footerTwitterSrc, footerLinkedInSrc]);
 
   return (
     <div className="sss-product-footer" onClick={onClick}>
       <div className="sss-product-footer-top">
-        <ReusableImage 
-          src={footerLogoSrc} 
-          alt="Footer Logo" 
+        <ReusableImage
+          src={footerLogoSrc}
+          alt="Footer Logo"
           openImagePanel={() => enterReplacementMode('FooterLogo')}
           identifier="FooterLogo"
           imageHeight="50px"
         />
         <ul className="sss-product-footer-top-links-box">
-        <li className='sss-product-footer-top-links'>
+          <li className='sss-product-footer-top-links'>
             <EditableText
               text={homeText}
               onChange={(text) => handleTextChange(text, setHomeText)}
@@ -98,16 +123,16 @@ const Footer = ({ handleSettingsChange, onClick, openImagePanel }) => {
           </li>
         </ul>
         <div className="sss-product-footer-top-rs">
-          <ReusableImage 
-            src={footerTwitterSrc} 
-            alt="Twitter" 
+          <ReusableImage
+            src={footerTwitterSrc}
+            alt="Twitter"
             openImagePanel={() => enterReplacementMode('FooterTwitter')}
             identifier="FooterTwitter"
             imageHeight="30px"
           />
-          <ReusableImage 
-            src={footerLinkedInSrc} 
-            alt="LinkedIn" 
+          <ReusableImage
+            src={footerLinkedInSrc}
+            alt="LinkedIn"
             openImagePanel={() => enterReplacementMode('FooterLinkedIn')}
             identifier="FooterLinkedIn"
             imageHeight="30px"

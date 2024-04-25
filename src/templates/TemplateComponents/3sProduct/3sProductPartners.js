@@ -5,7 +5,7 @@ import ReusableImage from '../../../components/logiciel/TemplateComponent/Reusab
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
-const PartnersSection = ({ handleSettingsChange, settings, openImagePanel }) => {
+const PartnersSection = ({ handleSettingsChange, settings, openImagePanel, setSelectedElement,style }) => {
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
   const [partnersTitleText, setPartnersTitleText] = useState('Trusted by teams at over 1,000 of the world\'s leading organizations');
@@ -24,7 +24,6 @@ const PartnersSection = ({ handleSettingsChange, settings, openImagePanel }) => 
   useEffect(() => {
     getImageHeight(`./images/templates-img/3sproduct/3sproduct-partners-1.png`).then((height) => setImageHeight(height));
   }, []);
-
 
   useEffect(() => {
     updateStyle(settings);
@@ -57,14 +56,33 @@ const PartnersSection = ({ handleSettingsChange, settings, openImagePanel }) => 
       console.log(`Active component mismatch: expected partnerImage-${index}, but active is ${activeComponent}`);
     }
   };
+  const handlePartnersClick = () => {
+    console.log("partners clicked, setting selected element to 'partners'");
+    setSelectedElement('partners');
+  };
   useEffect(() => {
-    console.log(`Component: PartnersSection, Active: ${activeComponent}, Image: ${selectedImage}`);
-    if (activeComponent === 'PartnersSection' && selectedImage) {
-      setPartnerImages(selectedImage);
+    const partnersElement = document.querySelector('.sss-product-partners');
+    if (partnersElement) {
+      partnersElement.addEventListener('click', handlePartnersClick);
     }
-}, [selectedImage, activeComponent]);
+    return () => {
+      if (partnersElement) {
+        partnersElement.removeEventListener('click', handlePartnersClick);
+      }
+    };
+  }, []);
+
+  // Ensure the partner image updates to the selected image when this component is active
+  useEffect(() => {
+    if (activeComponent && activeComponent.startsWith('partnerImage-') && selectedImage && selectedImage !== partnerImages[activeComponent.split('-')[1]]) {
+      const updatedImages = [...partnerImages];
+      updatedImages[activeComponent.split('-')[1]] = selectedImage;
+      setPartnerImages(updatedImages);
+    }
+  }, [selectedImage, activeComponent, partnerImages]);
+
   return (
-    <div className="sss-product-partners">
+    <div className="sss-product-partners" style={{ ...style, ...settings.partners }}>
       <h2 className="sss-product-partners-title">
         <EditableText
           text={partnersTitleText}
@@ -86,7 +104,6 @@ const PartnersSection = ({ handleSettingsChange, settings, openImagePanel }) => 
             style={{ height: '150px', width: 'auto' }}  // Add necessary styles
             identifier={`Partner ${index + 1}`}
             imageHeight={imageHeight}
-
           />
         ))}
       </div>

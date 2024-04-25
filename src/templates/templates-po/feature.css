@@ -4,12 +4,12 @@
     --navbar-border-color: #151934;
     --navbar-link-color: #8f9bb7;
     --navbar-cta-background-color: #7214ff;
-    --background-color: #200627;
+    --features-background-color: #200627;
   }
 
 
 .sss-product-features {
-    background-color: var(--background-color);
+    background-color: var(--features-background-color);
     display: flex;
     flex-direction: column;
     gap: 30px;

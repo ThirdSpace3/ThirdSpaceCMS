@@ -24,7 +24,6 @@ const Navbar = ({
     const [localSelectedImage, setLocalSelectedImage] = useState(selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png");
     const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
     const navbarStyle = style.navbar || {}; // This should only contain navbar-related styles
-    
     const getImageHeight = (src) => {
       return new Promise((resolve) => {
         const img = new Image();
