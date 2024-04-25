@@ -7,7 +7,7 @@ import FeaturesSection from "./TemplateComponents/3sProduct/3sProductFeature";
 import JoinUsSection from "./TemplateComponents/3sProduct/3sProductJoinUs";
 import Footer from "./TemplateComponents/3sProduct/3sProductFooter";
 
-const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel }) => {
+const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel,  imageHistory, selectedImage, setSelectedImage }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
 
@@ -25,15 +25,18 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
   return (
     <div className="sss-product-container">
       <Navbar
-        isMenuOpen={isMenuOpen}
-        toggleMenu={toggleMenu}
-        menuToggleImg={menuToggleImg}
-        onClick={() => selectElement('navbar')}
-        style={settings.navbar}
-        settings={settings}
-        handleSettingsChange={handleSettingsChange}
-        openImagePanel={openImagePanel}
-      />
+isMenuOpen={isMenuOpen}
+toggleMenu={toggleMenu}
+menuToggleImg={menuToggleImg}
+onClick={() => selectElement('navbar')}
+style={settings.navbar}
+settings={settings}
+handleSettingsChange={handleSettingsChange}
+openImagePanel={openImagePanel}
+selectedImage={selectedImage} // Pass down the selectedImage prop
+setSelectedImage={setSelectedImage}
+selectElement={selectElement}
+/>
       <HeaderSection
         onClick={() => selectElement('header')}
         style={settings.header}
@@ -52,6 +55,10 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         style={settings.about}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
+        selectedImage={selectedImage} // Pass down the selectedImage prop
+setSelectedImage={setSelectedImage}
+
+        
       />
       <FeaturesSection
         onClick={() => selectElement('features')}

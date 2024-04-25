@@ -5,9 +5,8 @@ import ReusableImage from '../../../components/logiciel/TemplateComponent/Reusab
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
-const AboutSection = ({ onClick, handleSettingsChange, selectElement, openImagePanel }) => {
+const AboutSection = ({ onClick, handleSettingsChange, selectElement, openImagePanel, selectedImage, setSelectedImage }) => {
   const { getComponentStyle } = useStyle();
-  const { selectedImage, updateSelectedImage } = useImageHistory();
 
   const [aboutTitleText, setAboutTitleText] = useState('The best features to help you create all your projects');
   const [aboutTitleStyle, setAboutTitleStyle] = useState({ fontFamily: 'Outfit', fontSize: '24px', fontWeight: '600', color: '#333', textAlign: 'center' });
@@ -54,7 +53,7 @@ const AboutSection = ({ onClick, handleSettingsChange, selectElement, openImageP
               src={`./images/templates-img/3sproduct/3sproduct-about-${num}.png`}
               alt={`Feature ${num}`}
               openImagePanel={openImagePanel}
-              selectElement={() => updateSelectedImage(`./images/templates-img/3sproduct/3sproduct-about-${num}.png`)}
+              selectElement={() => setSelectedImage(`./images/templates-img/3sproduct/3sproduct-about-${num}.png`)}
             />
             <h3 className="sss-product-about-item-title">
               <EditableText

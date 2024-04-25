@@ -21,11 +21,9 @@ export default function Display() {
   const [imageHistory, setImageHistory] = useState([]);
   const { templateName } = useParams();
   const [activePanel, setActivePanel] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  useEffect(() => {
-    console.log('Active template:', templateName);
-    setActiveEditor(templateName);
-  }, [templateName]);
+
 
   const handleSettingsChange = (elementId, newSettings) => {
     console.log("Updating settings for:", elementId, "new settings received:", newSettings);
@@ -101,8 +99,11 @@ export default function Display() {
   const openImagePanel = () => {
     setActivePanel("images");
   };
-  console.log('selectElement prop in Display:', selectElement);
+  useEffect(() => {
+    setActiveEditor(templateName);
+    console.log('Active template:', templateName);
 
+  }, [templateName]);
   return (
     <ImageHistoryProvider>
       <StyleProvider>
@@ -110,10 +111,11 @@ export default function Display() {
         <div className="displayWrapper">
           {!isPreviewMode && (
             <LeftBar
-              handleEditorChange={(editor) => setActiveEditor(editor)}
-              visiblePanel={activePanel}
-              setVisiblePanel={setActivePanel}
-            />
+  handleEditorChange={(editor) => setActiveEditor(editor)}
+  visiblePanel={activePanel}
+  setVisiblePanel={setActivePanel}
+/>
+
           )}
           <div className="displayColumnWrapper">
             <Canva
@@ -126,11 +128,13 @@ export default function Display() {
               selectElement={selectElement}
               isPreviewMode={isPreviewMode}
               openImagePanel={openImagePanel}
-              
+              setSelectedImage={setSelectedImage}
             />
+
+
           </div>
           {!isPreviewMode && (
-            <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} addImageToHistory={(imageURL) => setImageHistory(prev => [...prev, imageURL])} />
+            <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
           )}
         </div>
       </StyleProvider>

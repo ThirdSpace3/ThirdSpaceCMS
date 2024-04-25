@@ -8,8 +8,10 @@ import SpacingSettings from "./RightBarComponents/SpacingSettings";
 import BorderSettings from "./RightBarComponents/BorderSettings";
 import BackgroundSettings from "./RightBarComponents/BackgroundSettings";
 import TypographySettings from "./RightBarComponents/TypographySettings";
+import { useImageHistory } from '../../hooks/ImageHistoryContext';
 
-export default function RightBar({ selectedElement, addImageToHistory }) {
+export default function RightBar({ selectedElement }) {
+  const { addImageToHistory } = useImageHistory();
 
   const [isOpen, setIsOpen] = useState({
     size: false,

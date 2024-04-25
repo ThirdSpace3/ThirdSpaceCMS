@@ -6,22 +6,25 @@ import ReusableImage from '../../../components/logiciel/TemplateComponent/Reusab
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
-const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, settings, handleSettingsChange, selectElement, openImagePanel }) => {
+const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, settings, handleSettingsChange, selectElement, openImagePanel, imageHistory, selectedImage, setSelectedImage }) => {
   const [homeText, setHomeText] = useState('Home');
   const [aboutText, setAboutText] = useState('About');
   const [featuresText, setFeaturesText] = useState('Features');
   const [joinUsText, setJoinUsText] = useState('Join Us');
   const { updateStyle, getComponentStyle } = useStyle();
   const [showReplaceButton, setShowReplaceButton] = useState(false);
-  const { selectedImage } = useImageHistory();
+  // useEffect(() => {
+  //   console.log("Settings updated in Navbar:", settings);
+  // }, [settings]);
+  // console.log(setSelectedImage);
 
-  useEffect(() => {
-    console.log("Settings updated in Navbar:", settings);
-  }, [settings]);
+  const handleImageClick = (src) => {
+    setSelectedImage(src);
+    onClick(); // Call the onClick prop to update the selectedImage state
 
-  const handleImageClick = () => {
-    setShowReplaceButton(true); // Toggle visibility based on your needs
+    console.log("handle image clicked,src used: " + src);
   };
+
 
   const handleButtonClick = () => {
     openImagePanel();
@@ -46,9 +49,9 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
 
   const navbarStyle = getComponentStyle('navbar');
 
-  useEffect(() => {
-    console.log("Navbar styles updated:", navbarStyle);
-  }, [navbarStyle]);
+  // useEffect(() => {
+  //   console.log("Navbar styles updated:", navbarStyle);
+  // }, [navbarStyle]);
 
 
   useEffect(() => {
@@ -106,19 +109,18 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
 
 
   return (
-<div className="sss-product-navbar-container" style={{...navbarStyle, ...settings.navbar}} onClick={onClick}>
+    <div className="sss-product-navbar-container" style={{ ...navbarStyle, ...settings.navbar }} onClick={onClick}>
       <nav className="sss-product-navbar-navbar">
         <div className="image-container" ref={imageContainerRef}>
           <ReusableImage
             src={selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png"}
             alt="Logo"
-            onClick={handleImageClick}
+            onClick={() => handleImageClick(selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png")}
             openImagePanel={openImagePanel}
-            imageHeight={imageHeight} // Set the image height here
-            selectElement={selectElement}
-
+            imageHeight={imageHeight}
+            selectElement={selectElement} // Pass down the selectElement function
+            selectedImage={selectedImage}
           />
-
         </div>
 
         <ul className="sss-product-navbar-links-box">
@@ -128,7 +130,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
                 text={homeText}
                 onChange={(newText) => handleTextChange(newText, 'home')}
                 handleSettingsChange={(newStyle) => handleTextStyleChange('home', newStyle)}
-                style={{...navbarStyle, ...settings.textStyles?.homeText}}
+                style={{ ...navbarStyle, ...settings.textStyles?.homeText }}
                 textType="homeText"
                 selectElement={selectElement}
               />
@@ -141,7 +143,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
                 text={aboutText}
                 onChange={(newText) => handleTextChange(newText, 'about')}
                 handleSettingsChange={(newStyle) => handleTextStyleChange('about', newStyle)}
-                style={{...navbarStyle, ...settings.textStyles?.aboutText}}
+                style={{ ...navbarStyle, ...settings.textStyles?.aboutText }}
                 textType="aboutText"
                 selectElement={selectElement}
               />
@@ -153,7 +155,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, menuToggleImg, onClick, style, setting
                 text={featuresText}
                 onChange={(newText) => handleTextChange(newText, 'features')}
                 handleSettingsChange={(newStyle) => handleTextStyleChange('features', newStyle)}
-                style={{...navbarStyle, ...settings.textStyles?.featuresText}}
+                style={{ ...navbarStyle, ...settings.textStyles?.featuresText }}
                 textType="featuresText"
                 selectElement={selectElement}
               />

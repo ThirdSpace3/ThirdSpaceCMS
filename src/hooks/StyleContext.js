@@ -7,7 +7,7 @@ export const StyleProvider = ({ children }) => {
   const [selectedComponent, setSelectedComponent] = useState(null);
 
   const updateStyle = (selectedElement, newStyle) => {
-    console.log(`updateStyle called with newStyle:`, newStyle);
+    // console.log(`updateStyle called with newStyle:`, newStyle);
 
     setStyle((prevStyle) => ({
       ...prevStyle,

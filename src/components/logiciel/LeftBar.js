@@ -10,6 +10,7 @@ import { useImageHistory } from "../../hooks/ImageHistoryContext";
 
 export default function LeftBar({ handleEditorChange, visiblePanel, setVisiblePanel }) {
   const { imageHistory, setSelectedImage } = useImageHistory();
+  const { addImageToHistory } = useImageHistory();
 
   const togglePanel = (e, panel) => {
     e.preventDefault(); // Prevent the default anchor action

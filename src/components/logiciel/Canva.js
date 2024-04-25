@@ -6,8 +6,9 @@ import TemplateImg_txt from '../../templates/TemplateImg_txt';
 import Template2 from '../../templates/Template2';
 import TemplateTest1 from '../../templates/TemplateTest1';
 import SSSProduct from '../../templates/3s-Product';
+import { useImageHistory } from '../../hooks/ImageHistoryContext';
 
-export default function Canva({ templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel }) {
+export default function Canva({ templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
   const templateComponents = {
     TemplateFullText,
     TemplateImg_txt,
@@ -24,20 +25,23 @@ export default function Canva({ templateName, deviceSize, settings, handleSettin
   useEffect(() => {
     setCanvasSize({ width: deviceSize, height: '100vh' });
   }, [deviceSize]);
-  console.log('selectElement prop in Canva:', selectElement);
+  // console.log('selectElement prop in Canva:', selectElement);
 
   return (
     <div className='canva-wrapper' style={{ width: canvasSize.width, height: canvasSize.height, overflowY: 'auto' }}>
       <SelectedTemplate
-        deviceSize={deviceSize}
-        settings={settings}
-        handleSettingsChange={handleSettingsChange}
-        selectedElement={selectedElement}
-        setSelectedElement={setSelectedElement}
-        selectElement={selectElement}
-        isPreviewMode={isPreviewMode}
-        openImagePanel={openImagePanel}
-      />
+deviceSize={deviceSize}
+settings={settings}
+handleSettingsChange={handleSettingsChange}
+selectedElement={selectedElement}
+setSelectedElement={setSelectedElement}
+selectElement={selectElement}
+isPreviewMode={isPreviewMode}
+openImagePanel={openImagePanel}
+imageHistory={imageHistory}
+selectedImage={selectedImage} // Pass down the selectedImage prop
+setSelectedImage={setSelectedImage}
+/>
     </div>
   );
 }

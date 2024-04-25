@@ -54,8 +54,8 @@ export default function PanelAsset() {
 
   const handleImageSelect = (image) => {
     selectImage(image.url);
-    // setSelectedImage(image.url);
   };
+  
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
