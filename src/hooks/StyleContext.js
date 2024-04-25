@@ -1,30 +1,51 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const StyleContext = createContext();
 
 export const StyleProvider = ({ children }) => {
   const [style, setStyle] = useState({});
-  const [selectedComponent, setSelectedComponent] = useState(null);
+const [selectedComponent, setSelectedComponent] = useState(null);
+  const [selectedElement, setSelectedElement] = useState(null);  // Ensure this is managed correctly
 
-  const updateStyle = (selectedElement, newStyle) => {
-    // console.log(`updateStyle called with newStyle:`, newStyle);
+  useEffect(() => {
+    console.log("Current selected component:", selectedComponent);
+    console.log("Current selected element:", selectedElement);  // Log for debugging
+  }, [selectedComponent, selectedElement]);
 
-    setStyle((prevStyle) => ({
-      ...prevStyle,
-      [selectedElement]: { ...prevStyle[selectedElement], ...newStyle },
+  const updateStyle = (componentName, newStyle) => {
+    console.log(`Updating style for ${componentName}:`, newStyle);
+    setStyle(prevStyle => ({
+        ...prevStyle,
+        [componentName]: { ...prevStyle[componentName], ...newStyle }
     }));
+};
+
+  
+
+  // Get the current style for a component
+  const getComponentStyle = (componentName) => {
+    return style[componentName] || {};
   };
 
-  const getComponentStyle = (component) => {
-    return style[component] || {};
+  // Reset styles for a component or all components
+  const resetStyle = (componentName = null) => {
+    if (componentName) {
+      setStyle(prevStyle => ({ ...prevStyle, [componentName]: {} }));
+    } else {
+      setStyle({});
+    }
+  };
+
+  // Apply global style updates; useful for theming or large-scale style changes
+  const applyGlobalStyles = (globalStyles) => {
+    setStyle(prevStyle => ({ ...prevStyle, ...globalStyles }));
   };
 
   return (
-    <StyleContext.Provider value={{ style, updateStyle, setSelectedComponent, getComponentStyle }}>
+    <StyleContext.Provider value={{ style, updateStyle, getComponentStyle, resetStyle, applyGlobalStyles, setSelectedComponent }}>
       {children}
     </StyleContext.Provider>
   );
 };
-
 
 export const useStyle = () => useContext(StyleContext);

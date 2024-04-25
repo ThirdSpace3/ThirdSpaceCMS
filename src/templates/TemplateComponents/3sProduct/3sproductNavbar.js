@@ -11,18 +11,20 @@ const Navbar = ({
     menuToggleImg,
     settings,
     handleSettingsChange,
-    openImagePanel
+    openImagePanel,
+    setSelectedElement 
 }) => {
     const { selectedImage, isReplacementMode, enterReplacementMode, selectImage, activeComponent } = useImageHistory();
   const [homeText, setHomeText] = useState('Home');
     const [aboutText, setAboutText] = useState('About');
     const [featuresText, setFeaturesText] = useState('Features');
     const [joinUsText, setJoinUsText] = useState('Join Us');
-    const { getComponentStyle } = useStyle();
+    const { style , selectedComponent,updateStyle } = useStyle(); // Get style from context
     const [imageHeight, setImageHeight] = useState(null);
     const [localSelectedImage, setLocalSelectedImage] = useState(selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png");
     const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
-
+    const navbarStyle = style.navbar || {}; // This should only contain navbar-related styles
+    
     const getImageHeight = (src) => {
       return new Promise((resolve) => {
         const img = new Image();
@@ -56,21 +58,26 @@ const Navbar = ({
           selectImage(newSrc);
       }
     };
-
+    const handleNavbarClick = () => {
+        console.log("Navbar clicked, setting selected element to 'navbar'");
+        setSelectedElement('navbar');
+      };
+    
+    
+    
     useEffect(() => {
         const img = new Image();
         img.src = selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png";
     }, [selectedImage]);
 
-    const navbarStyle = getComponentStyle('navbar');
 
-    useEffect(() => {
-        const root = document.documentElement;
-        root.style.setProperty('--background-color', settings.backgroundColor || '#200627');
-        root.style.setProperty('--navbar-border-color', settings.navbarBorderColor || '#151934');
-        root.style.setProperty('--primary-btn-bg', settings.primaryBtnBg || '#7214ff');
-        root.style.setProperty('--navbar-text-color', settings.navbarTextColor || '#8f9bb7');
-    }, [settings]);
+    // useEffect(() => {
+    //     const root = document.documentElement;
+    //     root.style.setProperty('--background-color', settings.backgroundColor || '#200627');
+    //     root.style.setProperty('--navbar-border-color', settings.navbarBorderColor || '#151934');
+    //     root.style.setProperty('--primary-btn-bg', settings.primaryBtnBg || '#7214ff');
+    //     root.style.setProperty('--navbar-text-color', settings.navbarTextColor || '#8f9bb7');
+    // }, [settings]);
 
     const handleTextChange = (text, textType) => {
         switch (textType) {
@@ -104,9 +111,23 @@ const Navbar = ({
     useEffect(() => {
       console.log("Component Name: Reacting to new selected image", selectedImage);
     }, [selectedImage]);
-    
+
+
+
+useEffect(() => {
+    console.log("Navbar style updated to:", navbarStyle);
+
+    const root = document.documentElement;
+    if (navbarStyle.backgroundColor) {
+      root.style.setProperty('--background-color', navbarStyle.backgroundColor);
+    }
+}, [navbarStyle.backgroundColor]); // Apply background color directly to CSS variable
+useEffect(() => {
+    console.log("Navbar style:", navbarStyle);
+}, [navbarStyle]);
+  
     return (
-        <div className="sss-product-navbar-container" style={{ ...navbarStyle, ...settings.navbar }}>
+<div className="sss-product-navbar-container" onClick={handleNavbarClick} style={navbarStyle}>
             <nav className="sss-product-navbar-navbar">
                 <div className="image-container">
                     <ReusableImage

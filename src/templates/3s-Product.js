@@ -7,7 +7,7 @@ import FeaturesSection from "./TemplateComponents/3sProduct/3sProductFeature";
 import JoinUsSection from "./TemplateComponents/3sProduct/3sProductJoinUs";
 import Footer from "./TemplateComponents/3sProduct/3sProductFooter";
 
-const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage }) => {
+const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement  }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
 
@@ -35,6 +35,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
+        setSelectedElement ={setSelectedElement }
       />
       <HeaderSection
         style={settings.header}

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { useImageHistory } from "../../../hooks/ImageHistoryContext";
 import { useStyle } from "../../../hooks/StyleContext";
 
@@ -7,58 +7,19 @@ const BackgroundSettings = ({
   toggleSection,
   selectedElement,
 }) => {
-  const { updateStyle } = useStyle();
+  const { updateStyle, selectedComponent } = useStyle();
   const fileInputRef = useRef(null);
   const { addImageToHistory } = useImageHistory();
-
   
   const handleBackgroundChange = (e, property) => {
-    const value = property === "backgroundColor" ? e.target.value : `url(${URL.createObjectURL(e.target.files[0])})`;
+    const value = e.target.value;
+    console.log("Selected Element in BackgroundSettings:", selectedElement);
+  
+    console.log("Attempting to update style for", selectedElement, "with value", value);
+      document.documentElement.style.setProperty('--background-color', value);
+  };  
 
-    if (selectedElement === 'navbar') {
-      const navbarElement = document.querySelector('.sss-product-navbar-navbar');
-      navbarElement.style.setProperty('background-color', value);
-    }
 
-    if (selectedElement === 'header') {
-      const headerElement = document.querySelector('.sss-product-hero');
-      headerElement.style.setProperty('background-color', value);
-    
-    }
-
-    if (selectedElement === 'partners') {
-      const partnersElement = document.querySelector('.sss-product-partners');
-      partnersElement.style.setProperty('background-color', value);
-    
-    }
-
-    if (selectedElement === 'features') {
-      const featuresElement = document.querySelector('.sss-product-features');
-      featuresElement.style.setProperty('background-color', value);
-    
-    }
-
-    if (selectedElement === 'about') {
-      const aboutElement = document.querySelector('.sss-product-about');
-      aboutElement.style.setProperty('background-color', value);
-    
-    }
-    if (selectedElement === 'joinus') {
-      const joinusElement = document.querySelector('.sss-product-joinus-main');
-      joinusElement.style.setProperty('background-color', value);
-    
-    }       
-    if (selectedElement === 'footer') {
-      const footerElement = document.querySelector('.sss-product-footer');
-      footerElement.style.setProperty('background-color', value);
-    
-    }
-    updateStyle(selectedElement, { [property]: value });
-
-    if (property === 'backgroundImage') {
-      addImageToHistory(value);
-    }
-  };
 
   return (
     <div className="parameters-wrapper">

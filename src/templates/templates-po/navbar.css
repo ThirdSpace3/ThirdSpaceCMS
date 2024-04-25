@@ -11,16 +11,17 @@
 
   }
   
-  .sss-product-navbar-container {
+ .sss-product-navbar-container {
     width: 100%;
     border-bottom: 1px solid var(--Neutral-gray-600, var(--navbar-border-color));
+    background-color: var(--background-color) !important; /* Use important to ensure override */
+
   }
   .sss-product-navbar-navbar {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--background-color);
     padding: 15px 30px;
     z-index: 100;
   }
