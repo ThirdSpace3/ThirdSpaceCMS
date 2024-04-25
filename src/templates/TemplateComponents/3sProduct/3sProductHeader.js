@@ -1,23 +1,31 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../templates-po/header.css';
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
 import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../hooks/StyleContext';
+import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const HeaderSection = ({
   style, settings, handleSettingsChange, openImagePanel
 }) => {
+  const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
+
   const [heroTitleText, setHeroTitleText] = useState('The first user-friendly website builder');
   const [heroDescriptionText, setHeroDescriptionText] = useState('Lorem ipsum dolor sit amet, consectetur...');
   const [joinUsText, setJoinUsText] = useState('Join Us');
-  const [imageHeight, setImageHeight] = useState(null);
+  const [headerImage, setHeaderImage] = useState("./images/templates-img/3sproduct/3sproduct-hero.png");
   const { getComponentStyle, updateStyle } = useStyle();
   const headerStyle = getComponentStyle('header');
-  const [headerImage, setHeaderImage] = useState("./images/templates-img/3sproduct/3sproduct-hero.png");
 
   useEffect(() => {
     updateStyle(settings);
   }, [settings]);
+
+  useEffect(() => {
+    if (activeComponent === 'HeaderSection' && selectedImage !== headerImage) {
+      setHeaderImage(selectedImage);
+    }
+  }, [selectedImage, activeComponent, headerImage]);
 
   const handleTextChange = (newText, textType) => {
     switch (textType) {
@@ -30,41 +38,24 @@ const HeaderSection = ({
       case 'joinUs':
         setJoinUsText(newText);
         break;
+      default:
+        break;
     }
   };
 
-  const handleImageChange = (newImageUrl) => {
-    setHeaderImage(newImageUrl);
-  };
-  const handleNewImageSrc = (newSrc) => {
-    setHeaderImage(newSrc);
-  };
-  useEffect(() => {
-    const img = new Image();
-    img.src = headerImage;
-    img.onload = () => setImageHeight(img.height);
-  }, [headerImage])
-  const getImageHeight = (src) => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => resolve(img.height);
-    });
+  const handleImageClick = () => {
+    enterReplacementMode('HeaderSection');
   };
 
-  useEffect(() => {
-    getImageHeight(headerImage).then(height => setImageHeight(height));
-  }, [headerImage]);
+  const handleNewImageSrc = (newSrc) => {
+    if (activeComponent === 'HeaderSection') {
+      selectImage(newSrc);
+    }
+  };
 
   return (
     <div className="sss-product-hero" style={{ ...style, ...settings.header }}>
-      <ReusableImage
-        src={headerImage}
-        alt="Hero Image"
-        openImagePanel={openImagePanel}
-        imageHeight={imageHeight}
-        onImageChange={handleNewImageSrc}
-      />
+      
       <h1 className="sss-product-hero-title">
         <EditableText
           text={heroTitleText}
@@ -86,6 +77,13 @@ const HeaderSection = ({
           style={settings.textStyles?.joinUsText}
         />
       </a>
+      <ReusableImage
+        src={headerImage}
+        alt="Hero Image"
+        onClick={handleImageClick}
+        openImagePanel={openImagePanel}
+        onImageChange={handleNewImageSrc}
+      />
     </div>
   );
 };

@@ -1,21 +1,28 @@
-import React, { useState, useRef, useEffect } from 'react';
-import './ReusableImage.css';
+import React, { useState, useRef, useEffect } from "react";
+import "./ReusableImage.css";
 
-const ReusableImage = ({ src, alt, onClick, openImagePanel, imageHeight, selectedImage, selectElement, onImageChange }) => {
+const ReusableImage = ({
+  src,
+  alt,
+  onClick,
+  openImagePanel,
+  imageHeight,
+  selectedImage,
+  onImageChange,
+}) => {
   const [showReplaceButton, setShowReplaceButton] = useState(false);
   const imageContainerRef = useRef(null);
 
   const handleImageClick = () => {
-    if (typeof onClick === 'function') {
-      onClick();  // Call the onClick prop, which should handle entering replacement mode
+    if (typeof onClick === "function") {
+      onClick(); // Call the onClick prop, which should handle entering replacement mode
     }
-    console.log("Image src used: " + (selectedImage || src));
     setShowReplaceButton(true);
   };
 
   const handleButtonClick = () => {
-    if (typeof openImagePanel === 'function') {
-      openImagePanel();  // Open the panel to select a new image
+    if (typeof openImagePanel === "function") {
+      openImagePanel(); // Open the panel to select a new image
     }
     setShowReplaceButton(true);
   };
@@ -27,16 +34,27 @@ const ReusableImage = ({ src, alt, onClick, openImagePanel, imageHeight, selecte
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleNewImageSrc = (newSrc) => {
+    if (typeof onImageChange === "function") {
+      onImageChange(newSrc);
+    }
+  };
+
+  const handleImageSelect = () => {
+    handleNewImageSrc(selectedImage);
+    setShowReplaceButton(false); // Hide the replace button after selecting a new image
+  };
 
   return (
     <div className="image-container" ref={imageContainerRef}>
       <img
-        src={selectedImage || src}
+        src={src}
         alt={alt}
         onClick={handleImageClick}
         style={{ height: imageHeight }}
@@ -45,6 +63,11 @@ const ReusableImage = ({ src, alt, onClick, openImagePanel, imageHeight, selecte
         <button className="popup-button" onClick={handleButtonClick}>
           Replace Image <i className="bi bi-arrow-repeat"></i>
         </button>
+      )}
+      {selectedImage && (
+        <div className="selected-image" onClick={handleImageSelect}>
+          <img src={selectedImage} alt="Selected Image" />
+        </div>
       )}
     </div>
   );

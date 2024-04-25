@@ -8,22 +8,23 @@ export const ImageHistoryProvider = ({ children }) => {
     const [imageHistory, setImageHistory] = useState([]);
     const [selectedImage, setSelectedImage] = useState(null);
     const [isReplacementMode, setIsReplacementMode] = useState(false);
+    const [activeComponent, setActiveComponent] = useState(null);
 
     const addImageToHistory = (image) => {
         setImageHistory(prevHistory => [...prevHistory, image]);
     };
 
-    const selectImage = (image) => {
-        if (isReplacementMode) {
-            setSelectedImage(image);
-            setIsReplacementMode(false); // Exit replacement mode
-        } else {
-            setSelectedImage(image);
-        }
+    const enterReplacementMode = (componentName) => {
+        setIsReplacementMode(true);
+        setActiveComponent(componentName);
     };
 
-    const enterReplacementMode = () => {
-        setIsReplacementMode(true);
+    const selectImage = (image) => {
+        if (isReplacementMode && activeComponent) {
+            setSelectedImage(image);
+            setIsReplacementMode(false);
+            setActiveComponent(null); // Reset the active component after selection
+        }
     };
 
     return (
@@ -33,7 +34,8 @@ export const ImageHistoryProvider = ({ children }) => {
             selectedImage,
             selectImage,
             enterReplacementMode,
-            isReplacementMode
+            isReplacementMode,
+            activeComponent
         }}>
             {children}
         </ImageHistoryContext.Provider>

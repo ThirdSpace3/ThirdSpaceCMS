@@ -8,8 +8,8 @@ import PanelLayers from "./PanelLayers";
 import PanelPlus from "./PanelPlus";
 import { useImageHistory } from "../../hooks/ImageHistoryContext";
 
-export default function LeftBar({ handleEditorChange, visiblePanel, setVisiblePanel }) {
-  const { imageHistory, setSelectedImage } = useImageHistory();
+export default function LeftBar({ handleEditorChange, visiblePanel, setVisiblePanel, setSelectedImage }) {
+  const { imageHistory} = useImageHistory();
   const { addImageToHistory } = useImageHistory();
 
   const togglePanel = (e, panel) => {

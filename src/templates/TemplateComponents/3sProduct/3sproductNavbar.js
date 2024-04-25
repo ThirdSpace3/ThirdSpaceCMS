@@ -13,13 +13,15 @@ const Navbar = ({
     handleSettingsChange,
     openImagePanel
 }) => {
-    const { selectedImage, setSelectedImage, enterReplacementMode } = useImageHistory();
-    const [homeText, setHomeText] = useState('Home');
+  const { selectedImage, isReplacementMode, enterReplacementMode, selectImage } = useImageHistory();
+  const [homeText, setHomeText] = useState('Home');
     const [aboutText, setAboutText] = useState('About');
     const [featuresText, setFeaturesText] = useState('Features');
     const [joinUsText, setJoinUsText] = useState('Join Us');
     const { getComponentStyle } = useStyle();
     const [imageHeight, setImageHeight] = useState(null);
+    const [localSelectedImage, setLocalSelectedImage] = useState(selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png");
+    const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
 
     const getImageHeight = (src) => {
       return new Promise((resolve) => {
@@ -33,12 +35,17 @@ const Navbar = ({
     }, []);
   
     const handleImageClick = () => {
-        enterReplacementMode();
-    };
+      if (isReplacementMode) {
+          // Only allow entering replacement mode if not already in it
+          enterReplacementMode('Navbar');
+      }
+  };
 
-    const handleNewImageSrc = (newSrc) => {
-        setSelectedImage(newSrc);
-    };
+  const handleNewImageSrc = (newSrc) => {
+    if (isReplacementMode) {
+        selectImage(newSrc);
+    }
+};
 
     useEffect(() => {
         const img = new Image();
@@ -84,19 +91,31 @@ const Navbar = ({
         });
     };
 
+    useEffect(() => {
+      if (isReplacementMode) {
+          setNavbarImage(selectedImage);
+      }
+  }, [selectedImage, isReplacementMode]);
+
+
+ 
+    useEffect(() => {
+      console.log("Component Name: Reacting to new selected image", selectedImage);
+    }, [selectedImage]);
+    
     return (
         <div className="sss-product-navbar-container" style={{ ...navbarStyle, ...settings.navbar }}>
             <nav className="sss-product-navbar-navbar">
                 <div className="image-container">
                     <ReusableImage
-                        src={selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png"}
-                        alt="Logo"
+                        src={navbarImage}
+                        alt="Navbar Logo"
                         onClick={handleImageClick}
                         openImagePanel={openImagePanel}
                         imageHeight={imageHeight}
                         selectedImage={selectedImage}
                         onImageChange={handleNewImageSrc}
-                    />
+                        />
                 </div>
                 <ul className="sss-product-navbar-links-box">
                     <li>
