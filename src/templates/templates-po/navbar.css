@@ -2,11 +2,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
 :root {
-    --navbar-border-color: #151934;
-    --navbar-link-color: #8f9bb7;
-    --navbar-cta-background-color: #7214ff;
-    --background-color: #200627;
-
+  --navbar-border-color: #151934;
+  --navbar-link-color: #8f9bb7;
+  --navbar-cta-background-color: #7214ff;
+  --navbar-background-color: #200627; /* Add this for navbar background color */
     --navbar-text-color: #8f9bb7;
 
   }
@@ -14,7 +13,7 @@
  .sss-product-navbar-container {
     width: 100%;
     border-bottom: 1px solid var(--Neutral-gray-600, var(--navbar-border-color));
-    background-color: var(--background-color) !important; /* Use important to ensure override */
+    background-color: var(--navbar-background-color) !important; /* Use the new variable here */
 
   }
   .sss-product-navbar-navbar {

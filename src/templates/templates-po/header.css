@@ -1,8 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
+:root {
+    --navbar-border-color: #151934;
+    --navbar-link-color: #8f9bb7;
+    --navbar-cta-background-color: #7214ff;
+    --header-background-color: #200627; /* Add this for header background color */
+  }
+
 
   .sss-product-hero {
-    background-color: var(--background-color);
+    background-color: var(--header-background-color); /* Use the new variable here */
     background-image: var(--background-image);
     background-size: cover;
     background-position: center;

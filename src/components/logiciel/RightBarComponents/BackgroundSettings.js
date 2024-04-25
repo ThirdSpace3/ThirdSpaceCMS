@@ -11,13 +11,24 @@ const BackgroundSettings = ({
   const fileInputRef = useRef(null);
   const { addImageToHistory } = useImageHistory();
   
-  const handleBackgroundChange = (e, property) => {
+  const handleBackgroundChange = (e, property, componentName) => {
     const value = e.target.value;
     console.log("Selected Element in BackgroundSettings:", selectedElement);
   
     console.log("Attempting to update style for", selectedElement, "with value", value);
-      document.documentElement.style.setProperty('--background-color', value);
-  };  
+    if (selectedElement) {
+      let cssVarName = '';
+      if (componentName === 'navbar') {
+        cssVarName = '--navbar-background-color';
+      } else if (componentName === 'header') {
+        cssVarName = '--header-background-color';
+      }
+      document.documentElement.style.setProperty(cssVarName, value);
+    }
+  };
+  
+  
+
 
 
 
@@ -30,7 +41,7 @@ const BackgroundSettings = ({
       <div className={`parameters-wrapper-content ${isOpen.background ? "open" : ""}`}>
         <div className="parameters-content-line-row">
           <p className="parameters-content-line-title">Color</p>
-          <input type="color" onChange={(e) => handleBackgroundChange(e, "backgroundColor")} />
+          <input type="color" onChange={(e) => handleBackgroundChange(e, "backgroundColor", selectedElement)} />
         </div>
         <div className="parameters-content-line-row">
           <p className="parameters-content-line-title">Image</p>

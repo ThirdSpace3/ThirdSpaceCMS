@@ -127,7 +127,7 @@ useEffect(() => {
 }, [navbarStyle]);
   
     return (
-<div className="sss-product-navbar-container" onClick={handleNavbarClick} style={navbarStyle}>
+<div className="sss-product-navbar-container navbar-element" onClick={handleNavbarClick} style={navbarStyle}>
             <nav className="sss-product-navbar-navbar">
                 <div className="image-container">
                     <ReusableImage
