@@ -9,24 +9,19 @@ export default function TypographySettings({
   handleTextDecoration,
   selectedAlign,
   handleTextAlign,
+  updateStyle, // Use the updateStyle function from the prop
+
 }) {
   const [typographyStyle, setTypographyStyle] = useState({});
-  const { updateStyle } = useStyle();
   const handleInputChange = (e, styleProperty, type) => {
     let value = e.target.value;
     if (type === 'select' || type === 'number') {
-      updateStyle(selectedElement, { [styleProperty]: value });
+      updateStyle(selectedElement, { [styleProperty]: value }); // Use the updateStyle function from the prop
     } else {
-      updateStyle(selectedElement, { [styleProperty]: e.target.value });
+      updateStyle(selectedElement, { [styleProperty]: e.target.value }); // Use the updateStyle function from the prop
     }
   };
-  const handleTypographyChange = (e, styleProperty) => {
-    setTypographyStyle((prevState) => ({
-      ...prevState,
-      [styleProperty]: e.target.value,
-    }));
-    updateStyle({ [styleProperty]: e.target.value });
-  };
+
 
   return (
     <div>
@@ -37,26 +32,28 @@ export default function TypographySettings({
         >
           <p className="parameters-wrapper-title">Typographie</p>
           <i
-            className={`bi bi-caret-down-fill ${
-              isOpen.typographie ? "rotate" : ""
-            }`}
+            className={`bi bi-caret-down-fill ${isOpen.typographie ? "rotate" : ""
+              }`}
           ></i>
         </div>
         <div
-          className={`parameters-wrapper-content ${
-            isOpen.typographie ? "open" : ""
-          }`}
+          className={`parameters-wrapper-content ${isOpen.typographie ? "open" : ""
+            }`}
         >
           <div className="parameters-content-line-row">
             <p className="parameters-content-line-title">Font Family</p>
             <div className="font-family-dropdown">
-              <select
-                onChange={(e) => handleInputChange(e, "fontFamily", "select")}
-              >
-                <option>Arial</option>
-                <option>Verdana</option>
-                <option>Helvetica</option>
+              <select onChange={(e) => handleInputChange(e, "fontFamily", "select")}>
+                <option value="Arial">Arial</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Helvetica">Helvetica</option>
+                {/* Add more options here */}
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier">Courier</option>
+                {/* You can also change the default value like this */}
+                <option value="Outfit" selected>Outfit</option>
               </select>
+
             </div>
           </div>
 
@@ -102,9 +99,8 @@ export default function TypographySettings({
             <div className="parameters-content-line-container">
               <a
                 href="#"
-                className={`parameters-content-line-item ${
-                  selectedDecoration === "italic" ? "selected" : ""
-                }`}
+                className={`parameters-content-line-item ${selectedDecoration === "italic" ? "selected" : ""
+                  }`}
                 onClick={() => handleTextDecoration("italic")}
               >
                 <i className="bi bi-type-italic"></i>
@@ -112,9 +108,8 @@ export default function TypographySettings({
               <hr className="parameters-content-line-separation" />
               <a
                 href="#"
-                className={`parameters-content-line-item ${
-                  selectedDecoration === "underline" ? "selected" : ""
-                }`}
+                className={`parameters-content-line-item ${selectedDecoration === "underline" ? "selected" : ""
+                  }`}
                 onClick={() => handleTextDecoration("underline")}
               >
                 <i className="bi bi-type-underline"></i>
@@ -122,9 +117,8 @@ export default function TypographySettings({
               <hr className="parameters-content-line-separation" />
               <a
                 href="#"
-                className={`parameters-content-line-item ${
-                  selectedDecoration === "line-through" ? "selected" : ""
-                }`}
+                className={`parameters-content-line-item ${selectedDecoration === "line-through" ? "selected" : ""
+                  }`}
                 onClick={() => handleTextDecoration("line-through")}
               >
                 <i className="bi bi-type-strikethrough"></i>
@@ -136,9 +130,8 @@ export default function TypographySettings({
             <div className="parameters-content-line-container">
               <a
                 href="#"
-                className={`parameters-content-line-item ${
-                  selectedAlign === "left" ? "selected" : ""
-                }`}
+                className={`parameters-content-line-item ${selectedAlign === "left" ? "selected" : ""
+                  }`}
                 onClick={() => handleTextAlign("left")}
               >
                 <i className="bi bi-text-left"></i>
@@ -148,9 +141,8 @@ export default function TypographySettings({
 
               <a
                 href="#"
-                className={`parameters-content-line-item ${
-                  selectedAlign === "center" ? "selected" : ""
-                }`}
+                className={`parameters-content-line-item ${selectedAlign === "center" ? "selected" : ""
+                  }`}
                 onClick={() => handleTextAlign("center")}
               >
                 <i className="bi bi-text-center"></i>
@@ -160,9 +152,8 @@ export default function TypographySettings({
 
               <a
                 href="#"
-                className={`parameters-content-line-item ${
-                  selectedAlign === "right" ? "selected" : ""
-                }`}
+                className={`parameters-content-line-item ${selectedAlign === "right" ? "selected" : ""
+                  }`}
                 onClick={() => handleTextAlign("right")}
               >
                 <i className="bi bi-text-right"></i>
@@ -172,9 +163,8 @@ export default function TypographySettings({
 
               <a
                 href="#"
-                className={`parameters-content-line-item ${
-                  selectedAlign === "justify" ? "selected" : ""
-                }`}
+                className={`parameters-content-line-item ${selectedAlign === "justify" ? "selected" : ""
+                  }`}
                 onClick={() => handleTextAlign("justify")}
               >
                 <i className="bi bi-justify"></i>

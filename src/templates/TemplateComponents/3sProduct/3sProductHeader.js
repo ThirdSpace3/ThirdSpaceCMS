@@ -111,7 +111,7 @@ const HeaderSection = ({
         <EditableText
           text={joinUsText}
           onChange={(newText) => handleTextChange(newText, 'joinUs')}
-          style={settings.textStyles?.joinUsText}
+          style={{ ...headerStyle, ...settings.textStyles?.joinUsText }}
         />
       </a>
       <ReusableImage

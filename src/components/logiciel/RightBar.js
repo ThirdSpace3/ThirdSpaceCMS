@@ -162,7 +162,14 @@ export default function RightBar({ selectedElement }) {
       onSettingsChange(selectedElement, { size: updatedSizeStyle });
       saveStateInSessionStorage("sizeStyle", updatedSizeStyle); // Save the state in session storage
     }
+ // Use updateStyle to update the styles
+ updateStyle(selectedElement, { [styleProperty]: value });
 
+ // Then call onSettingsChange with the updated styles
+ onSettingsChange(selectedElement, { [styleProperty]: value });
+
+ // Save the state in session storage
+ saveStateInSessionStorage(styleProperty, value);
     console.log("Input change for:", styleProperty, "value:", value);
   };
 

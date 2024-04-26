@@ -24,6 +24,7 @@ const Navbar = ({
     const [localSelectedImage, setLocalSelectedImage] = useState(selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png");
     const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
     const navbarStyle = style.navbar || {}; // This should only contain navbar-related styles
+    const [navbarStyleehe, setNavbarStyle] = useState(navbarStyle); // Add a state variable for the navbar style
     const getImageHeight = (src) => {
       return new Promise((resolve) => {
         const img = new Image();
@@ -124,7 +125,12 @@ useEffect(() => {
 useEffect(() => {
     console.log("Navbar style:", navbarStyle);
 }, [navbarStyle]);
-  
+
+useEffect(() => {
+  // Update the state of the Navbar component when the navbarStyle object changes
+  setNavbarStyle(navbarStyle);
+}, [navbarStyle]);
+
     return (
 <div className="sss-product-navbar-container navbar-element" onClick={handleNavbarClick} style={navbarStyle}>
             <nav className="sss-product-navbar-navbar">
@@ -149,7 +155,7 @@ useEffect(() => {
                                 text={homeText}
                                 onChange={(text) => handleTextChange(text, 'home')}
                                 handleSettingsChange={(newStyle) => handleTextStyleChange('home', newStyle)}
-                                style={settings.textStyles?.homeText}
+                                style={{...settings.textStyles?.homeText, ...navbarStyle}} // Pass the navbarStyle here
                                 textType="homeText"
                             />
                         </Link>
@@ -160,7 +166,7 @@ useEffect(() => {
                                 text={aboutText}
                                 onChange={(text) => handleTextChange(text, 'about')}
                                 handleSettingsChange={(newStyle) => handleTextStyleChange('about', newStyle)}
-                                style={settings.textStyles?.aboutText}
+                                style={{...settings.textStyles?.aboutText, ...navbarStyle}} // Pass the navbarStyle here
                                 textType="aboutText"
                             />
                         </Link>
@@ -171,7 +177,7 @@ useEffect(() => {
                                 text={featuresText}
                                 onChange={(text) => handleTextChange(text, 'features')}
                                 handleSettingsChange={(newStyle) => handleTextStyleChange('features', newStyle)}
-                                style={settings.textStyles?.featuresText}
+                                style={{...settings.textStyles?.featuresText, ...navbarStyle}} // Pass the navbarStyle here
                                 textType="featuresText"
                             />
                         </Link>
@@ -182,8 +188,9 @@ useEffect(() => {
                                 text={joinUsText}
                                 onChange={(text) => handleTextChange(text, 'joinUs')}
                                 handleSettingsChange={(newStyle) => handleTextStyleChange('joinUs', newStyle)}
-                                style={settings.textStyles?.joinUsText}
+                                style={{...settings.textStyles?.joinUsText, ...navbarStyle}} // Pass the navbarStyle here
                                 textType="joinUsText"
+                                
                             />
                         </Link>
                     </li>
