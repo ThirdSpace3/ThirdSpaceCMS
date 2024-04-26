@@ -25,8 +25,10 @@ export default function RightBar({ selectedElement }) {
       [section]: !prevState[section],
     }));
   };
-  const [typographyStyle, setTypographyStyle] = useState({});
-
+  const [typographyStyle, setTypographyStyle] = useState({
+  
+  });
+  
   const [selectedAlign, setSelectedAlign] = useState(null);
   const [selectedDecoration, setSelectedDecoration] = useState(null);
   const { updateStyle } = useStyle(); // Get the function to update the style
@@ -478,7 +480,7 @@ export default function RightBar({ selectedElement }) {
           {/* Section Typographie */}
 
           <TypographySettings
-            selectedElement={selectedElement}
+            selectedElement={selectedElement} // Pass selectedElement as a prop
             updateStyle={updateStyle}
             toggleSection={toggleSection}
             isOpen={isOpen}
@@ -487,6 +489,7 @@ export default function RightBar({ selectedElement }) {
             handleTextDecoration={handleTextDecoration}
             selectedAlign={selectedAlign}
             handleTextAlign={handleTextAlign}
+            setTypographyStyle={setTypographyStyle}
           />
         </div>
       </div>

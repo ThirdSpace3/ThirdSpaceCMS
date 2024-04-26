@@ -86,7 +86,7 @@ const PartnersSection = ({ handleSettingsChange, settings, openImagePanel, setSe
       <h2 className="sss-product-partners-title">
         <EditableText
           text={partnersTitleText}
-          style={{...partnerStyle, ...partnersTitleStyle}}
+          style={{ ...settings.textStyles?.partnersTitleStyle, ...partnerStyle}}
           onChange={handleTextChange}
           onStyleChange={handleTextStyleChange}
         />

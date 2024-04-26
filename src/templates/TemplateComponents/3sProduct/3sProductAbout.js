@@ -6,14 +6,16 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const AboutSection = ({
-  style, settings, handleSettingsChange, openImagePanel, setSelectedElement
-}) => {
+  handleSettingsChange, settings, openImagePanel, setSelectedElement, style}) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
   const [aboutTitleText, setAboutTitleText] = useState('The best features to help you create all your projects');
   const [aboutDescriptionText, setAboutDescriptionText] = useState('Apsum dolor sit amet consectetur. Aliquam elementum elementum in ultrices. Dui maecenas ut eros turpis ultrices metus morbi aliquet vel.');
   const [aboutImages, setAboutImages] = useState(Array(6).fill().map((_, i) => `./images/templates-img/3sproduct/3sproduct-about-${i+1}.png`));
+  const [featureTitles, setFeatureTitles] = useState(Array(6).fill('Feature Title'));
+  const [featureDescriptions, setFeatureDescriptions] = useState(Array(6).fill('Feature description here.'));
+  const aboutStyles = getComponentStyle('about');
 
   const [imageHeight, setImageHeight] = useState(null);
   const getImageHeight = (src) => {
@@ -31,7 +33,6 @@ const AboutSection = ({
     updateStyle(settings);
   }, [settings]);
 
-  // Ensure the about image updates to the selected image when this component is active
   useEffect(() => {
     if (activeComponent && activeComponent.startsWith('aboutImage') && selectedImage) {
       const index = parseInt(activeComponent.split('-')[1], 10);
@@ -43,11 +44,19 @@ const AboutSection = ({
     }
   }, [selectedImage, activeComponent, aboutImages]);
 
-  const handleTextChange = (newText, type) => {
+  const handleTextChange = (newText, index, type) => {
     if (type === 'title') {
       setAboutTitleText(newText);
     } else if (type === 'description') {
       setAboutDescriptionText(newText);
+    } else if (type === 'featureTitle') {
+      const newTitles = [...featureTitles];
+      newTitles[index] = newText;
+      setFeatureTitles(newTitles);
+    } else if (type === 'featureDescription') {
+      const newDescriptions = [...featureDescriptions];
+      newDescriptions[index] = newText;
+      setFeatureDescriptions(newDescriptions);
     }
   };
 
@@ -83,20 +92,19 @@ const AboutSection = ({
 
   return (
     <div className="sss-product-about" style={{ ...style, ...settings.about }}>
-
       <div className="sss-product-about-header">
         <h2 className="sss-product-about-title">
           <EditableText
             text={aboutTitleText}
             onChange={(text) => handleTextChange(text, 'title')}
-            style={settings.textStyles?.aboutTitleText}
+            style={{...settings.textStyles?.aboutTitleText, ...aboutStyles}}
           />
         </h2>
         <p className="sss-product-about-text">
           <EditableText
             text={aboutDescriptionText}
             onChange={(text) => handleTextChange(text, 'description')}
-            style={settings.textStyles?.aboutDescriptionText}
+            style={{...settings.textStyles?.aboutDescriptionText, ...aboutStyles}}
           />
         </p>
       </div>
@@ -114,12 +122,25 @@ const AboutSection = ({
               identifier={`aboutImage-${index}`}
               imageHeight={imageHeight}
             />
-            <h3 className="sss-product-about-item-title">Feature Title {index + 1}</h3>
-            <p className="sss-product-about-item-text">Feature description here. It can vary depending on the feature number {index + 1}.</p>
+            <h3 className="sss-product-about-item-title">
+              <EditableText
+                text={featureTitles[index]}
+                onChange={(text) => handleTextChange(text, index, 'featureTitle')}
+                style={{...settings.textStyles?.aboutDescriptionText, ...aboutStyles}}
+
+              />
+            </h3>
+            <p className="sss-product-about-item-text">
+              <EditableText
+                text={featureDescriptions[index]}
+                onChange={(text) => handleTextChange(text, index, 'featureDescription')}
+                style={{...settings.textStyles?.aboutDescriptionText, ...aboutStyles}}
+
+              />
+            </p>
           </div>
         ))}
       </div>
-
     </div>
   );
 };

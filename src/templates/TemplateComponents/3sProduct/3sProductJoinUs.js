@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 const JoinUsSection = ({ handleSettingsChange, selectElement, openImagePanel }) => {
   const { getComponentStyle, updateStyle } = useStyle();
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
+  const JoinUsStyles = getComponentStyle('joinUs');
 
   const [joinUsTitleText, setJoinUsTitleText] = useState('Join the community');
   const [joinUsDescriptionText, setJoinUsDescriptionText] = useState('Join our 400,000+ person community and contribute to a more private and decentralized internet. Start for free.');
@@ -73,7 +74,7 @@ const JoinUsSection = ({ handleSettingsChange, selectElement, openImagePanel }) 
         <h2 className="sss-product-joinus-title">
           <EditableText
             text={joinUsTitleText}
-            style={getComponentStyle('joinUsTitle')}
+            style={JoinUsStyles}
             onChange={(text) => handleTextChange(text, setJoinUsTitleText)}
             onStyleChange={(style) => handleTextStyleChange('joinUsTitle', style)}
             selectElement={selectElement}
@@ -82,7 +83,7 @@ const JoinUsSection = ({ handleSettingsChange, selectElement, openImagePanel }) 
         <p className='sss-product-joinus-text'>
           <EditableText
             text={joinUsDescriptionText}
-            style={getComponentStyle('joinUsDescription')}
+            style={JoinUsStyles}
             onChange={(text) => handleTextChange(text, setJoinUsDescriptionText)}
             onStyleChange={(style) => handleTextStyleChange('joinUsDescription', style)}
             selectElement={selectElement}
@@ -91,7 +92,7 @@ const JoinUsSection = ({ handleSettingsChange, selectElement, openImagePanel }) 
         <Link to="/join-us" className="sss-product-navbar-cta">
           <EditableText
             text={joinUsCta}
-            style={getComponentStyle('joinUsCta')}
+            style={JoinUsStyles}
             onChange={(text) => handleTextChange(text, setjoinUsCta)}
             onStyleChange={(style) => handleTextStyleChange('joinUsCta', style)}
             selectElement={selectElement}

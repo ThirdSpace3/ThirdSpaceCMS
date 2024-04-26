@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useStyle } from "../../../hooks/StyleContext";
 
 export default function TypographySettings({
@@ -10,18 +10,40 @@ export default function TypographySettings({
   selectedAlign,
   handleTextAlign,
   updateStyle, // Use the updateStyle function from the prop
-
 }) {
-  const [typographyStyle, setTypographyStyle] = useState({});
+  const [style, setStyle] = useState({});
+  const [fontFamily, setFontFamily] = useState(style.fontFamily);
+  const [fontSize, setFontSize] = useState(style.fontSize);
+  const [color, setColor] = useState(style.color);
+
   const handleInputChange = (e, styleProperty, type) => {
     let value = e.target.value;
     if (type === 'select' || type === 'number') {
-      updateStyle(selectedElement, { [styleProperty]: value }); // Use the updateStyle function from the prop
+      setStyle({ ...style, [styleProperty]: value });
+      updateStyle(selectedElement, { [styleProperty]: value });
     } else {
-      updateStyle(selectedElement, { [styleProperty]: e.target.value }); // Use the updateStyle function from the prop
+      setStyle({ ...style, [styleProperty]: e.target.value });
+      updateStyle(selectedElement, { [styleProperty]: e.target.value });
     }
+    console.log(`Updating style of ${selectedElement} with ${styleProperty}: ${value}`);
+    console.log(`Current font size: ${style.fontSize}`);
   };
+  
 
+  useEffect(() => {
+    if (selectedElement && selectedElement.id) {
+      const element = document.getElementById(selectedElement.id);
+      if (element) {
+        const elementStyle = window.getComputedStyle(element);
+
+        setStyle({
+          fontFamily: elementStyle.fontFamily,
+          fontSize: parseInt(elementStyle.fontSize, 10),
+          color: elementStyle.color,
+        });
+      }
+    }
+  }, [selectedElement]);
 
   return (
     <div>

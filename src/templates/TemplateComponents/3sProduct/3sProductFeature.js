@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../../templates-po/feature.css';
+import { Link } from 'react-router-dom';
+
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
 import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
-
-const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openImagePanel }) => {
+const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel }) => {
   const { getComponentStyle } = useStyle();
-  const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
+  const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
+  const aboutStyles = getComponentStyle('features');
 
   // State for text fields including descriptions
   const [featuresTitleText, setFeaturesTitleText] = useState('Essential apps that protect your documents');
@@ -23,6 +25,7 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
   const [uploadShareDesc, setUploadShareDesc] = useState({
     text: 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.',
   });
+  const [joinUsText, setJoinUsText] = useState('Join Us');
 
   // State for image sources
   const [feature1Image, setFeature1Image] = useState('./images/templates-img/3sproduct/3sproduct-feature-1.png');
@@ -59,7 +62,7 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
 
   const handleFeaturesClick = () => {
     console.log("Features clicked, setting selected element to 'features'");
-    selectElement('features');
+    setSelectedElement('features');
   };
 
   useEffect(() => {
@@ -99,13 +102,12 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
   };
 
   return (
-    <div className="sss-product-features" onClick={onClick}>
+    <div className="sss-product-features" style={{ ...style, ...settings.features }}>
       <h2 className="sss-product-features-title">
         <EditableText
           text={featuresTitleText}
           onChange={(newText) => setFeaturesTitleText(newText)}
-          style={getComponentStyle('featuresTitle') || { fontFamily: 'Outfit', fontSize: '56px', fontWeight: '700', color: '#f6f6f7' }}
-          selectElement={selectElement}
+          style={aboutStyles}
         />
       </h2>
       <div className="sss-product-features-box">
@@ -116,20 +118,23 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
               <EditableText
                 text={endToEndText}
                 onChange={(newText) => setEndToEndText(newText)}
-                style={getComponentStyle('featuresTopLeftTitle')}
-                selectElement={selectElement}
+                style={aboutStyles}
               />
             </h3>
             <p className='sss-product-features-box-top-left-text'>
             <EditableText
               text={endToEndDesc.text}
               onChange={(newText) => setEndToEndDesc({...endToEndDesc, text: newText})}
-              style={endToEndDesc.style}
-              selectElement={selectElement}
+              style={aboutStyles}
             />
             </p>
-            <a href="" className="sss-product-features-box-top-left-cta">Join Us</a>
-          </div>
+            <Link to="/join-us" className="sss-product-navbar-cta">
+      <EditableText
+        text={joinUsText}
+        onChange={(newText) => setEndToEndDesc({...endToEndDesc, text: newText})}
+        style={aboutStyles}
+        />
+    </Link>          </div>
           <div className="sss-product-features-box-top-right">
             <ReusableImage
               src={feature1Image}
@@ -160,16 +165,14 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
               <EditableText
                 text={mobileAppsText}
                 onChange={(newText) => setMobileAppsText(newText)}
-                style={getComponentStyle('featuresBottomLeftTitle')}
-                selectElement={selectElement}
+                style={aboutStyles}
               />
             </h3>
             <p className='sss-product-features-box-top-left-text'>
             <EditableText
               text={mobileAppsDesc.text}
               onChange={(newText) => setMobileAppsDesc({...mobileAppsDesc, text: newText})}
-              style={mobileAppsDesc.style}
-              selectElement={selectElement}
+              style={aboutStyles}
             />
             </p>
           </div>
@@ -178,16 +181,14 @@ const FeaturesSection = ({ onClick, handleSettingsChange, selectElement, openIma
               <EditableText
                 text={uploadShareText}
                 onChange={(newText) => setUploadShareText(newText)}
-                style={getComponentStyle('featuresBottomRightTitle')}
-                selectElement={selectElement}
+                style={aboutStyles}
               />
             </h3>
             <p className='sss-product-features-box-top-left-text'>
             <EditableText
               text={uploadShareDesc.text}
               onChange={(newText) => setUploadShareDesc({...uploadShareDesc, text: newText})}
-              style={uploadShareDesc.style}
-              selectElement={selectElement}
+              style={aboutStyles}
             />
             </p>
             <ReusableImage

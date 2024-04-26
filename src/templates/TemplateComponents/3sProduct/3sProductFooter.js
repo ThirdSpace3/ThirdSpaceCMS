@@ -8,6 +8,7 @@ import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 const Footer = ({ handleSettingsChange, onClick, openImagePanel, selectElement }) => {
   const { getComponentStyle, updateStyle } = useStyle();
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
+  const JoinUsStyles = getComponentStyle('footer');
 
   // State for editable texts
   const [footerText, setFooterText] = useState('Copyright © 3S.Product | Designed inspired by Webocean LTD - Powered by Third Space');
@@ -98,7 +99,7 @@ const Footer = ({ handleSettingsChange, onClick, openImagePanel, selectElement }
             <EditableText
               text={homeText}
               onChange={(text) => handleTextChange(text, setHomeText)}
-              style={defaultFooterStyle}
+              style={JoinUsStyles}
               textType="homeText"
               selectElement={() => selectImage('homeText')}
             />
@@ -107,7 +108,7 @@ const Footer = ({ handleSettingsChange, onClick, openImagePanel, selectElement }
             <EditableText
               text={aboutText}
               onChange={(text) => handleTextChange(text, setAboutText)}
-              style={defaultFooterStyle}
+              style={JoinUsStyles}
               textType="aboutText"
               selectElement={() => selectImage('aboutText')}
             />
@@ -116,7 +117,7 @@ const Footer = ({ handleSettingsChange, onClick, openImagePanel, selectElement }
             <EditableText
               text={featuresText}
               onChange={(text) => handleTextChange(text, setFeaturesText)}
-              style={defaultFooterStyle}
+              style={JoinUsStyles}
               textType="featuresText"
               selectElement={() => selectImage('featuresText')}
             />

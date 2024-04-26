@@ -12,35 +12,35 @@ const Navbar = ({
     settings,
     handleSettingsChange,
     openImagePanel,
-    setSelectedElement 
+    setSelectedElement
 }) => {
     const { selectedImage, isReplacementMode, enterReplacementMode, selectImage, activeComponent } = useImageHistory();
-  const [homeText, setHomeText] = useState('Home');
+    const [homeText, setHomeText] = useState('Home');
     const [aboutText, setAboutText] = useState('About');
     const [featuresText, setFeaturesText] = useState('Features');
     const [joinUsText, setJoinUsText] = useState('Join Us');
-    const { style , selectedComponent,updateStyle } = useStyle(); // Get style from context
+    const { style, selectedComponent, updateStyle } = useStyle(); // Get style from context
     const [imageHeight, setImageHeight] = useState(null);
     const [localSelectedImage, setLocalSelectedImage] = useState(selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png");
     const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
     const navbarStyle = style.navbar || {}; // This should only contain navbar-related styles
     const [navbarStyleehe, setNavbarStyle] = useState(navbarStyle); // Add a state variable for the navbar style
     const getImageHeight = (src) => {
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.src = src;
-        img.onload = () => resolve(img.height);
-      });
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = () => resolve(img.height);
+        });
     };
     useEffect(() => {
-      getImageHeight("./images/templates-img/3sproduct/3sproduct-logo.png").then((height) => setImageHeight(height));
+        getImageHeight("./images/templates-img/3sproduct/3sproduct-logo.png").then((height) => setImageHeight(height));
     }, []);
-  
-  
+
+
     useEffect(() => {
-      if (isReplacementMode && activeComponent === 'Navbar') {
-          setNavbarImage(selectedImage);
-      }
+        if (isReplacementMode && activeComponent === 'Navbar') {
+            setNavbarImage(selectedImage);
+        }
     }, [selectedImage, isReplacementMode, activeComponent]);
     useEffect(() => {
         console.log(`Component: Navbar, Active: ${activeComponent}, Image: ${selectedImage}`);
@@ -48,23 +48,23 @@ const Navbar = ({
             setNavbarImage(selectedImage);
         }
     }, [selectedImage, activeComponent]);
-    
+
     const handleImageClick = () => {
         enterReplacementMode('Navbar');
     };
-  
+
     const handleNewImageSrc = (newSrc) => {
-      if (activeComponent === 'Navbar') {
-          selectImage(newSrc);
-      }
+        if (activeComponent === 'Navbar') {
+            selectImage(newSrc);
+        }
     };
     const handleNavbarClick = () => {
         console.log("Navbar clicked, setting selected element to 'navbar'");
         setSelectedElement('navbar');
-      };
-    
-    
-    
+    };
+
+
+
     useEffect(() => {
         const img = new Image();
         img.src = selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png";
@@ -107,32 +107,36 @@ const Navbar = ({
             }
         });
     };
- 
+
     useEffect(() => {
-      console.log("Component Name: Reacting to new selected image", selectedImage);
+        console.log("Component Name: Reacting to new selected image", selectedImage);
     }, [selectedImage]);
 
 
 
-useEffect(() => {
-    console.log("Navbar style updated to:", navbarStyle);
+    useEffect(() => {
+        console.log("Navbar style updated to:", navbarStyle);
 
-    const root = document.documentElement;
-    if (navbarStyle.backgroundColor) {
-      root.style.setProperty('--background-color', navbarStyle.backgroundColor);
-    }
-}, [navbarStyle.backgroundColor]); // Apply background color directly to CSS variable
-useEffect(() => {
-    console.log("Navbar style:", navbarStyle);
-}, [navbarStyle]);
+        const root = document.documentElement;
+        if (navbarStyle.backgroundColor) {
+            root.style.setProperty('--background-color', navbarStyle.backgroundColor);
+        }
+    }, [navbarStyle.backgroundColor]); // Apply background color directly to CSS variable
 
-useEffect(() => {
-  // Update the state of the Navbar component when the navbarStyle object changes
-  setNavbarStyle(navbarStyle);
-}, [navbarStyle]);
+    useEffect(() => {
+        console.log("Navbar style:", navbarStyle);
+    }, [navbarStyle]);
+
+    useEffect(() => {
+        // Update the state of the Navbar component when the navbarStyle object changes
+        setNavbarStyle(navbarStyle);
+    }, [navbarStyle]);
+    useEffect(() => {
+        console.log("Current style:", style);
+    }, [style]);
 
     return (
-<div className="sss-product-navbar-container navbar-element" onClick={handleNavbarClick} style={navbarStyle}>
+        <div className="sss-product-navbar-container navbar-element" onClick={handleNavbarClick} style={navbarStyle}>
             <nav className="sss-product-navbar-navbar">
                 <div className="image-container">
                     <ReusableImage
@@ -146,55 +150,55 @@ useEffect(() => {
                         onClick={handleImageClick}
                         identifier="NavbarImage"
 
-                        />
+                    />
                 </div>
                 <ul className="sss-product-navbar-links-box">
-                    <li>
-                        <Link to="/" className="sss-product-navbar-links">
-                            <EditableText
-                                text={homeText}
-                                onChange={(text) => handleTextChange(text, 'home')}
-                                handleSettingsChange={(newStyle) => handleTextStyleChange('home', newStyle)}
-                                style={{...settings.textStyles?.homeText, ...navbarStyle}} // Pass the navbarStyle here
-                                textType="homeText"
-                            />
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/about" className="sss-product-navbar-links">
-                            <EditableText
-                                text={aboutText}
-                                onChange={(text) => handleTextChange(text, 'about')}
-                                handleSettingsChange={(newStyle) => handleTextStyleChange('about', newStyle)}
-                                style={{...settings.textStyles?.aboutText, ...navbarStyle}} // Pass the navbarStyle here
-                                textType="aboutText"
-                            />
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/features" className="sss-product-navbar-links">
-                            <EditableText
-                                text={featuresText}
-                                onChange={(text) => handleTextChange(text, 'features')}
-                                handleSettingsChange={(newStyle) => handleTextStyleChange('features', newStyle)}
-                                style={{...settings.textStyles?.featuresText, ...navbarStyle}} // Pass the navbarStyle here
-                                textType="featuresText"
-                            />
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/join-us" className="sss-product-navbar-cta">
-                            <EditableText
-                                text={joinUsText}
-                                onChange={(text) => handleTextChange(text, 'joinUs')}
-                                handleSettingsChange={(newStyle) => handleTextStyleChange('joinUs', newStyle)}
-                                style={{...settings.textStyles?.joinUsText, ...navbarStyle}} // Pass the navbarStyle here
-                                textType="joinUsText"
-                                
-                            />
-                        </Link>
-                    </li>
-                </ul>
+  <li>
+    <Link to="/" className="sss-product-navbar-links">
+      <EditableText
+        text={homeText}
+        onChange={(text) => handleTextChange(text, 'home')}
+        handleSettingsChange={(newStyle) => handleTextStyleChange('home', newStyle)}
+        style={{...settings.textStyles?.homeText, ...navbarStyle}} // Pass the navbarStyle here
+        textType="homeText"
+      />
+    </Link>
+  </li>
+  <li>
+    <Link to="/about" className="sss-product-navbar-links">
+      <EditableText
+        text={aboutText}
+        onChange={(text) => handleTextChange(text, 'about')}
+        handleSettingsChange={(newStyle) => handleTextStyleChange('about', newStyle)}
+        style={{...settings.textStyles?.aboutText, ...navbarStyle}} // Pass the navbarStyle here
+        textType="aboutText"
+      />
+    </Link>
+  </li>
+  <li>
+    <Link to="/features" className="sss-product-navbar-links">
+      <EditableText
+        text={featuresText}
+        onChange={(text) => handleTextChange(text, 'features')}
+        handleSettingsChange={(newStyle) => handleTextStyleChange('features', newStyle)}
+        style={{...settings.textStyles?.featuresText, ...navbarStyle}} // Pass the navbarStyle here
+        textType="featuresText"
+      />
+    </Link>
+  </li>
+  <li>
+    <Link to="/join-us" className="sss-product-navbar-cta">
+      <EditableText
+        text={joinUsText}
+        onChange={(text) => handleTextChange(text, 'joinUs')}
+        handleSettingsChange={(newStyle) => handleTextStyleChange('joinUs', newStyle)}
+        style={{...settings.textStyles?.joinUsText, ...navbarStyle}} // Pass the navbarStyle here
+        textType="joinUsText"
+      />
+    </Link>
+  </li>
+</ul>
+
                 <img
                     src={menuToggleImg}
                     className="sss-product-navbar-mobile-toggle"
