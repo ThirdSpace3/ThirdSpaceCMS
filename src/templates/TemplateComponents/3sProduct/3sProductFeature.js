@@ -80,10 +80,18 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
   const handleImageClick = (index) => {
     const identifier = `featureImage-${index}`;
     enterReplacementMode(identifier);
+    console.log(`${identifier} clicked, opening replacement mode.`);
+    setSelectedElement(identifier);
   };
-
+  
+  const handleTextChange = (newText, setText) => {
+    setText(newText);
+    console.log("Text updated:", newText);
+  };
+  
   const handleImageChange = (newSrc, index) => {
-    if (activeComponent === `featureImage-${index}`) {
+    const identifier = `featureImage-${index}`;
+    if (activeComponent === identifier) {
       switch (index) {
         case 1:
           setFeature1Image(newSrc);
@@ -95,11 +103,33 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
           setFeature3Image(newSrc);
           break;
         default:
+          console.error("Invalid index for feature image:", index);
           break;
       }
       selectImage(newSrc);
+      console.log(`Image for ${identifier} updated.`);
     }
   };
+  
+
+  useEffect(() => {
+    const featuresElement = document.querySelector('.sss-product-features');
+    const eventHandler = () => {
+      console.log("Features clicked, setting selected element to 'features'");
+      setSelectedElement('features');
+    };
+  
+    if (featuresElement) {
+      featuresElement.addEventListener('click', eventHandler);
+    }
+    
+    return () => {
+      if (featuresElement) {
+        featuresElement.removeEventListener('click', eventHandler);
+      }
+    };
+  }, []);
+  
 
   return (
     <div className="sss-product-features" style={{ ...style, ...settings.features }} id='features'>

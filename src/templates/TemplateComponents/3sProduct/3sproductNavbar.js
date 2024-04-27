@@ -27,7 +27,7 @@ const Navbar = ({
     const { style, selectedComponent, updateStyle, getComponentStyle } = useStyle();
     const homeStyles = getComponentStyle('home');
     const aboutStyles = getComponentStyle('about');
-    const featuresStyles = getComponentStyle('features');
+    const featuresStyles = getComponentStyle('navfeatures');
     const joinUsStyles = getComponentStyle('joinUs');
 
     const getImageHeight = (src) => {
@@ -55,7 +55,7 @@ const Navbar = ({
             case 'about':
                 setAboutText(newText);
                 break;
-            case 'features':
+            case 'navfeatures':
                 setFeaturesText(newText);
                 break;
             case 'joinUs':
@@ -108,11 +108,11 @@ const Navbar = ({
                             />
                         </Link>
                     </li>
-                    <li id='features' onClick={(event) => handleComponentClick(event, 'features')}>
+                    <li id='navfeatures' onClick={(event) => handleComponentClick(event, 'navfeatures')}>
                         <Link  className="sss-product-navbar-links" >
                             <EditableText
                                 text={featuresText}
-                                onChange={(newText) => handleTextChange(newText, 'features')}
+                                onChange={(newText) => handleTextChange(newText, 'navfeatures')}
                                 style={{ ...featuresStyles }}
                             />
                         </Link>

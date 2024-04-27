@@ -37,16 +37,17 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
       />
-<HeaderSection
-  style={settings.header}
-  settings={settings}
-  handleSettingsChange={handleSettingsChange}
-  openImagePanel={openImagePanel}
-  selectedImage={selectedImage}
-  setSelectedImage={setSelectedImage}
-  selectElement={selectElement}
-  setSelectedElement={setSelectedElement}
-/>
+      
+      <HeaderSection
+        style={settings.header}
+        settings={settings}
+        handleSettingsChange={handleSettingsChange}
+        openImagePanel={openImagePanel}
+        selectedImage={selectedImage}
+        setSelectedImage={setSelectedImage}
+        selectElement={selectElement}
+        setSelectedElement={setSelectedElement}
+      />
 
       <PartnersSection
         style={settings.navbar}

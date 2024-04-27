@@ -107,55 +107,55 @@ export default function Display() {
   }, [templateName]);
 
 
-// In Display.js
-useEffect(() => {
-  const handleGlobalClick = (event) => {
-    if (event.target.closest('.image-container')) {
-      // Don't clear focus if the click is inside an image container
-      return;
-    }
-    clearFocus();  // This will now work properly
-  };
+  // In Display.js
+  useEffect(() => {
+    const handleGlobalClick = (event) => {
+      if (event.target.closest('.image-container')) {
+        // Don't clear focus if the click is inside an image container
+        return;
+      }
+      clearFocus();  // This will now work properly
+    };
 
-  document.addEventListener('click', handleGlobalClick);
-  return () => {
-    document.removeEventListener('click', handleGlobalClick);
-  };
-}, [clearFocus]);  // Including clearFocus to handle changes correctly
+    document.addEventListener('click', handleGlobalClick);
+    return () => {
+      document.removeEventListener('click', handleGlobalClick);
+    };
+  }, [clearFocus]);  // Including clearFocus to handle changes correctly
 
   return (
     <>
-        <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
-        <div className="displayWrapper">
-          {!isPreviewMode && (
-            <LeftBar
-  handleEditorChange={(editor) => setActiveEditor(editor)}
-  visiblePanel={activePanel}
-  setVisiblePanel={setActivePanel}
-  
-/>
+      <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
+      <div className="displayWrapper">
+        {!isPreviewMode && (
+          <LeftBar
+            handleEditorChange={(editor) => setActiveEditor(editor)}
+            visiblePanel={activePanel}
+            setVisiblePanel={setActivePanel}
 
-          )}
-          <div className="displayColumnWrapper">
-            <Canva
-              templateName={templateName}
-              deviceSize={selectedDeviceSize}
-              settings={settings}
-              handleSettingsChange={handleSettingsChange}
-              selectedElement={selectedElement}
-              setSelectedElement={setSelectedElement}
-              selectElement={selectElement}
-              isPreviewMode={isPreviewMode}
-              openImagePanel={openImagePanel}
-              setSelectedImage={setSelectedImage}
-            />
+          />
+
+        )}
+        <div className="displayColumnWrapper">
+          <Canva
+            templateName={templateName}
+            deviceSize={selectedDeviceSize}
+            settings={settings}
+            handleSettingsChange={handleSettingsChange}
+            selectedElement={selectedElement}
+            setSelectedElement={setSelectedElement}
+            selectElement={selectElement}
+            isPreviewMode={isPreviewMode}
+            openImagePanel={openImagePanel}
+            setSelectedImage={setSelectedImage}
+          />
 
 
-          </div>
-          {!isPreviewMode && (
-            <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
-          )}
         </div>
+        {!isPreviewMode && (
+          <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
+        )}
+      </div>
     </>
   );
 }
