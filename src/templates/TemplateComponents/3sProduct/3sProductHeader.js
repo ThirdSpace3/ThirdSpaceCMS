@@ -15,6 +15,8 @@ const HeaderSection = ({
   const [joinUsText, setJoinUsText] = useState('Join Us');
   const [headerImage, setHeaderImage] = useState("./images/templates-img/3sproduct/3sproduct-hero.png");
   const [menuToggleImg, setMenuToggleImg] = useState("path/to/menu/toggle/image");
+
+  
   const { getComponentStyle, globalStyle, updateStyle } = useStyle();
   const headerStyle = getComponentStyle('header');
   const heroTitleStyles = getComponentStyle('HeroTitle');
@@ -104,7 +106,7 @@ console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
     />
 </h1>
 
-      <p className="sss-product-hero-text" id='heroDescription' onClick={(event) => handleComponentClick(event, 'heroDescription')} >
+      <p className="sss-product-hero-text" id='heroDescription'  >
         <EditableText
           text={heroDescriptionText}
           onChange={(newText) => handleTextChange(newText, 'heroDescription')}

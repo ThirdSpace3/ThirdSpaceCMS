@@ -16,11 +16,15 @@ const ReusableImage = ({
   const imageContainerRef = useRef(null);
 
   useEffect(() => {
-    // This ensures that the image updates only if this component is active
+    // Update image source if this component is active and a new image is selected
     if (activeComponent === identifier && selectedImage && currentSrc !== selectedImage) {
       setCurrentSrc(selectedImage);
     }
-  }, [selectedImage, activeComponent, identifier]);
+    // Hide replace button if this component is no longer the active one
+    if (activeComponent !== identifier) {
+      setShowReplaceButton(false);
+    }
+  }, [selectedImage, activeComponent, identifier, currentSrc]);
 
   const handleImageClick = () => {
     enterReplacementMode(identifier);
@@ -28,7 +32,7 @@ const ReusableImage = ({
   };
 
   const handleClickOutside = (event) => {
-    if (!imageContainerRef.current.contains(event.target)) {
+    if (imageContainerRef.current && !imageContainerRef.current.contains(event.target)) {
       setShowReplaceButton(false);
     }
   };

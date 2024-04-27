@@ -15,7 +15,10 @@ const AboutSection = ({
   const [aboutImages, setAboutImages] = useState(Array(6).fill().map((_, i) => `./images/templates-img/3sproduct/3sproduct-about-${i+1}.png`));
   const [featureTitles, setFeatureTitles] = useState(Array(6).fill('Feature Title'));
   const [featureDescriptions, setFeatureDescriptions] = useState(Array(6).fill('Feature description here.'));
-  const aboutStyles = getComponentStyle('about');
+  const aboutTitleStyle = getComponentStyle('aboutTitle');
+  const aboutDescriptionStyles = getComponentStyle('aboutDescription');
+  const featureTitlesStyles = getComponentStyle('featureTitles');
+  const featureDescriptionsStyles = getComponentStyle('featureDescriptions');
 
   const [imageHeight, setImageHeight] = useState(null);
   const getImageHeight = (src) => {
@@ -29,82 +32,47 @@ const AboutSection = ({
     getImageHeight(`./images/templates-img/3sproduct/3sproduct-about-1.png`).then((height) => setImageHeight(height));
   }, []);
 
-  useEffect(() => {
-    updateStyle(settings);
-  }, [settings]);
-
-  useEffect(() => {
-    if (activeComponent && activeComponent.startsWith('aboutImage') && selectedImage) {
-      const index = parseInt(activeComponent.split('-')[1], 10);
-      if (index >= 0 && index < aboutImages.length && aboutImages[index] !== selectedImage) {
-        const newImages = [...aboutImages];
-        newImages[index] = selectedImage;
-        setAboutImages(newImages);
-      }
-    }
-  }, [selectedImage, activeComponent, aboutImages]);
-
-  const handleTextChange = (newText, index, type) => {
-    if (type === 'title') {
-      setAboutTitleText(newText);
-    } else if (type === 'description') {
-      setAboutDescriptionText(newText);
-    } else if (type === 'featureTitle') {
-      const newTitles = [...featureTitles];
-      newTitles[index] = newText;
-      setFeatureTitles(newTitles);
-    } else if (type === 'featureDescription') {
-      const newDescriptions = [...featureDescriptions];
-      newDescriptions[index] = newText;
-      setFeatureDescriptions(newDescriptions);
-    }
-  };
-
-  const handleImageClick = (index) => {
-    enterReplacementMode(`aboutImage-${index}`);
-  };
-
-  const handleImageChange = (newSrc, index) => {
-    if (activeComponent === `aboutImage-${index}`) {
-      const updatedImages = [...aboutImages];
-      updatedImages[index] = newSrc;
-      setAboutImages(updatedImages);
-      selectImage(newSrc);
-    }
-  };
-
-  const handleAboutClick = () => {
-    console.log("About clicked, setting selected element to 'about'");
-    setSelectedElement('about');
-  };
-
-  useEffect(() => {
-    const aboutElement = document.querySelector('.sss-product-about');
-    if (aboutElement) {
-      aboutElement.addEventListener('click', handleAboutClick);
-    }
-    return () => {
-      if (aboutElement) {
-        aboutElement.removeEventListener('click', handleAboutClick);
-      }
-    };
-  }, []);
+  const handleComponentClick = (event, identifier) => {
+    event.preventDefault(); // This will prevent the default action of the anchor tag
+    event.stopPropagation(); // Stop the event from propagating up
+    console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
+    setSelectedElement(identifier);
+};
+const handleTextChange = (newText, textType) => {
+  switch (textType) {
+      case 'title':
+        setAboutTitleText(newText);
+          break;
+      case 'description':
+          setAboutDescriptionText(newText);
+          break;
+      case 'featureTitle':
+        setFeatureTitles(newText);
+          break;
+      case 'featureDescription':
+        setFeatureDescriptions(newText);
+          break;
+      default:
+          break;
+  }
+  updateStyle(textType, { text: newText });
+};
 
   return (
     <div className="sss-product-about" style={{ ...style, ...settings.about }}  id='about'>
       <div className="sss-product-about-header">
-        <h2 className="sss-product-about-title">
+        <h2 className="sss-product-about-title"  id='title' onClick={(event) => handleComponentClick(event, 'title')}>
           <EditableText
             text={aboutTitleText}
             onChange={(text) => handleTextChange(text, 'title')}
-            style={{...settings.textStyles?.aboutTitleText, ...aboutStyles}}
+            style={{...aboutTitleStyle}}
           />
         </h2>
-        <p className="sss-product-about-text">
+        <p className="sss-product-about-text"  id='description' onClick={(event) => handleComponentClick(event, 'description')}>
           <EditableText
             text={aboutDescriptionText}
             onChange={(text) => handleTextChange(text, 'description')}
-            style={{...settings.textStyles?.aboutDescriptionText, ...aboutStyles}}
+            style={{...aboutDescriptionStyles}}
           />
         </p>
       </div>
@@ -114,27 +82,26 @@ const AboutSection = ({
             <ReusableImage
               src={src}
               alt={`Feature ${index + 1}`}
-              onClick={() => handleImageClick(index)}
               openImagePanel={openImagePanel}
-              onImageChange={(newSrc) => handleImageChange(newSrc, index)}
+              onImageChange={(newSrc) => selectImage(newSrc)}
               selectedImage={activeComponent === `aboutImage-${index}` ? selectedImage : null}
               style={{ height: '150px', width: 'auto' }}
               identifier={`aboutImage-${index}`}
               imageHeight={imageHeight}
             />
-            <h3 className="sss-product-about-item-title">
+            <h3 className="sss-product-about-item-title"  id='featureTitle' onClick={(event) => handleComponentClick(event, 'featureTitle')}>
               <EditableText
                 text={featureTitles[index]}
                 onChange={(text) => handleTextChange(text, index, 'featureTitle')}
-                style={{...settings.textStyles?.aboutDescriptionText, ...aboutStyles}}
+                style={{...featureTitlesStyles}}
 
               />
             </h3>
-            <p className="sss-product-about-item-text">
+            <p className="sss-product-about-item-text" id='featureDescription' onClick={(event) => handleComponentClick(event, 'featureDescription')}>
               <EditableText
                 text={featureDescriptions[index]}
                 onChange={(text) => handleTextChange(text, index, 'featureDescription')}
-                style={{...settings.textStyles?.aboutDescriptionText, ...aboutStyles}}
+                style={{...featureDescriptionsStyles}}
 
               />
             </p>

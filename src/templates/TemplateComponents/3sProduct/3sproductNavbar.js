@@ -19,33 +19,64 @@ const Navbar = ({
     const [aboutText, setAboutText] = useState('About');
     const [featuresText, setFeaturesText] = useState('Features');
     const [joinUsText, setJoinUsText] = useState('Join Us');
-    const { style, selectedComponent, updateStyle } = useStyle();
-    const [imageHeight, setImageHeight] = useState(null);
-    const [localSelectedImage, setLocalSelectedImage] = useState(selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png");
-    const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
-    const [navbarStyle, setNavbarStyle] = useState(style.navbar || {});
 
-    
-    const handleTextStyleChange = (textType, newStyle) => {
-        handleSettingsChange('navbar', {
-            ...settings,
-            textStyles: {
-                ...settings.textStyles,
-                [textType]: newStyle
-            }
+    const [imageHeight, setImageHeight] = useState(null);
+    const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
+
+
+    const { style, selectedComponent, updateStyle, getComponentStyle } = useStyle();
+    const homeStyles = getComponentStyle('home');
+    const aboutStyles = getComponentStyle('about');
+    const featuresStyles = getComponentStyle('features');
+    const joinUsStyles = getComponentStyle('joinUs');
+
+    const getImageHeight = (src) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = () => resolve(img.height);
         });
+      };
+      useEffect(() => {
+        getImageHeight(navbarImage).then((height) => setImageHeight(height));
+      }, []);
+
+    const handleComponentClick = (event, identifier) => {
+        event.preventDefault(); // This will prevent the default action of the anchor tag
+        event.stopPropagation(); // Stop the event from propagating up
+        console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
+        setSelectedElement(identifier);
     };
-// In your Navbar component useEffect
-useEffect(() => {
-    if (style.navbar) {
-      setNavbarStyle({...style.navbar}); // Spread into a new object to ensure re-render
-    }
-  }, [style.navbar]);
-  
+    const handleTextChange = (newText, textType) => {
+        switch (textType) {
+            case 'home':
+                setHomeText(newText);
+                break;
+            case 'about':
+                setAboutText(newText);
+                break;
+            case 'features':
+                setFeaturesText(newText);
+                break;
+            case 'joinUs':
+                setJoinUsText(newText);
+                break;
+            default:
+                break;
+        }
+        updateStyle(textType, { text: newText });
+    };
+
+
+
+    const handleDoubleClick = (event) => {
+        event.preventDefault();  // Prevent the default link behavior
+        event.stopPropagation(); // Stop propagation to avoid unwanted side effects
+    };
 
     return (
-        <div className="sss-product-navbar-container navbar-element" id='navbar'>
-            <nav className="sss-product-navbar-navbar" onClick={() => setSelectedElement('navbar')}>
+        <div className="sss-product-navbar-container navbar-element" id='navbar' onClick={(event) => setSelectedElement('navbar')}>
+            <nav className="sss-product-navbar-navbar">
                 <div className="image-container">
                     <ReusableImage
                         src={navbarImage}
@@ -55,52 +86,43 @@ useEffect(() => {
                         imageHeight={imageHeight}
                         selectedImage={selectedImage}
                         onImageChange={(newSrc) => selectImage(newSrc)}
-                        onClick={() => setSelectedElement('navbar')}
                         identifier="NavbarImage"
                     />
                 </div>
                 <ul className="sss-product-navbar-links-box">
-                    <li onClick={() => setSelectedElement('home')}>
-                        <Link to="/" className="sss-product-navbar-links">
+                    <li id='home' onClick={(event) => handleComponentClick(event, 'home')}>
+                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}>
                             <EditableText
                                 text={homeText}
-                                onChange={(text) => setHomeText(text)}
-                                handleSettingsChange={(newStyle) => handleTextStyleChange('home', newStyle)}
-                                style={navbarStyle} // Apply navbar style
-                                textType="homeText"
-                            />
+                                onChange={(newText) => handleTextChange(newText, 'home')}
+                                style={{ ...homeStyles }}
+                                                    />
                         </Link>
                     </li>
-                    <li>
-                        <Link to="/about" className="sss-product-navbar-links">
+                    <li id='about' onClick={(event) => handleComponentClick(event, 'about')}>
+                        <Link  className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}>
                             <EditableText
                                 text={aboutText}
-                                onChange={(text) => setAboutText(text)}
-                                handleSettingsChange={(newStyle) => handleTextStyleChange('about', newStyle)}
-                                style={navbarStyle} // Apply navbar style
-                                textType="aboutText"
+                                onChange={(newText) => handleTextChange(newText, 'about')}
+                                style={{ ...aboutStyles }}
                             />
                         </Link>
                     </li>
-                    <li>
-                        <Link to="/features" className="sss-product-navbar-links">
+                    <li id='features' onClick={(event) => handleComponentClick(event, 'features')}>
+                        <Link  className="sss-product-navbar-links">
                             <EditableText
                                 text={featuresText}
-                                onChange={(text) => setFeaturesText(text)}
-                                handleSettingsChange={(newStyle) => handleTextStyleChange('features', newStyle)}
-                                style={navbarStyle} // Apply navbar style
-                                textType="featuresText"
+                                onChange={(newText) => handleTextChange(newText, 'features')}
+                                style={{ ...featuresStyles }}
                             />
                         </Link>
                     </li>
-                    <li>
-                        <Link to="/join-us" className="sss-product-navbar-cta">
+                    <li id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
+                        <Link className="sss-product-navbar-cta">
                             <EditableText
                                 text={joinUsText}
-                                onChange={(text) => setJoinUsText(text)}
-                                handleSettingsChange={(newStyle) => handleTextStyleChange('joinUs', newStyle)}
-                                style={navbarStyle} // Apply navbar style
-                                textType="joinUsText"
+                                onChange={(newText) => handleTextChange(newText, 'joinUs')}
+                                style={{ ...joinUsStyles }}
                             />
                         </Link>
                     </li>
@@ -108,7 +130,7 @@ useEffect(() => {
                 <img
                     src={menuToggleImg}
                     className="sss-product-navbar-mobile-toggle"
-                    onClick={toggleMenu}
+                    onClick={(event) => setSelectedElement('menuToggle')}
                     alt="Menu Toggle"
                 />
             </nav>
