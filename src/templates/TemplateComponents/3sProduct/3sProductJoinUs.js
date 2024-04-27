@@ -59,7 +59,7 @@ const JoinUsSection = ({ handleSettingsChange, selectElement, openImagePanel }) 
   }, [selectedImage, activeComponent, joinUsImageUrl]);
 
   return (
-    <div className='sss-product-joinus-main' onClick={handleJoinUsClick}>
+    <div className='sss-product-joinus-main' onClick={handleJoinUsClick}  id='joinus'>
       <div className="sss-product-joinus" >
         <ReusableImage
           src={joinUsImageUrl}

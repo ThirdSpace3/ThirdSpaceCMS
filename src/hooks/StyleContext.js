@@ -13,13 +13,13 @@ const [selectedComponent, setSelectedComponent] = useState(null);
   }, [selectedComponent, selectedElement]);
 
   const updateStyle = (componentName, newStyle) => {
-    console.log(`Updating style for ${componentName}:`, newStyle);
     setStyle(prevStyle => ({
-        ...prevStyle,
-        [componentName]: { ...prevStyle[componentName], ...newStyle }
+      ...prevStyle,
+      [componentName]: { ...prevStyle[componentName], ...newStyle }
     }));
-};
-
+    console.log(`Styles updated for ${componentName}:`, style[componentName]);
+  };
+  
   
 
   // Get the current style for a component

@@ -6,7 +6,7 @@
   --navbar-link-color: #8f9bb7;
   --navbar-cta-background-color: #7214ff;
   --navbar-background-color: #200627; /* Add this for navbar background color */
-    --navbar-text-color: #8f9bb7;
+  --navbar-text-color: #8f9bb7;
 
   }
   
@@ -157,4 +157,5 @@
 .image-component:focus-within + .popup-button {
   opacity: 1;
 }
+
 

@@ -53,13 +53,18 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
       };
     }
   };
+  const finalStyle = {...style, ...computedStyle.current};
 
   useEffect(() => {
     if (error && inputRef.current) {
       inputRef.current.focus();
     }
   }, [error]);
-
+  useEffect(() => {
+    if (style) {
+      computedStyle.current = { ...style }; // Ensure external styles are applied
+    }
+  }, [style]);
   useEffect(() => {
     if (!isEditing && spanRef.current) {
       const styles = window.getComputedStyle(spanRef.current);
@@ -79,24 +84,29 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
 
   if (isEditing) {
     return (
-      <input
-        type="text"
-        value={currentText}
-        onChange={handleInputChange}
-        onBlur={handleBlur}
-        autoFocus
-        ref={inputRef}
-        className={`editable-text-input ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}
-        style={{...style, ...computedStyle.current}}
-      />
+        <input
+            type="text"
+            value={currentText}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            autoFocus
+            ref={inputRef}
+            className={`editable-text-input ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}
+            style={finalStyle}
+        />
     );
-  }
-
-  return (
-    <span ref={spanRef} onClick={handleSpanClick} style={style} className={`editable-text-span ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}>
-      {text}
-    </span>
-  );
+} else {
+    return (
+        <span
+            ref={spanRef}
+            onClick={handleSpanClick}
+            style={finalStyle}
+            className={`editable-text-span ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}
+        >
+            {text}
+        </span>
+    );
+}
 };
 
 export default EditableText;

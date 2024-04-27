@@ -91,7 +91,7 @@ const HeaderSection = ({
   }, []);
 
   return (
-    <div className="sss-product-hero" style={{ ...style, ...settings.header }}>
+    <div className="sss-product-hero" style={{ ...style, ...settings.header }}  id='header'>
 
       <h1 className="sss-product-hero-title">
         <EditableText

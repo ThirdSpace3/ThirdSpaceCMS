@@ -175,167 +175,25 @@ export default function RightBar({ selectedElement }) {
     console.log("Input change for:", styleProperty, "value:", value);
   };
 
-  const onSettingsChange = (elementAttributes, newSettings) => {
-    if (!elementAttributes || !elementAttributes.id) return;
-
-    const element = document.getElementById(elementAttributes.id);
-    if (!element) return;
-
-    // Now `element` is your DOM element, and you can apply styles to it as you were doing before.
-    // Apply background settings, typography settings, etc., as you have in your existing method.
-
-    else if (element) {
-      // Apply background settings
-      if (newSettings.background) {
-        const {
-          backgroundColor,
-          backgroundImage,
-          backgroundPosition,
-          backgroundSize,
-        } = newSettings.background;
-        if (backgroundColor) {
-          element.style.backgroundColor = backgroundColor;
+  const onSettingsChange = (elementId, newStyles) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      // Apply the new styles to the element
+      Object.keys(newStyles).forEach(styleKey => {
+        const styleValue = newStyles[styleKey];
+        if (typeof styleValue === 'object') {
+          Object.keys(styleValue).forEach(subKey => {
+            element.style[subKey] = styleValue[subKey];
+          });
+        } else {
+          element.style[styleKey] = styleValue;
         }
-        if (backgroundImage) {
-          element.style.backgroundImage = backgroundImage;
-        }
-        if (backgroundPosition) {
-          element.style.backgroundPosition = backgroundPosition;
-        }
-        if (backgroundSize) {
-          element.style.backgroundSize = backgroundSize;
-        }
-      }
-
-      // Apply typography settings
-      if (newSettings.typography) {
-        const {
-          fontFamily,
-          fontSize,
-          color,
-          fontStyle,
-          textDecoration,
-          textAlign,
-          fontWeight,
-        } = newSettings.typography;
-        if (fontFamily) {
-          element.style.fontFamily = fontFamily;
-        }
-        if (fontSize) {
-          element.style.fontSize = `${fontSize}px`;
-        }
-        if (color) {
-          element.style.color = color;
-        }
-        if (fontStyle) {
-          element.style.fontStyle = fontStyle;
-        }
-        if (textDecoration) {
-          element.style.textDecoration = textDecoration;
-        }
-        if (textAlign) {
-          element.style.textAlign = textAlign;
-        }
-        if (fontWeight) {
-          element.style.fontWeight = fontWeight;
-        }
-      }
-
-      // Apply size settings
-      if (newSettings.size) {
-        const {
-          width,
-          height,
-          minWidth,
-          maxWidth,
-          minHeight,
-          maxHeight,
-          overflow,
-        } = newSettings.size;
-        if (width) {
-          element.style.width = `${width}px`;
-        }
-        if (height) {
-          element.style.height = `${height}px`;
-        }
-        if (minWidth) {
-          element.style.minWidth = `${minWidth}px`;
-        }
-        if (maxWidth) {
-          element.style.maxWidth = `${maxWidth}px`;
-        }
-        if (minHeight) {
-          element.style.minHeight = `${minHeight}px`;
-        }
-        if (maxHeight) {
-          element.style.maxHeight = `${maxHeight}px`;
-        }
-        if (overflow) {
-          element.style.overflow = `${overflow}px`;
-        }
-      }
-
-      // Apply border settings selectively based on the selected side
-      if (newSettings.border) {
-        const sides = ["top", "right", "bottom", "left"];
-        sides.forEach((side) => {
-          if (selectedSide === side || !selectedSide) {
-            const borderStyleForSide =
-              newSettings.border[side] || newSettings.border;
-            if (borderStyleForSide.borderColor) {
-              element.style.setProperty(
-                `border-${side}-color`,
-                borderStyleForSide.borderColor
-              );
-            }
-            if (borderStyleForSide.borderStyle) {
-              element.style.setProperty(
-                `border-${side}-style`,
-                borderStyleForSide.borderStyle
-              );
-            }
-            if (borderStyleForSide.borderWidth) {
-              element.style.setProperty(
-                `border-${side}-width`,
-                `${borderStyleForSide.borderWidth}px`
-              );
-            }
-            // Border radius is complex and may not apply uniformly to sides; handle with care.
-          }
-        });
-      }
-      if (newSettings.margin) {
-        if (newSettings.margin.top) {
-          element.style.marginTop = newSettings.margin.top;
-        }
-        if (newSettings.margin.right) {
-          element.style.marginRight = newSettings.margin.right;
-        }
-        if (newSettings.margin.bottom) {
-          element.style.marginBottom = newSettings.margin.bottom;
-        }
-        if (newSettings.margin.left) {
-          element.style.marginLeft = newSettings.margin.left;
-        }
-      }
-
-      if (newSettings.padding) {
-        if (newSettings.padding.top) {
-          element.style.paddingTop = newSettings.padding.top;
-        }
-        if (newSettings.padding.right) {
-          element.style.paddingRight = newSettings.padding.right;
-        }
-        if (newSettings.padding.bottom) {
-          element.style.paddingBottom = newSettings.padding.bottom;
-        }
-        if (newSettings.padding.left) {
-          element.style.paddingLeft = newSettings.padding.left;
-        }
-      }
+      });
+      console.log(`Styles applied to ${elementId}:`, newStyles);
+    } else {
+      console.error(`No element found with ID ${elementId}`);
     }
   };
-
   // Set the initial state of the RightBar component based on the selected element's current styles
   useEffect(() => {
     if (selectedElement && selectedElement.id) {
@@ -374,37 +232,33 @@ export default function RightBar({ selectedElement }) {
 
 
 
-
   const handleTextDecoration = (decorationType) => {
-    if (selectedElement) {
-      const currentStyle = window.getComputedStyle(selectedElement);
-      let newStyle = {
-        fontFamily: typographyStyle.fontFamily,
-        fontSize: typographyStyle.fontSize,
-        color: typographyStyle.color,
-        fontStyle: currentStyle.fontStyle,
-        textDecoration: currentStyle.textDecoration,
-        textAlign: currentStyle.textAlign,
-      };
-
-      if (decorationType === "italic") {
-        newStyle.fontStyle =
-          currentStyle.fontStyle === "italic" ? "normal" : "italic";
-      } else if (decorationType === "underline") {
-        newStyle.textDecoration =
-          currentStyle.textDecoration === "underline" ? "none" : "underline";
-      } else if (decorationType === "line-through") {
-        newStyle.textDecoration =
-          currentStyle.textDecoration === "line-through"
-            ? "none"
-            : "line-through";
+    if (selectedElement && selectedElement.id) {
+      const element = document.getElementById(selectedElement.id);
+      if (element) {
+        const currentStyle = window.getComputedStyle(element);
+        let newStyle = { ...typographyStyle };
+        switch (decorationType) {
+          case "italic":
+            newStyle.fontStyle = currentStyle.fontStyle === "italic" ? "normal" : "italic";
+            break;
+          case "underline":
+            newStyle.textDecoration = currentStyle.textDecoration.includes("underline") ? "none" : "underline";
+            break;
+          case "line-through":
+            newStyle.textDecoration = currentStyle.textDecoration.includes("line-through") ? "none" : "line-through";
+            break;
+          default:
+            break;
+        }
+        console.log("New Typography Style:", newStyle); // Debugging output
+        setTypographyStyle(newStyle);
+        onSettingsChange(selectedElement, { typography: newStyle });
       }
-
-      setTypographyStyle(newStyle);
-      onSettingsChange(selectedElement, { typography: newStyle });
     }
   };
-
+  
+  
   const handleTextAlign = (alignType) => {
     if (selectedElement) {
       const newStyle = {
@@ -480,17 +334,16 @@ export default function RightBar({ selectedElement }) {
           {/* Section Typographie */}
 
           <TypographySettings
-            selectedElement={selectedElement} // Pass selectedElement as a prop
-            updateStyle={updateStyle}
-            toggleSection={toggleSection}
-            isOpen={isOpen}
-            handleInputChange={handleInputChange}
-            selectedDecoration={selectedDecoration}
-            handleTextDecoration={handleTextDecoration}
-            selectedAlign={selectedAlign}
-            handleTextAlign={handleTextAlign}
-            setTypographyStyle={setTypographyStyle}
-          />
+  selectedElement={selectedElement}
+  toggleSection={toggleSection}
+  isOpen={isOpen}
+  selectedDecoration={selectedDecoration}
+  selectedAlign={selectedAlign}
+  handleTextAlign={handleTextAlign}
+  updateStyle={updateStyle}
+  onSettingsChange={onSettingsChange} // Passing it here
+/>
+
         </div>
       </div>
     </>

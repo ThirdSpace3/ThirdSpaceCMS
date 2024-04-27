@@ -82,7 +82,7 @@ const PartnersSection = ({ handleSettingsChange, settings, openImagePanel, setSe
   }, [selectedImage, activeComponent, partnerImages]);
 
   return (
-    <div className="sss-product-partners" style={{ ...style, ...settings.partners }}>
+    <div className="sss-product-partners" style={{ ...style, ...settings.partners }}  id='partners'>
       <h2 className="sss-product-partners-title">
         <EditableText
           text={partnersTitleText}

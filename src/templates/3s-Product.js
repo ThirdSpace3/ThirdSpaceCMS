@@ -7,7 +7,7 @@ import FeaturesSection from "./TemplateComponents/3sProduct/3sProductFeature";
 import JoinUsSection from "./TemplateComponents/3sProduct/3sProductJoinUs";
 import Footer from "./TemplateComponents/3sProduct/3sProductFooter";
 
-const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement  }) => {
+const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
 
@@ -28,24 +28,24 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         isMenuOpen={isMenuOpen}
         toggleMenu={toggleMenu}
         menuToggleImg={menuToggleImg}
-        style={settings.navbar}
+        style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
-        setSelectedElement ={setSelectedElement }
+        setSelectedElement={setSelectedElement}
       />
       <HeaderSection
-        style={settings.navbar}
+        style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
-        setSelectedElement ={setSelectedElement }
+        setSelectedElement={setSelectedElement}
 
       />
       <PartnersSection
@@ -56,7 +56,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
-        setSelectedElement ={setSelectedElement }
+        setSelectedElement={setSelectedElement}
 
       />
       <AboutSection
@@ -67,7 +67,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
-        setSelectedElement ={setSelectedElement }
+        setSelectedElement={setSelectedElement}
 
 
       />
@@ -79,7 +79,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
-        setSelectedElement ={setSelectedElement }
+        setSelectedElement={setSelectedElement}
 
       />
       <JoinUsSection
@@ -90,7 +90,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
-        setSelectedElement ={setSelectedElement }
+        setSelectedElement={setSelectedElement}
 
       />
       <Footer
@@ -101,7 +101,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
-        setSelectedElement ={setSelectedElement }
+        setSelectedElement={setSelectedElement}
 
       />
     </div>

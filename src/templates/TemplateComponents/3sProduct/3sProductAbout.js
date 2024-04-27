@@ -91,7 +91,7 @@ const AboutSection = ({
   }, []);
 
   return (
-    <div className="sss-product-about" style={{ ...style, ...settings.about }}>
+    <div className="sss-product-about" style={{ ...style, ...settings.about }}  id='about'>
       <div className="sss-product-about-header">
         <h2 className="sss-product-about-title">
           <EditableText

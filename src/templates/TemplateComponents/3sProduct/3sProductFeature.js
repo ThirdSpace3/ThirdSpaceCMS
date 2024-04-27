@@ -102,7 +102,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
   };
 
   return (
-    <div className="sss-product-features" style={{ ...style, ...settings.features }}>
+    <div className="sss-product-features" style={{ ...style, ...settings.features }} id='features'>
       <h2 className="sss-product-features-title">
         <EditableText
           text={featuresTitleText}

@@ -6,44 +6,61 @@ export default function TypographySettings({
   toggleSection,
   isOpen,
   selectedDecoration,
-  handleTextDecoration,
   selectedAlign,
   handleTextAlign,
   updateStyle, // Use the updateStyle function from the prop
+  onSettingsChange,
 }) {
   const [style, setStyle] = useState({});
-  const [fontFamily, setFontFamily] = useState(style.fontFamily);
-  const [fontSize, setFontSize] = useState(style.fontSize);
-  const [color, setColor] = useState(style.color);
+  const [fontFamily, setFontFamily] = useState('Arial');
+  const [fontSize, setFontSize] = useState(14);
+  const [color, setColor] = useState('#000');
+
+  // Ensure this useEffect hooks into global context to listen for style changes
+  useEffect(() => {
+    if (selectedElement) {
+      console.log(`Component updated for selected element: ${selectedElement}`);
+      const currentStyles = style[selectedElement] || {};
+      setFontFamily(currentStyles.fontFamily || 'Arial');
+      setFontSize(currentStyles.fontSize || 14);
+      setColor(currentStyles.color || '#000');
+    }
+  }, [selectedElement, style]);
 
   const handleInputChange = (e, styleProperty, type) => {
-    let value = e.target.value;
-    if (type === 'select' || type === 'number') {
-      setStyle({ ...style, [styleProperty]: value });
-      updateStyle(selectedElement, { [styleProperty]: value });
-    } else {
-      setStyle({ ...style, [styleProperty]: e.target.value });
-      updateStyle(selectedElement, { [styleProperty]: e.target.value });
-    }
+    const value = type === 'number' ? parseInt(e.target.value, 10) : e.target.value;
     console.log(`Updating style of ${selectedElement} with ${styleProperty}: ${value}`);
-    console.log(`Current font size: ${style.fontSize}`);
+    updateStyle(selectedElement, { [styleProperty]: value });
   };
-  
 
-  useEffect(() => {
-    if (selectedElement && selectedElement.id) {
-      const element = document.getElementById(selectedElement.id);
-      if (element) {
-        const elementStyle = window.getComputedStyle(element);
-
-        setStyle({
-          fontFamily: elementStyle.fontFamily,
-          fontSize: parseInt(elementStyle.fontSize, 10),
-          color: elementStyle.color,
-        });
+  const handleTextDecoration = (decorationType) => {
+    console.log(`handleTextDecoration called with type: ${decorationType} for ${selectedElement}`);
+    const element = document.getElementById(selectedElement);
+    if (element) {
+      const currentStyle = window.getComputedStyle(element);
+      let newStyle = { textDecoration: currentStyle.textDecoration };
+      switch (decorationType) {
+        case "italic":
+          newStyle.fontStyle = currentStyle.fontStyle === "italic" ? "normal" : "italic";
+          break;
+        case "underline":
+          newStyle.textDecoration = currentStyle.textDecoration.includes("underline") ? "none" : "underline";
+          
+          break;
+        case "line-through":
+          newStyle.textDecoration = currentStyle.textDecoration.includes("line-through") ? "none" : "line-through";
+          break;
+        default:
+          break;
       }
+      console.log(`Applying new typography style for ${selectedElement}:`, newStyle);
+      setStyle({...style, [selectedElement]: {...style[selectedElement], ...newStyle}});
+      console.log(`About to update styles for ${selectedElement} with:`, newStyle);
+      onSettingsChange(selectedElement, newStyle);
+    } else {
+      console.error(`No element found with ID: ${selectedElement}`);
     }
-  }, [selectedElement]);
+  };
 
   return (
     <div>
@@ -123,25 +140,30 @@ export default function TypographySettings({
                 href="#"
                 className={`parameters-content-line-item ${selectedDecoration === "italic" ? "selected" : ""
                   }`}
-                onClick={() => handleTextDecoration("italic")}
+                onClick={(e) => {
+                  e.preventDefault(); // This will prevent the default link behavior
+                  handleTextDecoration("italic");
+                }}
               >
                 <i className="bi bi-type-italic"></i>
               </a>
               <hr className="parameters-content-line-separation" />
-              <a
-                href="#"
-                className={`parameters-content-line-item ${selectedDecoration === "underline" ? "selected" : ""
-                  }`}
-                onClick={() => handleTextDecoration("underline")}
-              >
+              <a href="#" className={`parameters-content-line-item ${selectedDecoration === "underline" ? "selected" : ""}`}
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default link behavior
+                  handleTextDecoration("underline");
+                }}>
                 <i className="bi bi-type-underline"></i>
               </a>
+
               <hr className="parameters-content-line-separation" />
               <a
                 href="#"
-                className={`parameters-content-line-item ${selectedDecoration === "line-through" ? "selected" : ""
-                  }`}
-                onClick={() => handleTextDecoration("line-through")}
+                className={`parameters-content-line-item ${selectedDecoration === "line-through" ? "selected" : ""}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTextDecoration("line-through");
+                }}
               >
                 <i className="bi bi-type-strikethrough"></i>
               </a>
@@ -152,9 +174,11 @@ export default function TypographySettings({
             <div className="parameters-content-line-container">
               <a
                 href="#"
-                className={`parameters-content-line-item ${selectedAlign === "left" ? "selected" : ""
-                  }`}
-                onClick={() => handleTextAlign("left")}
+                className={`parameters-content-line-item ${selectedAlign === "left" ? "selected" : ""}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTextAlign("left");
+                }}
               >
                 <i className="bi bi-text-left"></i>
               </a>
@@ -163,9 +187,11 @@ export default function TypographySettings({
 
               <a
                 href="#"
-                className={`parameters-content-line-item ${selectedAlign === "center" ? "selected" : ""
-                  }`}
-                onClick={() => handleTextAlign("center")}
+                className={`parameters-content-line-item ${selectedAlign === "center" ? "selected" : ""}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTextAlign("center");
+                }}
               >
                 <i className="bi bi-text-center"></i>
               </a>
@@ -174,9 +200,11 @@ export default function TypographySettings({
 
               <a
                 href="#"
-                className={`parameters-content-line-item ${selectedAlign === "right" ? "selected" : ""
-                  }`}
-                onClick={() => handleTextAlign("right")}
+                className={`parameters-content-line-item ${selectedAlign === "right" ? "selected" : ""}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTextAlign("right");
+                }}
               >
                 <i className="bi bi-text-right"></i>
               </a>
@@ -185,9 +213,11 @@ export default function TypographySettings({
 
               <a
                 href="#"
-                className={`parameters-content-line-item ${selectedAlign === "justify" ? "selected" : ""
-                  }`}
-                onClick={() => handleTextAlign("justify")}
+                className={`parameters-content-line-item ${selectedAlign === "justify" ? "selected" : ""}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTextAlign("justify");
+                }}
               >
                 <i className="bi bi-justify"></i>
               </a>

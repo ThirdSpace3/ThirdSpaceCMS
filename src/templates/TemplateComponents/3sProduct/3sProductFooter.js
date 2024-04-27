@@ -85,7 +85,7 @@ const Footer = ({ handleSettingsChange, onClick, openImagePanel, selectElement }
   }, [selectedImage, activeComponent, footerLogoSrc, footerTwitterSrc, footerLinkedInSrc]);
 
   return (
-    <div className="sss-product-footer" onClick={onClick}>
+    <div className="sss-product-footer" onClick={onClick}  id='footer'> 
       <div className="sss-product-footer-top">
         <ReusableImage
           src={footerLogoSrc}
