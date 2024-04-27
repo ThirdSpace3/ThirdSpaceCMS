@@ -109,7 +109,7 @@ const Navbar = ({
                         </Link>
                     </li>
                     <li id='features' onClick={(event) => handleComponentClick(event, 'features')}>
-                        <Link  className="sss-product-navbar-links">
+                        <Link  className="sss-product-navbar-links" >
                             <EditableText
                                 text={featuresText}
                                 onChange={(newText) => handleTextChange(newText, 'features')}
