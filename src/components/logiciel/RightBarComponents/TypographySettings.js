@@ -5,27 +5,29 @@ export default function TypographySettings({
   selectedElement,
   toggleSection,
   isOpen,
-  selectedDecoration,
-  selectedAlign,
-  handleTextAlign,
-  updateStyle, // Use the updateStyle function from the prop
   onSettingsChange,
+
 }) {
   const [style, setStyle] = useState({});
-  const [fontFamily, setFontFamily] = useState('Arial');
-  const [fontSize, setFontSize] = useState(14);
-  const [color, setColor] = useState('#000');
+  const [typographyStyle, setTypographyStyle] = useState({});
+  const [selectedAlign, setSelectedAlign] = useState(null);
+  const [selectedDecoration, setSelectedDecoration] = useState(null);
+  const { updateStyle } = useStyle(); // Get the function to update the style
 
-  // Ensure this useEffect hooks into global context to listen for style changes
-  useEffect(() => {
+  const handleTextAlign = (alignType) => {
     if (selectedElement) {
-      console.log(`Component updated for selected element: ${selectedElement}`);
-      const currentStyles = style[selectedElement] || {};
-      setFontFamily(currentStyles.fontFamily || 'Arial');
-      setFontSize(currentStyles.fontSize || 14);
-      setColor(currentStyles.color || '#000');
+      const newStyle = {
+        fontFamily: typographyStyle.fontFamily,
+        fontSize: typographyStyle.fontSize,
+        color: typographyStyle.color,
+        fontStyle: typographyStyle.fontStyle,
+        textDecoration: typographyStyle.textDecoration,
+        textAlign: alignType,
+      };
+      setTypographyStyle(newStyle);
+      onSettingsChange(selectedElement, { typography: newStyle });
     }
-  }, [selectedElement, style]);
+  };
 
   const handleInputChange = (e, styleProperty, type) => {
     const value = type === 'number' ? parseInt(e.target.value, 10) : e.target.value;
@@ -45,7 +47,6 @@ export default function TypographySettings({
           break;
         case "underline":
           newStyle.textDecoration = currentStyle.textDecoration.includes("underline") ? "none" : "underline";
-          
           break;
         case "line-through":
           newStyle.textDecoration = currentStyle.textDecoration.includes("line-through") ? "none" : "line-through";
@@ -83,6 +84,8 @@ export default function TypographySettings({
             <p className="parameters-content-line-title">Font Family</p>
             <div className="font-family-dropdown">
               <select onChange={(e) => handleInputChange(e, "fontFamily", "select")}>
+              <option value="Outfit" selected>Outfit</option>
+
                 <option value="Arial">Arial</option>
                 <option value="Verdana">Verdana</option>
                 <option value="Helvetica">Helvetica</option>
@@ -90,7 +93,6 @@ export default function TypographySettings({
                 <option value="Times New Roman">Times New Roman</option>
                 <option value="Courier">Courier</option>
                 {/* You can also change the default value like this */}
-                <option value="Outfit" selected>Outfit</option>
               </select>
 
             </div>

@@ -62,9 +62,10 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
   }, [error]);
   useEffect(() => {
     if (style) {
-      computedStyle.current = { ...style }; // Ensure external styles are applied
+      computedStyle.current = { ...computedStyle.current, ...style }; // Merge existing computed styles with new styles
     }
   }, [style]);
+  
   useEffect(() => {
     if (!isEditing && spanRef.current) {
       const styles = window.getComputedStyle(spanRef.current);

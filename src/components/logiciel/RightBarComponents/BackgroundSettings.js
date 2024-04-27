@@ -1,15 +1,11 @@
 import React, { useRef, useEffect } from "react";
-import { useImageHistory } from "../../../hooks/ImageHistoryContext";
-import { useStyle } from "../../../hooks/StyleContext";
 
 const BackgroundSettings = ({
   isOpen,
   toggleSection,
   selectedElement,
 }) => {
-  const { updateStyle, selectedComponent } = useStyle();
   const fileInputRef = useRef(null);
-  const { addImageToHistory } = useImageHistory();
   
   const handleBackgroundChange = (e, property, componentName) => {
     const value = e.target.value;
@@ -39,13 +35,6 @@ const BackgroundSettings = ({
     }
   };
   
-  
-  
-  
-
-
-
-
   return (
     <div className="parameters-wrapper">
       <div className="parameters-wrapper-title-box" onClick={() => toggleSection('background')}>

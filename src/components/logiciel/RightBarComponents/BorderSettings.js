@@ -1,32 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../RightBar.css";
+import { useStyle } from "../../../hooks/StyleContext";
+
 export default function BorderSettings({
-  setSelectedSide,
   toggleSection,
   isOpen,
-  handleInputChange,
-  borderStyle,
-  selectedSide,
+  selectedElement,
 }) {
-  const [selectedBorderStyle, setSelectedBorderStyle] = useState(
-    borderStyle.borderStyle || "none"
-  );
+  const [selectedBorderStyle, setSelectedBorderStyle] = useState("none");
+  const [borderSize, setBorderSize] = useState(0);
+  const [borderColor, setBorderColor] = useState("#000000");
+  const [borderRadius, setBorderRadius] = useState(0);
 
-  // useEffect hook to synchronize component state with changes in selectedSide or borderStyle
+  const { updateStyle } = useStyle(); // Get the function to update the style
+
+  const updateBorderSettings = () => {
+    updateStyle(selectedElement, {
+      borderStyle: selectedBorderStyle,
+      borderWidth: `${borderSize}px`,
+      borderColor: borderColor,
+      borderRadius: `${borderRadius}px`, // Add this line
+    });
+  };
+  
   useEffect(() => {
-    if (selectedSide && borderStyle[selectedSide]) {
-      setSelectedBorderStyle(borderStyle[selectedSide].borderStyle || "none");
-    }
-  }, [borderStyle, selectedSide]);
+    updateBorderSettings();
+  }, [selectedBorderStyle, borderSize, borderColor, borderRadius]); // Include borderRadius in dependency array
 
-  const selectAllBorders = () => {
-    setSelectedSide("all"); // Adjusted to 'all' based on your comment in the code
-  };
-
-  const handleBorderStyleChange = (newStyle) => {
-    setSelectedBorderStyle(newStyle); // Update local state for visual feedback
-    handleInputChange({ target: { value: newStyle } }, "borderStyle", "select"); // Mimicking an event structure
-  };
   return (
     <div>
       <div className="parameters-wrapper">
@@ -40,9 +40,8 @@ export default function BorderSettings({
           ></i>
         </div>
         <div
-          className={`parameters-wrapper-content ${
-            isOpen.border ? "open" : ""
-          }`}
+          className={`parameters-wrapper-content ${isOpen.border ? "open" : ""
+            }`}
         >
           {/* Icons for selecting the side */}
           <div className="borders-container">
@@ -50,7 +49,6 @@ export default function BorderSettings({
               <div className="borders-selection-icon">
                 <img
                   src="./images/borders-top-icon.png"
-                  onClick={() => setSelectedSide("top")}
                   style={{ color: "white" }}
                 />
               </div>
@@ -59,21 +57,18 @@ export default function BorderSettings({
                 <div className="borders-selection-icon">
                   <img
                     src="./images/borders-left-icon.png"
-                    onClick={() => setSelectedSide("left")}
                     style={{ color: "white" }}
                   />
                 </div>
                 <div className="borders-selection-icon">
                   <img
                     src="./images/borders-all-icon.png"
-                    onClick={selectAllBorders}
                     style={{ color: "white" }}
                   />
                 </div>
                 <div className="borders-selection-icon">
                   <img
                     src="./images/borders-right-icon.png"
-                    onClick={() => setSelectedSide("right")}
                     style={{ color: "white" }}
                   />
                 </div>
@@ -82,7 +77,6 @@ export default function BorderSettings({
               <div className="borders-selection-icon">
                 <img
                   src="./images/borders-bottom-icon.png"
-                  onClick={() => setSelectedSide("bottom")}
                   style={{ color: "white" }}
                 />
               </div>
@@ -91,26 +85,12 @@ export default function BorderSettings({
               <div className="parameters-content-line-row">
                 <p className="parameters-content-line-title">Style</p>
                 <div className="parameters-content-line-container">
-                  {/* Icon-based selection for Border Style */}
-                  <i
-                    className={`bi bi-x ${
-                      selectedBorderStyle === "none" ? "selected-icon" : ""
-                    }`}
-                    onClick={() => handleBorderStyleChange("none")}
-                  ></i>
-                  <i
-                    className={`bi bi-dash-lg ${
-                      selectedBorderStyle === "solid" ? "selected-icon" : ""
-                    }`}
-                    onClick={() => handleBorderStyleChange("solid")}
-                  ></i>
-                  <i
-                    className={`bi bi-dash ${
-                      selectedBorderStyle === "dashed" ? "selected-icon" : ""
-                    }`}
-                    onClick={() => handleBorderStyleChange("dashed")}
-                  ></i>
-                  {/* Optional: Add an icon for 'dotted' if needed */}
+                  <i className={`bi bi-x ${selectedBorderStyle === "none" ? "selected-icon" : ""}`}
+                    onClick={() => setSelectedBorderStyle("none")}></i>
+                  <i className={`bi bi-dash-lg ${selectedBorderStyle === "solid" ? "selected-icon" : ""}`}
+                    onClick={() => setSelectedBorderStyle("solid")}></i>
+                  <i className={`bi bi-dash ${selectedBorderStyle === "dashed" ? "selected-icon" : ""}`}
+                    onClick={() => setSelectedBorderStyle("dashed")}></i>
                 </div>
               </div>
               <div className="parameters-content-line-row">
@@ -121,8 +101,8 @@ export default function BorderSettings({
                     min="0"
                     max="20"
                     step="1"
-                    defaultValue="0"
-                    onChange={(e) => handleInputChange(e, "borderWidth")}
+                    value={borderSize}
+                    onChange={e => setBorderSize(e.target.value)}
                   />
                   <span className="px-label">px</span>
                 </div>
@@ -133,8 +113,9 @@ export default function BorderSettings({
                 <input
                   className="parameters-color-picker"
                   type="color"
-                  onChange={(e) => handleInputChange(e, "borderColor", "color")}
-                ></input>
+                  value={borderColor}
+                  onChange={e => setBorderColor(e.target.value)}
+                />
               </div>
             </div>
           </div>
@@ -148,7 +129,8 @@ export default function BorderSettings({
                 max="100"
                 step="1"
                 defaultValue="0"
-                onChange={(e) => handleInputChange(e, "borderRadius", "number")}
+                onChange={e => setBorderRadius(e.target.value)}
+
               />
               <span className="px-label">px</span>
             </div>

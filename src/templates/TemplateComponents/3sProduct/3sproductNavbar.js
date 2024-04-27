@@ -24,6 +24,8 @@ const Navbar = ({
     const [localSelectedImage, setLocalSelectedImage] = useState(selectedImage || "./images/templates-img/3sproduct/3sproduct-logo.png");
     const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
     const [navbarStyle, setNavbarStyle] = useState(style.navbar || {});
+
+    
     const handleTextStyleChange = (textType, newStyle) => {
         handleSettingsChange('navbar', {
             ...settings,
