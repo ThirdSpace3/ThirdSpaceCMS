@@ -6,7 +6,7 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const HeaderSection = ({
-  style, settings, handleSettingsChange, openImagePanel, setSelectedElement
+  style, settings = { textStyles: {} }, handleSettingsChange, openImagePanel, setSelectedElement
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
@@ -15,9 +15,9 @@ const HeaderSection = ({
   const [joinUsText, setJoinUsText] = useState('Join Us');
   const [headerImage, setHeaderImage] = useState("./images/templates-img/3sproduct/3sproduct-hero.png");
   const [menuToggleImg, setMenuToggleImg] = useState("path/to/menu/toggle/image");
-  const { getComponentStyle, updateStyle } = useStyle();
+  const { getComponentStyle, globalStyle, updateStyle } = useStyle();
   const headerStyle = getComponentStyle('header');
-
+  const heroTitleStyles = getComponentStyle('HeroTitle');
   const [imageHeight, setImageHeight] = useState(null);
   const getImageHeight = (src) => {
     return new Promise((resolve) => {
@@ -34,29 +34,35 @@ const HeaderSection = ({
     updateStyle(settings);
   }, [settings]);
 
- 
   // Ensure the header image updates to the selected image when this component is active
   useEffect(() => {
     if (activeComponent === 'HeaderSection' && selectedImage && selectedImage !== headerImage) {
       setHeaderImage(selectedImage);
     }
   }, [selectedImage, activeComponent, headerImage]);
-
   const handleTextChange = (newText, textType) => {
+    console.log(`Updating text for ${textType}: ${newText}`);
+console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
+
     switch (textType) {
-      case 'title':
-        setHeroTitleText(newText);
-        break;
-      case 'description':
-        setHeroDescriptionText(newText);
-        break;
-      case 'joinUs':
-        setJoinUsText(newText);
-        break;
-      default:
-        break;
+        case 'heroTitle':
+            setHeroTitleText(newText);
+            break;
+        case 'description':
+            setHeroDescriptionText(newText);
+            break;
+        case 'joinUs':
+            setJoinUsText(newText);
+            break;
+        default:
+            break;
     }
-  };
+    updateStyle(textType, { text: newText }); // Directly use the textType as the component key
+    console.log(`Requested style update for ${textType}`);
+
+};
+
+  
 
   // This function now will ensure image change only when this component is active
   const handleNewImageSrc = (newSrc) => {
@@ -68,50 +74,45 @@ const HeaderSection = ({
   useEffect(() => {
     console.log(`Component: HeaderSection, Active: ${activeComponent}, Image: ${selectedImage}`);
     if (activeComponent === 'HeaderSection' && selectedImage) {
-        setHeaderImage(selectedImage);
+      setHeaderImage(selectedImage);
     }
   }, [selectedImage, activeComponent]);
 
-
-  const handleHeaderClick = () => {
-    console.log("Header clicked, setting selected element to 'header'");
-    setSelectedElement('header');
+  const handleComponentClick = (event, identifier) => {
+    event.stopPropagation(); // Stop the event from propagating up
+    console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
+    setSelectedElement(identifier);
   };
 
-  useEffect(() => {
-    const headerElement = document.querySelector('.sss-product-hero');
-    if (headerElement) {
-      headerElement.addEventListener('click', handleHeaderClick);
-    }
-    return () => {
-      if (headerElement) {
-        headerElement.removeEventListener('click', handleHeaderClick);
-      }
-    };
-  }, []);
-
   return (
-    <div className="sss-product-hero" style={{ ...style, ...settings.header }}  id='header'>
+    <div className="sss-product-hero" style={{ ...style, ...settings.header }} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
 
-      <h1 className="sss-product-hero-title">
-        <EditableText
-          text={heroTitleText}
-          onChange={(newText) => handleTextChange(newText, 'title')}
-          style={{ ...headerStyle, ...settings.textStyles?.heroTitleText }}
-        />
-      </h1>
-      <p className="sss-product-hero-text">
+<h1 className="sss-product-hero-title"  id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')} >
+    <EditableText
+        text={heroTitleText}
+        onChange={(newText) => handleTextChange(newText, 'heroTitle')}
+        style={{ ...heroTitleStyles }}
+    />
+</h1>
+
+      <p className="sss-product-hero-text" onClick={(event) => handleComponentClick(event, 'heroDescription')} >
         <EditableText
           text={heroDescriptionText}
           onChange={(newText) => handleTextChange(newText, 'description')}
-          style={{ ...headerStyle, ...settings.textStyles?.heroDescriptionText }}
+          style={{ ...headerStyle, ...(settings.textStyles?.heroDescription || {}) }} // provide default empty object if settings.textStyles is undefined
+          textType='heroDescription'
+          selectElement={handleComponentClick}
+          globalStyle={globalStyle}
         />
       </p>
-      <a href="/join-us" className="sss-product-hero-cta">
+      <a href="/join-us" className="sss-product-hero-cta" onClick={() => handleComponentClick('joinUs')}>
         <EditableText
           text={joinUsText}
           onChange={(newText) => handleTextChange(newText, 'joinUs')}
-          style={{ ...headerStyle, ...settings.textStyles?.joinUsText }}
+          style={{ ...headerStyle, ...(settings.textStyles?.joinUs || {}) }} // provide default empty object if settings.textStyles is undefined
+          textType='joinUs'
+          selectElement={handleComponentClick}
+          globalStyle={globalStyle}
         />
       </a>
       <ReusableImage
@@ -122,7 +123,7 @@ const HeaderSection = ({
         onImageChange={handleNewImageSrc}
         identifier="HeaderSection"
         imageHeight={imageHeight}
-
+        selectImage={handleComponentClick} // Pass the handleComponentClick function
       />
 
     </div>

@@ -65,7 +65,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
       computedStyle.current = { ...computedStyle.current, ...style }; // Merge existing computed styles with new styles
     }
   }, [style]);
-  
+
   useEffect(() => {
     if (!isEditing && spanRef.current) {
       const styles = window.getComputedStyle(spanRef.current);
@@ -94,6 +94,11 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
             ref={inputRef}
             className={`editable-text-input ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}
             style={finalStyle}
+            onClick={() => {
+              if (typeof selectElement === 'function') {
+                selectElement(textType);
+              }
+            }}
         />
     );
 } else {
@@ -101,8 +106,9 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         <span
             ref={spanRef}
             onClick={handleSpanClick}
-            style={finalStyle}
+            style={style}
             className={`editable-text-span ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}
+            id={selectElement}
         >
             {text}
         </span>

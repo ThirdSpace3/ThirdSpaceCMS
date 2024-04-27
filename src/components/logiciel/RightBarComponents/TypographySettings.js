@@ -15,53 +15,44 @@ export default function TypographySettings({
   const { updateStyle } = useStyle(); // Get the function to update the style
 
   const handleTextAlign = (alignType) => {
-    if (selectedElement) {
-      const newStyle = {
-        fontFamily: typographyStyle.fontFamily,
-        fontSize: typographyStyle.fontSize,
-        color: typographyStyle.color,
-        fontStyle: typographyStyle.fontStyle,
-        textDecoration: typographyStyle.textDecoration,
+    const newStyle = {
+        ...typographyStyle,
         textAlign: alignType,
-      };
-      setTypographyStyle(newStyle);
-      onSettingsChange(selectedElement, { typography: newStyle });
-    }
-  };
+    };
+    setTypographyStyle(newStyle);
+    onSettingsChange(selectedElement, { typography: newStyle });
+};
+
 
   const handleInputChange = (e, styleProperty, type) => {
     const value = type === 'number' ? parseInt(e.target.value, 10) : e.target.value;
     console.log(`Updating style of ${selectedElement} with ${styleProperty}: ${value}`);
-    updateStyle(selectedElement, { [styleProperty]: value });
-  };
+    const newStyle = { [styleProperty]: value, styleProperty, type };
+    updateStyle(selectedElement, newStyle); // Update using the context method
+    onSettingsChange(selectedElement, newStyle); // Also propagate this change via callback
+};
 
-  const handleTextDecoration = (decorationType) => {
+const handleTextDecoration = (decorationType) => {
     console.log(`handleTextDecoration called with type: ${decorationType} for ${selectedElement}`);
-    const element = document.getElementById(selectedElement);
-    if (element) {
-      const currentStyle = window.getComputedStyle(element);
-      let newStyle = { textDecoration: currentStyle.textDecoration };
-      switch (decorationType) {
+    const newStyle = { ...typographyStyle };
+    switch (decorationType) {
         case "italic":
-          newStyle.fontStyle = currentStyle.fontStyle === "italic" ? "normal" : "italic";
-          break;
+            newStyle.fontStyle = typographyStyle.fontStyle === "italic" ? "normal" : "italic";
+            break;
         case "underline":
-          newStyle.textDecoration = currentStyle.textDecoration.includes("underline") ? "none" : "underline";
-          break;
+            newStyle.textDecoration = typographyStyle.textDecoration === "underline" ? "none" : "underline";
+            break;
         case "line-through":
-          newStyle.textDecoration = currentStyle.textDecoration.includes("line-through") ? "none" : "line-through";
-          break;
+            newStyle.textDecoration = typographyStyle.textDecoration === "line-through" ? "none" : "line-through";
+            break;
         default:
-          break;
-      }
-      console.log(`Applying new typography style for ${selectedElement}:`, newStyle);
-      setStyle({...style, [selectedElement]: {...style[selectedElement], ...newStyle}});
-      console.log(`About to update styles for ${selectedElement} with:`, newStyle);
-      onSettingsChange(selectedElement, newStyle);
-    } else {
-      console.error(`No element found with ID: ${selectedElement}`);
+            break;
     }
-  };
+    console.log(`Applying new typography style for ${selectedElement}:`, newStyle);
+    setTypographyStyle(newStyle);
+    onSettingsChange(selectedElement, newStyle); // Ensure the parent component is aware of these updates
+};
+
 
   return (
     <div>

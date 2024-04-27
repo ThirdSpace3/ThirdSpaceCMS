@@ -6,19 +6,35 @@ export const StyleProvider = ({ children }) => {
   const [style, setStyle] = useState({});
 const [selectedComponent, setSelectedComponent] = useState(null);
   const [selectedElement, setSelectedElement] = useState(null);  // Ensure this is managed correctly
+  const [settings, setSettings] = useState({ textStyles: {} });
 
   useEffect(() => {
     console.log("Current selected component:", selectedComponent);
     console.log("Current selected element:", selectedElement);  // Log for debugging
   }, [selectedComponent, selectedElement]);
 
+
+
   const updateStyle = (componentName, newStyle) => {
-    setStyle(prevStyle => ({
-      ...prevStyle,
-      [componentName]: { ...prevStyle[componentName], ...newStyle }
+    setStyle(prevStyle => {
+        const updatedStyle = {
+            ...prevStyle,
+            [componentName]: { ...prevStyle[componentName], ...newStyle }
+        };
+        console.log(`Styles updated for ${componentName}:`, updatedStyle[componentName]);
+        return updatedStyle;
+    });
+};
+
+  
+  const updateSettings = (newSettings) => {
+    setSettings(prevSettings => ({
+      ...prevSettings,
+      textStyles: { ...prevSettings.textStyles, ...newSettings.textStyles },
+      ...newSettings
     }));
-    console.log(`Styles updated for ${componentName}:`, style[componentName]);
   };
+  
   
   
 
@@ -42,7 +58,7 @@ const [selectedComponent, setSelectedComponent] = useState(null);
   };
 
   return (
-    <StyleContext.Provider value={{ style, updateStyle, getComponentStyle, resetStyle, applyGlobalStyles, setSelectedComponent }}>
+    <StyleContext.Provider value={{ style, updateStyle, getComponentStyle, resetStyle, applyGlobalStyles, setSelectedComponent, updateSettings  }}>
       {children}
     </StyleContext.Provider>
   );
