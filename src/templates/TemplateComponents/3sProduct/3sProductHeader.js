@@ -18,6 +18,14 @@ const HeaderSection = ({
   const { getComponentStyle, globalStyle, updateStyle } = useStyle();
   const headerStyle = getComponentStyle('header');
   const heroTitleStyles = getComponentStyle('HeroTitle');
+  const heroDescriptionStyles = getComponentStyle('heroDescription');
+  const herojoinUsStyles = getComponentStyle('herojoinUs');
+
+
+
+
+
+
   const [imageHeight, setImageHeight] = useState(null);
   const getImageHeight = (src) => {
     return new Promise((resolve) => {
@@ -79,10 +87,11 @@ console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
   }, [selectedImage, activeComponent]);
 
   const handleComponentClick = (event, identifier) => {
+    event.preventDefault(); // This will prevent the default action of the anchor tag
     event.stopPropagation(); // Stop the event from propagating up
     console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
     setSelectedElement(identifier);
-  };
+};
 
   return (
     <div className="sss-product-hero" style={{ ...style, ...settings.header }} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
@@ -95,24 +104,19 @@ console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
     />
 </h1>
 
-      <p className="sss-product-hero-text" onClick={(event) => handleComponentClick(event, 'heroDescription')} >
+      <p className="sss-product-hero-text" id='heroDescription' onClick={(event) => handleComponentClick(event, 'heroDescription')} >
         <EditableText
           text={heroDescriptionText}
-          onChange={(newText) => handleTextChange(newText, 'description')}
-          style={{ ...headerStyle, ...(settings.textStyles?.heroDescription || {}) }} // provide default empty object if settings.textStyles is undefined
-          textType='heroDescription'
-          selectElement={handleComponentClick}
-          globalStyle={globalStyle}
+          onChange={(newText) => handleTextChange(newText, 'heroDescription')}
+          style={{ ...heroDescriptionStyles }}
+
         />
       </p>
-      <a href="/join-us" className="sss-product-hero-cta" onClick={() => handleComponentClick('joinUs')}>
+      <a href="#" id='herojoinUs' className="sss-product-hero-cta" onClick={(event) => handleComponentClick(event, 'joinUs')}>
         <EditableText
           text={joinUsText}
           onChange={(newText) => handleTextChange(newText, 'joinUs')}
-          style={{ ...headerStyle, ...(settings.textStyles?.joinUs || {}) }} // provide default empty object if settings.textStyles is undefined
-          textType='joinUs'
-          selectElement={handleComponentClick}
-          globalStyle={globalStyle}
+          style={{ ...herojoinUsStyles }}
         />
       </a>
       <ReusableImage
