@@ -36,9 +36,9 @@ export default function ProfileDashboard({ updateUserDetails }) {
     try {
       await navigator.clipboard.writeText(userAccount);
       setCopied(true);
-      setTimeout(() => {
-        setCopied(false);
-      }, 2000); // hide the message after 2 seconds
+      // setTimeout(() => {
+      //   setCopied(false);
+      // }, 2000); // hide the message after 2 seconds
       
     } catch (err) {
       console.error("Failed to copy text: ", err);

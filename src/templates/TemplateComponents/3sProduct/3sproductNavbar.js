@@ -83,7 +83,7 @@ const Navbar = ({
 
     return (
         <div className="sss-product-navbar-container navbar-element" id='navbar' style={navbarStyles} onClick={(event) => setSelectedElement('navbar')}>
-            <nav className="sss-product-navbar-navbar">
+    <nav className="sss-product-navbar-navbar">
                 <div className="image-container">
                     <ReusableImage
                         src={navbarImage}
@@ -124,7 +124,9 @@ const Navbar = ({
                             />
                         </Link>
                     </li>
-                    <li id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}  style={{ ...joinUsStyles }}>
+                    
+                </ul>
+                <a id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}  style={{ ...joinUsStyles }}>
                         <Link className="sss-product-navbar-cta">
                             <EditableText
                                 text={joinUsText}
@@ -132,14 +134,17 @@ const Navbar = ({
                                
                             />
                         </Link>
-                    </li>
-                </ul>
-                <img
-                    src={menuToggleImg}
-                    className="sss-product-navbar-mobile-toggle"
-                    onClick={(event) => setSelectedElement('menuToggle')}
-                    alt="Menu Toggle"
-                />
+                    </a>
+                {/* Menu mobile toggler */}
+                 {/* <img
+            src={menuToggleImg}
+            className="sss-product-navbar-mobile-toggle"
+            onClick={(event) => {
+                toggleMenu(event);
+                setSelectedElement('menuToggle');
+            }}
+            alt="Menu Toggle"
+        /> */}
             </nav>
         </div>
     );
