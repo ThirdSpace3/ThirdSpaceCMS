@@ -6,10 +6,10 @@ import EditableText from '../../../components/logiciel/TemplateComponent/Editabl
 import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
+import { get } from 'lodash';
 const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel }) => {
   const { getComponentStyle } = useStyle();
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
-  const aboutStyles = getComponentStyle('features');
 
   // State for text fields including descriptions
   const [featuresTitleText, setFeaturesTitleText] = useState('Essential apps that protect your documents');
@@ -34,6 +34,18 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
   const [imageHeight1, setImage1Height] = useState(null);
   const [imageHeight2, setImage2Height] = useState(null);
   const [imageHeight3, setImage3Height] = useState(null);
+
+  //Styles  
+
+  const aboutStyles = getComponentStyle('features');
+  const featureTitleStyles = getComponentStyle('featuresTitle');
+  const endToEndTitleStyles = getComponentStyle('endToEndTitle')
+  const endToEndDescriptionStyles = getComponentStyle('endToEndDescription');
+  const mobileAppsTitleStyles = getComponentStyle('mobileAppTitle');
+  const mobileAppsDescriptionStyles = getComponentStyle('mobileAppDescription');
+  const uploadShareTitleStyles = getComponentStyle('uploadShareTitle');
+  const uploadShareDescriptionStyles = getComponentStyle('uploadShareDescription');
+  const featuresJoinsUsStyles = getComponentStyle('featuresJoinUs');
 
   const getImageHeight = (src) => {
     return new Promise((resolve) => {
@@ -83,12 +95,12 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     console.log(`${identifier} clicked, opening replacement mode.`);
     setSelectedElement(identifier);
   };
-  
+
   const handleTextChange = (newText, setText) => {
     setText(newText);
     console.log("Text updated:", newText);
   };
-  
+
   const handleImageChange = (newSrc, index) => {
     const identifier = `featureImage-${index}`;
     if (activeComponent === identifier) {
@@ -110,7 +122,18 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
       console.log(`Image for ${identifier} updated.`);
     }
   };
-  
+
+  const handleComponentClick = (event, identifier, index = null) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!identifier) {
+      console.error("Identifier is missing for handleComponentClick");
+      return;
+    }
+    const elementID = index !== null ? `${identifier}-${index}` : identifier;
+    console.log(`${identifier} at index ${index} clicked, setting selected element to '${elementID}'`);
+    setSelectedElement(elementID);
+  };
 
   useEffect(() => {
     const featuresElement = document.querySelector('.sss-product-features');
@@ -118,53 +141,53 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
       console.log("Features clicked, setting selected element to 'features'");
       setSelectedElement('features');
     };
-  
+
     if (featuresElement) {
       featuresElement.addEventListener('click', eventHandler);
     }
-    
+
     return () => {
       if (featuresElement) {
         featuresElement.removeEventListener('click', eventHandler);
       }
     };
   }, []);
-  
+
 
   return (
     <div className="sss-product-features" style={{ ...style, ...settings.features }} id='features'>
-      <h2 className="sss-product-features-title">
+      <h2 className="sss-product-features-title" id='featuresTitle' onClick={(event) => handleComponentClick(event, 'featuresTitle')}>
         <EditableText
           text={featuresTitleText}
           onChange={(newText) => setFeaturesTitleText(newText)}
-          style={aboutStyles}
+          style={{ ...featureTitleStyles }}
         />
       </h2>
       <div className="sss-product-features-box">
         {/* Top Feature Section */}
         <div className="sss-product-features-box-top">
           <div className="sss-product-features-box-top-left">
-            <h3 className="sss-product-features-box-top-left-title">
+            <h3 className="sss-product-features-box-top-left-title" id='endToEndTitle' onClick={(event) => handleComponentClick(event, 'endToEndTitle')}>
               <EditableText
                 text={endToEndText}
                 onChange={(newText) => setEndToEndText(newText)}
-                style={aboutStyles}
+                style={{...endToEndTitleStyles}}
               />
             </h3>
-            <p className='sss-product-features-box-top-left-text'>
-            <EditableText
-              text={endToEndDesc.text}
-              onChange={(newText) => setEndToEndDesc({...endToEndDesc, text: newText})}
-              style={aboutStyles}
-            />
+            <p className='sss-product-features-box-top-left-text'  id='endToEndDescription' onClick={(event) => handleComponentClick(event, 'endToEndDescription')}>
+              <EditableText
+                text={endToEndDesc.text}
+                onChange={(newText) => setEndToEndDesc({ ...endToEndDesc, text: newText })}
+                style={{...endToEndDescriptionStyles}}
+              />
             </p>
-            <Link to="/join-us" className="sss-product-navbar-cta">
-      <EditableText
-        text={joinUsText}
-        onChange={(newText) => setEndToEndDesc({...endToEndDesc, text: newText})}
-        style={aboutStyles}
-        />
-    </Link>          </div>
+            <Link to="/join-us" className="sss-product-navbar-cta" id='featuresJoinUs' onClick={(event) => handleComponentClick(event, 'featuresJoinUs')}>
+              <EditableText
+                text={joinUsText}
+                onChange={(newText) => setEndToEndDesc({ ...endToEndDesc, text: newText })}
+                style={{...featuresJoinsUsStyles}}
+              />
+            </Link>          </div>
           <div className="sss-product-features-box-top-right">
             <ReusableImage
               src={feature1Image}
@@ -191,35 +214,35 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
               identifier={"Feature2"}
               imageHeight={imageHeight2}
             />
-            <h3 className="sss-product-features-box-bottom-left-title">
+            <h3 className="sss-product-features-box-bottom-left-title"  id='mobileAppTitle' onClick={(event) => handleComponentClick(event, 'mobileAppTitle')}>
               <EditableText
                 text={mobileAppsText}
                 onChange={(newText) => setMobileAppsText(newText)}
-                style={aboutStyles}
+                style={{...mobileAppsTitleStyles}}
               />
             </h3>
-            <p className='sss-product-features-box-top-left-text'>
-            <EditableText
-              text={mobileAppsDesc.text}
-              onChange={(newText) => setMobileAppsDesc({...mobileAppsDesc, text: newText})}
-              style={aboutStyles}
-            />
+            <p className='sss-product-features-box-top-left-text' id='mobileAppDescription' onClick={(event) => handleComponentClick(event, 'mobileAppDescription')}>
+              <EditableText
+                text={mobileAppsDesc.text}
+                onChange={(newText) => setMobileAppsDesc({ ...mobileAppsDesc, text: newText })}
+                style={{...mobileAppsDescriptionStyles}}
+              />
             </p>
           </div>
           <div className="sss-product-features-box-bottom-right">
-            <h3 className="sss-product-features-box-bottom-right-title">
+            <h3 className="sss-product-features-box-bottom-right-title" id='uploadShareTitle' onClick={(event) => handleComponentClick(event, 'uploadShareTitle')}>
               <EditableText
                 text={uploadShareText}
                 onChange={(newText) => setUploadShareText(newText)}
-                style={aboutStyles}
+                style={{...uploadShareTitleStyles}}
               />
             </h3>
-            <p className='sss-product-features-box-top-left-text'>
-            <EditableText
-              text={uploadShareDesc.text}
-              onChange={(newText) => setUploadShareDesc({...uploadShareDesc, text: newText})}
-              style={aboutStyles}
-            />
+            <p className='sss-product-features-box-top-left-text' id='uploadShareDescription' onClick={(event) => handleComponentClick(event, 'uploadShareDescription')}>
+              <EditableText
+                text={uploadShareDesc.text}
+                onChange={(newText) => setUploadShareDesc({ ...uploadShareDesc, text: newText })}
+                style={{...uploadShareDescriptionStyles}}
+              />
             </p>
             <ReusableImage
               src={feature3Image}
