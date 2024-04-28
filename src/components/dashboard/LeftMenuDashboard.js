@@ -77,12 +77,12 @@ export default function LeftMenuDashboard({
         <div className="left-menu-top">
           <div className="profile-container">
             <img
-              src={localProfilePicture || "./default_avatar.png"} // Use a default avatar if profilePicture is not available
+              src={localProfilePicture} // Use a default avatar if profilePicture is not available
               alt="Profile avatar"
               className="profile-picture" // Apply a CSS class for styling
             />
             <p className="profile-name" onClick={handleCopyAddress}>
-              {username}
+              {localUsername}
             </p>
             {showCopiedMessage && (
               <div className="dashboard-settings-wallet-copied">
