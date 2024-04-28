@@ -39,6 +39,7 @@ export default function ProfileDashboard({ updateUserDetails }) {
       setTimeout(() => {
         setCopied(false);
       }, 2000); // hide the message after 2 seconds
+      
     } catch (err) {
       console.error("Failed to copy text: ", err);
     }
@@ -219,7 +220,7 @@ const fetchProfile = async (walletId) => {
                 </a>
                 {copied && (
                   <div className="dashboard-settings-wallet-copied">
-                    <p>Copié</p>
+                    <p>Copied</p>
                   </div>
                 )}
               </div>

@@ -90,13 +90,13 @@ const TemplateStep4 = ({
                   {isHovered[index] && (
                     <div className="templates-hover">
                       <div className="templates-hover-content">
-                        <Link
+                        {/* <Link
                           to={`/template-preview/${template.id}`}
                           state={{ selectedTemplateId: template.id }}
                           onClick={(e) => e.stopPropagation()}
                         >
                           View Demo
-                        </Link>
+                        </Link> */}
                         <Link
                           className="start-editing-link"
                           onClick={(e) => {

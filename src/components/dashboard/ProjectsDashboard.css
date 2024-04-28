@@ -248,6 +248,10 @@
   font-weight: 500;
   line-height: normal;
 }
+.projects-content-item-info  i {
+  cursor: pointer;
+  font-size: 18px;
+}
 .projects-navbar-btn-disabled-message {
   color: var(--black);
   font-family: var(--inter);
