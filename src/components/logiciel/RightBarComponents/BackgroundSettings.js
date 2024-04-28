@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState } from "react";
 
 const BackgroundSettings = ({
   isOpen,
@@ -7,46 +7,24 @@ const BackgroundSettings = ({
   logChange, // Pass the logging function as a prop
 }) => {
   const fileInputRef = useRef(null);
-  
-  const handleBackgroundChange = (e, property, componentName) => {
-    const value = e.target.value;
-    console.log("Selected Element in BackgroundSettings:", selectedElement);
-    console.log("Attempting to update style for", selectedElement, "with value", value);
-    
-    if (selectedElement) {
-      let cssVarName = '';
-      switch (componentName) {
-        case 'navbar':
-          cssVarName = '--navbar-background-color';
-          break;
-        case 'header':
-          cssVarName = '--header-background-color';
-          break;
-        case 'partners':
-          cssVarName = '--partners-background-color';
-          break;
-        case 'about':
-          cssVarName = '--about-background-color';
-          break;
-        case 'features':
-          cssVarName = '--features-background-color';
-          break;
-        case 'joinUs':
-          cssVarName = '--joinus-background-color';
-          break;
-        case 'footer':
-          cssVarName = '--footer-background-color';
-          break;
-        default:
-          cssVarName = '--default-background-color'; // Default case to handle unknown components
-          break;
-      }
-      
-      document.documentElement.style.setProperty(cssVarName, value);
-      logChange(selectedElement, { [property]: value }); // Log the change
-    }
+  const [currentColor, setCurrentColor] = useState("");  // State to hold the current color temporarily
+  const [selectedColor, setSelectedColor] = useState(""); // State to hold the confirmed color
+
+  const handleColorInput = (e) => {
+    setCurrentColor(e.target.value); // Update temporary color state
   };
-  
+
+  const handleColorCommit = () => {
+    const value = currentColor;
+    const cssVarName = `--${selectedElement}-background-color`;
+
+    // Apply the confirmed color change globally
+    document.documentElement.style.setProperty(cssVarName, value);
+    logChange(selectedElement, { backgroundColor: value });
+    console.log("Final color selected:", value);
+    setSelectedColor(currentColor); // Update the confirmed color state
+  };
+
   return (
     <div className="parameters-wrapper">
       <div className="parameters-wrapper-title-box" onClick={() => toggleSection('background')}>
@@ -56,7 +34,12 @@ const BackgroundSettings = ({
       <div className={`parameters-wrapper-content ${isOpen.background ? "open" : ""}`}>
         <div className="parameters-content-line-row">
           <p className="parameters-content-line-title">Color</p>
-          <input type="color" onChange={(e) => handleBackgroundChange(e, "backgroundColor", selectedElement)} />
+          <input
+            type="color"
+            value={currentColor}
+            onInput={handleColorInput}
+          />
+          <button onClick={handleColorCommit}>Apply Color</button>  {/* Button to commit color change */}
         </div>
         <div className="parameters-content-line-row">
           <p className="parameters-content-line-title">Image</p>
@@ -66,7 +49,7 @@ const BackgroundSettings = ({
               type="file"
               accept="image/*"
               hidden
-              onChange={(e) => handleBackgroundChange(e, "backgroundImage", selectedElement)}
+              onChange={(e) => handleColorCommit(e, "backgroundImage", selectedElement)}
             />
             <i className="bi bi-plus"></i>
             <p>Add an Image</p>

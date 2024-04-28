@@ -131,6 +131,7 @@ export default function Display() {
     const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
     logs.push(logEntry);
     sessionStorage.setItem('editLogs', JSON.stringify(logs));
+    // sessionStorage.clear('editLogs');
     console.log(sessionStorage.getItem('editLogs'));
   };
   

@@ -6,95 +6,94 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 import { Link } from 'react-router-dom';
 
-const JoinUsSection = ({ handleSettingsChange, selectElement, openImagePanel }) => {
+const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel }) => {
   const { getComponentStyle, updateStyle } = useStyle();
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
-  const JoinUsStyles = getComponentStyle('joinUs');
 
   const [joinUsTitleText, setJoinUsTitleText] = useState('Join the community');
   const [joinUsDescriptionText, setJoinUsDescriptionText] = useState('Join our 400,000+ person community and contribute to a more private and decentralized internet. Start for free.');
   const [joinUsCta, setjoinUsCta] = useState('Join Us');
   const [joinUsImageUrl, setJoinUsImageUrl] = useState("./images/templates-img/3sproduct/3sproduct-joinus-1.png");
 
-  const handleTextChange = (newText, setter) => {
-    setter(newText);
-  };
+  const JoinUsStyles = getComponentStyle('joinUs');
+  const joinUsTitleStyles = getComponentStyle('joinUsTitle');
+  const joinUsescriptionStyles = getComponentStyle('joinUsDescription');
+  const joinUsCtaStyles = getComponentStyle('joinUsCta');
 
-  const handleTextStyleChange = (textType, newStyle) => {
-    updateStyle(textType, newStyle);
+  const [imageHeight, setImageHeight] = useState(null);
+  const getImageHeight = (src) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => resolve(img.height);
+    });
   };
-
-  const handleImageClick = () => {
-    enterReplacementMode('JoinUsImage');
-  };
-
-  const handleImageChange = (newSrc) => {
-    if (activeComponent === 'JoinUsImage') {
-      setJoinUsImageUrl(newSrc);
-      selectImage(newSrc);
-    }
-  };
-
-  const handleJoinUsClick = () => {
-    console.log("JoinUs clicked, setting selected element to 'joinUs'");
-    selectElement('joinUs');
-  };
-
   useEffect(() => {
-    const joinUsElement = document.querySelector('.sss-product-joinus');
-    if (joinUsElement) {
-      joinUsElement.addEventListener('click', handleJoinUsClick);
-    }
-    return () => {
-      if (joinUsElement) {
-        joinUsElement.removeEventListener('click', handleJoinUsClick);
-      }
-    };
+    getImageHeight(joinUsImageUrl).then((height) => setImageHeight(height));
   }, []);
 
-  useEffect(() => {
-    if (activeComponent === 'JoinUsImage' && selectedImage !== joinUsImageUrl) {
-      setJoinUsImageUrl(selectedImage);
+  const handleTextChange = (newText, textType) => {
+    console.log(`Updating text for ${textType}: ${newText}`);
+    console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
+
+    switch (textType) {
+      case 'heroTitle':
+        setJoinUsTitleText(newText);
+        break;
+      case 'description':
+        setJoinUsDescriptionText(newText);
+        break;
+      case 'joinUs':
+        setjoinUsCta(newText);
+        break;
+      default:
+        break;
     }
-  }, [selectedImage, activeComponent, joinUsImageUrl]);
+    updateStyle(textType, { text: newText });
+    console.log(`Requested style update for ${textType}`);
+  };
+
+  const handleComponentClick = (event, identifier) => {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
+    setSelectedElement(identifier);
+  };
+
 
   return (
-    <div className='sss-product-joinus-main' onClick={handleJoinUsClick}  id='joinus'>
+    <div className='sss-product-joinus-main'  style={JoinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
       <div className="sss-product-joinus" >
         <ReusableImage
           src={joinUsImageUrl}
           alt="Join Us Logo"
-          onClick={handleImageClick}
+          onClick={() => enterReplacementMode('JoinUsSection')}
           openImagePanel={openImagePanel}
-          onImageChange={handleImageChange}
           selectedImage={activeComponent === 'JoinUsImage' ? selectedImage : null}
-          imageHeight="80px"
           identifier={"joinUs"}
+          imageHeight={imageHeight}
+          selectImage={handleComponentClick}
+  
         />
-        <h2 className="sss-product-joinus-title" style={JoinUsStyles}>
+        <h2 className="sss-product-joinus-title" id='joinUsTitle' onClick={(event) => handleComponentClick(event, 'joinUsTitle')} >
           <EditableText
             text={joinUsTitleText}
-            onChange={(text) => handleTextChange(text, setJoinUsTitleText)}
-            onStyleChange={(style) => handleTextStyleChange('joinUsTitle', style)}
-            selectElement={selectElement}
+            onChange={(newText) => handleTextChange(newText, 'joinUsTitle')}
+            style={joinUsTitleStyles}
+
           />
         </h2>
-        <p className='sss-product-joinus-text' style={JoinUsStyles}>
+        <p className='sss-product-joinus-text' id='joinUsDescription' onClick={(event) => handleComponentClick(event, 'joinUsDescription')} style={joinUsescriptionStyles}>
           <EditableText
             text={joinUsDescriptionText}
-           
-            onChange={(text) => handleTextChange(text, setJoinUsDescriptionText)}
-            onStyleChange={(style) => handleTextStyleChange('joinUsDescription', style)}
-            selectElement={selectElement}
+            onChange={(newText) => handleTextChange(newText, 'joinUsDescription')}
           />
         </p>
-        <Link to="/join-us" className="sss-product-navbar-cta">
+        <Link to="/join-us" className="sss-product-navbar-cta" id='joinUsCta' onClick={(event) => handleComponentClick(event, 'joinUsCta')}>
           <EditableText
             text={joinUsCta}
-            style={JoinUsStyles}
-            onChange={(text) => handleTextChange(text, setjoinUsCta)}
-            onStyleChange={(style) => handleTextStyleChange('joinUsCta', style)}
-            selectElement={selectElement}
+            style={joinUsCtaStyles}
+            onChange={(newText) => handleTextChange(newText, 'joinUsCta')}
           />
         </Link>
       </div>

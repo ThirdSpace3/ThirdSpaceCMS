@@ -4,12 +4,12 @@
     --navbar-border-color: #151934;
     --navbar-link-color: #8f9bb7;
     --navbar-cta-background-color: #7214ff;
-    --joinus-background-color: #200627;
+    --joinUs-background-color: #200627;
   }
 
 
 .sss-product-joinus-main{
-  background-color: var(--joinus-background-color);
+  background-color: var(--joinUs-background-color);
 
 }
 .sss-product-joinus {
