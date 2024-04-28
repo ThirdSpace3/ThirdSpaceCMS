@@ -9,9 +9,13 @@
   --navbar-text-color: #8f9bb7;
 
   }
-  
- .sss-product-navbar-container {
+  .sss-product-container {
+    container-type: inline-size;
     width: 100%;
+  }
+ .sss-product-navbar-container {
+  
+      width: 100%;
     border-bottom: 1px solid var(--Neutral-gray-600, var(--navbar-border-color));
     background-color: var(--navbar-background-color) !important; /* Use the new variable here */
 
@@ -59,7 +63,7 @@
     display: none;
   }
   /* Pour les mobiles */
-  @media (max-width: 767px) {
+  @container  (max-width: 767px) {
     .sss-product-navbar-cta,
     .sss-product-navbar-links-box {
       display: none;

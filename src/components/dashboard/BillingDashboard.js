@@ -7,50 +7,51 @@ export default function BillingDashboard() {
   const featuresFreemium = [
     {
       icon: "bi bi-check",
-      text: "15 additional Smart Contract interactions 1",
+      text: "Limited CMS access (Templates)",
+      // text: "Limited CMS access (Templates and community components)",
     },
-    { icon: "bi bi-check", text: "Feature 2" },
-    { icon: "bi bi-x", text: "Nom de Domaine" },
-    { icon: "bi bi-check", text: "Feature 3" },
-    { icon: "bi bi-check", text: "Feature 4" },
-    { icon: "bi bi-check", text: "Feature 5" },
-    { icon: "bi bi-x", text: "Feature 7" },
-    { icon: "bi bi-x", text: "Feature 8" },
-    { icon: "bi bi-x", text: "Feature 9" },
-    { icon: "bi bi-x", text: "Feature 10" },
-    { icon: "bi bi-x", text: "Feature 11" },
+    { icon: "bi bi-check", text: "Developer Mode " },
+    { icon: "bi bi-x", text: "Custom Domain" },
+    { icon: "bi bi-check", text: "Test environments" },
+    { icon: "bi bi-check", text: "1GB cloud storage" },
+    { icon: "bi bi-check", text: "Basic uses of Smart Contract Solana  " },
+    { icon: "bi bi-x", text: "Support (internal messaging, e-mail)" },
+    { icon: "bi bi-x", text: "Accès complet à Third Space " },
+    { icon: "bi bi-x", text: "Collaborative solution" },
+    { icon: "bi bi-x", text: "Access to Beta Features" },
+    { icon: "bi bi-x", text: "Custom Features" },
   ];
   const featuresBasic = [
     {
       icon: "bi bi-check",
-      text: "15 additional Smart Contract interactions 1",
+      text: "Full access to Third Space ",
     },
-    { icon: "bi bi-check", text: "Feature 2" },
-    { icon: "bi bi-x", text: "Nom de Domaine" },
-    { icon: "bi bi-check", text: "Feature 3" },
-    { icon: "bi bi-check", text: "Feature 4" },
-    { icon: "bi bi-check", text: "Feature 5" },
-    { icon: "bi bi-x", text: "Feature 7" },
-    { icon: "bi bi-x", text: "Feature 8" },
-    { icon: "bi bi-x", text: "Feature 9" },
-    { icon: "bi bi-x", text: "Feature 10" },
-    { icon: "bi bi-x", text: "Feature 11" },
+    { icon: "bi bi-check", text: "Developer Mode" },
+    { icon: "bi bi-check", text: "1 personalized domain" },
+    { icon: "bi bi-check", text: "Test environments" },
+    { icon: "bi bi-check", text: "5GB cloud storage" },
+    { icon: "bi bi-check", text: "Advanced use of Solana Smart Contracts (30 interactions/month)" },
+    { icon: "bi bi-check", text: "Support (internal messaging system, e-mail, 24-hour platform)" },
+    { icon: "bi bi-x", text: "Collaborative solution" },
+    { icon: "bi bi-x", text: "Access to Beta features " },
+    { icon: "bi bi-x", text: "Custom Features" },
+
   ];
   const featuresPro = [
     {
       icon: "bi bi-check",
-      text: "15 additional Smart Contract interactions 1",
+      text: "Full access to Third Space ",
     },
-    { icon: "bi bi-check", text: "Feature 2" },
-    { icon: "bi bi-x", text: "Nom de Domaine" },
-    { icon: "bi bi-check", text: "Feature 3" },
-    { icon: "bi bi-check", text: "Feature 4" },
-    { icon: "bi bi-check", text: "Feature 5" },
-    { icon: "bi bi-x", text: "Feature 7" },
-    { icon: "bi bi-x", text: "Feature 8" },
-    { icon: "bi bi-x", text: "Feature 9" },
-    { icon: "bi bi-x", text: "Feature 10" },
-    { icon: "bi bi-x", text: "Feature 11" },
+    { icon: "bi bi-check", text: "Developer Mode" },
+    { icon: "bi bi-check", text: "3 customized domains" },
+    { icon: "bi bi-check", text: "Test environments" },
+    { icon: "bi bi-check", text: "10GB cloud storage" },
+    { icon: "bi bi-check", text: "Advanced use of Solana Smart Contracts (60 interactions/month)" },
+    { icon: "bi bi-check", text: "24-hour priority support via email or direct chat " },
+    { icon: "bi bi-check", text: "Collaborative solution" },
+    { icon: "bi bi-check", text: "Access to Beta features " },
+    { icon: "bi bi-x", text: "Custom Features" },
+
   ];
 
   return (
@@ -245,22 +246,22 @@ export default function BillingDashboard() {
                         Additional 10 GB Cloud storage
                       </p>
                     </div>
-                    <p className="dashboard-billing-plans-feature-or">OU</p>
+                    <p className="dashboard-billing-plans-feature-or">OR</p>
                     <div className="dashboard-billing-plans-feature">
                       <i className="bi bi-check check-icon"></i>
                       <p className="check-text">1 customized domain name</p>
                     </div>
-                    <p className="dashboard-billing-plans-feature-or">OU</p>
+                    <p className="dashboard-billing-plans-feature-or">OR</p>
                     <div className="dashboard-billing-plans-feature">
                       <i className="bi bi-check check-icon"></i>
                       <p className="check-text">
                         15 additional Smart Contract interactions
                       </p>
                     </div>
-                    <p className="dashboard-billing-plans-feature-or">OU</p>
+                    <p className="dashboard-billing-plans-feature-or">OR</p>
                     <div className="dashboard-billing-plans-feature">
                       <i className="bi bi-check check-icon"></i>
-                      <p className="check-text">1 additional employee</p>
+                      <p className="check-text">1 additional collaborator</p>
                     </div>
                   </div>
                 </div>

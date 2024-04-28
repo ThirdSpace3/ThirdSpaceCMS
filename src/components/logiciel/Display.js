@@ -156,7 +156,7 @@ export default function Display() {
 
 return (
     <>
-      <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
+     
       <div className="displayWrapper">
         {!isPreviewMode && (
           <LeftBar
@@ -168,6 +168,7 @@ return (
 
         )}
         <div className="displayColumnWrapper">
+        <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
           <Canva
             templateName={templateName}
             deviceSize={selectedDeviceSize}

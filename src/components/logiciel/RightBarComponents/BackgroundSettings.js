@@ -39,7 +39,7 @@ const BackgroundSettings = ({
             value={currentColor}
             onInput={handleColorInput}
           />
-          <button onClick={handleColorCommit}>Apply Color</button>  {/* Button to commit color change */}
+          <button className="custom-file-upload" onClick={handleColorCommit}>Apply Color</button>  {/* Button to commit color change */}
         </div>
         <div className="parameters-content-line-row">
           <p className="parameters-content-line-title">Image</p>

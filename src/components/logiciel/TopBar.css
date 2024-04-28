@@ -50,7 +50,7 @@
   background-color: var(--dark-grey);
   color: var(--white);
   cursor: pointer;
-
+  border: none;
 }
 .topbar-propulse-btn {
   font-family: var(--inter);

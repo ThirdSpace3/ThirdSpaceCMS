@@ -60,7 +60,7 @@
   }
   
   /* Pour les mobiles */
-  @media (max-width: 767px) {
+  @container  (max-width: 767px) {
     .sss-product-hero {
       gap: 20px;
       padding: 5%;
