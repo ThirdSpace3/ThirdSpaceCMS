@@ -135,23 +135,24 @@ export default function Display() {
     console.log(sessionStorage.getItem('editLogs'));
   };
   
-useEffect(() => {
+  useEffect(() => {
     const applyLoggedStyles = () => {
         const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
         const latestSettings = {};
         logs.forEach(log => {
             const { elementId, newStyles } = log;
-            if (!latestSettings[elementId]) {
-                latestSettings[elementId] = {};
-            }
-            Object.assign(latestSettings[elementId], newStyles);
+            latestSettings[elementId] = {
+              ...(latestSettings[elementId] || {}),
+              ...newStyles
+            };
         });
         setSettings(latestSettings);
-        
     };
 
     applyLoggedStyles();
-}, []);
+    // Consider adding a dependency to run this effect more reliably when needed
+}, [settings]);  // `someDependency` can be a state or prop that changes upon updates
+
 
   return (
     <>

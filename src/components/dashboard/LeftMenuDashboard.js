@@ -29,9 +29,12 @@ export default function LeftMenuDashboard({
       const response = await fetch(`/api/get-profile-by-wallet?walletId=${walletId}`);
       if (response.ok) {
         const data = await response.json();
-        setLocalUsername(data.username || "Unknown User");
-        setLocalProfilePicture(data.profilePicture || "./path_to_default_avatar.png");
+        setLocalUsername(data.username );
+        setLocalProfilePicture(data.profilePicture );
       } else {
+        setLocalUsername(shortenAddress(walletId));
+        setLocalProfilePicture("./images/avatar-placeholder.png");
+
         console.error("Failed to fetch profile data.");
       }
     } catch (err) {
@@ -77,12 +80,12 @@ export default function LeftMenuDashboard({
         <div className="left-menu-top">
           <div className="profile-container">
           <img
-  src={localProfilePicture || './images/avatar-placeholder.png'} // Fallback to default avatar if profilePicture is not available
+  src={localProfilePicture} // Fallback to default avatar if profilePicture is not available
   alt="Profile avatar"
   className="profile-picture" // Apply a CSS class for styling
 />
             <p className="profile-name" onClick={handleCopyAddress}>
-              {localUsername}
+              {localUsername || userAccount}
             </p>
             {showCopiedMessage && (
               <div className="dashboard-settings-wallet-copied">
