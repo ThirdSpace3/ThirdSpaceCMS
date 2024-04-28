@@ -28,7 +28,6 @@ export default function TemplateStep() {
   const [projects, setProjects] = useState([]);
 
   const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
-  console.log(isLoggedIn);
   const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   useEffect(() => {
@@ -68,7 +67,6 @@ export default function TemplateStep() {
 
   // Retrieve or initialize the walletId
   let walletId = sessionStorage.getItem("userAccount");
-  console.log(walletId);
   useEffect(() => {
     // Redirect if template process is completed
     const isTemplateCompleted =

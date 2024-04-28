@@ -5,13 +5,12 @@ import { Navigate } from 'react-router-dom';
 const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, walletId, currentStep, inputValue, templateData }) => {
   const [redirectToRoot, setRedirectToRoot] = useState(false);
   const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
-console.log("isLoggedIn:", isLoggedIn); // Add this line
 
 const handleNextClick = async () => {
   if (isNextEnabled) {
     try {
       const sessionData = JSON.parse(sessionStorage.getItem('stepData')) || {};
-
+      console.log(sessionData);
       // Handle the case for the last step
       if (currentStep === 5) {
         // Assuming `inputValue` holds the project name and `selectedButtons` holds template data
@@ -39,10 +38,10 @@ const handleNextClick = async () => {
         setRedirectToRoot(true);
 
         // Optionally, if you're sending data to a backend, adjust and uncomment:
-        // await axios.post('/api/final-submission', {
-        //   walletId,
-        //   data: { allStepsData: sessionData, templateName, projectName },
-        // });
+        await axios.post('/api/final-submission', {
+          walletId,
+          data: { allStepsData: sessionData, templateName, projectName },
+        });
 
       } else {
         // Handle the next step for steps other than the last

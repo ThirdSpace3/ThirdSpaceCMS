@@ -11,16 +11,34 @@ export default function LeftMenuDashboard({
   const [userAccount, setUserAccount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [showCopiedMessage, setShowCopiedMessage] = useState(false); // New state for the copied message
-
+  const [localUsername, setLocalUsername] = useState("");
+  const [localProfilePicture, setLocalProfilePicture] = useState("");
+  
   useEffect(() => {
     const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "true") {
-      const account = sessionStorage.getItem("userAccount");
-      setUserAccount(account);
+    const account = sessionStorage.getItem("userAccount");
+    if (isLoggedIn === "true" && account) {
+      fetchUserProfile(account);
     } else {
       setShowPopup(true);
     }
-  }, []);
+  }, [userAccount]);  // Dependency on userAccount to refetch if it changes
+  
+  const fetchUserProfile = async (walletId) => {
+    try {
+      const response = await fetch(`/api/get-profile-by-wallet?walletId=${walletId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setLocalUsername(data.username || "Unknown User");
+        setLocalProfilePicture(data.profilePicture || "./path_to_default_avatar.png");
+      } else {
+        console.error("Failed to fetch profile data.");
+      }
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+    }
+  };
+  
 
   const handleLogin = (account) => {
     setUserAccount(account);

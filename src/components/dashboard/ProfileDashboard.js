@@ -4,14 +4,14 @@ import "./DashboardMain.css";
 import "../Root.css";
 
 export default function ProfileDashboard({ updateUserDetails }) {
-  const [userAccount, setUserAccount] = useState("");
+  const [userAccount, setUserAccount] = useState(sessionStorage.getItem("userAccount"));
   const [username, setUsername] = useState("");
   const [usernameError, setUsernameError] = useState("");
 
   const [description, setDescription] = useState("");
   const [profilePicture, setProfilePicture] = useState(() => {
     // Attempt to load profile picture from local storage, fallback to default
-    return localStorage.getItem("profilePicture") || "../images/avatar-placeholder.png";
+    return localStorage.getItem("profilePicture");
   });
   const [isEdited, setIsEdited] = useState(false); // Tracks if any edits have been made
   const [isSaved, setIsSaved] = useState(false); // Tracks if changes have been successfully saved
@@ -21,22 +21,8 @@ export default function ProfileDashboard({ updateUserDetails }) {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "true") {
-      const account = sessionStorage.getItem("userAccount");
-      const storedUsername = sessionStorage.getItem("username");
-      const storedDescription = sessionStorage.getItem("description");
-      const storedProfilePicture = sessionStorage.getItem("profilePicture");
 
-      setUserAccount(account);
-      setUsername(storedUsername || "My Username");
-      setDescription(storedDescription || "");
-      setProfilePicture(storedProfilePicture || null);
-    } else {
-      return;
-    }
-  }, []);
+  
 
   const handleLogin = (account) => {
     setUserAccount(account);
@@ -108,57 +94,67 @@ export default function ProfileDashboard({ updateUserDetails }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    //Create Behaviour to check DB and save the datas here
     if (username.length > 15) {
       setUsernameError("Username must be 15 characters or less.");
-      return; // Stop the form submission
+      return; // Stop form submission if validation fails
     }
-    // try {
-    //   const response = await fetch("/api/profile", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       walletId: userAccount,
-    //       username: username,
-    //       description: description,
-    //       imageUrl: profilePicture,
-    //     }),
-    //   });
-
-    //   if (response.ok) {
-    //     const data = await response.json();
-    // console.log("Profile saved:", data);
-    // Save data to sessionStorage
-    setIsEdited(false);
-    setIsSaved(true);
-    updateUserDetails(username, description, profilePicture); // Update user details at the parent level or wherever necessary
-
-    sessionStorage.setItem("username", username);
-    sessionStorage.setItem("description", description);
-    sessionStorage.setItem("profilePicture", profilePicture);
-    // Redirect the user to the profile page or show a success message
-    updateUserDetails(username, description, profilePicture);
-
-    //   } else {
-    //     console.error("Error saving profile:", response.statusText);
-    //   }
-
-    // } catch (err) {
-    //   console.error("Error saving profile:", err);
-    // }
-    setTimeout(() => {
-      setIsSaved(false);
-      
-      // Optional: If you need to automatically switch back to the edited state
-      // based on certain conditions, you can set `isEdited` here as well.
-      // For example:
-      // setIsEdited(!!(username || description || profilePicture));
-  }, 3000);
+  
+    try {
+      const response = await fetch("/api/save-profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          walletId: userAccount,
+          username: username,
+          description: description,
+          profilePicture: profilePicture,
+        }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Profile saved:", data);
+        setIsEdited(false);
+        setIsSaved(true);
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("description", description);
+        sessionStorage.setItem("profilePicture", profilePicture);
+        updateUserDetails(username, description, profilePicture); // Update parent state or global state if applicable
+      } else {
+        console.error("Error saving profile:", response.statusText);
+      }
+    } catch (err) {
+      console.error("Error saving profile:", err);
+    }
   };
-
+  
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
+      const account = sessionStorage.getItem("userAccount");
+      fetchProfile(account);
+    }
+  }, []);
+  
+  const fetchProfile = async (walletId) => {
+    try {
+      const response = await fetch(`/api/get-profile-by-wallet?walletId=${walletId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setUsername(data.username || "My Username");
+        setDescription(data.description || "");
+        setProfilePicture(data.profilePicture || profilePicture);
+        // Other state updates if necessary
+        console.log(data);
+      } else {
+        console.error("Failed to fetch profile data.");
+      }
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+    }
+  };
   return (
     <>
       <div className="dashboard-page-container">
