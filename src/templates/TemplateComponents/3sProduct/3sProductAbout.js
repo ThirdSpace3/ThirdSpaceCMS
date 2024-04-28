@@ -31,6 +31,7 @@ const AboutSection = ({
     'Feature description for item 5.',
     'Feature description for item 6.'
   ]);
+  const aboutStyles = getComponentStyle('about');
   const aboutTitleStyle = getComponentStyle('title');
   const aboutDescriptionStyles = getComponentStyle('description');
   const featureTitlesStyles = getComponentStyle('featureTitles');
@@ -89,7 +90,7 @@ const AboutSection = ({
 
 
   return (
-    <div className="sss-product-about" style={{ ...style, ...settings.about }} id='about'>
+    <div className="sss-product-about" style={{ ...aboutStyles}} id='about'>
       <div className="sss-product-about-header">
         <h2 className="sss-product-about-title" id='title' onClick={(event) => handleComponentClick(event, 'title')} style={{ ...aboutTitleStyle }}>
           <EditableText

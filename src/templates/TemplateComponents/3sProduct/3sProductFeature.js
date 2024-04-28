@@ -37,7 +37,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
 
   //Styles  
 
-  const aboutStyles = getComponentStyle('features');
+  const featureStyles = getComponentStyle('features');
   const featureTitleStyles = getComponentStyle('featuresTitle');
   const endToEndTitleStyles = getComponentStyle('endToEndTitle')
   const endToEndDescriptionStyles = getComponentStyle('endToEndDescription');
@@ -155,7 +155,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
 
 
   return (
-    <div className="sss-product-features" style={{ ...style, ...settings.features }} id='features'>
+    <div className="sss-product-features" style={{ ...featureStyles }} id='features'>
       <h2 className="sss-product-features-title" id='featuresTitle' onClick={(event) => handleComponentClick(event, 'featuresTitle')} style={{ ...featureTitleStyles }}>
         <EditableText
           text={featuresTitleText}

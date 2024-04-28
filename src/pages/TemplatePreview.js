@@ -20,11 +20,7 @@ const TemplatePreview = () => {
   let { templateName } = useParams();
   const location = useLocation();
   const selectedId = location.state?.selectedTemplateId || "";
-
-  const handleTemplateSelect = (templateId) => {
-    // Implement your logic here
-    console.log(`Template selected: ${templateId}`);
-  };
+  const [isPreviewMode, setIsPreviewMode] = React.useState(true);  // Assume preview mode is enabled
 
   const TemplateComponent = templateComponents[templateName];
 
@@ -32,11 +28,12 @@ const TemplatePreview = () => {
     <div>
       <TemplatePreviewTopbar
         selectedTemplateId={selectedId}
-        handleTemplateSelect={handleTemplateSelect}
         templateName={templateName}
+        isPreviewMode={isPreviewMode}
       />
-      {TemplateComponent ? <TemplateComponent /> : <p>Template not found.</p>}
+      {TemplateComponent ? <TemplateComponent isPreviewMode={isPreviewMode} /> : <p>Template not found.</p>}
     </div>
   );
 };
+
 export default TemplatePreview;

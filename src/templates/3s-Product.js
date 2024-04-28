@@ -39,7 +39,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
       />
       
       <HeaderSection
-        style={settings.header}
+        style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
@@ -50,7 +50,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
       />
 
       <PartnersSection
-        style={settings.navbar}
+        style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
@@ -61,7 +61,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
 
       />
       <AboutSection
-        style={settings.navbar}
+        style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
@@ -73,7 +73,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
 
       />
       <FeaturesSection
-        style={settings.navbar}
+        style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
@@ -84,7 +84,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
 
       />
       <JoinUsSection
-        style={settings.navbar}
+        style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
@@ -95,7 +95,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
 
       />
       <Footer
-        style={settings.navbar}
+        style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}

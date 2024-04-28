@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './EditableText.css';
 
-const EditableText = ({ text, onChange, style, handleSettingsChange, textType, selectElement }) => {
+const EditableText = ({ text, onChange, style, handleSettingsChange, textType, selectElement,isPreviewMode  }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text);
   const [error, setError] = useState(false);
@@ -77,6 +77,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         </span>
     );
   }
+  
 };
 
 export default EditableText;
