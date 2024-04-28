@@ -6,7 +6,7 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const Footer = ({
-  style, settings = { textStyles: {} }, handleSettingsChange, openImagePanel, setSelectedElement
+  style, settings = { textStyles: {} }, handleSettingsChange, openImagePanel, setSelectedElement, isPreviewMode
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
@@ -66,66 +66,86 @@ const Footer = ({
     event.stopPropagation();
     setSelectedElement(identifier);
   };
-
   return (
-    <div className="sss-product-footer" style={{ ...style, ...settings.footer }} id='footer'  onClick={(event) => handleComponentClick(event, 'footer')}>
+    <div className="sss-product-footer" style={{ ...style, ...settings.footer }} id='footer' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'footer')}>
       <div className="sss-product-footer-top">
-        <ReusableImage
-          src={footerLogoSrc}
-          alt="Footer Logo"
-          onClick={() => enterReplacementMode('FooterLogo')}
-          openImagePanel={openImagePanel}
-          identifier="FooterLogo"
-          imageHeight="50px"
-        />
+        {isPreviewMode ? (
+          <img src={footerLogoSrc} alt="Footer Logo" style={{ height: '50px' }} />
+        ) : (
+          <ReusableImage
+            src={footerLogoSrc}
+            alt="Footer Logo"
+            onClick={() => enterReplacementMode('FooterLogo')}
+            openImagePanel={openImagePanel}
+            identifier="FooterLogo"
+            imageHeight="50px"
+          />
+        )}
         <ul className="sss-product-footer-top-links-box">
-          <li className='sss-product-footer-top-links' id='homeText' onClick={(event) => handleComponentClick(event, 'homeText')}>
-            <EditableText
-              text={homeText}
-              onChange={(text) => handleTextChange(text, 'homeText')}
-              style={{ ...getComponentStyle('homeText') }}
-            />
+          <li className='sss-product-footer-top-links' id='homeText' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'homeText')}>
+            {isPreviewMode ? homeText : (
+              <EditableText
+                text={homeText}
+                onChange={(text) => handleTextChange(text, 'homeText')}
+                style={{ ...getComponentStyle('homeText') }}
+              />
+            )}
           </li>
-          <li className='sss-product-footer-top-links' id='aboutText' onClick={(event) => handleComponentClick(event, 'aboutText')}>
-            <EditableText
-              text={aboutText}
-              onChange={(text) => handleTextChange(text, 'aboutText')}
-              style={{ ...getComponentStyle('aboutText') }}
-            />
+          <li className='sss-product-footer-top-links' id='aboutText' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'aboutText')}>
+            {isPreviewMode ? aboutText : (
+              <EditableText
+                text={aboutText}
+                onChange={(text) => handleTextChange(text, 'aboutText')}
+                style={{ ...getComponentStyle('aboutText') }}
+              />
+            )}
           </li>
-          <li className='sss-product-footer-top-links' id='featuresText' onClick={(event) => handleComponentClick(event, 'featuresText')}>
-            <EditableText
-              text={featuresText}
-              onChange={(text) => handleTextChange(text, 'featuresText')}
-              style={{ ...getComponentStyle('featuresText') }}
-            />
+          <li className='sss-product-footer-top-links' id='featuresText' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'featuresText')}>
+            {isPreviewMode ? featuresText : (
+              <EditableText
+                text={featuresText}
+                onChange={(text) => handleTextChange(text, 'featuresText')}
+                style={{ ...getComponentStyle('featuresText') }}
+              />
+            )}
           </li>
         </ul>
         <div className="sss-product-footer-top-rs">
-          <ReusableImage
-            src={footerTwitterSrc}
-            alt="Twitter"
-            onClick={() => enterReplacementMode('FooterTwitter')}
-            identifier="FooterTwitter"
-            imageHeight="30px"
-          />
-          <ReusableImage
-            src={footerLinkedInSrc}
-            alt="LinkedIn"
-            onClick={() => enterReplacementMode('FooterLinkedIn')}
-            identifier="FooterLinkedIn"
-            imageHeight="30px"
-          />
+          {isPreviewMode ? (
+            <>
+              <img src={footerTwitterSrc} alt="Twitter" style={{ height: '30px' }} />
+              <img src={footerLinkedInSrc} alt="LinkedIn" style={{ height: '30px' }} />
+            </>
+          ) : (
+            <>
+              <ReusableImage
+                src={footerTwitterSrc}
+                alt="Twitter"
+                onClick={() => enterReplacementMode('FooterTwitter')}
+                identifier="FooterTwitter"
+                imageHeight="30px"
+              />
+              <ReusableImage
+                src={footerLinkedInSrc}
+                alt="LinkedIn"
+                onClick={() => enterReplacementMode('FooterLinkedIn')}
+                identifier="FooterLinkedIn"
+                imageHeight="30px"
+              />
+            </>
+          )}
         </div>
       </div>
-      <div className="sss-product-footer-bottom" onClick={(event) => handleComponentClick(event, 'footerBottom')}>
+      <div className="sss-product-footer-bottom" onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'footerBottom')}>
         <hr className="sss-product-footer-bottom-hr" />
-        <p className="sss-product-footer-bottom-text" id='footerText' onClick={(event) => handleComponentClick(event, 'footerText')}>
-          <EditableText
-            text={footerText}
-            onChange={(text) => handleTextChange(text, 'footerText')}
-            style={{ ...getComponentStyle('footerText') }}
-          />
+        <p className="sss-product-footer-bottom-text" id='footerText' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'footerText')}>
+          {isPreviewMode ? footerText : (
+            <EditableText
+              text={footerText}
+              onChange={(text) => handleTextChange(text, 'footerText')}
+              style={{ ...getComponentStyle('footerText') }}
+            />
+          )}
         </p>
       </div>
     </div>

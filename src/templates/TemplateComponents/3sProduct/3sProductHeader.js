@@ -9,7 +9,8 @@ const HeaderSection = ({
   settings,
   handleSettingsChange,
   openImagePanel,
-  setSelectedElement
+  setSelectedElement,
+  isPreviewMode
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
@@ -23,7 +24,7 @@ const HeaderSection = ({
   const headerStyle = getComponentStyle('header');
   const heroTitleStyles = getComponentStyle('heroTitle');
   const heroDescriptionStyles = getComponentStyle('heroDescription');
-  const herojoinUsStyles = getComponentStyle('herojoinUs');
+  const heroJoinUsStyles = getComponentStyle('herojoinUs');
 
   const [imageHeight, setImageHeight] = useState(null);
   const getImageHeight = (src) => {
@@ -59,6 +60,11 @@ const HeaderSection = ({
   };
 
   const handleComponentClick = (event, identifier) => {
+    if (isPreviewMode) {
+      event.preventDefault(); // Prevent default action
+      
+      return; // Stop further processing
+    }
     event.preventDefault();
     event.stopPropagation();
     console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
@@ -66,37 +72,44 @@ const HeaderSection = ({
   };
 
   return (
-    <div className="sss-product-hero" style={headerStyle} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
-      <h1 className="sss-product-hero-title" id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')}>
-        <EditableText
-          text={heroTitleText}
-          onChange={(newText) => handleTextChange(newText, 'heroTitle')}
-          style={heroTitleStyles}
-        />
+    <div className="sss-product-hero" style={headerStyle} id='header'  onClick={(event) => handleComponentClick(event, 'header')}>
+      <h1 className="sss-product-hero-title" style={heroTitleStyles} id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')}>
+        {isPreviewMode ? heroTitleText : (
+          <EditableText
+            text={heroTitleText}
+            onChange={(newText) => setHeroTitleText(newText)}
+          />
+        )}
       </h1>
-      <p className="sss-product-hero-text" id='heroDescription' onClick={(event) => handleComponentClick(event, 'heroDescription')}>
-        <EditableText
-          text={heroDescriptionText}
-          onChange={(newText) => handleTextChange(newText, 'heroDescription')}
-          style={heroDescriptionStyles}
-        />
+      <p className="sss-product-hero-text" style={heroDescriptionStyles}>
+        {isPreviewMode ? heroDescriptionText : (
+          <EditableText
+            text={heroDescriptionText}
+            onChange={(newText) => setHeroDescriptionText(newText)}
+          />
+        )}
       </p>
-      <a href="#" id='herojoinUs' className="sss-product-hero-cta" onClick={(event) => handleComponentClick(event, 'joinUs')}>
-        <EditableText
-          text={joinUsText}
-          onChange={(newText) => handleTextChange(newText, 'joinUs')}
-          style={herojoinUsStyles}
-        />
+      <a href="#" className="sss-product-hero-cta" style={heroJoinUsStyles}>
+        {isPreviewMode ? joinUsText : (
+          <EditableText
+            text={joinUsText}
+            onChange={(newText) => setJoinUsText(newText)}
+          />
+        )}
       </a>
-      <ReusableImage
-        src={headerImage}
-        alt="Hero Image"
-        onClick={() => enterReplacementMode('HeaderSection')}
-        openImagePanel={openImagePanel}
-        identifier="HeaderSection"
-        imageHeight={imageHeight}
-        selectImage={handleComponentClick}
-      />
+      {isPreviewMode ? (
+        <img src={headerImage} alt="Hero Image" style={{ height: imageHeight }} />
+      ) : (
+        <ReusableImage
+          src={headerImage}
+          alt="Hero Image"
+          onClick={() => enterReplacementMode('HeaderSection')}
+          openImagePanel={openImagePanel}
+          imageHeight={imageHeight}
+          selectImage={selectImage}
+          identifier="HeaderSection"
+        />
+      )}
     </div>
   );
 };

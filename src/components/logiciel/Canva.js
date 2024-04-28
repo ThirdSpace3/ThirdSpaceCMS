@@ -7,6 +7,7 @@ import Template2 from '../../templates/Template2';
 import TemplateTest1 from '../../templates/TemplateTest1';
 import SSSProduct from '../../templates/3s-Product';
 import { useImageHistory } from '../../hooks/ImageHistoryContext';
+import { TemplateProvider, useTemplateContext} from '../../hooks/TemplateContext';
 
 export default function Canva({ templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
   const templateComponents = {
@@ -28,6 +29,8 @@ export default function Canva({ templateName, deviceSize, settings, handleSettin
   // console.log('selectElement prop in Canva:', selectElement);
 
   return (
+    <TemplateProvider>
+
     <div className='canva-wrapper' style={{ width: canvasSize.width, height: canvasSize.height, overflowY: 'auto' }}>
       <SelectedTemplate
         deviceSize={deviceSize}
@@ -43,5 +46,7 @@ export default function Canva({ templateName, deviceSize, settings, handleSettin
         setSelectedImage={setSelectedImage}
       />
     </div>
+    </TemplateProvider>
+
   );
 }

@@ -6,7 +6,7 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 import { Link } from 'react-router-dom';
 
-const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel }) => {
+const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, isPreviewMode }) => {
   const { getComponentStyle, updateStyle } = useStyle();
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
 
@@ -62,39 +62,47 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel }) =>
 
 
   return (
-    <div className='sss-product-joinus-main'  style={JoinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
-      <div className="sss-product-joinus" >
-        <ReusableImage
-          src={joinUsImageUrl}
-          alt="Join Us Logo"
-          onClick={() => enterReplacementMode('JoinUsSection')}
-          openImagePanel={openImagePanel}
-          selectedImage={activeComponent === 'JoinUsImage' ? selectedImage : null}
-          identifier={"joinUs"}
-          imageHeight={imageHeight}
-          selectImage={handleComponentClick}
-  
-        />
-        <h2 className="sss-product-joinus-title" id='joinUsTitle' onClick={(event) => handleComponentClick(event, 'joinUsTitle')} >
-          <EditableText
-            text={joinUsTitleText}
-            onChange={(newText) => handleTextChange(newText, 'joinUsTitle')}
-            style={joinUsTitleStyles}
-
+    <div className='sss-product-joinus-main' style={JoinUsStyles} id='joinUs' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'joinUs')}>
+      <div className="sss-product-joinus">
+        {isPreviewMode ? (
+          <img src={joinUsImageUrl} alt="Join Us Logo" style={{ height: imageHeight }} />
+        ) : (
+          <ReusableImage
+            src={joinUsImageUrl}
+            alt="Join Us Logo"
+            onClick={() => enterReplacementMode('JoinUsSection')}
+            openImagePanel={openImagePanel}
+            selectedImage={activeComponent === 'JoinUsImage' ? selectedImage : null}
+            identifier={"joinUs"}
+            imageHeight={imageHeight}
+            selectImage={handleComponentClick}
           />
+        )}
+        <h2 className="sss-product-joinus-title" id='joinUsTitle' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'joinUsTitle')}>
+          {isPreviewMode ? joinUsTitleText : (
+            <EditableText
+              text={joinUsTitleText}
+              onChange={(newText) => handleTextChange(newText, 'joinUsTitle')}
+              style={joinUsTitleStyles}
+            />
+          )}
         </h2>
-        <p className='sss-product-joinus-text' id='joinUsDescription' onClick={(event) => handleComponentClick(event, 'joinUsDescription')} style={joinUsescriptionStyles}>
-          <EditableText
-            text={joinUsDescriptionText}
-            onChange={(newText) => handleTextChange(newText, 'joinUsDescription')}
-          />
+        <p className='sss-product-joinus-text' id='joinUsDescription' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'joinUsDescription')} style={joinUsescriptionStyles}>
+          {isPreviewMode ? joinUsDescriptionText : (
+            <EditableText
+              text={joinUsDescriptionText}
+              onChange={(newText) => handleTextChange(newText, 'joinUsDescription')}
+            />
+          )}
         </p>
-        <Link to="/join-us" className="sss-product-navbar-cta" id='joinUsCta' onClick={(event) => handleComponentClick(event, 'joinUsCta')}>
-          <EditableText
-            text={joinUsCta}
-            style={joinUsCtaStyles}
-            onChange={(newText) => handleTextChange(newText, 'joinUsCta')}
-          />
+        <Link to="/join-us" className="sss-product-navbar-cta" id='joinUsCta' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'joinUsCta')}>
+          {isPreviewMode ? joinUsCta : (
+            <EditableText
+              text={joinUsCta}
+              style={joinUsCtaStyles}
+              onChange={(newText) => handleTextChange(newText, 'joinUsCta')}
+            />
+          )}
         </Link>
       </div>
     </div>

@@ -135,25 +135,26 @@ export default function Display() {
     console.log(sessionStorage.getItem('editLogs'));
   };
   
-useEffect(() => {
+  useEffect(() => {
     const applyLoggedStyles = () => {
         const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
-        const latestSettings = {};
+        const latestSettings = { ...settings }; // Spread the current settings to maintain other configurations
+
         logs.forEach(log => {
             const { elementId, newStyles } = log;
-            if (!latestSettings[elementId]) {
-                latestSettings[elementId] = {};
-            }
-            Object.assign(latestSettings[elementId], newStyles);
+            latestSettings[elementId] = {
+                ...(latestSettings[elementId] || {}), // Merge with existing styles
+                ...newStyles
+            };
         });
+
         setSettings(latestSettings);
-        
     };
 
     applyLoggedStyles();
-}, []);
+}, [sessionStorage.getItem('editLogs')]); // Depend on a change in the session storage item
 
-  return (
+return (
     <>
       <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
       <div className="displayWrapper">

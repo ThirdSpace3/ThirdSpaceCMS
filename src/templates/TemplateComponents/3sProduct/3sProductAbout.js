@@ -6,7 +6,8 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const AboutSection = ({
-  handleSettingsChange, settings, openImagePanel, setSelectedElement, style }) => {
+  handleSettingsChange, settings, openImagePanel, setSelectedElement, style, isPreviewMode
+}) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
@@ -52,7 +53,6 @@ const AboutSection = ({
     getImageHeight(`./images/templates-img/3sproduct/3sproduct-about-1.png`).then((height) => setImageHeight(height));
   }, []);
 
-
   const handleComponentClick = (event, identifier, index = null) => {
     event.preventDefault();
     event.stopPropagation();
@@ -64,7 +64,6 @@ const AboutSection = ({
     console.log(`${identifier} at index ${index} clicked, setting selected element to '${elementID}'`);
     setSelectedElement(elementID);
   };
-
 
   const handleTextChange = (newText, identifier, index = null) => {
     if (identifier === 'title') {
@@ -87,57 +86,69 @@ const AboutSection = ({
     updateStyle(identifier, { text: newText });
   };
 
-
-
   return (
-    <div className="sss-product-about" style={{ ...aboutStyles}} id='about' onClick={(event) => handleComponentClick(event, 'about')}>
+    <div className="sss-product-about" style={{ ...aboutStyles}} id='about' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'about')}>
       <div className="sss-product-about-header">
-        <h2 className="sss-product-about-title" id='title' onClick={(event) => handleComponentClick(event, 'title')} style={{ ...aboutTitleStyle }}>
-          <EditableText
-            text={aboutTitleText}
-            onChange={(text) => handleTextChange(text, 'title')}
-          />
+        <h2 className="sss-product-about-title" id='title' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'title')} style={{ ...aboutTitleStyle }}>
+          {isPreviewMode ? aboutTitleText : (
+            <EditableText
+              text={aboutTitleText}
+              onChange={(text) => handleTextChange(text, 'title')}
+            />
+          )}
         </h2>
-        <p className="sss-product-about-text" id='description' onClick={(event) => handleComponentClick(event, 'description')} style={{ ...aboutDescriptionStyles }}>
-          <EditableText
-            text={aboutDescriptionText}
-            onChange={(text) => handleTextChange(text, 'description')}
-          />
+        <p className="sss-product-about-text" id='description' onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'description')} style={{ ...aboutDescriptionStyles }}>
+          {isPreviewMode ? aboutDescriptionText : (
+            <EditableText
+              text={aboutDescriptionText}
+              onChange={(text) => handleTextChange(text, 'description')}
+            />
+          )}
         </p>
       </div>
       <div className="sss-product-about-box">
         {aboutImages.map((src, index) => (
           <div key={index} className="sss-product-about-item">
-            <ReusableImage
-              src={src}
-              alt={`Feature ${index + 1}`}
-              openImagePanel={() => openImagePanel(`aboutImage-${index}`)}
-              onImageChange={(newSrc) => selectImage(newSrc, index)}
-              selectedImage={activeComponent === `aboutImage-${index}` ? selectedImage : null}
-              style={{ height: '150px', width: 'auto' }}
-              identifier={`aboutImage-${index}`}
-              imageHeight={imageHeight}
-            />
-            <h3 className="sss-product-about-item-title" id={`featureTitle-${index}`} onClick={(event) => handleComponentClick(event, 'featureTitle', index)}>
-              <EditableText
-                text={featureTitles[index]}
-                onChange={(text) => handleTextChange(text, 'featureTitle', index)}
-                style={featureTitleStyles[index]}
+            {isPreviewMode ? (
+              <img
+              className='sss-product-about-item-img'
+                src={src}
+                alt={`Feature ${index + 1}`}
+                style={{ height: '150px', width: 'auto' }}
               />
+            ) : (
+              <ReusableImage
+                src={src}
+                alt={`Feature ${index + 1}`}
+                openImagePanel={() => openImagePanel(`aboutImage-${index}`)}
+                onImageChange={(newSrc) => selectImage(newSrc, index)}
+                selectedImage={activeComponent === `aboutImage-${index}` ? selectedImage : null}
+                style={{ height: '150px', width: 'auto' }}
+                identifier={`aboutImage-${index}`}
+                imageHeight={imageHeight}
+              />
+            )}
+            <h3 className="sss-product-about-item-title" id={`featureTitle-${index}`} onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'featureTitle', index)}>
+              {isPreviewMode ? featureTitles[index] : (
+                <EditableText
+                  text={featureTitles[index]}
+                  onChange={(text) => handleTextChange(text, 'featureTitle', index)}
+                  style={featureTitleStyles[index]}
+                />
+              )}
             </h3>
-            <p className="sss-product-about-item-text" id={`featureDescription-${index}`} onClick={(event) => handleComponentClick(event, 'featureDescription', index)}>
-              <EditableText
-                text={featureDescriptions[index]}
-                onChange={(text) => handleTextChange(text, 'featureDescription', index)}
-                style={featureDescriptionStyles[index]}
-              />
+            <p className="sss-product-about-item-text" id={`featureDescription-${index}`} onClick={isPreviewMode ? undefined : (event) => handleComponentClick(event, 'featureDescription', index)}>
+              {isPreviewMode ? featureDescriptions[index] : (
+                <EditableText
+                  text={featureDescriptions[index]}
+                  onChange={(text) => handleTextChange(text, 'featureDescription', index)}
+                  style={featureDescriptionStyles[index]}
+                />
+              )}
             </p>
           </div>
         ))}
       </div>
-
-
-
     </div>
   );
 };

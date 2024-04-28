@@ -10,36 +10,14 @@ import SSSProduct from "../../../templates/3s-Product";
 // Assuming html2canvas is used elsewhere in your component or project
 
 const initialTemplates = [
-  {
-    id: "TemplateTest1",
-    name: "TemplateTest1",
-    component: TemplateTest1,
-    screenshot: "./images/TemplateTest1screenshot.png",
-  },
+
   {
     id: "SSSProduct",
     name: "SSSProduct",
     component: SSSProduct,
     screenshot: "./images/SSSProductscreenshot.png",
   },
-  {
-    id: "TemplateImg_txt",
-    name: "TemplateImg_txt",
-    component: TemplateImg_txt,
-    screenshot: "./images/TemplateImg_txtscreenshot.png",
-  },
-  {
-    id: "TemplateFullText",
-    name: "TemplateFullText",
-    component: TemplateFullText,
-    screenshot: "./images/TemplateFullTextscreenshot.png",
-  },
-  {
-    id: "Template2",
-    name: "Template2",
-    component: Template2,
-    screenshot: "./images/TemplateTest1screenshot.png",
-  },
+
 ];
 
 const TemplateStep4 = ({

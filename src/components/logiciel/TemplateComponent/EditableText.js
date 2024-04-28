@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './EditableText.css';
 
-const EditableText = ({ text, onChange, style, handleSettingsChange, textType, selectElement,isPreviewMode  }) => {
+const EditableText = ({ text, onChange, style, handleSettingsChange, textType, selectElement, isPreviewMode  }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text);
   const [error, setError] = useState(false);
@@ -11,9 +11,12 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
   const computedStyle = useRef({});
 
   const handleInputChange = (event) => {
-    setCurrentText(event.target.value);
-    setError(false);
+    if (!isPreviewMode) {
+      setCurrentText(event.target.value);
+      setError(false);
+    }
   };
+  
 
   const handleBlur = () => {
     if (!currentText.trim()) {
@@ -29,6 +32,8 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
   };
 
   const handleSpanClick = () => {
+    if (isPreviewMode) return;  // Do nothing if in preview mode
+  
     setIsEditing(true);
     if (spanRef.current) {
       const styles = window.getComputedStyle(spanRef.current);
@@ -46,12 +51,17 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
       };
     }
   };
+  
 
   useEffect(() => {
     if (isEditing && textAreaRef.current) {
       textAreaRef.current.focus();
     }
   }, [isEditing]);
+  
+  if (isPreviewMode && isEditing ) {
+    return <span style={style}>{text}</span>;
+  }
 
   if (isEditing) {
     return (
