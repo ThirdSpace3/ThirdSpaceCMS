@@ -155,7 +155,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
 
 
   return (
-    <div className="sss-product-features" style={{ ...featureStyles }} id='features'>
+    <div className="sss-product-features" style={{ ...featureStyles }} id='features' onClick={(event) => handleComponentClick(event, 'features')}>
       <h2 className="sss-product-features-title" id='featuresTitle' onClick={(event) => handleComponentClick(event, 'featuresTitle')} style={{ ...featureTitleStyles }}>
         <EditableText
           text={featuresTitleText}

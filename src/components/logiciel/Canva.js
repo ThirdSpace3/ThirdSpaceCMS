@@ -30,18 +30,18 @@ export default function Canva({ templateName, deviceSize, settings, handleSettin
   return (
     <div className='canva-wrapper' style={{ width: canvasSize.width, height: canvasSize.height, overflowY: 'auto' }}>
       <SelectedTemplate
-deviceSize={deviceSize}
-settings={settings}
-handleSettingsChange={handleSettingsChange}
-selectedElement={selectedElement}
-setSelectedElement={setSelectedElement}
-selectElement={selectElement}
-isPreviewMode={isPreviewMode}
-openImagePanel={openImagePanel}
-imageHistory={imageHistory}
-selectedImage={selectedImage} // Pass down the selectedImage prop
-setSelectedImage={setSelectedImage}
-/>
+        deviceSize={deviceSize}
+        settings={settings}
+        handleSettingsChange={handleSettingsChange}
+        selectedElement={selectedElement}
+        setSelectedElement={setSelectedElement}
+        selectElement={selectElement}
+        isPreviewMode={isPreviewMode}
+        openImagePanel={openImagePanel}
+        imageHistory={imageHistory}
+        selectedImage={selectedImage} // Pass down the selectedImage prop
+        setSelectedImage={setSelectedImage}
+      />
     </div>
   );
 }

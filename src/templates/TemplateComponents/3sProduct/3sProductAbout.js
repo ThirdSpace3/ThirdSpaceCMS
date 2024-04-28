@@ -90,7 +90,7 @@ const AboutSection = ({
 
 
   return (
-    <div className="sss-product-about" style={{ ...aboutStyles}} id='about'>
+    <div className="sss-product-about" style={{ ...aboutStyles}} id='about' onClick={(event) => handleComponentClick(event, 'about')}>
       <div className="sss-product-about-header">
         <h2 className="sss-product-about-title" id='title' onClick={(event) => handleComponentClick(event, 'title')} style={{ ...aboutTitleStyle }}>
           <EditableText

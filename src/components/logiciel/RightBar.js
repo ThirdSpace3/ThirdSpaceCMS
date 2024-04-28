@@ -9,8 +9,8 @@ import BorderSettings from "./RightBarComponents/BorderSettings";
 import BackgroundSettings from "./RightBarComponents/BackgroundSettings";
 import TypographySettings from "./RightBarComponents/TypographySettings";
 import { useImageHistory } from '../../hooks/ImageHistoryContext';
-
-export default function RightBar({ selectedElement }) {
+export default function RightBar({ selectedElement, logChange }) {
+  
   const { addImageToHistory } = useImageHistory();
 
   const [isOpen, setIsOpen] = useState({
@@ -18,22 +18,15 @@ export default function RightBar({ selectedElement }) {
     background: false,
     typographie: false,
     border: false,
+    logs: false,  // Added a toggle for the Log Viewer
+
   });  
-    const toggleSection = (section) => {
+  const toggleSection = (section) => {
     setIsOpen((prevState) => ({
       ...prevState,
       [section]: !prevState[section],
     }));
   };
-  
-
-
-
-
-  const saveStateInSessionStorage = (stateName, state) => {
-    sessionStorage.setItem(stateName, JSON.stringify(state));
-  };
-
 
   const onSettingsChange = (elementId, newStyles) => {
     const element = document.getElementById(elementId);
@@ -49,12 +42,12 @@ export default function RightBar({ selectedElement }) {
           element.style[styleKey] = styleValue;
         }
       });
+      logChange(elementId, newStyles);  // Log this change
       console.log(`Styles applied to ${elementId}:`, newStyles);
     } else {
       console.error(`No element found with ID ${elementId}`);
     }
   };
-  
   return (
     <>
       <div className="rightbar-wrapper">
@@ -94,6 +87,9 @@ export default function RightBar({ selectedElement }) {
             isOpen={isOpen}
             toggleSection={toggleSection}
             selectedElement={selectedElement} // Pass selectedElement as a prop
+            logChange={logChange}
+            onSettingsChange={logChange}
+
           />
 
 

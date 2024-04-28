@@ -4,34 +4,46 @@ const BackgroundSettings = ({
   isOpen,
   toggleSection,
   selectedElement,
+  logChange, // Pass the logging function as a prop
 }) => {
   const fileInputRef = useRef(null);
   
   const handleBackgroundChange = (e, property, componentName) => {
     const value = e.target.value;
     console.log("Selected Element in BackgroundSettings:", selectedElement);
-  
     console.log("Attempting to update style for", selectedElement, "with value", value);
+    
     if (selectedElement) {
       let cssVarName = '';
-      if (componentName === 'navbar') {
-        cssVarName = '--navbar-background-color';
-      } else if (componentName === 'header') {
-        cssVarName = '--header-background-color';
-      } else if (componentName === 'partners') {
-        cssVarName = '--partners-background-color';
-      } else if (componentName === 'about') { // Add this condition
-        cssVarName = '--about-background-color';
-      } else if (componentName === 'features') { // Add this condition
-        cssVarName = '--features-background-color';
-      } else if (componentName === 'joinUs') { // Add this condition
-        cssVarName = '--joinus-background-color';
-      } else if (componentName === 'footer') { // Add this condition
-        cssVarName = '--footer-background-color';
+      switch (componentName) {
+        case 'navbar':
+          cssVarName = '--navbar-background-color';
+          break;
+        case 'header':
+          cssVarName = '--header-background-color';
+          break;
+        case 'partners':
+          cssVarName = '--partners-background-color';
+          break;
+        case 'about':
+          cssVarName = '--about-background-color';
+          break;
+        case 'features':
+          cssVarName = '--features-background-color';
+          break;
+        case 'joinUs':
+          cssVarName = '--joinus-background-color';
+          break;
+        case 'footer':
+          cssVarName = '--footer-background-color';
+          break;
+        default:
+          cssVarName = '--default-background-color'; // Default case to handle unknown components
+          break;
       }
       
-      
       document.documentElement.style.setProperty(cssVarName, value);
+      logChange(selectedElement, { [property]: value }); // Log the change
     }
   };
   
@@ -54,7 +66,7 @@ const BackgroundSettings = ({
               type="file"
               accept="image/*"
               hidden
-              onChange={(e) => handleBackgroundChange(e, "backgroundImage")}
+              onChange={(e) => handleBackgroundChange(e, "backgroundImage", selectedElement)}
             />
             <i className="bi bi-plus"></i>
             <p>Add an Image</p>

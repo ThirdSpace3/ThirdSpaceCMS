@@ -68,7 +68,7 @@ const Footer = ({
   };
 
   return (
-    <div className="sss-product-footer" style={{ ...style, ...settings.footer }} id='footer'>
+    <div className="sss-product-footer" style={{ ...style, ...settings.footer }} id='footer'  onClick={(event) => handleComponentClick(event, 'footer')}>
       <div className="sss-product-footer-top">
         <ReusableImage
           src={footerLogoSrc}

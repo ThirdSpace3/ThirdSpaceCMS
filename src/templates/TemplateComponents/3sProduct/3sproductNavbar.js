@@ -25,6 +25,9 @@ const Navbar = ({
 
 
     const { style, selectedComponent, updateStyle, getComponentStyle } = useStyle();
+    const navbarStyles = settings['navbar'] || {}; // Default to an empty object if no styles
+    console.log("Navbar styles:", navbarStyles); // Debugging line to see what styles are being applied
+
     const homeStyles = getComponentStyle('home');
     const aboutStyles = getComponentStyle('about');
     const featuresStyles = getComponentStyle('navfeatures');
@@ -79,7 +82,7 @@ const Navbar = ({
     };
 
     return (
-        <div className="sss-product-navbar-container navbar-element" id='navbar' onClick={(event) => setSelectedElement('navbar')}>
+        <div className="sss-product-navbar-container navbar-element" id='navbar' style={navbarStyles} onClick={(event) => setSelectedElement('navbar')}>
             <nav className="sss-product-navbar-navbar">
                 <div className="image-container">
                     <ReusableImage

@@ -122,6 +122,35 @@ export default function Display() {
       document.removeEventListener('click', handleGlobalClick);
     };
   }, [clearFocus]);  // Including clearFocus to handle changes correctly
+  const logChange = (elementId, newStyles) => {
+    const timestamp = new Date().toISOString();
+    const logEntry = { timestamp, elementId, newStyles };
+    console.log(logEntry);  // Log to console for debugging
+
+    // Store in sessionStorage for persistence
+    const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
+    logs.push(logEntry);
+    sessionStorage.setItem('editLogs', JSON.stringify(logs));
+    console.log(sessionStorage.getItem('editLogs'));
+  };
+  
+useEffect(() => {
+    const applyLoggedStyles = () => {
+        const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
+        const latestSettings = {};
+        logs.forEach(log => {
+            const { elementId, newStyles } = log;
+            if (!latestSettings[elementId]) {
+                latestSettings[elementId] = {};
+            }
+            Object.assign(latestSettings[elementId], newStyles);
+        });
+        setSettings(latestSettings);
+        
+    };
+
+    applyLoggedStyles();
+}, []);
 
   return (
     <>
@@ -153,7 +182,7 @@ export default function Display() {
 
         </div>
         {!isPreviewMode && (
-          <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} />
+          <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} logChange={logChange} />
         )}
       </div>
     </>
