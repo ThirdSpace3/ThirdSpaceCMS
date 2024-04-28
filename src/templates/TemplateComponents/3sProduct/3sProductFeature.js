@@ -7,7 +7,7 @@ import ReusableImage from '../../../components/logiciel/TemplateComponent/Reusab
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 import { get } from 'lodash';
-const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel }) => {
+const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor }) => {
   const { getComponentStyle } = useStyle();
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
@@ -153,6 +153,15 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     };
   }, []);
 
+  useEffect(() => {
+    const cssVarName = `--features-background-color`;
+    const storedColor = localStorage.getItem(cssVarName);
+  
+    if (storedColor) {
+      setSelectedColor(storedColor);
+      document.documentElement.style.setProperty(cssVarName, storedColor);
+    }
+  }, []);
 
   return (
     <div className="sss-product-features" style={{ ...featureStyles }} id='features' onClick={(event) => handleComponentClick(event, 'features')}>

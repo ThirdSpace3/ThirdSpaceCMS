@@ -149,6 +149,10 @@ const fetchProfile = async (walletId) => {
       setProfilePicture(data.profilePicture || ''); // Set default value to empty string if profile picture doesn't exist
       console.log(data);
     } else {
+      setUsername(shortenAddress(userAccount));
+      setDescription("");
+      setProfilePicture("./images/avatar-placeholder.png"); // Set default value to empty string if profile picture doesn't exist
+
       console.error("Failed to fetch profile data.");
     }
   } catch (err) {

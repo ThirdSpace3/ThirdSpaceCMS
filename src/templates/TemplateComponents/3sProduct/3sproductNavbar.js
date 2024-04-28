@@ -12,7 +12,8 @@ const Navbar = ({
     settings,
     handleSettingsChange,
     openImagePanel,
-    setSelectedElement
+    setSelectedElement,
+    setSelectedColor,
 }) => {
     const { selectedImage, isReplacementMode, enterReplacementMode, selectImage, activeComponent } = useImageHistory();
     const [homeText, setHomeText] = useState('Home');
@@ -23,11 +24,8 @@ const Navbar = ({
     const [imageHeight, setImageHeight] = useState(null);
     const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
 
-
-    const { style, selectedComponent, updateStyle, getComponentStyle } = useStyle();
-    const navbarStyles = settings['navbar'] || {}; // Default to an empty object if no styles
-    console.log("Navbar styles:", navbarStyles); // Debugging line to see what styles are being applied
-
+    const { setSelectedComponent, selectedComponent, updateStyle, getComponentStyle } = useStyle();
+    const navbarStyles = getComponentStyle(selectedComponent || 'navbar');
     const homeStyles = getComponentStyle('home');
     const aboutStyles = getComponentStyle('about');
     const featuresStyles = getComponentStyle('navfeatures');
@@ -35,26 +33,26 @@ const Navbar = ({
 
     const getImageHeight = (src) => {
         return new Promise((resolve) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = () => resolve(img.height);
+            const img = new Image();
+            img.src = src;
+            img.onload = () => resolve(img.height);
         });
-      };
-      useEffect(() => {
+    };
+    useEffect(() => {
         getImageHeight(navbarImage).then((height) => setImageHeight(height));
-      }, []);
+    }, []);
 
     const handleComponentClick = (event, identifier) => {
         event.preventDefault(); // This will prevent the default action of the anchor tag
         event.stopPropagation(); // Stop the event from propagating up
         console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
-        setSelectedElement(identifier);
+        setSelectedComponent(identifier);
     };
 
     const handleTextChange = (newText, textType) => {
         console.log(`Updating text for ${textType}: ${newText}`);
         console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
-    
+
         switch (textType) {
             case 'home':
                 setHomeText(newText);
@@ -71,15 +69,35 @@ const Navbar = ({
             default:
                 break;
         }
+        localStorage.setItem(`navbar-${textType}-text`, newText);
         updateStyle(textType, { text: newText });
     };
-
-
 
     const handleDoubleClick = (event) => {
         event.preventDefault();  // Prevent the default link behavior
         event.stopPropagation(); // Stop propagation to avoid unwanted side effects
     };
+    useEffect(() => {
+        const cssVarName = `--navbar-background-color`;
+        const storedColor = localStorage.getItem(cssVarName);
+      
+        if (storedColor) {
+          setSelectedColor(storedColor);
+          document.documentElement.style.setProperty(cssVarName, storedColor);
+        }
+      }, []);
+      
+    useEffect(() => {
+        setHomeText(localStorage.getItem('navbar-home-text') || 'Home');
+        setAboutText(localStorage.getItem('navbar-about-text') || 'About');
+        setFeaturesText(localStorage.getItem('navbar-navfeatures-text') || 'Features');
+        setJoinUsText(localStorage.getItem('navbar-joinUs-text') || 'Join Us');
+
+        const storedColor = localStorage.getItem(`--navbar-background-color`);
+        if (storedColor) {
+            setSelectedColor(storedColor);
+        }
+    }, [setSelectedColor]);
 
     return (
         <div className="sss-product-navbar-container navbar-element" id='navbar' style={navbarStyles} onClick={(event) => setSelectedElement('navbar')}>
@@ -97,30 +115,30 @@ const Navbar = ({
                     />
                 </div>
                 <ul className="sss-product-navbar-links-box">
-                    <li id='home' onClick={(event) => handleComponentClick(event, 'home')} style={{ ...homeStyles }}>
+                    <li id='home' onClick={(event) => handleComponentClick(event, 'home')} >
                         <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}>
                             <EditableText
                                 text={homeText}
                                 onChange={(newText) => handleTextChange(newText, 'home')}
-                                
-                                                    />
-                        </Link>
-                    </li>
-                    <li id='about' onClick={(event) => handleComponentClick(event, 'about')} style={{ ...aboutStyles }}>
-                        <Link  className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}>
-                            <EditableText
-                                text={aboutText}
-                                onChange={(newText) => handleTextChange(newText, 'about')}
-                                
+                                style={homeStyles}
                             />
                         </Link>
                     </li>
-                    <li id='navfeatures' onClick={(event) => handleComponentClick(event, 'navfeatures')} style={{ ...featuresStyles }}>
-                        <Link  className="sss-product-navbar-links" >
+                    <li id='about' onClick={(event) => handleComponentClick(event, 'about')} >
+                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}>
+                            <EditableText
+                                text={aboutText}
+                                onChange={(newText) => handleTextChange(newText, 'about')}
+                                style={aboutStyles}
+                            />
+                        </Link>
+                    </li>
+                    <li id='navfeatures' onClick={(event) => handleComponentClick(event, 'navfeatures')} >
+                        <Link className="sss-product-navbar-links" >
                             <EditableText
                                 text={featuresText}
                                 onChange={(newText) => handleTextChange(newText, 'navfeatures')}
-                                
+                                style={featuresStyles}
                             />
                         </Link>
                     </li>
@@ -131,7 +149,7 @@ const Navbar = ({
                             <EditableText
                                 text={joinUsText}
                                 onChange={(newText) => handleTextChange(newText, 'joinUs')}
-                               
+                                style={joinUsStyles}
                             />
                         </Link>
                     </a>

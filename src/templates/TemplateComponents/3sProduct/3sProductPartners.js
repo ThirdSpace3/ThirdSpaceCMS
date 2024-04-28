@@ -5,7 +5,7 @@ import ReusableImage from '../../../components/logiciel/TemplateComponent/Reusab
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
-const PartnersSection = ({ handleSettingsChange, settings, openImagePanel, setSelectedElement }) => {
+const PartnersSection = ({ handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor }) => {
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
   const { style, selectedComponent, updateStyle, getComponentStyle } = useStyle();
   const [partnersTitleText, setPartnersTitleText] = useState('Trusted by teams at over 1,000 of the world\'s leading organizations');
@@ -43,9 +43,19 @@ const handleTextChange = (newText, textType) => {
   updateStyle(textType, { text: newText });
 };
 
+useEffect(() => {
+  const cssVarName = `--partners-background-color`;
+  const storedColor = localStorage.getItem(cssVarName);
+
+  if (storedColor) {
+    setSelectedColor(storedColor);
+    document.documentElement.style.setProperty(cssVarName, storedColor);
+  }
+}, []);
+
 
 return(
-    <div className="sss-product-partners" id='partners' onClick={(event) => setSelectedElement('partners')}>
+    <div className="sss-product-partners" id='partners' style={partnerStyle} onClick={(event) => handleComponentClick(event,'partners')}>
       <h2 className="sss-product-partners-title" id='partnersTitle' onClick={(event) => handleComponentClick(event, 'partnersTitle')}>
         <EditableText
           text={partnersTitleText}

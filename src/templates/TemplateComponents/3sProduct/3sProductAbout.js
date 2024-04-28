@@ -6,7 +6,7 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const AboutSection = ({
-  handleSettingsChange, settings, openImagePanel, setSelectedElement, style }) => {
+  handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
@@ -88,6 +88,15 @@ const AboutSection = ({
   };
 
 
+  useEffect(() => {
+    const cssVarName = `--about-background-color`;
+    const storedColor = localStorage.getItem(cssVarName);
+  
+    if (storedColor) {
+      setSelectedColor(storedColor);
+      document.documentElement.style.setProperty(cssVarName, storedColor);
+    }
+  }, []);
 
   return (
     <div className="sss-product-about" style={{ ...aboutStyles}} id='about' onClick={(event) => handleComponentClick(event, 'about')}>

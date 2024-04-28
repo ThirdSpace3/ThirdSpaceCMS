@@ -1,29 +1,40 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 const BackgroundSettings = ({
   isOpen,
   toggleSection,
   selectedElement,
-  logChange, // Pass the logging function as a prop
+  logChange,
+  setSelectedColor,
 }) => {
   const fileInputRef = useRef(null);
-  const [currentColor, setCurrentColor] = useState("");  // State to hold the current color temporarily
-  const [selectedColor, setSelectedColor] = useState(""); // State to hold the confirmed color
+  const [currentColor, setCurrentColor] = useState("");
+  const cssVarName = `--${selectedElement}-background-color`;
 
   const handleColorInput = (e) => {
-    setCurrentColor(e.target.value); // Update temporary color state
+    setCurrentColor(e.target.value);
   };
 
   const handleColorCommit = () => {
     const value = currentColor;
     const cssVarName = `--${selectedElement}-background-color`;
-
-    // Apply the confirmed color change globally
+  
     document.documentElement.style.setProperty(cssVarName, value);
     logChange(selectedElement, { backgroundColor: value });
-    console.log("Final color selected:", value);
-    setSelectedColor(currentColor); // Update the confirmed color state
+    setSelectedColor(currentColor);
+  
+    // Store the selected color in local storage
+    localStorage.setItem(cssVarName, value);
   };
+  
+
+  useEffect(() => {
+    const storedColor = localStorage.getItem(cssVarName);
+    if (storedColor) {
+      setSelectedColor(storedColor);
+      document.documentElement.style.setProperty(cssVarName, storedColor);
+    }
+  }, [selectedElement]);
 
   return (
     <div className="parameters-wrapper">
@@ -39,7 +50,7 @@ const BackgroundSettings = ({
             value={currentColor}
             onInput={handleColorInput}
           />
-          <button className="custom-file-upload" onClick={handleColorCommit}>Apply Color</button>  {/* Button to commit color change */}
+          <button className="custom-file-upload" onClick={handleColorCommit}>Apply Color</button>
         </div>
         <div className="parameters-content-line-row">
           <p className="parameters-content-line-title">Image</p>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import LeftBar from './LeftBar';
@@ -23,7 +23,7 @@ export default function Display() {
   const [activePanel, setActivePanel] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const { clearFocus } = useImageHistory(); // Use the clearFocus method from context
-
+  const [selectedColor, setSelectedColor] = useState(""); // State to hold the confirmed color
 
 
   const handleSettingsChange = (elementId, newSettings) => {
@@ -135,23 +135,23 @@ export default function Display() {
     console.log(sessionStorage.getItem('editLogs'));
   };
   
-useEffect(() => {
-    const applyLoggedStyles = () => {
-        const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
-        const latestSettings = {};
-        logs.forEach(log => {
-            const { elementId, newStyles } = log;
-            if (!latestSettings[elementId]) {
-                latestSettings[elementId] = {};
-            }
-            Object.assign(latestSettings[elementId], newStyles);
-        });
-        setSettings(latestSettings);
-        
-    };
-
-    applyLoggedStyles();
-}, []);
+  const applyStylesFromLogs = useCallback(() => {
+    const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
+    const newSettings = {};
+  
+    logs.forEach(log => {
+      const { elementId, newStyles } = log;
+      newSettings[elementId] = {
+        ...(newSettings[elementId] || {}),
+        ...newStyles
+      };
+    });
+  
+    setSettings(newSettings);
+  }, []);
+  useEffect(() => {
+    applyStylesFromLogs();
+  }, [applyStylesFromLogs]);
 
   return (
     <>
@@ -179,12 +179,14 @@ useEffect(() => {
             isPreviewMode={isPreviewMode}
             openImagePanel={openImagePanel}
             setSelectedImage={setSelectedImage}
+            logChange={logChange}
+            selectedColor={selectedColor} setSelectedColor={setSelectedColor}
           />
 
 
         </div>
         {!isPreviewMode && (
-          <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} logChange={logChange} />
+          <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} logChange={logChange} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
         )}
       </div>
     </>
