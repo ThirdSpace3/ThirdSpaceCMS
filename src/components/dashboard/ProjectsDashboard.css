@@ -234,6 +234,7 @@
   height: 250px;
   object-fit: cover;
   object-position: 50% 0;
+  cursor: pointer;
 }
 
 .projects-content-item-info {

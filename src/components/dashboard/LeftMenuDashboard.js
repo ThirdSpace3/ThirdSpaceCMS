@@ -76,11 +76,11 @@ export default function LeftMenuDashboard({
       <div className="left-menu-container">
         <div className="left-menu-top">
           <div className="profile-container">
-            <img
-              src={localProfilePicture} // Use a default avatar if profilePicture is not available
-              alt="Profile avatar"
-              className="profile-picture" // Apply a CSS class for styling
-            />
+          <img
+  src={localProfilePicture || './images/avatar-placeholder.png'} // Fallback to default avatar if profilePicture is not available
+  alt="Profile avatar"
+  className="profile-picture" // Apply a CSS class for styling
+/>
             <p className="profile-name" onClick={handleCopyAddress}>
               {localUsername}
             </p>
