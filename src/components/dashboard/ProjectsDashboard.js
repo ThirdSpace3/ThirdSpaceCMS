@@ -84,6 +84,7 @@ export default function ProjectsDashboard({
 
   const handleProjectSettings = (index) => {
     handleOpenSettings(index);
+    console.log(index);
   };
   const handleNewProjectClick = () => {
     // Clear the selected template and project name from the session storage
@@ -234,20 +235,25 @@ export default function ProjectsDashboard({
             {recentlyUpdatedProject && (
               <div
                 className="projects-content-item"
-                onClick={() =>
-                  handleProjectClick(recentlyUpdatedProject.logiciel)
-                }
+                
               >
                 <img
                   src={
                     recentlyUpdatedProject.image
                   }
                   alt={recentlyUpdatedProject.name}
+                  onClick={() =>
+                    handleProjectClick(recentlyUpdatedProject.logiciel)
+                  }
                 />
                 <div className="projects-content-item-info">
                   <p>{recentlyUpdatedProject.name}</p>
                   {/* Other project details */}
+                  <div onClick={() => handleProjectSettings(0)}>
+                      <i className="bi bi-three-dots"></i>
+                    </div>
                 </div>
+               
               </div>
             )}
           </div>
@@ -269,7 +275,7 @@ export default function ProjectsDashboard({
                     onClick={() => handleProjectClick(project.logiciel)}
                   />
                   <div className="projects-content-item-info">
-                    <p onClick={() => handleProjectClick(project.name)}>
+                    <p>
                       {project.name}
                     </p>
 
