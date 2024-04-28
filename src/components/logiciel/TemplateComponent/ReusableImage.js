@@ -9,7 +9,6 @@ const ReusableImage = ({
   identifier, // This prop identifies the component
   openImagePanel,
   imageHeight,
-  isPreviewMode,
 }) => {
   const [showReplaceButton, setShowReplaceButton] = useState(false);
   const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
@@ -45,9 +44,6 @@ const ReusableImage = ({
     };
   }, []);
 
-  if (isPreviewMode) {
-    return <img src={src} alt={alt} style={{ height: imageHeight }} />;
-  }
   return (
     <div className="image-container" ref={imageContainerRef}>
       <img

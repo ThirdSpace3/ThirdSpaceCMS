@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const StyleContext = createContext();
 
@@ -7,24 +7,24 @@ export const StyleProvider = ({ children }) => {
 const [selectedComponent, setSelectedComponent] = useState(null);
   const [selectedElement, setSelectedElement] = useState(null);  // Ensure this is managed correctly
   const [settings, setSettings] = useState({ textStyles: {} });
-  
+
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log("Current selected component:", selectedComponent);
-      console.log("Current selected element:", selectedElement);
-    }
+    console.log("Current selected component:", selectedComponent);
+    console.log("Current selected element:", selectedElement);  // Log for debugging
   }, [selectedComponent, selectedElement]);
 
-  const updateStyle = useCallback((componentName, newStyle) => {
+
+
+  const updateStyle = (componentName, newStyle) => {
     setStyle(prevStyle => {
         const updatedStyle = {
             ...prevStyle,
             [componentName]: { ...prevStyle[componentName], ...newStyle }
         };
-        // console.log(`Styles updated for ${componentName}:`, updatedStyle[componentName]);
+        console.log(`Styles updated for ${componentName}:`, updatedStyle[componentName]);
         return updatedStyle;
     });
-  }, []); // Ensure dependencies are correctly managed
+};
 
   
   const updateSettings = (newSettings) => {

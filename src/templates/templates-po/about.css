@@ -61,7 +61,7 @@
     background: #270E30;
   }
   .sss-product-about-item-img {
-    height: 35px !important;
+    height: 35px;
     width: auto;
   }
   .sss-product-about-item-title {
@@ -115,19 +115,3 @@
       font-size: 35px;
     }
   }
-
-
-  .no-interaction {
-    pointer-events: none;
-    cursor: default;
-  }
-  
-  .no-interaction a, .no-interaction button {
-    pointer-events: none;
-    color: grey; /* Optional: change the color to indicate non-interactivity */
-  }
-  .no-interaction:hover {
-    transform: none;
-    background-color: inherit; /* Or any other hover effect you want to nullify */
-  }
-  

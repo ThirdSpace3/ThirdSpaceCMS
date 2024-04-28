@@ -6,7 +6,6 @@ import AboutSection from "./TemplateComponents/3sProduct/3sProductAbout";
 import FeaturesSection from "./TemplateComponents/3sProduct/3sProductFeature";
 import JoinUsSection from "./TemplateComponents/3sProduct/3sProductJoinUs";
 import Footer from "./TemplateComponents/3sProduct/3sProductFooter";
-import { useTemplateContext } from "../hooks/TemplateContext";
 
 const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -24,7 +23,7 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
   };
 
   return (
-    <div className="sss-product-container" onClick={isPreviewMode ? (e) => e.stopPropagation():true}>
+    <div className="sss-product-container">
       <Navbar
         isMenuOpen={isMenuOpen}
         toggleMenu={toggleMenu}
@@ -37,9 +36,8 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        isPreviewMode={isPreviewMode}
       />
-
+      
       <HeaderSection
         style={settings}
         settings={settings}
@@ -49,8 +47,6 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        isPreviewMode={isPreviewMode}
-
       />
 
       <PartnersSection
@@ -62,7 +58,6 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        isPreviewMode={isPreviewMode}
 
       />
       <AboutSection
@@ -74,7 +69,6 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        isPreviewMode={isPreviewMode}
 
 
       />
@@ -87,7 +81,6 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        isPreviewMode={isPreviewMode}
 
       />
       <JoinUsSection
@@ -99,7 +92,6 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        isPreviewMode={isPreviewMode}
 
       />
       <Footer
@@ -111,7 +103,6 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        isPreviewMode={isPreviewMode}
 
       />
     </div>

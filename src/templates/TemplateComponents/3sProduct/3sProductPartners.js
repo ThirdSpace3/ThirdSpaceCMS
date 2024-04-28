@@ -5,24 +5,12 @@ import ReusableImage from '../../../components/logiciel/TemplateComponent/Reusab
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
-const PartnersSection = ({
-  handleSettingsChange,
-  settings,
-  openImagePanel,
-  setSelectedElement,
-  isPreviewMode
-}) => {
+const PartnersSection = ({ handleSettingsChange, settings, openImagePanel, setSelectedElement }) => {
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
-  const { style, updateStyle, getComponentStyle } = useStyle();
-
+  const { style, selectedComponent, updateStyle, getComponentStyle } = useStyle();
   const [partnersTitleText, setPartnersTitleText] = useState('Trusted by teams at over 1,000 of the world\'s leading organizations');
   const [partnerImages, setPartnerImages] = useState(Array(7).fill().map((_, i) => `./images/templates-img/3sproduct/3sproduct-partners-${i+1}.png`));
   const [imageHeight, setImageHeight] = useState(null);
-
-  useEffect(() => {
-    getImageHeight(partnerImages[0]).then((height) => setImageHeight(height));  // Just as an example to get height from the first image
-  }, [partnerImages]);
-
   const getImageHeight = (src) => {
     return new Promise((resolve) => {
       const img = new Image();
@@ -30,55 +18,54 @@ const PartnersSection = ({
       img.onload = () => resolve(img.height);
     });
   };
+  useEffect(() => {
+    getImageHeight(`./images/templates-img/3sproduct/3sproduct-partners-1.png`).then((height) => setImageHeight(height));
+  }, []);
+
 
   const partnerStyle = getComponentStyle('partners');
   const partnersTitleStyle = getComponentStyle('partnersTitle');
+
 
   const handleComponentClick = (event, identifier) => {
     event.preventDefault(); // This will prevent the default action of the anchor tag
     event.stopPropagation(); // Stop the event from propagating up
     console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
     setSelectedElement(identifier);
-  };
+};
 
-  const handleTextChange = (newText, textType) => {
-    switch (textType) {
+const handleTextChange = (newText, textType) => {
+  switch (textType) {
       case 'partnersTitle':
         setPartnersTitleText(newText);
-        break;
-    }
-    updateStyle(textType, { text: newText });
-    console.log(`Requested style update for ${textType}`);
-  };
+          break;
+  }
+  updateStyle(textType, { text: newText });
+};
 
-  return (
 
-    <div className={`sss-product-partners ${isPreviewMode ? '' : 'interactive'}`} id='partners' style={partnerStyle} onClick={isPreviewMode ? undefined : (event) => setSelectedElement('partners')}>
-      <h2 className="sss-product-partners-title" id='partnersTitle' style={partnersTitleStyle}>
-        {isPreviewMode ? partnersTitleText : (
-          <EditableText
-            text={partnersTitleText}
-            onChange={(newText) => handleTextChange(newText, 'partnersTitle')}
-            onClick={(event) => handleComponentClick(event, 'partnersTitle')}
-          />
-        )}
+return(
+    <div className="sss-product-partners" id='partners' onClick={(event) => setSelectedElement('partners')}>
+      <h2 className="sss-product-partners-title" id='partnersTitle' onClick={(event) => handleComponentClick(event, 'partnersTitle')}>
+        <EditableText
+          text={partnersTitleText}
+          onChange={(newText) => handleTextChange(newText, 'partnersTitle')}
+          style={{ ...partnersTitleStyle }}
+/>
       </h2>
       <div className="sss-product-partners-box">
         {partnerImages.map((src, index) => (
-          isPreviewMode ? (
-            <img className='sss-product-partners-box-img' key={index} src={src} alt={`Partner ${index + 1}`} style={{ height: '150px', width: 'auto' }} />
-          ) : (
-            <ReusableImage
-              key={index}
-              src={src}
-              alt={`Partner ${index + 1}`}
-              openImagePanel={openImagePanel}
-              onImageChange={(newSrc) => selectImage(newSrc)}
-              selectedImage={activeComponent === `partnerImage-${index}` ? selectedImage : null}
-              identifier={`Partner ${index + 1}`}
-              imageHeight={imageHeight}
-            />
-          )
+          <ReusableImage
+            key={index}
+            src={src}
+            alt={`Partner ${index + 1}`}
+            openImagePanel={openImagePanel}
+            onImageChange={(newSrc) => selectImage(newSrc)}
+            selectedImage={activeComponent === `partnerImage-${index}` ? selectedImage : null}
+            style={{ height: '150px', width: 'auto' }}  // Add necessary styles
+            identifier={`Partner ${index + 1}`}
+            imageHeight={imageHeight}
+          />
         ))}
       </div>
     </div>

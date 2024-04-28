@@ -135,26 +135,25 @@ export default function Display() {
     console.log(sessionStorage.getItem('editLogs'));
   };
   
-  useEffect(() => {
+useEffect(() => {
     const applyLoggedStyles = () => {
         const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
-        const latestSettings = { ...settings }; // Spread the current settings to maintain other configurations
-
+        const latestSettings = {};
         logs.forEach(log => {
             const { elementId, newStyles } = log;
-            latestSettings[elementId] = {
-                ...(latestSettings[elementId] || {}), // Merge with existing styles
-                ...newStyles
-            };
+            if (!latestSettings[elementId]) {
+                latestSettings[elementId] = {};
+            }
+            Object.assign(latestSettings[elementId], newStyles);
         });
-
         setSettings(latestSettings);
+        
     };
 
     applyLoggedStyles();
-}, [sessionStorage.getItem('editLogs')]); // Depend on a change in the session storage item
+}, []);
 
-return (
+  return (
     <>
      
       <div className="displayWrapper">
