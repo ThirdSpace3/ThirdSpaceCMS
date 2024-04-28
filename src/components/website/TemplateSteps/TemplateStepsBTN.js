@@ -56,7 +56,7 @@ const handleNextClick = async () => {
 
   return (
     <div className="btn-box">
-      {currentStep !== 4 && currentStep !== 5 && (
+      {currentStep !== 3 && currentStep !== 4 && currentStep !== 5 && (
         <button className="ignore-btn" onClick={onIgnore}>
           Skip
         </button>
