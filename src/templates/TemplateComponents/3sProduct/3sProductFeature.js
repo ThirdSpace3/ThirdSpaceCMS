@@ -156,36 +156,36 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
 
   return (
     <div className="sss-product-features" style={{ ...style, ...settings.features }} id='features'>
-      <h2 className="sss-product-features-title" id='featuresTitle' onClick={(event) => handleComponentClick(event, 'featuresTitle')}>
+      <h2 className="sss-product-features-title" id='featuresTitle' onClick={(event) => handleComponentClick(event, 'featuresTitle')} style={{ ...featureTitleStyles }}>
         <EditableText
           text={featuresTitleText}
           onChange={(newText) => setFeaturesTitleText(newText)}
-          style={{ ...featureTitleStyles }}
+          
         />
       </h2>
       <div className="sss-product-features-box">
         {/* Top Feature Section */}
         <div className="sss-product-features-box-top">
           <div className="sss-product-features-box-top-left">
-            <h3 className="sss-product-features-box-top-left-title" id='endToEndTitle' onClick={(event) => handleComponentClick(event, 'endToEndTitle')}>
+            <h3 className="sss-product-features-box-top-left-title" id='endToEndTitle' onClick={(event) => handleComponentClick(event, 'endToEndTitle')} style={{...endToEndTitleStyles}}>
               <EditableText
                 text={endToEndText}
                 onChange={(newText) => setEndToEndText(newText)}
-                style={{...endToEndTitleStyles}}
+                
               />
             </h3>
-            <p className='sss-product-features-box-top-left-text'  id='endToEndDescription' onClick={(event) => handleComponentClick(event, 'endToEndDescription')}>
+            <p className='sss-product-features-box-top-left-text'  id='endToEndDescription' onClick={(event) => handleComponentClick(event, 'endToEndDescription')} style={{...endToEndDescriptionStyles}}>
               <EditableText
                 text={endToEndDesc.text}
                 onChange={(newText) => setEndToEndDesc({ ...endToEndDesc, text: newText })}
-                style={{...endToEndDescriptionStyles}}
+                
               />
             </p>
-            <Link to="/join-us" className="sss-product-navbar-cta" id='featuresJoinUs' onClick={(event) => handleComponentClick(event, 'featuresJoinUs')}>
+            <Link to="/join-us" className="sss-product-navbar-cta" id='featuresJoinUs' onClick={(event) => handleComponentClick(event, 'featuresJoinUs')} style={{...featuresJoinsUsStyles}}>
               <EditableText
                 text={joinUsText}
                 onChange={(newText) => setEndToEndDesc({ ...endToEndDesc, text: newText })}
-                style={{...featuresJoinsUsStyles}}
+                
               />
             </Link>          </div>
           <div className="sss-product-features-box-top-right">
@@ -221,27 +221,27 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
                 style={{...mobileAppsTitleStyles}}
               />
             </h3>
-            <p className='sss-product-features-box-top-left-text' id='mobileAppDescription' onClick={(event) => handleComponentClick(event, 'mobileAppDescription')}>
+            <p className='sss-product-features-box-top-left-text' id='mobileAppDescription' onClick={(event) => handleComponentClick(event, 'mobileAppDescription')} style={{...mobileAppsDescriptionStyles}}>
               <EditableText
                 text={mobileAppsDesc.text}
                 onChange={(newText) => setMobileAppsDesc({ ...mobileAppsDesc, text: newText })}
-                style={{...mobileAppsDescriptionStyles}}
+                
               />
             </p>
           </div>
           <div className="sss-product-features-box-bottom-right">
-            <h3 className="sss-product-features-box-bottom-right-title" id='uploadShareTitle' onClick={(event) => handleComponentClick(event, 'uploadShareTitle')}>
+            <h3 className="sss-product-features-box-bottom-right-title" id='uploadShareTitle' onClick={(event) => handleComponentClick(event, 'uploadShareTitle')} style={{...uploadShareTitleStyles}}>
               <EditableText
                 text={uploadShareText}
                 onChange={(newText) => setUploadShareText(newText)}
-                style={{...uploadShareTitleStyles}}
+                
               />
             </h3>
-            <p className='sss-product-features-box-top-left-text' id='uploadShareDescription' onClick={(event) => handleComponentClick(event, 'uploadShareDescription')}>
+            <p className='sss-product-features-box-top-left-text' id='uploadShareDescription' onClick={(event) => handleComponentClick(event, 'uploadShareDescription')} style={{...uploadShareDescriptionStyles}}>
               <EditableText
                 text={uploadShareDesc.text}
                 onChange={(newText) => setUploadShareDesc({ ...uploadShareDesc, text: newText })}
-                style={{...uploadShareDescriptionStyles}}
+                
               />
             </p>
             <ReusableImage

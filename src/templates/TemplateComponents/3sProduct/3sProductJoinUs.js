@@ -71,19 +71,18 @@ const JoinUsSection = ({ handleSettingsChange, selectElement, openImagePanel }) 
           imageHeight="80px"
           identifier={"joinUs"}
         />
-        <h2 className="sss-product-joinus-title">
+        <h2 className="sss-product-joinus-title" style={JoinUsStyles}>
           <EditableText
             text={joinUsTitleText}
-            style={JoinUsStyles}
             onChange={(text) => handleTextChange(text, setJoinUsTitleText)}
             onStyleChange={(style) => handleTextStyleChange('joinUsTitle', style)}
             selectElement={selectElement}
           />
         </h2>
-        <p className='sss-product-joinus-text'>
+        <p className='sss-product-joinus-text' style={JoinUsStyles}>
           <EditableText
             text={joinUsDescriptionText}
-            style={JoinUsStyles}
+           
             onChange={(text) => handleTextChange(text, setJoinUsDescriptionText)}
             onStyleChange={(style) => handleTextStyleChange('joinUsDescription', style)}
             selectElement={selectElement}

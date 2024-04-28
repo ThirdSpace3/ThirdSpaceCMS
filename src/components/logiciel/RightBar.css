@@ -395,11 +395,12 @@
   width: 18px;
   height: auto;
 }
-.borders-selection-icon:hover {
+.borders-selection-icon:hover, .borders-selection-icon.active-border-icon {
   border-radius: 2.561px;
   background: #334155;
   cursor: pointer;
 }
+
 .borders-container {
   display: flex;
   flex-direction: row;

@@ -35,9 +35,9 @@ const AboutSection = ({
   const aboutDescriptionStyles = getComponentStyle('description');
   const featureTitlesStyles = getComponentStyle('featureTitles');
   const featureDescriptionsStyles = getComponentStyle('featureDescriptions');
-// Initialize styles for each feature card
-const [featureTitleStyles, setFeatureTitleStyles] = useState(Array(6).fill().map(() => ({ featureTitlesStyles })));
-const [featureDescriptionStyles, setFeatureDescriptionStyles] = useState(Array(6).fill().map(() => ({ featureDescriptionsStyles })));
+  // Initialize styles for each feature card
+  const [featureTitleStyles, setFeatureTitleStyles] = useState(Array(6).fill().map(() => ({ featureTitlesStyles })));
+  const [featureDescriptionStyles, setFeatureDescriptionStyles] = useState(Array(6).fill().map(() => ({ featureDescriptionsStyles })));
 
   const [imageHeight, setImageHeight] = useState(null);
   const getImageHeight = (src) => {
@@ -51,7 +51,7 @@ const [featureDescriptionStyles, setFeatureDescriptionStyles] = useState(Array(6
     getImageHeight(`./images/templates-img/3sproduct/3sproduct-about-1.png`).then((height) => setImageHeight(height));
   }, []);
 
-  
+
   const handleComponentClick = (event, identifier, index = null) => {
     event.preventDefault();
     event.stopPropagation();
@@ -63,8 +63,8 @@ const [featureDescriptionStyles, setFeatureDescriptionStyles] = useState(Array(6
     console.log(`${identifier} at index ${index} clicked, setting selected element to '${elementID}'`);
     setSelectedElement(elementID);
   };
-  
-  
+
+
   const handleTextChange = (newText, identifier, index = null) => {
     if (identifier === 'title') {
       setAboutTitleText(newText);
@@ -87,55 +87,53 @@ const [featureDescriptionStyles, setFeatureDescriptionStyles] = useState(Array(6
   };
 
 
-  
+
   return (
     <div className="sss-product-about" style={{ ...style, ...settings.about }} id='about'>
       <div className="sss-product-about-header">
-  <h2 className="sss-product-about-title" id='title' onClick={(event) => handleComponentClick(event, 'title')}>
-    <EditableText
-      text={aboutTitleText}
-      onChange={(text) => handleTextChange(text, 'title')}
-      style={{ ...aboutTitleStyle }}
-    />
-  </h2>
-  <p className="sss-product-about-text" id='description' onClick={(event) => handleComponentClick(event, 'description')}>
-    <EditableText
-      text={aboutDescriptionText}
-      onChange={(text) => handleTextChange(text, 'description')}
-      style={{ ...aboutDescriptionStyles }}
-    />
-  </p>
-</div>
-<div className="sss-product-about-box">
-  {aboutImages.map((src, index) => (
-    <div key={index} className="sss-product-about-item">
-      <ReusableImage
-        src={src}
-        alt={`Feature ${index + 1}`}
-        openImagePanel={() => openImagePanel(`aboutImage-${index}`)}
-        onImageChange={(newSrc) => selectImage(newSrc, index)}
-        selectedImage={activeComponent === `aboutImage-${index}` ? selectedImage : null}
-        style={{ height: '150px', width: 'auto' }}
-        identifier={`aboutImage-${index}`}
-        imageHeight={imageHeight}
-      />
-      <h3 className="sss-product-about-item-title" id={`featureTitle-${index}`} onClick={(event) => handleComponentClick(event, 'featureTitle', index)}>
-        <EditableText
-          text={featureTitles[index]}
-          onChange={(text) => handleTextChange(text, 'featureTitle', index)}
-          style={featureTitleStyles[index]}
-        />
-      </h3>
-      <p className="sss-product-about-item-text" id={`featureDescription-${index}`} onClick={(event) => handleComponentClick(event, 'featureDescription', index)}>
-        <EditableText
-          text={featureDescriptions[index]}
-          onChange={(text) => handleTextChange(text, 'featureDescription', index)}
-          style={featureDescriptionStyles[index]}
-        />
-      </p>
-    </div>
-  ))}
-</div>
+        <h2 className="sss-product-about-title" id='title' onClick={(event) => handleComponentClick(event, 'title')} style={{ ...aboutTitleStyle }}>
+          <EditableText
+            text={aboutTitleText}
+            onChange={(text) => handleTextChange(text, 'title')}
+          />
+        </h2>
+        <p className="sss-product-about-text" id='description' onClick={(event) => handleComponentClick(event, 'description')} style={{ ...aboutDescriptionStyles }}>
+          <EditableText
+            text={aboutDescriptionText}
+            onChange={(text) => handleTextChange(text, 'description')}
+          />
+        </p>
+      </div>
+      <div className="sss-product-about-box">
+        {aboutImages.map((src, index) => (
+          <div key={index} className="sss-product-about-item">
+            <ReusableImage
+              src={src}
+              alt={`Feature ${index + 1}`}
+              openImagePanel={() => openImagePanel(`aboutImage-${index}`)}
+              onImageChange={(newSrc) => selectImage(newSrc, index)}
+              selectedImage={activeComponent === `aboutImage-${index}` ? selectedImage : null}
+              style={{ height: '150px', width: 'auto' }}
+              identifier={`aboutImage-${index}`}
+              imageHeight={imageHeight}
+            />
+            <h3 className="sss-product-about-item-title" id={`featureTitle-${index}`} onClick={(event) => handleComponentClick(event, 'featureTitle', index)}>
+              <EditableText
+                text={featureTitles[index]}
+                onChange={(text) => handleTextChange(text, 'featureTitle', index)}
+                style={featureTitleStyles[index]}
+              />
+            </h3>
+            <p className="sss-product-about-item-text" id={`featureDescription-${index}`} onClick={(event) => handleComponentClick(event, 'featureDescription', index)}>
+              <EditableText
+                text={featureDescriptions[index]}
+                onChange={(text) => handleTextChange(text, 'featureDescription', index)}
+                style={featureDescriptionStyles[index]}
+              />
+            </p>
+          </div>
+        ))}
+      </div>
 
 
 

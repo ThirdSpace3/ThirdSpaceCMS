@@ -89,7 +89,7 @@ export default function BorderSettings({
             <div className="borders-selection-icon-box">
               <div
                 className={`borders-selection-icon ${
-                  isAllSidesSelected || activeBorderSide === "top"
+                  activeBorderSide === "top"
                     ? "active-border-icon"
                     : ""
                 }`}
@@ -115,7 +115,7 @@ export default function BorderSettings({
                 </div>
                 <div
                   className={`borders-selection-icon ${
-                    isAllSidesSelected ? "active-border-icon" : ""
+                    activeBorderSide === "all" ? "active-border-icon" : ""
                   }`}
                   onClick={() => setActiveBorderSide("all")}
                 >
@@ -139,7 +139,7 @@ export default function BorderSettings({
 
               <div
                 className={`borders-selection-icon ${
-                  isAllSidesSelected || activeBorderSide === "bottom"
+                  activeBorderSide === "bottom"
                     ? "active-border-icon"
                     : ""
                 }`}

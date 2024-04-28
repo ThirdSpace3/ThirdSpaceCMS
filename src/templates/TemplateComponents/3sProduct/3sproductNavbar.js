@@ -47,7 +47,11 @@ const Navbar = ({
         console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
         setSelectedElement(identifier);
     };
+
     const handleTextChange = (newText, textType) => {
+        console.log(`Updating text for ${textType}: ${newText}`);
+        console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
+    
         switch (textType) {
             case 'home':
                 setHomeText(newText);
@@ -90,39 +94,39 @@ const Navbar = ({
                     />
                 </div>
                 <ul className="sss-product-navbar-links-box">
-                    <li id='home' onClick={(event) => handleComponentClick(event, 'home')}>
+                    <li id='home' onClick={(event) => handleComponentClick(event, 'home')} style={{ ...homeStyles }}>
                         <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}>
                             <EditableText
                                 text={homeText}
                                 onChange={(newText) => handleTextChange(newText, 'home')}
-                                style={{ ...homeStyles }}
+                                
                                                     />
                         </Link>
                     </li>
-                    <li id='about' onClick={(event) => handleComponentClick(event, 'about')}>
+                    <li id='about' onClick={(event) => handleComponentClick(event, 'about')} style={{ ...aboutStyles }}>
                         <Link  className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}>
                             <EditableText
                                 text={aboutText}
                                 onChange={(newText) => handleTextChange(newText, 'about')}
-                                style={{ ...aboutStyles }}
+                                
                             />
                         </Link>
                     </li>
-                    <li id='navfeatures' onClick={(event) => handleComponentClick(event, 'navfeatures')}>
+                    <li id='navfeatures' onClick={(event) => handleComponentClick(event, 'navfeatures')} style={{ ...featuresStyles }}>
                         <Link  className="sss-product-navbar-links" >
                             <EditableText
                                 text={featuresText}
                                 onChange={(newText) => handleTextChange(newText, 'navfeatures')}
-                                style={{ ...featuresStyles }}
+                                
                             />
                         </Link>
                     </li>
-                    <li id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
+                    <li id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}  style={{ ...joinUsStyles }}>
                         <Link className="sss-product-navbar-cta">
                             <EditableText
                                 text={joinUsText}
                                 onChange={(newText) => handleTextChange(newText, 'joinUs')}
-                                style={{ ...joinUsStyles }}
+                               
                             />
                         </Link>
                     </li>

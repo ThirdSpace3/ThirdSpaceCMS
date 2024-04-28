@@ -50,7 +50,7 @@ return(
         <EditableText
           text={partnersTitleText}
           onChange={(newText) => handleTextChange(newText, 'partnersTitle')}
-          style={{ ...partnerStyle }}
+          style={{ ...partnersTitleStyle }}
 />
       </h2>
       <div className="sss-product-partners-box">

@@ -27,6 +27,9 @@
     font-size: 45px;
     font-style: normal;
     font-weight: 700;
+    border: 2px solid transparent; /* set default border to transparent */
+    padding: 2px 4px;
+    border-radius: 3px;
   }
   .sss-product-hero-text {
     color: var(--Neutral-gray-300, var(--navbar-link-color));
@@ -70,3 +73,8 @@
     }
   }
   
+  /* define border styles for when the hero title is selected or focused */
+.sss-product-hero-title.selected,
+.sss-product-hero-title:focus-within {
+  border-color: var(--navbar-border-color); /* use the same color variable as the navbar */
+}

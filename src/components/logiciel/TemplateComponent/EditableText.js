@@ -6,10 +6,8 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
   const [currentText, setCurrentText] = useState(text);
   const [error, setError] = useState(false);
   const spanRef = useRef(null);
-  const inputRef = useRef(null);
-  const [isActive, setIsActive] = useState(false);
+  const textAreaRef = useRef(null);
 
-  // Capture the computed styles of the span to apply to the input
   const computedStyle = useRef({});
 
   const handleInputChange = (event) => {
@@ -20,9 +18,8 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
   const handleBlur = () => {
     if (!currentText.trim()) {
       setError(true);
-      setCurrentText(text); // revert to original text or keep the changed text
+      setCurrentText(text); // revert to original text
     } else {
-      setIsActive(false);
       setIsEditing(false);
       onChange(currentText);
       if (typeof handleSettingsChange === 'function') {
@@ -31,89 +28,55 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
     }
   };
 
-  const handleSpanClick = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    if (typeof selectElement === 'function') {
-      selectElement(textType);
-    }
-    setIsActive(true);
+  const handleSpanClick = () => {
     setIsEditing(true);
-    // Capture styles when the span is clicked and before editing begins
     if (spanRef.current) {
       const styles = window.getComputedStyle(spanRef.current);
       computedStyle.current = {
         width: `${spanRef.current.offsetWidth}px`,
-        height: `${spanRef.current.offsetHeight}px`,
+        minHeight: `${spanRef.current.offsetHeight}px`, // use minHeight to allow expansion
         fontFamily: styles.fontFamily,
         fontSize: styles.fontSize,
         fontWeight: styles.fontWeight,
         color: styles.color,
         backgroundColor: styles.backgroundColor,
+        border: 'none',
+        padding: '0',
+        resize: 'none', // disable resizing
       };
     }
   };
-  const finalStyle = {...style, ...computedStyle.current};
 
   useEffect(() => {
-    if (error && inputRef.current) {
-      inputRef.current.focus();
+    if (isEditing && textAreaRef.current) {
+      textAreaRef.current.focus();
     }
-  }, [error]);
-  useEffect(() => {
-    if (style) {
-      computedStyle.current = { ...computedStyle.current, ...style }; // Merge existing computed styles with new styles
-    }
-  }, [style]);
-
-  useEffect(() => {
-    if (!isEditing && spanRef.current) {
-      const styles = window.getComputedStyle(spanRef.current);
-      computedStyle.current = {
-        width: `${spanRef.current.offsetWidth}px`,
-        height: `${spanRef.current.offsetHeight}px`,
-        fontFamily: styles.fontFamily,
-        fontSize: styles.fontSize,
-        fontWeight: styles.fontWeight,
-        color: styles.color,
-        textAlign: styles.textAlign,
-        backgroundColor: styles.backgroundColor,
-        cursor: 'pointer',
-      };
-    }
-  }, [text, isEditing]);
+  }, [isEditing]);
 
   if (isEditing) {
     return (
-        <input
-            type="text"
+        <textarea
             value={currentText}
             onChange={handleInputChange}
             onBlur={handleBlur}
-            autoFocus
-            ref={inputRef}
-            className={`editable-text-input ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}
-            style={finalStyle}
-            onClick={() => {
-              if (typeof selectElement === 'function') {
-                selectElement(textType);
-              }
-            }}
+            ref={textAreaRef}
+            style={computedStyle.current}
+            className={`editable-text-area ${error ? 'error' : ''}`}
         />
     );
-} else {
+  } else {
     return (
         <span
             ref={spanRef}
             onClick={handleSpanClick}
             style={style}
-            className={`editable-text-span ${error ? 'error' : ''} ${isActive ? 'active' : ''}`}
+            className={`editable-text-span ${error ? 'error' : ''}`}
             id={selectElement}
         >
             {text}
         </span>
     );
-}
+  }
 };
 
 export default EditableText;
