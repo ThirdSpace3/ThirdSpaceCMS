@@ -10,6 +10,7 @@
 
 .sss-product-joinus-main{
   background-color: var(--joinUs-background-color);
+  
 
 }
 .sss-product-joinus {
@@ -66,7 +67,7 @@
   }
   
   /* Pour les mobiles */
-  @media (max-width: 767px) {
+  @container  (max-width: 767px) {
     .sss-product-joinus {
       padding: 20px;
     }

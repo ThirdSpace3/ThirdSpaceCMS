@@ -160,7 +160,7 @@
   }
   
   /* Pour les mobiles */
-  @media (max-width: 767px) {
+  @container  (max-width: 767px) {
     .sss-product-features {
       gap: 20px;
       padding: 30px;

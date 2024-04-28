@@ -155,7 +155,7 @@ useEffect(() => {
 
   return (
     <>
-      <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
+     
       <div className="displayWrapper">
         {!isPreviewMode && (
           <LeftBar
@@ -167,6 +167,7 @@ useEffect(() => {
 
         )}
         <div className="displayColumnWrapper">
+        <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
           <Canva
             templateName={templateName}
             deviceSize={selectedDeviceSize}

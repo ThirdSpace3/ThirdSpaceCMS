@@ -62,7 +62,7 @@
   .topbar-propulse-btn:hover {
     color: var(--white);
     display: flex;
-    background-color: #4f4dd1;
+    background-color: #5b0097;
     cursor: pointer;
   }
   .topbar-device-btn {

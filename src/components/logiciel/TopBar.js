@@ -5,8 +5,8 @@ import PropulsePopup from "./PropulsePopup";
 
 const deviceSizes = {
   tv: "100%",
-  tablet: "60%",
-  smartphone: "30%",
+  tablet: "780px",
+  smartphone: "500px",
 };
 
 const TopBar = ({
@@ -19,7 +19,7 @@ const TopBar = ({
   const [eyeIcon, setEyeIcon] = useState("bi bi-eye");
   const [showPopup, setShowPopup] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [focusedDevice, setFocusedDevice] = useState(null); // New state for focused device
+  const [focusedDevice, setFocusedDevice] = useState(deviceSizes.tv); // New state for focused device
 
   useEffect(() => {
     const handleOutsideClick = (e) => {

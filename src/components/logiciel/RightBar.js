@@ -14,11 +14,11 @@ export default function RightBar({ selectedElement, logChange }) {
   const { addImageToHistory } = useImageHistory();
 
   const [isOpen, setIsOpen] = useState({
-    size: false,
-    background: false,
-    typographie: false,
-    border: false,
-    logs: false,  // Added a toggle for the Log Viewer
+    size: true,
+    background: true,
+    typographie: true,
+    border: true,
+    logs: true,  // Added a toggle for the Log Viewer
 
   });  
   const toggleSection = (section) => {
@@ -54,22 +54,22 @@ export default function RightBar({ selectedElement, logChange }) {
         <div className="style-wrapper">
           {/* Section Size */}
 
-          <SizeSection
+          {/* <SizeSection
             isOpen={isOpen}
             toggleSection={toggleSection}
             onSettingsChange={onSettingsChange}
             selectedElement={selectedElement}
-          />
+          /> */}
 
           {/* Section Spacing */}
 
-          <SpacingSettings
+          {/* <SpacingSettings
             isOpen={isOpen}
             toggleSection={toggleSection}
             onSettingsChange={onSettingsChange}
             selectedElement={selectedElement}
 
-          />
+          /> */}
 
           {/* Section Border */}
 

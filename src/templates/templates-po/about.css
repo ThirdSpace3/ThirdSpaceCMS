@@ -79,7 +79,7 @@
     font-weight: 400;
   }
   /* Pour les écrans de bureau */
-  @media (min-width: 992px) {
+  @container  (min-width: 992px) {
     .sss-product-about-item {
       width: calc(
         33.333% - 20px
@@ -88,7 +88,7 @@
   }
   
   /* Pour les tablettes */
-  @media (min-width: 768px) and (max-width: 991px) {
+  @container  (min-width: 768px) and (max-width: 991px) {
     .sss-product-about-item {
       width: calc(
         50% - 20px
@@ -97,7 +97,7 @@
   }
   
   /* Pour les mobiles */
-  @media (max-width: 767px) {
+  @container  (max-width: 767px) {
     .sss-product-about-item {
       width: 100%; /* 1 élément par ligne */
     }
