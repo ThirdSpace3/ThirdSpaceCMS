@@ -10,10 +10,10 @@ export default function LeftMenuDashboard({
 }) {
   const [userAccount, setUserAccount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-  const [showCopiedMessage, setShowCopiedMessage] = useState(false); // New state for the copied message
+  const [showCopiedMessage, setShowCopiedMessage] = useState(false);
   const [localUsername, setLocalUsername] = useState("");
   const [localProfilePicture, setLocalProfilePicture] = useState("");
-  
+
   useEffect(() => {
     const isLoggedIn = sessionStorage.getItem("isLoggedIn");
     const account = sessionStorage.getItem("userAccount");
@@ -22,8 +22,8 @@ export default function LeftMenuDashboard({
     } else {
       setShowPopup(true);
     }
-  }, [userAccount]);  // Dependency on userAccount to refetch if it changes
-  
+  }, [userAccount]); 
+
   const fetchUserProfile = async (walletId) => {
     try {
       const response = await fetch(`/api/get-profile-by-wallet?walletId=${walletId}`);
@@ -75,17 +75,21 @@ export default function LeftMenuDashboard({
       )}
       <div className="left-menu-container">
         <div className="left-menu-top">
-            <div className="profile-container">
-              <img src={profilePicture} alt="Profile avatar" />
-              <p className="profile-name" onClick={handleCopyAddress}>
-                {username} {/* Display the username */}
-              </p>
-              {showCopiedMessage && (
-                <div className="dashboard-settings-wallet-copied">
-                  Address Copied!
-                </div>
-              )}
-            </div>
+          <div className="profile-container">
+            <img
+              src={localProfilePicture || "./default_avatar.png"} // Use a default avatar if profilePicture is not available
+              alt="Profile avatar"
+              className="profile-picture" // Apply a CSS class for styling
+            />
+            <p className="profile-name" onClick={handleCopyAddress}>
+              {username}
+            </p>
+            {showCopiedMessage && (
+              <div className="dashboard-settings-wallet-copied">
+                Address Copied!
+              </div>
+            )}
+          </div>
          
 
           <div className="left-menu-links">

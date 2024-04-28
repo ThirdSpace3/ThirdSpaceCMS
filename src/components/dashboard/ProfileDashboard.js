@@ -92,69 +92,69 @@ export default function ProfileDashboard({ updateUserDetails }) {
   };
 
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (username.length > 15) {
-      setUsernameError("Username must be 15 characters or less.");
-      return; // Stop form submission if validation fails
+// ProfileDashboard component
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  if (username.length > 15) {
+    setUsernameError("Username must be 15 characters or less.");
+    return; // Stop form submission if validation fails
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append('walletId', userAccount);
+    formData.append('username', username);
+    formData.append('description', description);
+    formData.append('profilePicture', fileInputRef.current.files[0]); // Append profile picture file
+
+    const response = await fetch("/api/save-profile", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Profile saved:", data);
+      setIsEdited(false);
+      setIsSaved(true);
+      sessionStorage.setItem("username", username);
+      sessionStorage.setItem("description", description);
+      updateUserDetails(username, description, data.profilePictureUrl); // Update with profile picture URL
+    } else {
+      console.error("Error saving profile:", response.statusText);
     }
+  } catch (err) {
+    console.error("Error saving profile:", err);
+  }
+};
+
   
-    try {
-      const response = await fetch("/api/save-profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          walletId: userAccount,
-          username: username,
-          description: description,
-          profilePicture: profilePicture,
-        }),
-      });
-  
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Profile saved:", data);
-        setIsEdited(false);
-        setIsSaved(true);
-        sessionStorage.setItem("username", username);
-        sessionStorage.setItem("description", description);
-        sessionStorage.setItem("profilePicture", profilePicture);
-        updateUserDetails(username, description, profilePicture); // Update parent state or global state if applicable
-      } else {
-        console.error("Error saving profile:", response.statusText);
-      }
-    } catch (err) {
-      console.error("Error saving profile:", err);
+// ProfileDashboard component
+useEffect(() => {
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+  if (isLoggedIn === "true") {
+    const account = sessionStorage.getItem("userAccount");
+    fetchProfile(account);
+  }
+}, []);
+
+const fetchProfile = async (walletId) => {
+  try {
+    const response = await fetch(`/api/get-profile-by-wallet?walletId=${walletId}`);
+    if (response.ok) {
+      const data = await response.json();
+      setUsername(data.username || "My Username");
+      setDescription(data.description || "");
+      setProfilePicture(data.profilePicture || ''); // Set default value to empty string if profile picture doesn't exist
+      console.log(data);
+    } else {
+      console.error("Failed to fetch profile data.");
     }
-  };
-  
-  useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    if (isLoggedIn === "true") {
-      const account = sessionStorage.getItem("userAccount");
-      fetchProfile(account);
-    }
-  }, []);
-  
-  const fetchProfile = async (walletId) => {
-    try {
-      const response = await fetch(`/api/get-profile-by-wallet?walletId=${walletId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setUsername(data.username || "My Username");
-        setDescription(data.description || "");
-        setProfilePicture(data.profilePicture || profilePicture);
-        // Other state updates if necessary
-        console.log(data);
-      } else {
-        console.error("Failed to fetch profile data.");
-      }
-    } catch (err) {
-      console.error("Error fetching profile:", err);
-    }
-  };
+  } catch (err) {
+    console.error("Error fetching profile:", err);
+  }
+};
+
   return (
     <>
       <div className="dashboard-page-container">
