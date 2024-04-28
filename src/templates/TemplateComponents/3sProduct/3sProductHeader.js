@@ -9,7 +9,9 @@ const HeaderSection = ({
   settings,
   handleSettingsChange,
   openImagePanel,
-  setSelectedElement
+  setSelectedElement,
+  setSelectedColor,
+  
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
@@ -64,6 +66,15 @@ const HeaderSection = ({
     console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
     setSelectedElement(identifier);
   };
+  useEffect(() => {
+    const cssVarName = `--header-background-color`;
+    const storedColor = localStorage.getItem(cssVarName);
+  
+    if (storedColor) {
+      setSelectedColor(storedColor);
+      document.documentElement.style.setProperty(cssVarName, storedColor);
+    }
+  }, []);
 
   return (
     <div className="sss-product-hero" style={headerStyle} id='header' onClick={(event) => handleComponentClick(event, 'header')}>

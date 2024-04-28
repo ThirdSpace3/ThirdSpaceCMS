@@ -7,7 +7,7 @@ import FeaturesSection from "./TemplateComponents/3sProduct/3sProductFeature";
 import JoinUsSection from "./TemplateComponents/3sProduct/3sProductJoinUs";
 import Footer from "./TemplateComponents/3sProduct/3sProductFooter";
 
-const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement }) => {
+const SSSProduct = ({selectedColor, setSelectedColor, logChange, selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
 
@@ -36,6 +36,9 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
+        logChange={logChange}
+        selectedColor={selectedColor} 
+        setSelectedColor={setSelectedColor}
       />
       
       <HeaderSection
@@ -47,6 +50,9 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
+        selectedColor={selectedColor} 
+        setSelectedColor={setSelectedColor}
+
       />
 
       <PartnersSection
@@ -58,6 +64,8 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
+        selectedColor={selectedColor} 
+        setSelectedColor={setSelectedColor}
 
       />
       <AboutSection
@@ -69,6 +77,8 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
+        selectedColor={selectedColor} 
+        setSelectedColor={setSelectedColor}
 
 
       />
@@ -81,6 +91,8 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
+        selectedColor={selectedColor} 
+        setSelectedColor={setSelectedColor}
 
       />
       <JoinUsSection
@@ -92,6 +104,8 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
+        selectedColor={selectedColor} 
+        setSelectedColor={setSelectedColor}
 
       />
       <Footer
@@ -103,6 +117,8 @@ const SSSProduct = ({ selectElement, isPreviewMode, settings, handleSettingsChan
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
+        selectedColor={selectedColor} 
+        setSelectedColor={setSelectedColor}
 
       />
     </div>

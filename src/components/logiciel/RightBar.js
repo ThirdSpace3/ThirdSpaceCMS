@@ -9,7 +9,7 @@ import BorderSettings from "./RightBarComponents/BorderSettings";
 import BackgroundSettings from "./RightBarComponents/BackgroundSettings";
 import TypographySettings from "./RightBarComponents/TypographySettings";
 import { useImageHistory } from '../../hooks/ImageHistoryContext';
-export default function RightBar({ selectedElement, logChange }) {
+export default function RightBar({ selectedElement, logChange, selectedColor, setSelectedColor }) {
   
   const { addImageToHistory } = useImageHistory();
 
@@ -89,7 +89,7 @@ export default function RightBar({ selectedElement, logChange }) {
             selectedElement={selectedElement} // Pass selectedElement as a prop
             logChange={logChange}
             onSettingsChange={logChange}
-
+            selectedColor={selectedColor} setSelectedColor={setSelectedColor}
           />
 
 

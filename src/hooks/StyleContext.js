@@ -8,10 +8,6 @@ const [selectedComponent, setSelectedComponent] = useState(null);
   const [selectedElement, setSelectedElement] = useState(null);  // Ensure this is managed correctly
   const [settings, setSettings] = useState({ textStyles: {} });
 
-  useEffect(() => {
-    console.log("Current selected component:", selectedComponent);
-    console.log("Current selected element:", selectedElement);  // Log for debugging
-  }, [selectedComponent, selectedElement]);
 
 
 
@@ -21,7 +17,6 @@ const [selectedComponent, setSelectedComponent] = useState(null);
             ...prevStyle,
             [componentName]: { ...prevStyle[componentName], ...newStyle }
         };
-        console.log(`Styles updated for ${componentName}:`, updatedStyle[componentName]);
         return updatedStyle;
     });
 };

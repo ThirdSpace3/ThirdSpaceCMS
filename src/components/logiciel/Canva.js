@@ -8,7 +8,7 @@ import TemplateTest1 from '../../templates/TemplateTest1';
 import SSSProduct from '../../templates/3s-Product';
 import { useImageHistory } from '../../hooks/ImageHistoryContext';
 
-export default function Canva({ templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
+export default function Canva({selectedColor,setSelectedColor,logChange, templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
   const templateComponents = {
     TemplateFullText,
     TemplateImg_txt,
@@ -41,6 +41,9 @@ export default function Canva({ templateName, deviceSize, settings, handleSettin
         imageHistory={imageHistory}
         selectedImage={selectedImage} // Pass down the selectedImage prop
         setSelectedImage={setSelectedImage}
+        logChange={logChange}
+        selectedColor={selectedColor} 
+        setSelectedColor={setSelectedColor}
       />
     </div>
   );

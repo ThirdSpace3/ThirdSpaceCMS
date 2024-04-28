@@ -21,38 +21,57 @@ export default function TypographySettings({
     };
     setTypographyStyle(newStyle);
     onSettingsChange(selectedElement, { typography: newStyle });
-};
+  
+    // Store the new settings in localStorage
+    localStorage.setItem(`typographySettings-${selectedElement}`, JSON.stringify(newStyle));
+  };
+  
 
 
-  const handleInputChange = (e, styleProperty, type) => {
-    const value = type === 'number' ? parseInt(e.target.value, 10) : e.target.value;
-    console.log(`Updating style of ${selectedElement} with ${styleProperty}: ${value}`);
-    const newStyle = { [styleProperty]: value, styleProperty, type };
-    updateStyle(selectedElement, newStyle); // Update using the context method
-    onSettingsChange(selectedElement, newStyle); // Also propagate this change via callback
+const handleInputChange = (e, styleProperty, type) => {
+  const value = type === 'number' ? parseInt(e.target.value, 10) : e.target.value;
+  console.log(`Updating style of ${selectedElement} with ${styleProperty}: ${value}`);
+  const newStyle = { [styleProperty]: value, styleProperty, type };
+  updateStyle(selectedElement, newStyle); // Update using the context method
+  onSettingsChange(selectedElement, newStyle); // Also propagate this change via callback
+
+  // Store the new settings in localStorage
+  const newTypographyStyle = { ...typographyStyle, [styleProperty]: value };
+  localStorage.setItem(`typographySettings-${selectedElement}`, JSON.stringify(newTypographyStyle));
 };
+
 
 const handleTextDecoration = (decorationType) => {
-    console.log(`handleTextDecoration called with type: ${decorationType} for ${selectedElement}`);
-    const newStyle = { ...typographyStyle };
-    switch (decorationType) {
-        case "italic":
-            newStyle.fontStyle = typographyStyle.fontStyle === "italic" ? "normal" : "italic";
-            break;
-        case "underline":
-            newStyle.textDecoration = typographyStyle.textDecoration === "underline" ? "none" : "underline";
-            break;
-        case "line-through":
-            newStyle.textDecoration = typographyStyle.textDecoration === "line-through" ? "none" : "line-through";
-            break;
-        default:
-            break;
-    }
-    console.log(`Applying new typography style for ${selectedElement}:`, newStyle);
-    setTypographyStyle(newStyle);
-    onSettingsChange(selectedElement, newStyle); // Ensure the parent component is aware of these updates
+  console.log(`handleTextDecoration called with type: ${decorationType} for ${selectedElement}`);
+  const newStyle = { ...typographyStyle };
+  switch (decorationType) {
+      case "italic":
+          newStyle.fontStyle = typographyStyle.fontStyle === "italic" ? "normal" : "italic";
+          break;
+      case "underline":
+          newStyle.textDecoration = typographyStyle.textDecoration === "underline" ? "none" : "underline";
+          break;
+      case "line-through":
+          newStyle.textDecoration = typographyStyle.textDecoration === "line-through" ? "none" : "line-through";
+          break;
+      default:
+          break;
+  }
+  console.log(`Applying new typography style for ${selectedElement}:`, newStyle);
+  setTypographyStyle(newStyle);
+  onSettingsChange(selectedElement, newStyle); // Ensure the parent component is aware of these updates
+
+  // Store the new settings in localStorage
+  localStorage.setItem(`typographySettings-${selectedElement}`, JSON.stringify(newStyle));
 };
 
+
+useEffect(() => {
+  const storedSettings = localStorage.getItem(`typographySettings-${selectedElement}`);
+  if (storedSettings) {
+    setTypographyStyle(JSON.parse(storedSettings));
+  }
+}, [selectedElement]);
 
   return (
     <div>

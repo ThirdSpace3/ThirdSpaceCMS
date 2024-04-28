@@ -6,7 +6,7 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 import { Link } from 'react-router-dom';
 
-const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel }) => {
+const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setSelectedColor }) => {
   const { getComponentStyle, updateStyle } = useStyle();
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
 
@@ -61,6 +61,15 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel }) =>
   };
 
 
+  useEffect(() => {
+    const cssVarName = `--joinUs-background-color`;
+    const storedColor = localStorage.getItem(cssVarName);
+  
+    if (storedColor) {
+      setSelectedColor(storedColor);
+      document.documentElement.style.setProperty(cssVarName, storedColor);
+    }
+  }, []);
   return (
     <div className='sss-product-joinus-main'  style={JoinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
       <div className="sss-product-joinus" >
