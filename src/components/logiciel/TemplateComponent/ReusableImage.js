@@ -50,6 +50,7 @@ const ReusableImage = ({
         src={currentSrc}
         alt={alt}
         onClick={handleImageClick}
+        className={`image-component ${showReplaceButton ? 'selected' : ''}`} // Conditional class
         style={{ height: imageHeight }}
       />
       {showReplaceButton && (
@@ -59,6 +60,7 @@ const ReusableImage = ({
       )}
     </div>
   );
+  
 };
 
 export default ReusableImage;
