@@ -10,9 +10,21 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
   const { getComponentStyle, updateStyle } = useStyle();
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
 
-  const [joinUsTitleText, setJoinUsTitleText] = useState('Join the community');
-  const [joinUsDescriptionText, setJoinUsDescriptionText] = useState('Join our 400,000+ person community and contribute to a more private and decentralized internet. Start for free.');
-  const [joinUsCta, setjoinUsCta] = useState('Join Us');
+  const [joinUsTitleText, setJoinUsTitleText] = useState(() => {
+    const storedText = localStorage.getItem('joinUsTitleText');
+    return storedText ? storedText : 'Join the community';
+  });
+
+  const [joinUsDescriptionText, setJoinUsDescriptionText] = useState(() => {
+    const storedText = localStorage.getItem('joinUsDescriptionText');
+    return storedText ? storedText : 'Join our 400,000+ person community and contribute to a more private and decentralized internet. Start for free.';
+  });
+
+  const [joinUsCta, setJoinUsCta] = useState(() => {
+    const storedText = localStorage.getItem('joinUsCta');
+    return storedText ? storedText : 'Join Us';
+  });
+
   const [joinUsImageUrl, setJoinUsImageUrl] = useState("./images/templates-img/3sproduct/3sproduct-joinus-1.png");
 
   const JoinUsStyles = getComponentStyle('joinUs');
@@ -37,14 +49,17 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
     console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
 
     switch (textType) {
-      case 'heroTitle':
+      case 'joinUsTitle':
         setJoinUsTitleText(newText);
+        localStorage.setItem('joinUsTitleText', newText);
         break;
-      case 'description':
+      case 'joinUsDescription':
         setJoinUsDescriptionText(newText);
+        localStorage.setItem('joinUsDescriptionText', newText);
         break;
-      case 'joinUs':
-        setjoinUsCta(newText);
+      case 'joinUsCta':
+        setJoinUsCta(newText);
+        localStorage.setItem('joinUsCta', newText);
         break;
       default:
         break;
@@ -60,18 +75,18 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
     setSelectedElement(identifier);
   };
 
-
   useEffect(() => {
     const cssVarName = `--joinUs-background-color`;
     const storedColor = localStorage.getItem(cssVarName);
-  
+
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);
     }
   }, []);
+
   return (
-    <div className='sss-product-joinus-main'  style={JoinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
+    <div className='sss-product-joinus-main' style={JoinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
       <div className="sss-product-joinus" >
         <ReusableImage
           src={joinUsImageUrl}
@@ -82,14 +97,12 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
           identifier={"joinUs"}
           imageHeight={imageHeight}
           selectImage={handleComponentClick}
-  
         />
         <h2 className="sss-product-joinus-title" id='joinUsTitle' onClick={(event) => handleComponentClick(event, 'joinUsTitle')} >
           <EditableText
             text={joinUsTitleText}
             onChange={(newText) => handleTextChange(newText, 'joinUsTitle')}
             style={joinUsTitleStyles}
-
           />
         </h2>
         <p className='sss-product-joinus-text' id='joinUsDescription' onClick={(event) => handleComponentClick(event, 'joinUsDescription')} style={joinUsescriptionStyles}>

@@ -8,7 +8,7 @@ import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 const PartnersSection = ({ handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor }) => {
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
   const { style, selectedComponent, updateStyle, getComponentStyle } = useStyle();
-  const [partnersTitleText, setPartnersTitleText] = useState('Trusted by teams at over 1,000 of the world\'s leading organizations');
+  const [partnersTitleText, setPartnersTitleText] = useState(() => localStorage.getItem('partners-partnersTitle-text') || 'Trusted by teams at over 1,000 of the world\'s leading organizations');
   const [partnerImages, setPartnerImages] = useState(Array(7).fill().map((_, i) => `./images/templates-img/3sproduct/3sproduct-partners-${i+1}.png`));
   const [imageHeight, setImageHeight] = useState(null);
   const getImageHeight = (src) => {
@@ -40,6 +40,8 @@ const handleTextChange = (newText, textType) => {
         setPartnersTitleText(newText);
           break;
   }
+  localStorage.setItem(`partners-${textType}-text`, newText);
+
   updateStyle(textType, { text: newText });
 };
 

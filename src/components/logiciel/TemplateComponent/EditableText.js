@@ -42,7 +42,6 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         backgroundColor: styles.backgroundColor,
         border: 'none',
         padding: '0',
-        resize: 'none', // disable resizing
       };
     }
   };
@@ -66,7 +65,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
     );
   } else {
     return (
-        <span
+        <div
             ref={spanRef}
             onClick={handleSpanClick}
             style={style}
@@ -74,7 +73,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
             id={selectElement}
         >
             {text}
-        </span>
+        </div>
     );
   }
   

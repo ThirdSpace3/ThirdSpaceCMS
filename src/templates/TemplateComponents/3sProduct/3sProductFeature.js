@@ -12,20 +12,57 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
   // State for text fields including descriptions
-  const [featuresTitleText, setFeaturesTitleText] = useState('Essential apps that protect your documents');
-  const [endToEndText, setEndToEndText] = useState('End-to-end encrypted inbox and messages');
-  const [endToEndDesc, setEndToEndDesc] = useState({
-    text: 'Rorem ipsum dolor sit amet consectetur. Proin dignissim tortor mauris viverra sed volutpat mauris. Amet nisi amet commodo adipiscing ut imperdiet nunc.',
+  const [featuresTitleText, setFeaturesTitleText] = useState(() => {
+    const storedText = localStorage.getItem('featuresTitleText');
+    return storedText ? storedText : 'Essential apps that protect your documents';
   });
-  const [mobileAppsText, setMobileAppsText] = useState('Mobile applications');
-  const [mobileAppsDesc, setMobileAppsDesc] = useState({
-    text: 'Prem ipsum dolor sit amet consectetur. Viverra sed dignissim risus aliquet condimentum. Vulputate varius feugiat egestas congue.',
+
+  const [endToEndText, setEndToEndText] = useState(() => {
+    const storedText = localStorage.getItem('endToEndText');
+    return storedText ? storedText : 'End-to-end encrypted inbox and messages';
   });
-  const [uploadShareText, setUploadShareText] = useState('Upload, share, and preview any file');
-  const [uploadShareDesc, setUploadShareDesc] = useState({
-    text: 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.',
+
+  const [endToEndDesc, setEndToEndDesc] = useState(() => {
+    const storedText = localStorage.getItem('endToEndDesc');
+    return storedText
+      ? { text: storedText }
+      : {
+          text: 'Rorem ipsum dolor sit amet consectetur. Proin dignissim tortor mauris viverra sed volutpat mauris. Amet nisi amet commodo adipiscing ut imperdiet nunc.',
+        };
   });
-  const [joinUsText, setJoinUsText] = useState('Join Us');
+
+  const [mobileAppsText, setMobileAppsText] = useState(() => {
+    const storedText = localStorage.getItem('mobileAppsText');
+    return storedText ? storedText : 'Mobile applications';
+  });
+
+  const [mobileAppsDesc, setMobileAppsDesc] = useState(() => {
+    const storedText = localStorage.getItem('mobileAppsDesc');
+    return storedText
+      ? { text: storedText }
+      : {
+          text: 'Prem ipsum dolor sit amet consectetur. Viverra sed dignissim risus aliquet condimentum. Vulputate varius feugiat egestas congue.',
+        };
+  });
+
+  const [uploadShareText, setUploadShareText] = useState(() => {
+    const storedText = localStorage.getItem('uploadShareText');
+    return storedText ? storedText : 'Upload, share, and preview any file';
+  });
+
+  const [uploadShareDesc, setUploadShareDesc] = useState(() => {
+    const storedText = localStorage.getItem('uploadShareDesc');
+    return storedText
+      ? { text: storedText }
+      : {
+          text: 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.',
+        };
+  });
+
+  const [joinUsText, setJoinUsText] = useState(() => {
+    const storedText = localStorage.getItem('joinUsText');
+    return storedText ? storedText : 'Join Us';
+  });
 
   // State for image sources
   const [feature1Image, setFeature1Image] = useState('./images/templates-img/3sproduct/3sproduct-feature-1.png');
@@ -162,7 +199,37 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
       document.documentElement.style.setProperty(cssVarName, storedColor);
     }
   }, []);
+  useEffect(() => {
+    localStorage.setItem('featuresTitleText', featuresTitleText);
+  }, [featuresTitleText]);
 
+  useEffect(() => {
+    localStorage.setItem('endToEndText', endToEndText);
+  }, [endToEndText]);
+
+  useEffect(() => {
+    localStorage.setItem('endToEndDesc', endToEndDesc.text);
+  }, [endToEndDesc.text]);
+
+  useEffect(() => {
+    localStorage.setItem('mobileAppsText', mobileAppsText);
+  }, [mobileAppsText]);
+
+  useEffect(() => {
+    localStorage.setItem('mobileAppsDesc', mobileAppsDesc.text);
+  }, [mobileAppsDesc.text]);
+
+  useEffect(() => {
+    localStorage.setItem('uploadShareText', uploadShareText);
+  }, [uploadShareText]);
+
+  useEffect(() => {
+    localStorage.setItem('uploadShareDesc', uploadShareDesc.text);
+  }, [uploadShareDesc.text]);
+
+  useEffect(() => {
+    localStorage.setItem('joinUsText', joinUsText);
+  }, [joinUsText]);
   return (
     <div className="sss-product-features" style={{ ...featureStyles }} id='features' onClick={(event) => handleComponentClick(event, 'features')}>
       <h2 className="sss-product-features-title" id='featuresTitle' onClick={(event) => handleComponentClick(event, 'featuresTitle')} style={{ ...featureTitleStyles }}>

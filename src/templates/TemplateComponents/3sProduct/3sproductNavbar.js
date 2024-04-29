@@ -16,11 +16,11 @@ const Navbar = ({
     setSelectedColor,
 }) => {
     const { selectedImage, isReplacementMode, enterReplacementMode, selectImage, activeComponent } = useImageHistory();
-    const [homeText, setHomeText] = useState('Home');
-    const [aboutText, setAboutText] = useState('About');
-    const [featuresText, setFeaturesText] = useState('Features');
-    const [joinUsText, setJoinUsText] = useState('Join Us');
-
+    const [homeText, setHomeText] = useState(() => localStorage.getItem('navbar-home-text') || 'Home');
+    const [aboutText, setAboutText] = useState(() => localStorage.getItem('navbar-about-text') || 'About');
+    const [featuresText, setFeaturesText] = useState(() => localStorage.getItem('navbar-navfeatures-text') || 'Features');
+    const [joinUsText, setJoinUsText] = useState(() => localStorage.getItem('navbar-joinUs-text') || 'Join Us');
+    
     const [imageHeight, setImageHeight] = useState(null);
     const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
 

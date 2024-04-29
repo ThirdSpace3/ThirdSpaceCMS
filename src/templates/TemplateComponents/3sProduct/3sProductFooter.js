@@ -11,10 +11,26 @@ const Footer = ({
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
-  const [footerText, setFooterText] = useState('Copyright © 3S.Product | Designed inspired by Webocean LTD - Powered by Third Space');
-  const [homeText, setHomeText] = useState('Home');
-  const [aboutText, setAboutText] = useState('About');
-  const [featuresText, setFeaturesText] = useState('Features');
+  const [footerText, setFooterText] = useState(() => {
+    const storedText = localStorage.getItem('footerText');
+    return storedText ? storedText : 'Copyright © 3S.Product | Designed inspired by Webocean LTD - Powered by Third Space';
+  });
+
+  const [homeText, setHomeText] = useState(() => {
+    const storedText = localStorage.getItem('homeText');
+    return storedText ? storedText : 'Home';
+  });
+
+  const [aboutText, setAboutText] = useState(() => {
+    const storedText = localStorage.getItem('aboutText');
+    return storedText ? storedText : 'About';
+  });
+
+  const [featuresText, setFeaturesText] = useState(() => {
+    const storedText = localStorage.getItem('featuresText');
+    return storedText ? storedText : 'Features';
+  });
+
   const [footerLogoSrc, setFooterLogoSrc] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
   const [footerTwitterSrc, setFooterTwitterSrc] = useState("./images/templates-img/3sproduct/3sproduct-footer-1.png");
   const [footerLinkedInSrc, setFooterLinkedInSrc] = useState("./images/templates-img/3sproduct/3sproduct-footer-4.png");
@@ -45,15 +61,19 @@ const Footer = ({
     switch (textType) {
       case 'homeText':
         setHomeText(newText);
+        localStorage.setItem('homeText', newText);
         break;
       case 'aboutText':
         setAboutText(newText);
+        localStorage.setItem('aboutText', newText);
         break;
       case 'featuresText':
         setFeaturesText(newText);
+        localStorage.setItem('featuresText', newText);
         break;
       case 'footerText':
         setFooterText(newText);
+        localStorage.setItem('footerText', newText);
         break;
       default:
         break;

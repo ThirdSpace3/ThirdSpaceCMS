@@ -10,27 +10,18 @@ const AboutSection = ({
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
-  const [aboutTitleText, setAboutTitleText] = useState('The best features to help you create all your projects');
-  const [aboutDescriptionText, setAboutDescriptionText] = useState('Apsum dolor sit amet consectetur. Aliquam elementum elementum in ultrices. Dui maecenas ut eros turpis ultrices metus morbi aliquet vel.');
   const [aboutImages, setAboutImages] = useState(Array(6).fill().map((_, i) => `./images/templates-img/3sproduct/3sproduct-about-${i + 1}.png`));
   // Initialize feature titles and descriptions with unique placeholder texts for each card
-  const [featureTitles, setFeatureTitles] = useState([
-    'Feature Title 1',
-    'Feature Title 2',
-    'Feature Title 3',
-    'Feature Title 4',
-    'Feature Title 5',
-    'Feature Title 6'
-  ]);
-
-  const [featureDescriptions, setFeatureDescriptions] = useState([
-    'Feature description for item 1.',
-    'Feature description for item 2.',
-    'Feature description for item 3.',
-    'Feature description for item 4.',
-    'Feature description for item 5.',
-    'Feature description for item 6.'
-  ]);
+  const [aboutTitleText, setAboutTitleText] = useState(localStorage.getItem('about-title-text') || 'The best features to help you create all your projects');
+  const [aboutDescriptionText, setAboutDescriptionText] = useState(localStorage.getItem('about-description-text') || 'Apsum dolor sit amet consectetur...');
+  
+  const [featureTitles, setFeatureTitles] = useState(
+    Array(6).fill().map((_, i) => localStorage.getItem(`feature-title-${i}`) || `Feature Title ${i + 1}`)
+  );
+  const [featureDescriptions, setFeatureDescriptions] = useState(
+    Array(6).fill().map((_, i) => localStorage.getItem(`feature-description-${i}`) || 'Feature description for item ' + (i + 1))
+  );
+  
   const aboutStyles = getComponentStyle('about');
   const aboutTitleStyle = getComponentStyle('title');
   const aboutDescriptionStyles = getComponentStyle('description');
@@ -69,34 +60,40 @@ const AboutSection = ({
   const handleTextChange = (newText, identifier, index = null) => {
     if (identifier === 'title') {
       setAboutTitleText(newText);
+      localStorage.setItem('about-title-text', newText);
     } else if (identifier === 'description') {
       setAboutDescriptionText(newText);
+      localStorage.setItem('about-description-text', newText);
     } else if (identifier === 'featureTitle' && index !== null) {
       setFeatureTitles(currentTitles => {
         const updatedTitles = [...currentTitles];
         updatedTitles[index] = newText;
+        localStorage.setItem(`feature-title-${index}`, newText);
         return updatedTitles;
       });
     } else if (identifier === 'featureDescription' && index !== null) {
       setFeatureDescriptions(currentDescriptions => {
         const updatedDescriptions = [...currentDescriptions];
         updatedDescriptions[index] = newText;
+        localStorage.setItem(`feature-description-${index}`, newText);
         return updatedDescriptions;
       });
     }
     updateStyle(identifier, { text: newText });
   };
+  
 
 
   useEffect(() => {
     const cssVarName = `--about-background-color`;
     const storedColor = localStorage.getItem(cssVarName);
-  
+    
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);
     }
-  }, []);
+  }, [setSelectedColor]);
+  
 
   return (
     <div className="sss-product-about" style={{ ...aboutStyles}} id='about' onClick={(event) => handleComponentClick(event, 'about')}>

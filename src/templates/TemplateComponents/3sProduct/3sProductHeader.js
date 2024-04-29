@@ -15,9 +15,9 @@ const HeaderSection = ({
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
-  const [heroTitleText, setHeroTitleText] = useState('The first user-friendly website builder');
-  const [heroDescriptionText, setHeroDescriptionText] = useState('Lorem ipsum dolor sit amet, consectetur...');
-  const [joinUsText, setJoinUsText] = useState('Join Us');
+  const [heroTitleText, setHeroTitleText] = useState(() => localStorage.getItem('header-heroTitle-text') || 'The first user-friendly website builder');
+  const [heroDescriptionText, setHeroDescriptionText] = useState(() => localStorage.getItem('header-heroDescription-text') || 'Rorem ipsum dolor sit amet consectetur. Gravida convallis orci ultrices non. Ultricies tempor at ut cursus mi. Aliquam sed amet vitae orci ac penatibus consectetur.');
+  const [joinUsText, setJoinUsText] = useState(() => localStorage.getItem('header-joinUs-text') || 'Join Us');
   const [headerImage, setHeaderImage] = useState("./images/templates-img/3sproduct/3sproduct-hero.png");
   const [menuToggleImg, setMenuToggleImg] = useState("path/to/menu/toggle/image");
 
@@ -47,7 +47,7 @@ const HeaderSection = ({
       case 'heroTitle':
         setHeroTitleText(newText);
         break;
-      case 'description':
+      case 'heroDescription':
         setHeroDescriptionText(newText);
         break;
       case 'joinUs':
@@ -57,6 +57,8 @@ const HeaderSection = ({
         break;
     }
     updateStyle(textType, { text: newText });
+    localStorage.setItem(`header-${textType}-text`, newText);
+
     console.log(`Requested style update for ${textType}`);
   };
 
@@ -67,22 +69,23 @@ const HeaderSection = ({
     setSelectedElement(identifier);
   };
   useEffect(() => {
+    // This useEffect could also manage theme colors or other properties.
     const cssVarName = `--header-background-color`;
     const storedColor = localStorage.getItem(cssVarName);
-  
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);
     }
-  }, []);
+  }, [setSelectedColor]);
+  
 
   return (
     <div className="sss-product-hero" style={headerStyle} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
-      <h1 className="sss-product-hero-title" id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')}>
+      <h1 className="sss-product-hero-title" id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')} style={heroTitleStyles}>
         <EditableText
           text={heroTitleText}
           onChange={(newText) => handleTextChange(newText, 'heroTitle')}
-          style={heroTitleStyles}
+          
         />
       </h1>
       <p className="sss-product-hero-text" id='heroDescription' onClick={(event) => handleComponentClick(event, 'heroDescription')}>
