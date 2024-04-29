@@ -25,7 +25,9 @@ export default function Display() {
   const { clearFocus } = useImageHistory(); // Use the clearFocus method from context
   const [selectedColor, setSelectedColor] = useState(""); // State to hold the confirmed color
   const [showPopup, setShowPopup] = useState(false);
+  const [TemplateContent, setTemplateContent] = useState({});
 
+  
   const handleSettingsChange = (elementId, newSettings) => {
     console.log("Updating settings for:", elementId, "new settings received:", newSettings);
     setSettings(prevSettings => {
@@ -190,6 +192,8 @@ export default function Display() {
         setShowPopup={setShowPopup}
         />
           <Canva
+            TemplateContent={TemplateContent}
+            setTemplateContent={setTemplateContent}
             templateName={templateName}
             deviceSize={selectedDeviceSize}
             settings={settings}

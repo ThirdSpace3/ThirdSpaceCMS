@@ -6,7 +6,7 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const AboutSection = ({
-  handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor }) => {
+  handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor, onContentChange }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
@@ -93,7 +93,17 @@ const AboutSection = ({
       document.documentElement.style.setProperty(cssVarName, storedColor);
     }
   }, [setSelectedColor]);
-  
+
+  useEffect(() => {
+    // Propagate changes to parent component
+    onContentChange({
+      title: aboutTitleText,
+      description: aboutDescriptionText,
+      images: aboutImages,
+      features: featureTitles.map((title, i) => ({ title, description: featureDescriptions[i] }))
+    });
+  }, [aboutTitleText, aboutDescriptionText, aboutImages, featureTitles, featureDescriptions, onContentChange]);
+
 
   return (
     <div className="sss-product-about" style={{ ...aboutStyles}} id='about' onClick={(event) => handleComponentClick(event, 'about')}>

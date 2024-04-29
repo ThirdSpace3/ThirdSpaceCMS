@@ -10,10 +10,13 @@ export const StyleProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem('style', JSON.stringify(style));
+    console.log(style);
   }, [style]);
 
   useEffect(() => {
     localStorage.setItem('settings', JSON.stringify(settings));
+    console.log(style);
+
   }, [settings]);
 
   const updateStyle = (componentName, newStyle) => {

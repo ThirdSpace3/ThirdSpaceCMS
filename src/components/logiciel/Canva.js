@@ -8,7 +8,7 @@ import TemplateTest1 from '../../templates/TemplateTest1';
 import SSSProduct from '../../templates/3s-Product';
 import { useImageHistory } from '../../hooks/ImageHistoryContext';
 
-export default function Canva({selectedColor,setSelectedColor,logChange, templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
+export default function Canva({TemplateContent, setTemplateContent, selectedColor,setSelectedColor,logChange, templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
   const templateComponents = {
     TemplateFullText,
     TemplateImg_txt,
@@ -19,8 +19,7 @@ export default function Canva({selectedColor,setSelectedColor,logChange, templat
 
   const FallbackTemplate = () => <div>Template not found.</div>;
   const SelectedTemplate = templateComponents[templateName] || FallbackTemplate;
-  const [TemplateContent, setTemplateContent] = useState({});
-console.log(TemplateContent);
+
   const [canvasSize, setCanvasSize] = useState({ width: deviceSize, height: '100%' });
 
   useEffect(() => {

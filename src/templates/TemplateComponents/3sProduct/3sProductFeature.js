@@ -7,7 +7,7 @@ import ReusableImage from '../../../components/logiciel/TemplateComponent/Reusab
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 import { get } from 'lodash';
-const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor }) => {
+const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor ,onContentChange }) => {
   const { getComponentStyle } = useStyle();
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
@@ -107,8 +107,8 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     if (activeComponent === 'featureImage-3' && selectedImage !== feature3Image) {
       setFeature3Image(selectedImage);
     }
-  }, [selectedImage, activeComponent, feature1Image, feature2Image, feature3Image]);
-
+  }, [selectedImage, activeComponent]);
+  
   const handleFeaturesClick = () => {
     console.log("Features clicked, setting selected element to 'features'");
     setSelectedElement('features');
@@ -174,19 +174,14 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
 
   useEffect(() => {
     const featuresElement = document.querySelector('.sss-product-features');
-    const eventHandler = () => {
+    const eventHandler = (event) => {
       console.log("Features clicked, setting selected element to 'features'");
       setSelectedElement('features');
     };
-
-    if (featuresElement) {
-      featuresElement.addEventListener('click', eventHandler);
-    }
-
+  
+    featuresElement?.addEventListener('click', eventHandler);
     return () => {
-      if (featuresElement) {
-        featuresElement.removeEventListener('click', eventHandler);
-      }
+      featuresElement?.removeEventListener('click', eventHandler);
     };
   }, []);
 
@@ -201,35 +196,26 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
   }, []);
   useEffect(() => {
     localStorage.setItem('featuresTitleText', featuresTitleText);
-  }, [featuresTitleText]);
-
-  useEffect(() => {
     localStorage.setItem('endToEndText', endToEndText);
-  }, [endToEndText]);
-
-  useEffect(() => {
     localStorage.setItem('endToEndDesc', endToEndDesc.text);
-  }, [endToEndDesc.text]);
-
-  useEffect(() => {
     localStorage.setItem('mobileAppsText', mobileAppsText);
-  }, [mobileAppsText]);
-
-  useEffect(() => {
     localStorage.setItem('mobileAppsDesc', mobileAppsDesc.text);
-  }, [mobileAppsDesc.text]);
-
-  useEffect(() => {
     localStorage.setItem('uploadShareText', uploadShareText);
-  }, [uploadShareText]);
-
-  useEffect(() => {
     localStorage.setItem('uploadShareDesc', uploadShareDesc.text);
-  }, [uploadShareDesc.text]);
-
-  useEffect(() => {
     localStorage.setItem('joinUsText', joinUsText);
-  }, [joinUsText]);
+  }, [featuresTitleText, endToEndText, endToEndDesc.text, mobileAppsText, mobileAppsDesc.text, uploadShareText, uploadShareDesc.text, joinUsText]);
+  // Assuming there's a prop from the parent component named `onContentChange`
+useEffect(() => {
+  onContentChange({
+    title: featuresTitleText,
+    endToEnd: { title: endToEndText, description: endToEndDesc.text },
+    mobileApps: { title: mobileAppsText, description: mobileAppsDesc.text },
+    uploadShare: { title: uploadShareText, description: uploadShareDesc.text },
+    joinUsText: joinUsText,
+    images: [feature1Image, feature2Image, feature3Image]
+  });
+}, [featuresTitleText, endToEndText, endToEndDesc.text, mobileAppsText, mobileAppsDesc.text, uploadShareText, uploadShareDesc.text, joinUsText, feature1Image, feature2Image, feature3Image]);
+
   return (
     <div className="sss-product-features" style={{ ...featureStyles }} id='features' onClick={(event) => handleComponentClick(event, 'features')}>
       <h2 className="sss-product-features-title" id='featuresTitle' onClick={(event) => handleComponentClick(event, 'featuresTitle')} style={{ ...featureTitleStyles }}>

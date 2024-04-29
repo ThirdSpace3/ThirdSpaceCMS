@@ -12,6 +12,11 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
   const [navbarContent, setNavbarContent] = useState({});
   const [headerContent, setHeaderContent] = useState({});
+  const [partnersContent, setPartnersContent] = useState({}); // Manage partners content
+  const [aboutSection, setAboutSection] = useState({}); // Manage partners content
+  const [featureSection, setFeatureSection] = useState({}); // Manage partners content
+  const [joinUsSection , setJoinUsSection ] = useState({}); // Manage partners content
+  const [footerSection , setFooterSection ] = useState({}); // Manage partners content
 
   const toggleMenu = (event) => {
     event.preventDefault();
@@ -27,9 +32,15 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
   useEffect(() => {
     setTemplateContent({
       navbar: navbarContent,
-      header: headerContent
+      header: headerContent,
+      partners: partnersContent, // Ensure this data is also managed
+      aboutSection:aboutSection,
+      featureSection:featureSection,
+      joinUsSection:joinUsSection,
+      footerSection:footerSection,
     });
-  }, [navbarContent, headerContent, setTemplateContent]);
+  }, [navbarContent, headerContent, partnersContent, aboutSection, featureSection, joinUsSection, footerSection, setTemplateContent]);
+
   return (
     <div className="sss-product-container">
       <Navbar
@@ -47,7 +58,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         logChange={logChange}
         selectedColor={selectedColor} 
         setSelectedColor={setSelectedColor}
-        onContentChange={(newContent) => setNavbarContent(newContent)}
+        onContentChange={setNavbarContent}
 
       />
       
@@ -62,7 +73,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor} 
         setSelectedColor={setSelectedColor}
-        onContentChange={(newContent) => setHeaderContent(newContent)}
+        onContentChange={setHeaderContent}
 
 
       />
@@ -78,6 +89,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor} 
         setSelectedColor={setSelectedColor}
+        onContentChange={setPartnersContent}
 
       />
       <AboutSection
@@ -91,6 +103,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor} 
         setSelectedColor={setSelectedColor}
+        onContentChange={setAboutSection}
 
 
       />
@@ -105,6 +118,8 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor} 
         setSelectedColor={setSelectedColor}
+        onContentChange={setFeatureSection}
+
 
       />
       <JoinUsSection
@@ -118,6 +133,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor} 
         setSelectedColor={setSelectedColor}
+        onContentChange={setJoinUsSection}
 
       />
       <Footer
@@ -131,6 +147,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor} 
         setSelectedColor={setSelectedColor}
+        onContentChange={setFooterSection}
 
       />
     </div>

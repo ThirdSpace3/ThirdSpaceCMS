@@ -6,89 +6,96 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const Footer = ({
-  style, settings = { textStyles: {} }, handleSettingsChange, openImagePanel, setSelectedElement
+  handleSettingsChange,
+  setSelectedElement,
+  openImagePanel,
+  setSelectedColor,
+  onContentChange  // This prop will be used to update the parent component
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
-  const [footerText, setFooterText] = useState(() => {
-    const storedText = localStorage.getItem('footerText');
-    return storedText ? storedText : 'Copyright © 3S.Product | Designed inspired by Webocean LTD - Powered by Third Space';
-  });
-
-  const [homeText, setHomeText] = useState(() => {
-    const storedText = localStorage.getItem('homeText');
-    return storedText ? storedText : 'Home';
-  });
-
-  const [aboutText, setAboutText] = useState(() => {
-    const storedText = localStorage.getItem('aboutText');
-    return storedText ? storedText : 'About';
-  });
-
-  const [featuresText, setFeaturesText] = useState(() => {
-    const storedText = localStorage.getItem('featuresText');
-    return storedText ? storedText : 'Features';
-  });
+  const [footerText, setFooterText] = useState(localStorage.getItem('footerText') || 'Copyright © 3S.Product | Designed inspired by Webocean LTD - Powered by Third Space');
+  const [homeText, setHomeText] = useState(localStorage.getItem('homeText') || 'Home');
+  const [aboutText, setAboutText] = useState(localStorage.getItem('aboutText') || 'About');
+  const [featuresText, setFeaturesText] = useState(localStorage.getItem('featuresText') || 'Features');
 
   const [footerLogoSrc, setFooterLogoSrc] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
   const [footerTwitterSrc, setFooterTwitterSrc] = useState("./images/templates-img/3sproduct/3sproduct-footer-1.png");
   const [footerLinkedInSrc, setFooterLinkedInSrc] = useState("./images/templates-img/3sproduct/3sproduct-footer-4.png");
 
+  // Dynamically update parent component state
   useEffect(() => {
-    updateStyle(settings);
-  }, [settings]);
-
-  useEffect(() => {
-    if (activeComponent && selectedImage) {
-      switch (activeComponent) {
-        case "FooterLogo":
-          setFooterLogoSrc(selectedImage);
-          break;
-        case "FooterTwitter":
-          setFooterTwitterSrc(selectedImage);
-          break;
-        case "FooterLinkedIn":
-          setFooterLinkedInSrc(selectedImage);
-          break;
-        default:
-          break;
-      }
-    }
-  }, [selectedImage, activeComponent]);
+    onContentChange({
+      text: footerText,
+      home: homeText,
+      about: aboutText,
+      features: featuresText,
+      logoSrc: footerLogoSrc,
+      twitterSrc: footerTwitterSrc,
+      linkedInSrc: footerLinkedInSrc
+    });
+  }, [footerText, homeText, aboutText, featuresText, footerLogoSrc, footerTwitterSrc, footerLinkedInSrc, onContentChange]);
 
   const handleTextChange = (newText, textType) => {
     switch (textType) {
       case 'homeText':
         setHomeText(newText);
-        localStorage.setItem('homeText', newText);
         break;
       case 'aboutText':
         setAboutText(newText);
-        localStorage.setItem('aboutText', newText);
         break;
       case 'featuresText':
         setFeaturesText(newText);
-        localStorage.setItem('featuresText', newText);
         break;
       case 'footerText':
         setFooterText(newText);
-        localStorage.setItem('footerText', newText);
         break;
       default:
         break;
     }
+    localStorage.setItem(textType, newText);
     updateStyle(textType, { text: newText });
+  };
+
+  const handleImageChange = (newSrc, identifier) => {
+    switch (identifier) {
+      case "FooterLogo":
+        setFooterLogoSrc(newSrc);
+        break;
+      case "FooterTwitter":
+        setFooterTwitterSrc(newSrc);
+        break;
+      case "FooterLinkedIn":
+        setFooterLinkedInSrc(newSrc);
+        break;
+      default:
+        break;
+    }
+    selectImage(newSrc);
   };
 
   const handleComponentClick = (event, identifier) => {
     event.preventDefault();
     event.stopPropagation();
     setSelectedElement(identifier);
+    if (identifier.includes("Footer")) {
+      enterReplacementMode(identifier);
+    }
   };
 
+  useEffect(() => {
+    const cssVarName = `--footer-background-color`;
+    const storedColor = localStorage.getItem(cssVarName);
+  
+    if (storedColor) {
+      setSelectedColor(storedColor);
+      document.documentElement.style.setProperty(cssVarName, storedColor);
+    }
+  }, [setSelectedColor]);
+
   return (
-    <div className="sss-product-footer" style={{ ...style, ...settings.footer }} id='footer'  onClick={(event) => handleComponentClick(event, 'footer')}>
+    <div className="sss-product-footer" style={{ ...getComponentStyle('footer') }} id='footer'  onClick={(event) => handleComponentClick(event, 'footer')}>
       <div className="sss-product-footer-top">
         <ReusableImage
           src={footerLogoSrc}

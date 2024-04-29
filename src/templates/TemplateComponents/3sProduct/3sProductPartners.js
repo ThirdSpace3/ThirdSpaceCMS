@@ -5,78 +5,63 @@ import ReusableImage from '../../../components/logiciel/TemplateComponent/Reusab
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
-const PartnersSection = ({ handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor }) => {
+const PartnersSection = ({
+  handleSettingsChange,
+  settings,
+  openImagePanel,
+  setSelectedElement,
+  setSelectedColor,
+  onContentChange  
+}) => {
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
-  const { style, selectedComponent, updateStyle, getComponentStyle } = useStyle();
-  const [partnersTitleText, setPartnersTitleText] = useState(() => localStorage.getItem('partners-partnersTitle-text') || 'Trusted by teams at over 1,000 of the world\'s leading organizations');
-  const [partnerImages, setPartnerImages] = useState(Array(7).fill().map((_, i) => `./images/templates-img/3sproduct/3sproduct-partners-${i+1}.png`));
-  const [imageHeight, setImageHeight] = useState(null);
-  const getImageHeight = (src) => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => resolve(img.height);
-    });
-  };
-  useEffect(() => {
-    getImageHeight(`./images/templates-img/3sproduct/3sproduct-partners-1.png`).then((height) => setImageHeight(height));
-  }, []);
+  const { style, updateStyle, getComponentStyle } = useStyle();
 
+  // State for managing partner title and images
+  const [partnersTitleText, setPartnersTitleText] = useState(localStorage.getItem('partners-partnersTitle-text') || 'Trusted by teams at over 1,000 of the world\'s leading organizations');
+  const [partnerImages, setPartnerImages] = useState(() => Array(7).fill().map((_, i) => ({
+    src: `./images/templates-img/3sproduct/3sproduct-partners-${i+1}.png`,
+    id: `partnerImage-${i+1}`
+  })));
+
+  const handleTextChange = (newText) => {
+    setPartnersTitleText(newText);
+    localStorage.setItem('partners-partnersTitle-text', newText);
+    updateStyle('partnersTitle', { text: newText });
+  };
+
+  const handleImageChange = (index, newSrc) => {
+    const updatedImages = [...partnerImages];
+    updatedImages[index].src = newSrc;
+    setPartnerImages(updatedImages);
+  };
 
   const partnerStyle = getComponentStyle('partners');
   const partnersTitleStyle = getComponentStyle('partnersTitle');
 
+  useEffect(() => {
+    onContentChange({ title: partnersTitleText, images: partnerImages });
+  }, [partnersTitleText, partnerImages, onContentChange]);
 
-  const handleComponentClick = (event, identifier) => {
-    event.preventDefault(); // This will prevent the default action of the anchor tag
-    event.stopPropagation(); // Stop the event from propagating up
-    console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
-    setSelectedElement(identifier);
-};
-
-const handleTextChange = (newText, textType) => {
-  switch (textType) {
-      case 'partnersTitle':
-        setPartnersTitleText(newText);
-          break;
-  }
-  localStorage.setItem(`partners-${textType}-text`, newText);
-
-  updateStyle(textType, { text: newText });
-};
-
-useEffect(() => {
-  const cssVarName = `--partners-background-color`;
-  const storedColor = localStorage.getItem(cssVarName);
-
-  if (storedColor) {
-    setSelectedColor(storedColor);
-    document.documentElement.style.setProperty(cssVarName, storedColor);
-  }
-}, []);
-
-
-return(
-    <div className="sss-product-partners" id='partners' style={partnerStyle} onClick={(event) => handleComponentClick(event,'partners')}>
-      <h2 className="sss-product-partners-title" id='partnersTitle' onClick={(event) => handleComponentClick(event, 'partnersTitle')}>
+  return (
+    <div className="sss-product-partners" style={partnerStyle} onClick={event => setSelectedElement('partners')}>
+      <h2 className="sss-product-partners-title" onClick={event => event.stopPropagation()}>
         <EditableText
           text={partnersTitleText}
-          onChange={(newText) => handleTextChange(newText, 'partnersTitle')}
-          style={{ ...partnersTitleStyle }}
-/>
+          onChange={handleTextChange}
+          style={partnersTitleStyle}
+        />
       </h2>
       <div className="sss-product-partners-box">
-        {partnerImages.map((src, index) => (
+        {partnerImages.map((image, index) => (
           <ReusableImage
-            key={index}
-            src={src}
+            key={image.id}
+            src={image.src}
             alt={`Partner ${index + 1}`}
-            openImagePanel={openImagePanel}
-            onImageChange={(newSrc) => selectImage(newSrc)}
-            selectedImage={activeComponent === `partnerImage-${index}` ? selectedImage : null}
-            style={{ height: '150px', width: 'auto' }}  // Add necessary styles
-            identifier={`Partner ${index + 1}`}
-            imageHeight={imageHeight}
+            openImagePanel={() => openImagePanel(image.id)}
+            onImageChange={(newSrc) => handleImageChange(index, newSrc)}
+            selectedImage={activeComponent === image.id ? selectedImage : null}
+            style={{ height: '150px', width: 'auto' }} // Add necessary styles
+            identifier={image.id}
           />
         ))}
       </div>
