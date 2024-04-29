@@ -9,7 +9,7 @@ import BorderSettings from "./RightBarComponents/BorderSettings";
 import BackgroundSettings from "./RightBarComponents/BackgroundSettings";
 import TypographySettings from "./RightBarComponents/TypographySettings";
 import { useImageHistory } from '../../hooks/ImageHistoryContext';
-export default function RightBar({ selectedElement, logChange, selectedColor, setSelectedColor }) {
+export default function RightBar({handleSettingsChange, selectedElement, logChange, selectedColor, setSelectedColor }) {
   
   const { addImageToHistory } = useImageHistory();
 
@@ -44,6 +44,7 @@ export default function RightBar({ selectedElement, logChange, selectedColor, se
       });
       logChange(elementId, newStyles);  // Log this change
       console.log(`Styles applied to ${elementId}:`, newStyles);
+      handleSettingsChange(elementId, newStyles); // Update settings in Display component
     } else {
       console.error(`No element found with ID ${elementId}`);
     }

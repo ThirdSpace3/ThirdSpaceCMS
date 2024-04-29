@@ -19,7 +19,8 @@ export default function Canva({selectedColor,setSelectedColor,logChange, templat
 
   const FallbackTemplate = () => <div>Template not found.</div>;
   const SelectedTemplate = templateComponents[templateName] || FallbackTemplate;
-
+  const [TemplateContent, setTemplateContent] = useState({});
+console.log(TemplateContent);
   const [canvasSize, setCanvasSize] = useState({ width: deviceSize, height: '100%' });
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function Canva({selectedColor,setSelectedColor,logChange, templat
 
   return (
     <div className='canva-wrapper' style={{ width: canvasSize.width, height: canvasSize.height, overflowY: 'auto' }}>
-      <SelectedTemplate
+     <SelectedTemplate
         deviceSize={deviceSize}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
@@ -39,11 +40,12 @@ export default function Canva({selectedColor,setSelectedColor,logChange, templat
         isPreviewMode={isPreviewMode}
         openImagePanel={openImagePanel}
         imageHistory={imageHistory}
-        selectedImage={selectedImage} // Pass down the selectedImage prop
+        selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
         logChange={logChange}
-        selectedColor={selectedColor} 
+        selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
+        setTemplateContent={setTemplateContent}
       />
     </div>
   );

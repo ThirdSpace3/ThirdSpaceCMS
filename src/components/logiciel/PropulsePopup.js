@@ -1,7 +1,22 @@
 import "../Root.css";
 import "./PropulsePopup.css";
+import React, { useEffect } from 'react';
 
-export default function PropulsePopup() {
+export default function PropulsePopup({setShowPopup}) {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const popupContainer = document.querySelector('.propulse-popup-container');
+      if (popupContainer && !popupContainer.contains(event.target)) {
+        setShowPopup(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setShowPopup]);
   return (
     <>
       <div className="propulse-popup-container">

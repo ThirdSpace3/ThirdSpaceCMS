@@ -24,7 +24,7 @@ export default function Display() {
   const [selectedImage, setSelectedImage] = useState(null);
   const { clearFocus } = useImageHistory(); // Use the clearFocus method from context
   const [selectedColor, setSelectedColor] = useState(""); // State to hold the confirmed color
-
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleSettingsChange = (elementId, newSettings) => {
     console.log("Updating settings for:", elementId, "new settings received:", newSettings);
@@ -37,9 +37,22 @@ export default function Display() {
         }
       };
       console.log("Updated settings:", updatedSettings);
+      localStorage.setItem('settings', JSON.stringify(updatedSettings)); // Store settings in local storage
       return updatedSettings;
     });
   };
+
+  const loadSettingsFromLocalStorage = () => {
+    const settingsFromLocalStorage = localStorage.getItem('settings');
+    if (settingsFromLocalStorage) {
+      const parsedSettings = JSON.parse(settingsFromLocalStorage);
+      setSettings(parsedSettings);
+    }
+  };
+
+  useEffect(() => {
+    loadSettingsFromLocalStorage();
+  }, []);
   const selectElement = (elementId) => {
     console.log('selectElement elementId:', elementId);
 
@@ -167,7 +180,15 @@ export default function Display() {
 
         )}
         <div className="displayColumnWrapper">
-        <TopBar onSaveClick={saveSettings} onUndoClick={undo} onRedoClick={redo} onDeviceChange={(size) => setSelectedDeviceSize(size)} onPreview={handlePreview} />
+        <TopBar 
+        onSaveClick={saveSettings} 
+        onUndoClick={undo} 
+        onRedoClick={redo} 
+        onDeviceChange={(size) => setSelectedDeviceSize(size)} 
+        onPreview={handlePreview} 
+        showPopup={showPopup} // Add this line
+        setShowPopup={setShowPopup}
+        />
           <Canva
             templateName={templateName}
             deviceSize={selectedDeviceSize}
@@ -186,7 +207,12 @@ export default function Display() {
 
         </div>
         {!isPreviewMode && (
-          <RightBar handleSettingsChange={handleSettingsChange} selectedElement={selectedElement} logChange={logChange} selectedColor={selectedColor} setSelectedColor={setSelectedColor}/>
+          <RightBar 
+          handleSettingsChange={handleSettingsChange} 
+          selectedElement={selectedElement} 
+          logChange={logChange} 
+          selectedColor={selectedColor} 
+          setSelectedColor={setSelectedColor}/>
         )}
       </div>
     </>

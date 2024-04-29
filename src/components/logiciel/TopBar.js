@@ -21,19 +21,7 @@ const TopBar = ({
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [focusedDevice, setFocusedDevice] = useState(deviceSizes.tv); // New state for focused device
 
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (showPopup && e.target.closest(".propulse-popup") === null) {
-        setShowPopup(false);
-      }
-    };
 
-    document.addEventListener("mousedown", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [showPopup]);
 
   const handleEyeIconClick = () => {
     if (eyeIcon === "bi bi-eye") {
@@ -46,7 +34,6 @@ const TopBar = ({
 
   const handlePropulseClick = () => {
     setShowPopup(!showPopup);
-    onSaveClick();
   };
 
   const toggleCollapse = () => {
@@ -97,7 +84,7 @@ const TopBar = ({
           <i className={isCollapsed ? "bi bi-chevron-down" : "bi bi-chevron-up"} onClick={toggleCollapse}></i>
         </div>
       </div>
-      {showPopup && <PropulsePopup />}
+      {showPopup && <PropulsePopup setShowPopup={setShowPopup} />}
     </>
   );
 };

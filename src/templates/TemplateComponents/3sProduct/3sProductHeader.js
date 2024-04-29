@@ -11,15 +11,16 @@ const HeaderSection = ({
   openImagePanel,
   setSelectedElement,
   setSelectedColor,
-  
+  onContentChange,
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
-  const [heroTitleText, setHeroTitleText] = useState(() => localStorage.getItem('header-heroTitle-text') || 'The first user-friendly website builder');
-  const [heroDescriptionText, setHeroDescriptionText] = useState(() => localStorage.getItem('header-heroDescription-text') || 'Rorem ipsum dolor sit amet consectetur. Gravida convallis orci ultrices non. Ultricies tempor at ut cursus mi. Aliquam sed amet vitae orci ac penatibus consectetur.');
-  const [joinUsText, setJoinUsText] = useState(() => localStorage.getItem('header-joinUs-text') || 'Join Us');
-  const [headerImage, setHeaderImage] = useState("./images/templates-img/3sproduct/3sproduct-hero.png");
-  const [menuToggleImg, setMenuToggleImg] = useState("path/to/menu/toggle/image");
+  const [headerContent, setHeaderContent] = useState({
+    heroTitle: localStorage.getItem('header-heroTitle-text') || 'The first user-friendly website builder',
+    heroDescription: localStorage.getItem('header-heroDescription-text') || 'Rorem ipsum dolor sit amet consectetur. Gravida convallis orci ultrices non. Ultricies tempor at ut cursus mi. Aliquam sed amet vitae orci ac penatibus consectetur.',
+    joinUs: localStorage.getItem('header-joinUs-text') || 'Join Us',
+    image: "./images/templates-img/3sproduct/3sproduct-hero.png"
+  });
 
   const { style, getComponentStyle, updateStyle } = useStyle();
   const headerStyle = getComponentStyle('header');
@@ -36,31 +37,22 @@ const HeaderSection = ({
     });
   };
   useEffect(() => {
-    getImageHeight(headerImage).then((height) => setImageHeight(height));
+    getImageHeight(headerContent.image).then((height) => setImageHeight(height));
   }, []);
 
   const handleTextChange = (newText, textType) => {
-    console.log(`Updating text for ${textType}: ${newText}`);
-    console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
-
-    switch (textType) {
-      case 'heroTitle':
-        setHeroTitleText(newText);
-        break;
-      case 'heroDescription':
-        setHeroDescriptionText(newText);
-        break;
-      case 'joinUs':
-        setJoinUsText(newText);
-        break;
-      default:
-        break;
-    }
-    updateStyle(textType, { text: newText });
+    setHeaderContent(prevContent => ({
+      ...prevContent,
+      [textType]: newText
+    }));
     localStorage.setItem(`header-${textType}-text`, newText);
-
-    console.log(`Requested style update for ${textType}`);
+    updateStyle(textType, { text: newText });
+    onContentChange({
+      ...headerContent,
+      [textType]: newText
+    });
   };
+
 
   const handleComponentClick = (event, identifier) => {
     event.preventDefault();
@@ -77,33 +69,42 @@ const HeaderSection = ({
       document.documentElement.style.setProperty(cssVarName, storedColor);
     }
   }, [setSelectedColor]);
+  useEffect(() => {
+    localStorage.setItem('header-content', JSON.stringify(headerContent));
+  }, [headerContent]);
   
-
+  useEffect(() => {
+    const storedContent = localStorage.getItem('header-content');
+    if (storedContent) {
+      const parsedContent = JSON.parse(storedContent);
+      onContentChange(parsedContent);
+    }
+  }, []);
   return (
     <div className="sss-product-hero" style={headerStyle} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
       <h1 className="sss-product-hero-title" id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')} style={heroTitleStyles}>
         <EditableText
-          text={heroTitleText}
+          text={headerContent.heroTitle}
           onChange={(newText) => handleTextChange(newText, 'heroTitle')}
-          
+
         />
       </h1>
       <p className="sss-product-hero-text" id='heroDescription' onClick={(event) => handleComponentClick(event, 'heroDescription')}>
         <EditableText
-          text={heroDescriptionText}
+          text={headerContent.heroDescription}
           onChange={(newText) => handleTextChange(newText, 'heroDescription')}
           style={heroDescriptionStyles}
         />
       </p>
       <a href="#" id='herojoinUs' className="sss-product-hero-cta" onClick={(event) => handleComponentClick(event, 'joinUs')}>
         <EditableText
-          text={joinUsText}
+          text={headerContent.joinUs}
           onChange={(newText) => handleTextChange(newText, 'joinUs')}
           style={herojoinUsStyles}
         />
       </a>
       <ReusableImage
-        src={headerImage}
+        src={headerContent.image}
         alt="Hero Image"
         onClick={() => enterReplacementMode('HeaderSection')}
         openImagePanel={openImagePanel}
