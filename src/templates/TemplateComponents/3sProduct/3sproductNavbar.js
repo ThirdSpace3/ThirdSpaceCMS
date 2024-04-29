@@ -25,7 +25,7 @@ const Navbar = ({
     const [navbarImage, setNavbarImage] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
 
     const { setSelectedComponent, selectedComponent, updateStyle, getComponentStyle } = useStyle();
-    const navbarStyles = getComponentStyle(selectedComponent || 'navbar');
+    const navbarStyles = getComponentStyle('navbar');
     const homeStyles = getComponentStyle('home');
     const aboutStyles = getComponentStyle('about');
     const featuresStyles = getComponentStyle('navfeatures');
@@ -46,7 +46,7 @@ const Navbar = ({
         event.preventDefault(); // This will prevent the default action of the anchor tag
         event.stopPropagation(); // Stop the event from propagating up
         console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
-        setSelectedComponent(identifier);
+        setSelectedElement(identifier);
     };
 
     const handleTextChange = (newText, textType) => {
@@ -80,13 +80,13 @@ const Navbar = ({
     useEffect(() => {
         const cssVarName = `--navbar-background-color`;
         const storedColor = localStorage.getItem(cssVarName);
-      
+
         if (storedColor) {
-          setSelectedColor(storedColor);
-          document.documentElement.style.setProperty(cssVarName, storedColor);
+            setSelectedColor(storedColor);
+            document.documentElement.style.setProperty(cssVarName, storedColor);
         }
-      }, []);
-      
+    }, []);
+
     useEffect(() => {
         setHomeText(localStorage.getItem('navbar-home-text') || 'Home');
         setAboutText(localStorage.getItem('navbar-about-text') || 'About');
@@ -100,8 +100,8 @@ const Navbar = ({
     }, [setSelectedColor]);
 
     return (
-        <div className="sss-product-navbar-container navbar-element" id='navbar' style={navbarStyles} onClick={(event) => setSelectedElement('navbar')}>
-    <nav className="sss-product-navbar-navbar">
+        <div className="sss-product-navbar-container navbar-element" id='navbar' style={navbarStyles} onClick={(event) => handleComponentClick(event, 'navbar')}>
+            <nav className="sss-product-navbar-navbar">
                 <div className="image-container">
                     <ReusableImage
                         src={navbarImage}
@@ -142,19 +142,19 @@ const Navbar = ({
                             />
                         </Link>
                     </li>
-                    
+
                 </ul>
-                <a id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}  style={{ ...joinUsStyles }}>
-                        <Link className="sss-product-navbar-cta">
-                            <EditableText
-                                text={joinUsText}
-                                onChange={(newText) => handleTextChange(newText, 'joinUs')}
-                                style={joinUsStyles}
-                            />
-                        </Link>
-                    </a>
+                <a id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')} style={{ ...joinUsStyles }}>
+                    <Link className="sss-product-navbar-cta">
+                        <EditableText
+                            text={joinUsText}
+                            onChange={(newText) => handleTextChange(newText, 'joinUs')}
+                            style={joinUsStyles}
+                        />
+                    </Link>
+                </a>
                 {/* Menu mobile toggler */}
-                 {/* <img
+                {/* <img
             src={menuToggleImg}
             className="sss-product-navbar-mobile-toggle"
             onClick={(event) => {
