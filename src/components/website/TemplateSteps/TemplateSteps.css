@@ -44,6 +44,9 @@ body {
   padding: 25px;
   overflow: hidden;
 }
+#etape4 {
+  justify-content: flex-start;
+}
 
 #etape5 p {
   max-width: 750px;
@@ -366,7 +369,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: space-between;
+  justify-content: center;
   min-width: 70%;
   overflow: auto;
   max-height: 60vh;

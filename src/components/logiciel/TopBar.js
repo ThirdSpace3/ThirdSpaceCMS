@@ -76,7 +76,7 @@ const TopBar = ({
             </a>
           </div>
           <button className="topbar-propulse-btn" onClick={handlePropulseClick}>
-            Propulse
+            Save 
             <i className="bi bi-rocket-takeoff"></i>
           </button>
         </div>
