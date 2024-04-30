@@ -1,60 +1,46 @@
 import React, { useState, useEffect } from "react";
 import "./NavBar.css";
-import PopupWallet from "./PopupWallet.js";
-import "../Root.css";
-import TemplateStep1 from "./TemplateSteps/TemplateStep1.js";
 import { useNavigate } from "react-router-dom";
+import PopupWallet from "./PopupWallet.js";
+import { db, doc, getDoc } from '../../firebaseConfig.js'; // Assuming Firestore is correctly imported and configured
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [accounts, setAccounts] = useState([]);
+  const [hasWalletData, setHasWalletData] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  const [showTemplateStep1, setShowTemplateStep1] = useState(false);
   const navigate = useNavigate();
 
-  const userIsLoggedIn = () => {
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
-    return isLoggedIn;
-  };
-
   useEffect(() => {
-    const checkLoginStatus = () => {
-      const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+    const checkWalletData = async () => {
       const userAccount = sessionStorage.getItem("userAccount");
-      if (isLoggedIn && userAccount) {
-        setAccounts([userAccount]);
-      } else {
-        setAccounts([]);
+      if (userAccount) {
+        const docRef = doc(db, "wallets", userAccount);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setHasWalletData(true);  // Set to true if wallet data exists in the database
+        } else {
+          setHasWalletData(false); // Set to false if no wallet data found
+        }
+        setAccounts([userAccount]); // Set the account state either way
       }
     };
 
-    checkLoginStatus();
+    checkWalletData();
   }, []);
-  const is3rdSpaceIO = window.location.hostname.includes("3rd-space");
 
   const togglePopup = () => {
-    if (!userIsLoggedIn()) {
-      setShowPopup(!showPopup);
+    if (accounts.length > 0 && !hasWalletData) {
+      navigate("/templatestep"); // Navigate to the step if no wallet data found
     } else {
-      if (is3rdSpaceIO === true) {
-        window.location.href = "https://thirdspace.x";
-      } else {
-        navigate("./templatestep");
-      }
+      setShowPopup(true); // Show popup to connect wallet
     }
-  };
-
-  const redirectWeb3 = () => {
-    window.location.href = "https://thirdspace.x";
   };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Additional logic to adjust button display based on URL
-  const displayLaunchAppInstead = is3rdSpaceIO; // Add your logic for detecting plugins here if needed
-  
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">
@@ -85,54 +71,28 @@ function Navbar() {
             </li>
           </ul>
 
-          {/* If .X display tout 
-          If .io Get started => Launch App */}
-          {displayLaunchAppInstead ? (
-            <a
-              href="ipfs://thirdspace.x"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="nav__cta nav-bg"
-              onClick={() => {
-                window.open("ipfs://thirdspace.x",
-                  "_blank"
-                );
-                window.location.href = "https://chrome.google.com/webstore/detail/unstoppable-extension/beelkklmblgdljamcmoffgfbdddfpnnl";
-              }}                  
-
-            >
-              Launch App
+          {accounts.length === 0 ? (
+            <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
+              Connect Wallet
             </a>
           ) : (
-            <>
-              <a
-                href={accounts.length > 0 ? ".#/templatestep" : "#"}
-                className="nav__cta nav-bg"
-                onClick={accounts.length === 0 ? togglePopup : undefined}
-              >
-                Get Started
-              </a>
-              {accounts.length === 0 && (
-                <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
-                  <span className="material-symbols-outlined">wallet</span>
-                  Connect Wallet
-                </a>
-              )}
-            </>
+            <a
+              href={hasWalletData ? ".#/dashboard" : ".#/templatestep"}
+              className="nav__cta nav-bg"
+            >
+              {hasWalletData ? "Dashboard" : "Get Started"}
+            </a>
           )}
+
           {accounts.length > 0 && (
             <a href=".#/dashboard" className="nav__cta nav-bg" id="account-btn">
               <span className="material-symbols-outlined">account_circle</span>
             </a>
           )}
-
-          {/*  */}
         </div>
       </div>
 
-      <div className="navbar__mobile"
-        
-      >
+      <div className="navbar__mobile">
         <div className="navbar__mobile-head">
           <a href="index.html" className="nav__logo">
             <img src="/images/3s-logo.png" alt="thirdspace logo" />
@@ -161,7 +121,7 @@ function Navbar() {
             </li>
             <li className="coming-soon">
               <a href="/#/products" className="nav__links-btn">
-              Products
+                Products
               </a>
             </li>
             <li className="coming-soon">
@@ -174,19 +134,11 @@ function Navbar() {
                 Pricing
               </a>
             </li>
-            <a href="/#/get-started-mobile" className="nav__cta nav-bg">
-              Get started
-            </a>
           </ul>
         </div>
       </div>
-      {showPopup && (
-        <PopupWallet
-          onClose={() => setShowPopup(false)}
-          onUserLogin={(account) => setAccounts([account])}
-        />
-      )}
-      {showTemplateStep1 && <TemplateStep1 />}
+
+      {showPopup && <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} />}
     </nav>
   );
 }

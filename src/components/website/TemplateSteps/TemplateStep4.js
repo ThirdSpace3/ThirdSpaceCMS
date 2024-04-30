@@ -17,30 +17,30 @@ const initialTemplates = [
     component: SSSProduct,
     screenshot: "./images/SSSProductscreenshot.png",
   },
-  {
-    id: "TemplateFullText",
-    name: "Full Text",
-    component: TemplateFullText,
-    screenshot: "./images/TemplateFullTextscreenshot.png",
-  },
-  {
-    id: "TemplateImg_txt",
-    name: "Image and Text",
-    component: TemplateImg_txt,
-    screenshot: "./images/TemplateImg_txtscreenshot.png",
-  },
-  {
-    id: "TemplateTest1",
-    name: "Test Template 1",
-    component: TemplateTest1,
-    screenshot: "./images/TemplateTest1screenshot.png",
-  },
-  {
-    id: "Template2",
-    name: "Template 2",
-    component: Template2,
-    screenshot: "./images/Template2screenshot.png",
-  }
+  // {
+  //   id: "TemplateFullText",
+  //   name: "Full Text",
+  //   component: TemplateFullText,
+  //   screenshot: "./images/TemplateFullTextscreenshot.png",
+  // },
+  // {
+  //   id: "TemplateImg_txt",
+  //   name: "Image and Text",
+  //   component: TemplateImg_txt,
+  //   screenshot: "./images/TemplateImg_txtscreenshot.png",
+  // },
+  // {
+  //   id: "TemplateTest1",
+  //   name: "Test Template 1",
+  //   component: TemplateTest1,
+  //   screenshot: "./images/TemplateTest1screenshot.png",
+  // },
+  // {
+  //   id: "Template2",
+  //   name: "Template 2",
+  //   component: Template2,
+  //   screenshot: "./images/Template2screenshot.png",
+  // }
 ];
 
 const TemplateStep4 = ({

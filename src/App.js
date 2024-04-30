@@ -16,7 +16,10 @@ import { StyleProvider } from "./hooks/StyleContext";
 import { ImageHistoryProvider } from "./hooks/ImageHistoryContext";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 import GetStartedMobile from "./components/website/GetStartedMobile";
+import AnalyticsWrapper from "./hooks/AnalyticsWrapper";
+
 export default function App() {
+
   return (
     <div>
       <HashRouter>

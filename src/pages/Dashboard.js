@@ -18,11 +18,11 @@ export default function Dashboard({ selectedTemplateId }) {
   const [newTemplateName, setNewTemplateName] = useState("");
   console.log("isLoggedIn:", isLoggedIn); // Add this line
   console.log("walletId:", walletId); // Add this line
-  const selectedTemplate = sessionStorage.getItem("selectedTemplateId");  
+  const selectedTemplate = sessionStorage.getItem("selectedTemplateId");
   const projectName = sessionStorage.getItem("projectName");
   console.log("Retrieved template: ", selectedTemplate);
   console.log("Retrieved project name: ", projectName);
-
+  
 
 
 const handleReturnToProjectsDashboard = () => {

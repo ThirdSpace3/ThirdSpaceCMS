@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ProjectsDashboard.css";
 import "./DashboardMain.css";
 import { useNavigate } from "react-router-dom";
-
+import { db,doc,getDoc } from "../../firebaseConfig";
 export default function ProjectsDashboard({
   projects,
   handleOpenSettings,
@@ -19,6 +19,7 @@ export default function ProjectsDashboard({
   const [isOpen, setIsOpen] = useState(false);
   // Initialise selectedOption avec la première option
   const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
+  const walletID = sessionStorage.getItem('userAccount');
 
   // Add a new state for the filtered projects
   const [filteredProjects, setFilteredProjects] = useState(projects);
@@ -123,15 +124,15 @@ export default function ProjectsDashboard({
   }, [projects, navigate]); // 
   const [selectedTemplate, setSelectedTemplate] = useState(null);
 
-  useEffect(() => {
-    const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
-    if (selectedTemplateId) {
-      const selectedTemplate = projects.find(
-        (project) => project.id === selectedTemplateId
-      );
-      setSelectedTemplate(selectedTemplate);
-    }
-  }, []);
+// For example, setSelectedTemplate useEffect should depend on 'projects'
+useEffect(() => {
+  const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
+  if (selectedTemplateId) {
+    const foundTemplate = projects.find(project => project.id === selectedTemplateId);
+    setSelectedTemplate(foundTemplate);
+  }
+}, [projects]);
+
   // New state for the most recently updated project
   const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
 
@@ -161,6 +162,31 @@ export default function ProjectsDashboard({
   useEffect(() => {
     localStorage.setItem("projects", JSON.stringify(projects));
   }, [projects]);
+  
+  useEffect(() => {
+    async function fetchProjects() {
+      if (walletID) {
+        const docRef = doc(db, 'wallets', walletID);
+        const docSnap = await getDoc(docRef);
+  
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          // Check if stepsData exists and has a property '5'
+          if (data.stepsData && data.stepsData['5']) {
+            const stepData = data.stepsData['5'];
+            // Now you can safely use stepData as it is confirmed to exist
+            setProjects([{ name: stepData.name, template: stepData.templateSelected }]);
+          } else {
+            console.log("Step data 5 does not exist!");
+          }
+        } else {
+          console.log("No such document!");
+        }
+      }
+    }
+  
+    fetchProjects();
+  }, [walletID]);
   
   return (
     <>
