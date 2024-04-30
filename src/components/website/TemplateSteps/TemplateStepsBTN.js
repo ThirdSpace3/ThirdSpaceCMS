@@ -10,11 +10,9 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
   const handleNextClick = async () => {
     if (isNextEnabled) {
       try {
-        const sessionData = JSON.parse(sessionStorage.getItem('stepData')) || {};
-        console.log(sessionData);
+        console.log(selectedButtons);
 
         // Save the step data to Firestore linked to the wallet ID
-        await setDoc(doc(db, 'wallets', walletId, 'stepData', currentStep.toString()), sessionData);
 
         // Handle the case for the last step
         if (currentStep === 5) {
@@ -41,11 +39,12 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
           // Set session storage flags and redirect
           sessionStorage.setItem('isTemplateCompleted', 'true');
           setRedirectToRoot(true);
+          await setDoc(doc(db, 'wallets', walletId, 'stepData', currentStep.toString()), selectedButtons);
 
           // Optionally, if you're sending data to a backend, adjust and uncomment:
           await axios.post('/api/final-submission', {
             walletId,
-            data: { allStepsData: sessionData, templateName, projectName },
+            data: { allStepsData: selectedButtons, templateName, projectName },
           });
 
         } else {

@@ -58,33 +58,31 @@ const TemplateStep4 = ({
 
 
   const handleTemplateSelect = (templateId) => {
-    setSelectedId(templateId);
-    updateNextButtonState(true);
-    const additionalData = { selectedTemplateId: templateId };
-    advanceToNextStep(currentStep, setCurrentStep, additionalData);
     setSelectedButtons(prev => ({
       ...prev,
-      templateselected: [templateId]  // Ensure this matches the structure you need
+      templateselected: [templateId] // Ensures only the latest selection is kept
     }));
+    updateNextButtonState(true);
+    advanceToNextStep(currentStep, setCurrentStep);
   };
+
 
   const handleHover = (index, state) => {
     setIsHovered(isHovered.map((hoverState, i) => (i === index ? state : hoverState)));
   };
 
+  // After selecting a template, ensure the data is saved before moving to the next step.
   const advanceToNextStep = (currentStep, setCurrentStep, additionalData = {}) => {
     const sessionData = JSON.parse(sessionStorage.getItem('stepData')) || {};
+    sessionData[currentStep] = { ...sessionData[currentStep], ...additionalData };
     sessionStorage.setItem('stepData', JSON.stringify(sessionData));
     const nextStep = currentStep + 1;
-    if (nextStep <= 5) {
-      setCurrentStep(nextStep);
-    } else {
-      console.log("Final step reached or logic for handling steps beyond 5.");
-    }
+    setCurrentStep(nextStep);
   };
-useEffect(() => {
-  sessionStorage.setItem('stepData', JSON.stringify(selectedButtons));
-}, [selectedButtons]);
+
+  useEffect(() => {
+    sessionStorage.setItem('stepData', JSON.stringify(selectedButtons));
+  }, [selectedButtons]);
   return (
     <div id="etape4">
       <NavbarSteps />

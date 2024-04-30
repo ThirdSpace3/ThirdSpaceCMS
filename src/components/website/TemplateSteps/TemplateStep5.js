@@ -3,19 +3,7 @@
   const TemplateStep5 = ({ updateNextButtonState, currentStep, setSelectedButtons }) => {
     const [inputValue, setInputValue] = useState('');
 
-    useEffect(() => {
-      // Load the initial value of the input from sessionStorage
-      const savedInput = sessionStorage.getItem(`inputValue-${currentStep}`);
-      if (savedInput) {
-        setInputValue(savedInput);
-        updateNextButtonState(savedInput.trim() !== '');
-      }
-    }, [currentStep, updateNextButtonState]);
 
-    // Update sessionStorage directly whenever the inputValue is updated
-    useEffect(() => {
-      sessionStorage.setItem(`inputValue-${currentStep}`, inputValue);
-    }, [inputValue, currentStep]);
 
     const handleInputChange = (event) => {
       const newValue = event.target.value;
@@ -25,6 +13,7 @@
 
     const handleInputBlur = () => {
       if (inputValue.trim()) {
+        sessionStorage.setItem(`inputValue-${currentStep}`, inputValue.trim());
         const projectName = inputValue.trim();
         const selectedTemplateId = sessionStorage.getItem('selectedTemplateId');
         
@@ -52,7 +41,7 @@
         
         setSelectedButtons(prev => ({
           ...prev,
-          [currentStep]: [projectName]
+          name : [projectName]
         }));
         
         // Optionally, navigate to a new route or update the UI to reflect the newly created project
@@ -76,6 +65,24 @@
     useEffect(() => {
       sessionStorage.setItem('projectName', inputValue);
     }, [inputValue]);
+
+
+    useEffect(() => {
+      // Load the initial value of the input from sessionStorage
+      const savedInput = sessionStorage.getItem(`inputValue-${currentStep}`);
+      if (savedInput) {
+        setInputValue(savedInput);
+        updateNextButtonState(savedInput.trim() !== '');
+      }
+    }, [currentStep, updateNextButtonState]);
+
+
+    // Ensure useEffect correctly tracks changes
+  useEffect(() => {
+    sessionStorage.setItem(`inputValue-${currentStep}`, inputValue);
+  }, [inputValue, currentStep]);
+
+
     return (
       <div id="etape5">
         <div className="step-box">

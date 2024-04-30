@@ -79,10 +79,10 @@ export default function TemplateStep() {
 
   useEffect(() => {
     // Load stored data on component mount
-    const storedButtons = sessionStorage.getItem("selectedButtons");
-    if (storedButtons) {
-      setSelectedButtons(JSON.parse(storedButtons));
-    }
+    // const storedButtons = sessionStorage.getItem("selectedButtons");
+    // if (storedButtons) {
+    //   setSelectedButtons(JSON.parse(storedButtons));
+    // }
     sessionStorage.setItem("currentStep", currentStep.toString());
     // Ensure walletId is not lost upon updating currentStep
     if (walletId) {
