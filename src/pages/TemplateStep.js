@@ -22,8 +22,9 @@ export default function TemplateStep() {
     1: [],
     2: [],
     3: [],
-    templateselected: [],
     name: [],
+    templateselected: [],
+
   });
   const [projects, setProjects] = useState([]);
 
@@ -134,6 +135,10 @@ export default function TemplateStep() {
       }));
     }
   };
+  useEffect(() => {
+    console.log("Selected buttons updated:", selectedButtons);
+    sessionStorage.setItem("selectedButtons", JSON.stringify(selectedButtons));
+  }, [selectedButtons]);
 
   return (
     <>
@@ -176,6 +181,7 @@ export default function TemplateStep() {
             <TemplateStep4
               updateNextButtonState={updateNextButtonState}
               setSelectedButtons={setSelectedButtons}
+              selectedButtons={selectedButtons}
               currentStep={currentStep}
               setProjectName={setProjectName}
               projectName={projectName}

@@ -1,58 +1,62 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
+import { db, doc, setDoc, updateDoc } from '../../../firebaseConfig'; // Ensure the path to your Firebase config is correct
 
 const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, walletId, currentStep, inputValue, templateData }) => {
   const [redirectToRoot, setRedirectToRoot] = useState(false);
   const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
 
-const handleNextClick = async () => {
-  if (isNextEnabled) {
-    try {
-      const sessionData = JSON.parse(sessionStorage.getItem('stepData')) || {};
-      console.log(sessionData);
-      // Handle the case for the last step
-      if (currentStep === 5) {
-        // Assuming `inputValue` holds the project name and `selectedButtons` holds template data
-        const projectName = inputValue; // Or however you obtain the project name
-        const templateName = selectedButtons[5]; // Adjust according to your data structure
+  const handleNextClick = async () => {
+    if (isNextEnabled) {
+      try {
+        const sessionData = JSON.parse(sessionStorage.getItem('stepData')) || {};
+        console.log(sessionData);
 
-        // Create a new project object
-        const newProject = {
-          id: Date.now(), // Simple way to get a unique ID
-          name: projectName,
-          logiciel: templateName, // Assuming this is how you determine the template
-          image: `./images/${templateName}screenshot.png`, // Example path, adjust as needed
-          createdAt: new Date().toISOString().slice(0, 10),
-          description: "",
-          favicon: "",
-        };
+        // Save the step data to Firestore linked to the wallet ID
+        await setDoc(doc(db, 'wallets', walletId, 'stepData', currentStep.toString()), sessionData);
 
-        // Retrieve existing projects and add the new one
-        const existingProjects = JSON.parse(localStorage.getItem('projects')) || [];
-        const updatedProjects = [...existingProjects, newProject];
-        localStorage.setItem('projects', JSON.stringify(updatedProjects));
+        // Handle the case for the last step
+        if (currentStep === 5) {
+          // Assuming `inputValue` holds the project name and `selectedButtons` holds template data
+          const projectName = inputValue; // Or however you obtain the project name
+          const templateName = selectedButtons[currentStep]; // Use the selectedButtons prop instead of sessionStorage
 
-        // Set session storage flags and redirect
-        sessionStorage.setItem('isTemplateCompleted', 'true');
-        setRedirectToRoot(true);
+          // Create a new project object
+          const newProject = {
+            id: Date.now(), // Simple way to get a unique ID
+            name: projectName,
+            logiciel: templateName, // Assuming this is how you determine the template
+            image: `./images/${templateName}screenshot.png`, // Example path, adjust as needed
+            createdAt: new Date().toISOString().slice(0, 10),
+            description: "",
+            favicon: "",
+          };
 
-        // Optionally, if you're sending data to a backend, adjust and uncomment:
-        await axios.post('/api/final-submission', {
-          walletId,
-          data: { allStepsData: sessionData, templateName, projectName },
-        });
+          // Retrieve existing projects and add the new one
+          const existingProjects = JSON.parse(localStorage.getItem('projects')) || [];
+          const updatedProjects = [...existingProjects, newProject];
+          localStorage.setItem('projects', JSON.stringify(updatedProjects));
 
-      } else {
-        // Handle the next step for steps other than the last
-        onNext();
+          // Set session storage flags and redirect
+          sessionStorage.setItem('isTemplateCompleted', 'true');
+          setRedirectToRoot(true);
+
+          // Optionally, if you're sending data to a backend, adjust and uncomment:
+          await axios.post('/api/final-submission', {
+            walletId,
+            data: { allStepsData: sessionData, templateName, projectName },
+          });
+
+        } else {
+          // Handle the next step for steps other than the last
+          onNext();
+        }
+      } catch (error) {
+        console.error('Error in operation:', error);
       }
-    } catch (error) {
-      console.error('Error in operation:', error);
     }
-  }
-};
-
+  };
 
   return (
     <div className="btn-box">
@@ -73,8 +77,3 @@ const handleNextClick = async () => {
 };
 
 export default TemplateStepsBTN;
-
-
-
-
-

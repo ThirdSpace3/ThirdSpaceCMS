@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./PopupWallet.css";
 import axios from "axios";
 import "../Root.css";
+import {db, doc, setDoc } from '../../firebaseConfig'
 
 function PopupWallet({ onClose, onUserLogin }) {
   const [showMore, setShowMore] = useState(false);
   const [hasWallet, setHasWallet] = useState(false);
+  console.log(db);
 
   useEffect(() => {
     const checkForWallet = () => {
@@ -44,17 +46,10 @@ function PopupWallet({ onClose, onUserLogin }) {
         });
         const account = accounts[0];
         try {
-          const response = await axios.post("/api/wallets", {
-            walletId: account,
-          });
-          if (response.data.status === "existing") {
-            console.log("Wallet ID already linked to an existing account.");
-            sessionStorage.setItem("userAccount", account); // Save user account in session storage
-          } else {
-            console.log("Wallet ID saved to database:", response.data);
-          }
+          await setDoc(doc(db, 'wallets', account), { walletId: account });
+          console.log("Wallet ID saved to Firestore:", account);
         } catch (error) {
-          console.error("Error saving wallet ID to database:", error);
+          console.error("Error saving wallet ID to Firestore:", error);
         }
 
         const message = "Please sign this message to confirm your identity.";
@@ -89,19 +84,10 @@ function PopupWallet({ onClose, onUserLogin }) {
           const response = await provider.connect();
           const publicKey = response.publicKey.toString();
           try {
-            const response = await axios.post("/api/wallets", {
-              walletId: publicKey,
-            });
-            if (response.data.status === "existing") {
-              sessionStorage.setItem("userAccount", publicKey); // Save user account in session storage
-
-              console.log("Wallet ID already linked to an existing account.");
-            } else {
-              console.log("Wallet ID saved to database:", response.data);
-              sessionStorage.setItem("userAccount", publicKey); // Save user account in session storage
-            }
+            await setDoc(doc(db, 'wallets', publicKey), { walletId: publicKey });
+            console.log("Wallet ID saved to Firestore:", publicKey);
           } catch (error) {
-            console.error("Error saving wallet ID to database:", error);
+            console.error("Error saving wallet ID to Firestore:", error);
           }
 
           // Create a message to sign
@@ -134,49 +120,6 @@ function PopupWallet({ onClose, onUserLogin }) {
   };
 
   // https://docs.unstoppabledomains.com/identity/overview/login-with-unstoppable/
-
-  //   const handleLoginWithUnstoppable = async () => {
-  //   try {
-  //     const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //     const signer = provider.getSigner();
-  //     const address = await signer.getAddress();
-
-  //     // You may need to request the user's permission to connect to their wallet
-  //     // await provider.send("eth_requestAccounts", []);
-
-  //     const domain = 'your-domain.crypto'; // Replace with the actual domain
-  //     const resolver = await UnstoppableDomains.getResolver(domain);
-  //     const addr = await resolver.addr('ETH');
-
-  //     if (addr.toLowerCase() === address.toLowerCase()) {
-  //       // The addresses match, so you can log in the user
-  //       try {
-  //         const response = await axios.post('/api/wallets', { walletId: address });
-  //         if (response.data.status === 'existing') {
-  //           console.log('Wallet ID already linked to an existing account.');
-  //           sessionStorage.setItem('userAccount', address);
-  //         } else {
-  //           console.log('Wallet ID saved to database:', response.data);
-  //         }
-  //       } catch (error) {
-  //         console.error('Error saving wallet ID to database:', error);
-  //       }
-
-  //       if (typeof onUserLogin === 'function') {
-  //         onUserLogin(address);
-  //         sessionStorage.setItem('isLoggedIn', 'true');
-  //         sessionStorage.setItem('userAccount', address);
-  //       } else {
-  //         console.error('onUserLogin is not a function');
-  //       }
-  //       onClose();
-  //     } else {
-  //       console.error("The addresses don't match. Unable to log in.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error connecting to Unstoppable Domains:", error);
-  //   }
-  // };
 
   return (
     <div className="popup" id="popup" style={{ display: "flex" }}>

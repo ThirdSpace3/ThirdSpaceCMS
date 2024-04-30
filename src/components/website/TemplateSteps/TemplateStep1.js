@@ -2,73 +2,88 @@ import React, { useState, useEffect } from 'react';
 import '../../Root.css';
 
 const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedButtons, setSelectedButtons, currentStep }) => {
-    const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState('');
 
-    // Clear session storage when component mounts, except critical data
-    useEffect(() => {
-        // Temporarily store critical data
-        const criticalData = sessionStorage.getItem('stepData');
-        
-        
-        // Restore critical data if it existed
-        if (criticalData) {
-            sessionStorage.setItem('stepData', criticalData);
-        }
-    }, []);
+  // Clear session storage when component mounts, except critical data
+  useEffect(() => {
+    // Temporarily store critical data
+    const criticalData = sessionStorage.getItem('stepData');
 
-    // Load the initial value of the input from sessionStorage
-    useEffect(() => {
-        const savedInput = sessionStorage.getItem(`inputValue-${currentStep}`);
-        if (savedInput) setInputValue(savedInput);
-    }, [currentStep]);
+    // Clear all session storage
+    sessionStorage.clear();
 
-    // Save the inputValue to sessionStorage when the component unmounts
-    useEffect(() => {
-        return () => {
-            sessionStorage.setItem(`inputValue-${currentStep}`, inputValue);
-            console.log('Session Data Updated:', sessionStorage.getItem('stepData'));
+    // Restore critical data if it existed
+    if (criticalData) {
+      sessionStorage.setItem('stepData', criticalData);
+    }
+  }, []);
 
+  // Load the initial value of the input from sessionStorage
+  useEffect(() => {
+    const savedInput = sessionStorage.getItem(`inputValue-${currentStep}`);
+    if (savedInput) setInputValue(savedInput);
+  }, [currentStep]);
+
+  // Save the inputValue to sessionStorage when the component unmounts
+  useEffect(() => {
+    return () => {
+      sessionStorage.setItem(`inputValue-${currentStep}`, inputValue);
+      console.log('Session Data Updated:', sessionStorage.getItem('stepData'));
+    };
+  }, [inputValue, currentStep]);
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const saveDataToSession = (newData) => {
+    const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
+    sessionData[currentStep] = newData;
+    sessionStorage.setItem('stepData', JSON.stringify(sessionData));
+    console.log('Session Data Updated:', sessionStorage.getItem('stepData'));
+  };
+
+  const handleInputBlur = () => {
+    if (inputValue.trim()) {
+      setSelectedButtons(prev => {
+        const updated = {
+          ...prev,
+          [currentStep]: [...(prev[currentStep] || []), inputValue.trim()].filter((value, index, self) => self.indexOf(value) === index) // Ensure uniqueness
         };
-    }, [inputValue, currentStep]);
+        saveDataToSession(updated[currentStep]);
+        console.log('Selected Buttons Updated:', selectedButtons); // Log selected buttons
+        return updated;
+      });
+    }
+  };
 
-    const handleInputChange = (event) => {
-        setInputValue(event.target.value);
-    };
+  const handleButtonClick = (button) => {
+    setSelectedButtons(prevSelections => ({
+      ...prevSelections,
+      [currentStep]: (prevSelections[currentStep] || []).includes(button)
+        ? prevSelections[currentStep].filter(id => id !== button)
+        : [...prevSelections[currentStep] || [], button]
+    }));
+    console.log('Selected Buttons Updated:', selectedButtons); // Log selected buttons
+  };
 
-    const saveDataToSession = (newData) => {
-        const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
-        sessionData[currentStep] = newData;
-        sessionStorage.setItem('stepData', JSON.stringify(sessionData));
-        console.log('Session Data Updated:', sessionStorage.getItem('stepData'));
+  useEffect(() => {
+    const isNextEnabled = selectedButtons[currentStep]?.length > 0 || inputValue.trim() !== '';
+    updateNextButtonState(isNextEnabled);
+  }, [selectedButtons, inputValue, updateNextButtonState, currentStep]);
+  
+  useEffect(() => {
+    // Load selected buttons from session storage when the component mounts
+    const storedButtons = JSON.parse(sessionStorage.getItem('selectedButtons'));
+    if (storedButtons) {
+      setSelectedButtons(storedButtons);
+    }
+  }, [setSelectedButtons]);
 
-    };
-
-    const handleInputBlur = () => {
-        if (inputValue.trim()) {
-            setSelectedButtons(prev => {
-                const updated = {
-                    ...prev,
-                    [currentStep]: [...(prev[currentStep] || []), inputValue.trim()].filter((value, index, self) => self.indexOf(value) === index) // Ensure uniqueness
-                };
-                saveDataToSession(updated[currentStep]);
-                return updated;
-            });
-        }
-    };
-
-    const handleButtonClick = (button) => {
-        setSelectedButtons(prevSelections => ({
-            ...prevSelections,
-            [currentStep]: (prevSelections[currentStep] || []).includes(button)
-                ? prevSelections[currentStep].filter(id => id !== button)
-                : [...prevSelections[currentStep] || [], button]
-        }));
-    };
-
-    useEffect(() => {
-        const isNextEnabled = selectedButtons[currentStep]?.length > 0 || inputValue.trim() !== '';
-        updateNextButtonState(isNextEnabled);
-    }, [selectedButtons, inputValue, updateNextButtonState, currentStep]);
+  useEffect(() => {
+    // Save selected buttons to session storage whenever they change
+    sessionStorage.setItem('selectedButtons', JSON.stringify(selectedButtons));
+  }, [selectedButtons]);
 
     return (
         <div id="etape1">
