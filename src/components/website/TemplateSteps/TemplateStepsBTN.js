@@ -17,8 +17,8 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
         // Handle the case for the last step
         if (currentStep === 5) {
           // Assuming `inputValue` holds the project name and `selectedButtons` holds template data
-          const projectName = inputValue; // Or however you obtain the project name
-          const templateName = selectedButtons[currentStep]; // Use the selectedButtons prop instead of sessionStorage
+          const projectName = selectedButtons.name; // Or however you obtain the project name
+          const templateName = selectedButtons.templateselected; // Use the selectedButtons prop instead of sessionStorage
 
           // Create a new project object
           const newProject = {
@@ -35,7 +35,7 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
           const existingProjects = JSON.parse(localStorage.getItem('projects')) || [];
           const updatedProjects = [...existingProjects, newProject];
           localStorage.setItem('projects', JSON.stringify(updatedProjects));
-
+          sessionStorage.setItem("isLoggedIn", true);
           // Set session storage flags and redirect
           sessionStorage.setItem('isTemplateCompleted', 'true');
           setRedirectToRoot(true);

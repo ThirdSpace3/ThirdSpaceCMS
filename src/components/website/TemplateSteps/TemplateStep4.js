@@ -58,6 +58,7 @@ const TemplateStep4 = ({
 
 
   const handleTemplateSelect = (templateId) => {
+    sessionStorage.setItem('selectedTemplateId', templateId);
     setSelectedButtons(prev => ({
       ...prev,
       templateselected: [templateId] // Ensures only the latest selection is kept

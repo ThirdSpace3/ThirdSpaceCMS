@@ -47,6 +47,8 @@ function PopupWallet({ onClose, onUserLogin }) {
         const account = accounts[0];
         try {
           await setDoc(doc(db, 'wallets', account), { walletId: account });
+          sessionStorage.setItem("isLoggedIn", true);
+
           console.log("Wallet ID saved to Firestore:", account);
         } catch (error) {
           console.error("Error saving wallet ID to Firestore:", error);
