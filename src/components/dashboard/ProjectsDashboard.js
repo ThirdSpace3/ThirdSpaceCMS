@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ProjectsDashboard.css";
 import "./DashboardMain.css";
 import { useNavigate } from "react-router-dom";
-import { db,doc,getDoc } from "../../firebaseConfig";
+import { db, doc, getDoc } from "../../firebaseConfig";
 export default function ProjectsDashboard({
   projects,
   handleOpenSettings,
@@ -15,17 +15,17 @@ export default function ProjectsDashboard({
     { value: "option3", text: "Alphabetic", icon: "bi-sort-alpha-down" },
     { value: "option4", text: "Alphabetic", icon: "bi-sort-alpha-up-alt" },
   ];
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
   // Initialise selectedOption avec la première option
   const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
-  const walletID = sessionStorage.getItem('userAccount');
+  const [userData, setUserData] = useState([]);
 
   // Add a new state for the filtered projects
   const [filteredProjects, setFilteredProjects] = useState(projects);
-  useEffect(() => {
-    setFilteredProjects(projects);
-  }, [projects]);
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
 
   // Add a new state for the search input value
   const [searchValue, setSearchValue] = useState("");
@@ -63,78 +63,92 @@ export default function ProjectsDashboard({
 
   // Add an event handler for the search input field
   const handleSearch = (event) => {
-    setSearchValue(event.target.value);
-
-    // Filter the projects based on the search input value
-    if (event.target.value === "") {
-      setFilteredProjects(projects);
+    const value = event.target.value.toLowerCase();
+    setSearchValue(value);
+    if (value === "") {
+      fetchProjects(sessionStorage.getItem("userAccount"));
     } else {
-      setFilteredProjects(
-        projects.filter((project) =>
-          project.name.toLowerCase().includes(event.target.value.toLowerCase())
-        )
+      const filteredData = userData.filter(project =>
+        project.name.toLowerCase().includes(value)
       );
+      setUserData(filteredData);
     }
   };
 
-  const navigate = useNavigate();
 
-  const handleProjectClick = (projectName) => {
-    navigate(`/logiciel/${projectName}`);
+  const handleProjectClick = (templateSelected) => {
+    navigate(`/logiciel/${templateSelected}`);
   };
 
   const handleProjectSettings = (index) => {
     handleOpenSettings(index);
     console.log(index);
   };
-  const handleNewProjectClick = () => {
-    // Clear the selected template and project name from the session storage
-    sessionStorage.removeItem("selectedTemplateId");
-    sessionStorage.removeItem("projectName");
+  const handleNewProjectClick = async () => {
+    try {
+      sessionStorage.removeItem("selectedTemplateId");
+      sessionStorage.removeItem("projectName");
 
-    // Set the current step and isTemplateCompleted flag in the session storage
-    sessionStorage.setItem("currentStep", "4");
-    sessionStorage.setItem("isTemplateCompleted", "false");
+      sessionStorage.setItem("currentStep", "4");
+      sessionStorage.setItem("isTemplateCompleted", "false");
 
-    // Create a new project object with a unique ID, name, and the default values
-    const newProject = {
-      id: projects.length + 1,
-      name: "",
-      logiciel: "",
-      image: "",
-      createdAt: new Date().toISOString().slice(0, 10),
-      description: "",
-      favicon: "",
-    };
+      const newProject = {
+        id: projects.length + 1,
+        name: "",
+        logiciel: "",
+        image: "",
+        createdAt: new Date().toISOString().slice(0, 10),
+        description: "",
+        favicon: "",
+      };
 
-    // Add the new project to the projects state
-    setProjects([...projects, newProject]);
-
-    // Navigate to the TemplateStep component
-    navigate("/templatestep");
-  };
-  useEffect(() => {
-    // Check if there's any project with a name of null or undefined
-    const hasInvalidProjectName = projects.some(project => project.name === null || project.name === undefined);
-
-    // If found, navigate to the templatestep page
-    if (hasInvalidProjectName) {
-      navigate('/templatestep');
+      setProjects(prevProjects => [...prevProjects, newProject]);
+      navigate("/templatestep");
+    } catch (error) {
+      console.error("Failed to create new project:", error);
+      // Display an error message to the user
     }
-  }, [projects, navigate]); // 
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  };
 
-// For example, setSelectedTemplate useEffect should depend on 'projects'
-useEffect(() => {
-  const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
-  if (selectedTemplateId) {
-    const foundTemplate = projects.find(project => project.id === selectedTemplateId);
-    setSelectedTemplate(foundTemplate);
-  }
-}, [projects]);
+  const fetchProjects = async (walletId) => {
+    try {
+      const docRef = doc(db, 'wallets', walletId, 'stepData', 'data');
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        let data = docSnap.data();
+        const projects = data.name.map((name, index) => ({
+          name: name,
+          templateselected: data.templateselected[index],
+          lastUpdated: data.lastUpdated[index] // Assuming lastUpdated is an array similar to name and templateselected
+        }));
+        setUserData(projects);
+        // Find the most recently updated project
+        const mostRecent = projects.reduce((prev, current) => {
+          return (new Date(prev.lastUpdated) > new Date(current.lastUpdated)) ? prev : current;
+        }, projects[0]);
+        setRecentlyUpdatedProject(mostRecent);
+      } else {
+        navigate('../templatestep');
+        console.log("No such document!");
+      }
+    } catch (error) {
+      console.error("Error fetching document:", error);
+    }
+  };
+  // useEffect(() => {
+  //   // Check if there's any project with a name of null or undefined
+  //   const hasInvalidProjectName = projects.some(project => project.name === null || project.name === undefined);
+
+  //   // If found, navigate to the templatestep page
+  //   if (hasInvalidProjectName) {
+  //     navigate('/templatestep');
+  //   }
+  // }, [projects, navigate]); // 
+
+
 
   // New state for the most recently updated project
-  const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
 
   useEffect(() => {
     setFilteredProjects(projects);
@@ -162,34 +176,27 @@ useEffect(() => {
   useEffect(() => {
     localStorage.setItem("projects", JSON.stringify(projects));
   }, [projects]);
-  
+
+
   useEffect(() => {
-    async function fetchProjects() {
-      if (walletID) {
-        const docRef = doc(db, 'wallets', walletID);
-        const docSnap = await getDoc(docRef);
-  
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          // Check if stepsData exists and has a property '5'
-          if (data.stepsData && data.stepsData['5']) {
-            const stepData = data.stepsData['5'];
-            // Now you can safely use stepData as it is confirmed to exist
-            setProjects([{ name: stepData.name, template: stepData.templateSelected }]);
-          } else {
-            console.log("Step data 5 does not exist!");
-          }
-        } else {
-          console.log("No such document!");
-        }
-      }
+    setFilteredProjects(projects);
+  }, [projects]);
+
+  useEffect(() => {
+    const walletID = sessionStorage.getItem("userAccount");
+    fetchProjects(walletID);
+  }, []);
+
+  useEffect(() => {
+    const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
+    if (selectedTemplateId) {
+      const foundTemplate = projects.find(project => project.id === selectedTemplateId);
+      setSelectedTemplate(foundTemplate);
     }
-  
-    fetchProjects();
-  }, [walletID]);
-  
+  }, [projects]);
   return (
     <>
+
       <div className="projects-container">
         <div className="projects-header-sticky">
           <div className="projects-header">
@@ -215,9 +222,8 @@ useEffect(() => {
                     {selectedOption.text}
                   </p>
                   <i
-                    className={`bi bi-caret-down-fill ${
-                      isOpen ? "open" : ""
-                    } project-navbar-dropdown-icon`}
+                    className={`bi bi-caret-down-fill ${isOpen ? "open" : ""
+                      } project-navbar-dropdown-icon`}
                   ></i>
                 </div>
                 {isOpen && (
@@ -259,56 +265,44 @@ useEffect(() => {
               <h2>Recently viewed</h2>
             </div>
             {recentlyUpdatedProject && (
-              <div
-                className="projects-content-item"
-                
-              >
+              <div className="projects-content-item">
                 <img
-                  src={
-                    recentlyUpdatedProject.image
-                  }
+                  src={recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateselected}screenshot.png`}
                   alt={recentlyUpdatedProject.name}
-                  onClick={() =>
-                    handleProjectClick(recentlyUpdatedProject.logiciel)
-                  }
+                  onClick={() => handleProjectClick(recentlyUpdatedProject.templateselected)}
                 />
                 <div className="projects-content-item-info">
                   <p>{recentlyUpdatedProject.name}</p>
-                  {/* Other project details */}
-                  <div onClick={() => handleProjectSettings(0)}>
-                      <i className="bi bi-three-dots"></i>
-                    </div>
+                  <p>Last updated: {new Date(recentlyUpdatedProject.lastUpdated).toLocaleString()}</p>
+                  <div onClick={() => handleProjectSettings(recentlyUpdatedProject.id)}>
+                    <i className="bi bi-three-dots"></i>
+                  </div>
                 </div>
-               
               </div>
             )}
           </div>
 
+
           <div className="projects-content-box">
             <div className="projects-content-title">
-              <i class="bi bi-folder2"></i>
+              <i className="bi bi-folder2"></i>
               <h2>All Projects</h2>
             </div>
-
-            {/* Display the filtered projects */}
             <div className="projects-content-listing">
-              {filteredProjects.slice(0, 5).map((project, index) => (
+              {userData.map((project, index) => (
                 <div key={index} className="projects-content-item">
-                  {/* Conditionally render the favicon if available, otherwise render the default image */}
                   <img
-                    src={project.image}
+                    src={`./images/${project.templateselected}screenshot.png` || "default-image.png"}
                     alt={project.name}
-                    onClick={() => handleProjectClick(project.logiciel)}
+                    onClick={() => handleProjectClick(project.templateselected)}
                   />
                   <div className="projects-content-item-info">
-                    <p>
-                      {project.name}
-                    </p>
-
+                    <p>{project.name}</p>
                     <div onClick={() => handleProjectSettings(index)}>
                       <i className="bi bi-three-dots"></i>
                     </div>
                   </div>
+
                 </div>
               ))}
             </div>

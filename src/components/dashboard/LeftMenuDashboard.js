@@ -22,15 +22,15 @@ export default function LeftMenuDashboard({
     } else {
       setShowPopup(true);
     }
-  }, [userAccount]); 
+  }, [userAccount]);
 
   const fetchUserProfile = async (walletId) => {
     try {
       const response = await fetch(`/api/get-profile-by-wallet?walletId=${walletId}`);
       if (response.ok) {
         const data = await response.json();
-        setLocalUsername(data.username );
-        setLocalProfilePicture(data.profilePicture );
+        setLocalUsername(data.username);
+        setLocalProfilePicture(data.profilePicture);
       } else {
         setLocalUsername(shortenAddress(walletId));
         setLocalProfilePicture("./images/avatar-placeholder.png");
@@ -41,7 +41,7 @@ export default function LeftMenuDashboard({
       console.error("Error fetching profile:", err);
     }
   };
-  
+
 
   const handleLogin = (account) => {
     setUserAccount(account);
@@ -79,11 +79,11 @@ export default function LeftMenuDashboard({
       <div className="left-menu-container">
         <div className="left-menu-top">
           <div className="profile-container">
-          <img
-  src={localProfilePicture} // Fallback to default avatar if profilePicture is not available
-  alt="Profile avatar"
-  className="profile-picture" // Apply a CSS class for styling
-/>
+            <img
+              src={localProfilePicture} // Fallback to default avatar if profilePicture is not available
+              alt="Profile avatar"
+              className="profile-picture" // Apply a CSS class for styling
+            />
             <p className="profile-name" onClick={handleCopyAddress}>
               {localUsername || userAccount}
             </p>
@@ -93,7 +93,7 @@ export default function LeftMenuDashboard({
               </div>
             )}
           </div>
-         
+
 
           <div className="left-menu-links">
             <a
@@ -124,21 +124,21 @@ export default function LeftMenuDashboard({
         </div>
         <div className="left-menu-bottom">
           <div className="left-menu-links">
-          <a href="/#/home" className="left-menu-item">
-            <i class="bi bi-house-door"></i>
+            <a href="/#/home" className="left-menu-item">
+              <i class="bi bi-house-door"></i>
               <p>Back Home</p>
             </a>
             <a
               href="https://discord.gg/kehHCkUGRU" target="_blank"
               className="left-menu-item"
-              
+
             >
               <i className="bi bi-bug"></i>
               <p>Report Bug</p>
             </a>
             {/* <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("settings", event)}> */}
           </div>
-          
+
         </div>
       </div>
     </>

@@ -3,8 +3,9 @@ import "./PopupWallet.css";
 import axios from "axios";
 import "../Root.css";
 import {db, doc, setDoc } from '../../firebaseConfig'
+import { wait } from "@testing-library/user-event/dist/utils";
 
-function PopupWallet({ onClose, onUserLogin }) {
+function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
   const [showMore, setShowMore] = useState(false);
   const [hasWallet, setHasWallet] = useState(false);
   console.log(db);
@@ -121,6 +122,7 @@ function PopupWallet({ onClose, onUserLogin }) {
         "Solana object not found! Make sure Phantom wallet is installed."
       );
     }
+    checkWalletData();
   };
 
   // https://docs.unstoppabledomains.com/identity/overview/login-with-unstoppable/

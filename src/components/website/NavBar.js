@@ -2,32 +2,45 @@ import React, { useState, useEffect } from "react";
 import "./NavBar.css";
 import { useNavigate } from "react-router-dom";
 import PopupWallet from "./PopupWallet.js";
-import { db, doc, getDoc } from '../../firebaseConfig.js'; // Assuming Firestore is correctly imported and configured
+import { db, doc, getDoc } from '../../firebaseConfig'; // Assuming Firestore is correctly imported and configured
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [hasWalletData, setHasWalletData] = useState(false);
+  const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
+
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
+
     const checkWalletData = async () => {
       const userAccount = sessionStorage.getItem("userAccount");
       if (userAccount) {
-        const docRef = doc(db, "wallets", userAccount);
+        const docRef = doc(db, "wallets", userAccount, 'stepData', 'data');
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setHasWalletData(true);  // Set to true if wallet data exists in the database
+          setHasWalletData(true);
+          const userData = docSnap.data();
+          console.log(userData);
+          if (userData) { // Check if stepData is present
+            setHasStepData(true);
+          }
+          navigate("/dashboard"); // Redirect to dashboard if wallet data exists
         } else {
-          setHasWalletData(false); // Set to false if no wallet data found
+          setHasWalletData(false);
         }
-        setAccounts([userAccount]); // Set the account state either way
+        setAccounts([userAccount]);
       }
     };
 
-    checkWalletData();
-  }, []);
+    useEffect(() => {
+      const userAccount = sessionStorage.getItem("userAccount");
+      if (userAccount) {
+        setAccounts([userAccount]);
+        checkWalletData(userAccount);
+      }
+    }, []);
 
   const togglePopup = () => {
     if (accounts.length > 0 && !hasWalletData) {
@@ -77,7 +90,7 @@ function Navbar() {
             </a>
           ) : (
             <a
-              href={hasWalletData ? ".#/dashboard" : ".#/templatestep"}
+              href={hasWalletData ? "#/dashboard" : "#/templatestep"}
               className="nav__cta nav-bg"
             >
               {hasWalletData ? "Dashboard" : "Get Started"}
@@ -85,7 +98,7 @@ function Navbar() {
           )}
 
           {accounts.length > 0 && (
-            <a href=".#/dashboard" className="nav__cta nav-bg" id="account-btn">
+            <a href="#/dashboard" className="nav__cta nav-bg" id="account-btn">
               <span className="material-symbols-outlined">account_circle</span>
             </a>
           )}
@@ -110,9 +123,9 @@ function Navbar() {
           />
         </div>
         <div 
-        className={`navbar__mobile-content ${isMenuOpen ? "animate__fadeInLeft" : ""}`}
-        style={{ display: isMenuOpen ? "block" : "none", left: isMenuOpen ? '-11%' : '-150%' }}
-        >
+         className={`navbar__mobile-content ${isMenuOpen ? "animate__fadeInLeft" : ""}`}
+         style={{ display: isMenuOpen ? "block" : "none", left: isMenuOpen ? '-11%' : '-150%' }}
+         >
           <ul className="nav__links">
             <li>
               <a href="/#/home" className="nav__links-btn">
@@ -138,7 +151,7 @@ function Navbar() {
         </div>
       </div>
 
-      {showPopup && <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} />}
+      {showPopup && <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])}/>}
     </nav>
   );
 }
