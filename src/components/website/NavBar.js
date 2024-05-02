@@ -14,25 +14,29 @@ function Navbar() {
   const navigate = useNavigate();
 
 
-    const checkWalletData = async () => {
-      const userAccount = sessionStorage.getItem("userAccount");
-      if (userAccount) {
-        const docRef = collection(db, 'projects', userAccount, 'projectData');
-        const docSnap = await getDocs(docRef);
-        if (docSnap) {
-          setHasWalletData(true);
-          const userData = docSnap;
-          console.log(userData);
-          if (userData) { // Check if stepData is present
-            setHasStepData(true);
-          }
-          // navigate("/dashboard"); // Redirect to dashboard if wallet data exists
-        } else {
-          setHasWalletData(false);
+  const checkWalletData = async () => {
+    const userAccount = sessionStorage.getItem("userAccount");
+    if (userAccount) {
+      const docRef = collection(db, 'projects', userAccount, 'projectData');
+      const docSnap = await getDocs(docRef);
+      if (!docSnap.empty) { // Check if the snapshot is not empty
+        setHasWalletData(true);
+        let userData = [];
+        docSnap.forEach((doc) => {
+          userData.push(doc.data());
+        });
+        console.log(userData);
+        if (userData.length > 0) { // Check if userData is present
+          setHasStepData(true);
         }
-        setAccounts([userAccount]);
+        // navigate("/dashboard"); // Redirect to dashboard if wallet data exists
+      } else {
+        setHasWalletData(false);
       }
-    };
+      setAccounts([userAccount]);
+    }
+  };
+  
 
     useEffect(() => {
       const userAccount = sessionStorage.getItem("userAccount");
@@ -54,6 +58,7 @@ function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  console.log(hasWalletData)
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">
@@ -90,15 +95,18 @@ function Navbar() {
             </a>
           ) : (
             <a
-              href={hasWalletData ? "#/dashboard" : "#/templatestep"}
+              href={!hasWalletData ? "#/templatestep" : "#/dashboard"}
               className="nav__cta nav-bg"
             >
-              {hasWalletData ? "Dashboard" : "Get Started"}
+              {!hasWalletData ? "Get Started" : "Dashboard"}
             </a>
           )}
 
           {accounts.length > 0 && (
-            <a href="#/dashboard" className="nav__cta nav-bg" id="account-btn">
+            <a
+              href={!hasWalletData ? "#/templatestep" : "#/dashboard"}
+              className="nav__cta nav-bg"
+            >
               <span className="material-symbols-outlined">account_circle</span>
             </a>
           )}
