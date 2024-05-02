@@ -27,28 +27,10 @@ export default function Dashboard() {
 
   const [projects, setProjects] = useState([]);
 
-  useEffect(() => {
-    const storedProjects = JSON.parse(localStorage.getItem("projects")) || [];
-    if (storedProjects.length === 0) {
-      const initialProject = {
-        id: 1,
-        name: projectName,
-        logiciel: selectedTemplate,
-        image: `./images/${selectedTemplate}screenshot.png`,
-        createdAt: new Date().toISOString().slice(0, 10),
-        description: "",
-        favicon: `./images/${selectedTemplate}screenshot.png`,
-      };
-      setProjects([initialProject]);
-    } else {
-      setProjects(storedProjects);
-    }
-  }, []);
-
   // Updates localStorage whenever the projects state changes
-  useEffect(() => {
-    localStorage.setItem("projects", JSON.stringify(projects));
-  }, [projects]);
+  // useEffect(() => {
+  //   localStorage.setItem("projects", JSON.stringify(projects));
+  // }, [projects]);
 
   const handleOpenSettings = (index) => {
     setSelectedProject(projects[index]);
@@ -88,6 +70,16 @@ export default function Dashboard() {
     setSelectedProject(updatedProject);
   };
 
+
+  const handleProjectSettings = (project) => {
+    // Update the state of the selected project with the new data
+    setSelectedProject(project);
+  
+    // Open the settings modal or navigate to the settings page
+    handleOpenSettings(project);
+  };
+  
+
   return (
     <>
       <div className="dashboard-container">
@@ -112,6 +104,8 @@ export default function Dashboard() {
               updateProject={updateProject}
               onReturnToProjects={() => setActiveMenuItem("projects")}
               setCurrentProject={setCurrentProject}
+              handleProjectSettings={handleProjectSettings}
+
             />
           )}
           {activeMenuItem === "billing" && <BillingDashboard />}

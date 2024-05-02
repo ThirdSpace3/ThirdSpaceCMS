@@ -90,7 +90,6 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
             await setDoc(doc(db, 'wallets', publicKey), { walletId: publicKey });
             sessionStorage.setItem("isLoggedIn", true);
             console.log(sessionStorage.getItem("isLoggedIn"));
-            console.log("Wallet ID saved to Firestore:", publicKey);
           } catch (error) {
             console.error("Error saving wallet ID to Firestore:", error);
           }
@@ -100,18 +99,15 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
             "Please sign this message to confirm your identity."
           );
           const signed = await provider.signMessage(message, "utf8");
-          console.log("Signature:", signed.signature);
           // Use onUserLogin function here as well
           if (typeof onUserLogin === "function") {
             onUserLogin(publicKey);
             sessionStorage.setItem("isLoggedIn", "true"); // Set login flag
             sessionStorage.setItem("userAccount", publicKey); // Save user account
-            console.log(sessionStorage);
           } else {
             console.error("onUserLogin is not a function");
           }
           onClose(); // Optionally close the popup after login
-          console.log("onUserLogin prop type:", typeof onUserLogin);
         }
       } catch (error) {
         console.error("Error connecting to Phantom:", error);

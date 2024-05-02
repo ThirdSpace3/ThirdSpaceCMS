@@ -3,6 +3,7 @@ import "./ProjectsDashboard.css";
 import "./DashboardMain.css";
 import { useNavigate } from "react-router-dom";
 import { db, doc, getDoc, collection, query, where, getDocs } from "../../firebaseConfig";
+import _ from 'lodash';
 export default function ProjectsDashboard({
   projects,
   handleOpenSettings,
@@ -16,6 +17,7 @@ export default function ProjectsDashboard({
     { value: "option4", text: "Alphabetic", icon: "bi-sort-alpha-up-alt" },
   ];
   const navigate = useNavigate();
+  const isEmpty = _.isEmpty;
 
   const [isOpen, setIsOpen] = useState(false);
   // Initialise selectedOption avec la première option
@@ -26,6 +28,7 @@ export default function ProjectsDashboard({
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Add a new state for the search input value
   const [searchValue, setSearchValue] = useState("");
@@ -37,15 +40,17 @@ export default function ProjectsDashboard({
     try {
       const collectionRef = collection(db, 'projects', walletId, 'projectData');
       const querySnapshot = await getDocs(collectionRef);
-  
+
       const projects = [];
       querySnapshot.forEach((doc) => {
         projects.push({ id: doc.id, ...doc.data() });
       });
-  
+
       setUserData(projects);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching documents:", error);
+      setIsLoading(false);
     }
   };
   
@@ -142,17 +147,17 @@ export default function ProjectsDashboard({
   // New state for the most recently updated project
 
 
-  useEffect(() => {
-    const storedProjects = JSON.parse(localStorage.getItem("projects"));
-    if (storedProjects) {
-      setProjects(storedProjects);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedProjects = JSON.parse(localStorage.getItem("projects"));
+  //   if (storedProjects) {
+  //     setProjects(storedProjects);
+  //   }
+  // }, []);
 
-  // Update the state of the projects in localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("projects", JSON.stringify(projects));
-  }, [projects]);
+  // // Update the state of the projects in localStorage whenever it changes
+  // useEffect(() => {
+  //   localStorage.setItem("projects", JSON.stringify(projects));
+  // }, [projects]);
 
 
   useEffect(() => {
@@ -160,17 +165,19 @@ export default function ProjectsDashboard({
     fetchProjects(walletID);
   }, []);
 
-  useEffect(() => {
-    const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
-    if (selectedTemplateId) {
-      const foundTemplate = projects.find(project => project.id === selectedTemplateId);
-      setSelectedTemplate(foundTemplate);
-    }
-  }, [projects]);
+
+  // useEffect(() => {
+  //   const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
+  //   if (selectedTemplateId) {
+  //     const foundTemplate = projects.find(project => project.id === selectedTemplateId);
+  //     setSelectedTemplate(foundTemplate);
+  //   }
+  // }, [projects]);
+  console.log(userData);
 
   useEffect(() => {
     setFilteredProjects(userData);
-  
+
     // Determine the most recently updated project
     const mostRecentProject = userData.reduce((acc, project) => {
       const currentProjectDate = new Date(
@@ -179,11 +186,17 @@ export default function ProjectsDashboard({
       const accDate = new Date(acc.lastUpdated || acc.createdAt);
       return currentProjectDate > accDate ? project : acc;
     }, userData[0]);
-  
-    setRecentlyUpdatedProject(mostRecentProject);
-  }, [userData]);
-  
 
+    setRecentlyUpdatedProject(mostRecentProject);
+    if (isEmpty(userData) && !isLoading) {
+      navigate("../templatestep");
+      sessionStorage.setItem("currentStep", "1");
+    }
+  }, [userData, navigate, isLoading]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
   return (
     <>
 

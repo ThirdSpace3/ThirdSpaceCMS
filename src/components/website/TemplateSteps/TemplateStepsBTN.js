@@ -25,7 +25,7 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
           };
 
           const collectionPath = 'projects'; // Adjust based on your actual requirements
-          const docPath = `${walletId}/projectData/${projectName}`; // Ensure an even number of segments
+          const docPath = `${walletId}/projectData/${newProject.id}`; // Ensure an even number of segments
 
           // Save to Firestore in the correct collection
           await setDoc(doc(db, collectionPath, docPath), {

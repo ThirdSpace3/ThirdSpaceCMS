@@ -58,7 +58,6 @@ function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  console.log(hasWalletData)
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">

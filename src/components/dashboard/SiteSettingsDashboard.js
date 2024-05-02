@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./SiteSettingsDashboard.css";
 import "./DashboardMain.css";
 import "../Root.css";
-import { updateDoc, db, doc, setDoc } from "../../firebaseConfig";
+import { updateDoc, db, doc, getDoc } from "../../firebaseConfig";
 export default function SiteSettingsDashboard({
   projects,
   updateProject,
@@ -19,7 +19,7 @@ export default function SiteSettingsDashboard({
   const [isSaved, setIsSaved] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
   const fileInputRef = useRef(null);
-
+  
   const handleTemplateNameChange = (e) => {
     setTemplateName(e.target.value);
     setIsEdited(true);
@@ -67,57 +67,42 @@ export default function SiteSettingsDashboard({
 
 
   const handleSave = async () => {
-    const lastUpdated = new Date().toISOString();
-  
-    const updatedProject = {
-      ...projects,
-      name: templateName,
-      description: templateDescription,
-      favicon: favicon,
-      lastUpdated: lastUpdated, // Update the lastUpdated field with the new timestamp
-    };
-  
-    // Add a conditional check here
-    if (Array.isArray(projects)) {
-      updateProject(updatedProject);
-    }
-  
-    // Save to localStorage
-    localStorage.setItem("projectData", JSON.stringify(updatedProject));
-  
-    // Save to sessionStorage
-    sessionStorage.setItem("projectName", templateName);
-  
-    setIsEdited(false);
-    setIsSaved(true);
-    setIsImageError(false);
-  
-    // Update the project in Firestore
-    // Corrected document reference, assuming 'wallets' is your main collection, 'walletID' is the document, 'stepData' is a sub-collection
-    const projectDocRef = doc(db, 'projects', walletID, 'projectData', templateName);
-  
+    console.log(projects);
+
+    const projectRef = doc(db, "projects", walletID, "projectData", projects.id.toString());
     try {
-      await setDoc(projectDocRef, updatedProject, { merge: true }); // Use setDoc with merge: true
-      // Add a conditional check here
-      if (Array.isArray(projects)) {
-        updateProject({ ...projects, name: templateName, description: templateDescription, favicon: favicon });
-      }
-      onReturnToProjects();
-      console.log("Project data updated successfully!");
+      await updateDoc(projectRef, {
+        name: templateName,
+        description: templateDescription,
+        favicon: favicon,
+      });
+      setIsEdited(false);
+      setIsSaved(true);
+      setTimeout(() => {
+        setIsSaved(false);
+      }, 3000);
     } catch (error) {
-      console.error("Error updating project data:", error);
+      console.error("Error updating document: ", error);
     }
-  
-    setTimeout(() => {
-      setIsSaved(false);
-    }, 3000);
   };
   
 
-  useEffect(() => {
-    console.log(projects);
-  }, []);
-
+  
+  // useEffect(() => {
+  //   const fetchSelectedProject = async () => {
+  //     const projectRef = doc(db, "projects", walletID, 'projectData', selectedProject.id);
+  //     const projectSnap = await getDoc(projectRef);
+  //     if (projectSnap.exists()) {
+  //       setTemplateName(projectSnap.data().name);
+  //       setTemplateDescription(projectSnap.data().description);
+  //       setFavicon(projectSnap.data().favicon);
+  //     }
+  //   };
+  //   if (selectedProject) {
+  //     fetchSelectedProject();
+  //   }
+  // }, [selectedProject]);
+  
   return (
     <div className="dashboard-page-container">
       <div className="projects-header-sticky">
@@ -127,7 +112,7 @@ export default function SiteSettingsDashboard({
               <i className="bi bi-arrow-left-short dashboard-return-icon"></i>
             </div>
             <h1>
-              <span>{templateName}</span> Settings
+              <span>{projects.name}</span> Settings
             </h1>
           </div>
           <button
@@ -151,6 +136,7 @@ export default function SiteSettingsDashboard({
             </div>
             <input
               type="text"
+              placeholder={projects.name}
               value={templateName}
               onChange={handleTemplateNameChange}
             />
@@ -163,9 +149,9 @@ export default function SiteSettingsDashboard({
               </div>
             </div>
             <textarea
-              value={templateDescription}
+              value={templateDescription}              
               onChange={handleTemplateDescriptionChange}
-              placeholder="Enter a description"
+              placeholder={projects.description}
             />
           </div>
           <div className="dashboard-settings-item">
