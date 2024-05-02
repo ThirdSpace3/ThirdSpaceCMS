@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./NavBar.css";
 import { useNavigate } from "react-router-dom";
 import PopupWallet from "./PopupWallet.js";
-import { db, doc, getDoc } from '../../firebaseConfig'; // Assuming Firestore is correctly imported and configured
+import { db, collection, getDocs } from '../../firebaseConfig'; // Assuming Firestore is correctly imported and configured
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,11 +17,11 @@ function Navbar() {
     const checkWalletData = async () => {
       const userAccount = sessionStorage.getItem("userAccount");
       if (userAccount) {
-        const docRef = doc(db, "wallets", userAccount, 'stepData', 'data');
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
+        const docRef = collection(db, 'projects', userAccount, 'projectData');
+        const docSnap = await getDocs(docRef);
+        if (docSnap) {
           setHasWalletData(true);
-          const userData = docSnap.data();
+          const userData = docSnap;
           console.log(userData);
           if (userData) { // Check if stepData is present
             setHasStepData(true);
@@ -93,7 +93,7 @@ function Navbar() {
               href={hasWalletData ? "#/dashboard" : "#/templatestep"}
               className="nav__cta nav-bg"
             >
-              { "Get Started"}
+              {hasWalletData ? "Dashboard" : "Get Started"}
             </a>
           )}
 
