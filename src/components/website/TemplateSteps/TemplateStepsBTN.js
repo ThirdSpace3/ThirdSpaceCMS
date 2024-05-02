@@ -33,7 +33,7 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
             lastUpdated: currentTimestamp
           });
 
-          await setDoc(doc(db, 'wallets', walletId, 'stepdata', 'data'),{selectedButtons});
+          await setDoc(doc(db, 'wallets', walletId),{selectedButtons});
 
           setRedirectToRoot(true);
           sessionStorage.setItem('isLoggedIn', true);

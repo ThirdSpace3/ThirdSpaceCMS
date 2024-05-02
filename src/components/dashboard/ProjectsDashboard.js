@@ -6,6 +6,7 @@ import { db, doc, getDoc, collection, query, where, getDocs } from "../../fireba
 import _ from 'lodash';
 export default function ProjectsDashboard({
   projects,
+  setSelectedProject,
   handleOpenSettings,
   setProjects,
 }) {
@@ -100,18 +101,25 @@ export default function ProjectsDashboard({
 
   const handleProjectSettings = (project) => {
     handleOpenSettings(project);
+    setSelectedProject(project);
     setProjects(project);
     console.log(project);
   };
   
   const handleNewProjectClick = async () => {
     try {
+      if (userData.length >= 3) {
+        // Display an error message if there are already 3 or more projects
+        alert("You can't create more than 3 projects.");
+        return;
+      }
+  
       sessionStorage.removeItem("selectedTemplateId");
       sessionStorage.removeItem("projectName");
-
+  
       sessionStorage.setItem("currentStep", "4");
       sessionStorage.setItem("isTemplateCompleted", "false");
-
+  
       const newProject = {
         id: projects.length + 1,
         name: "",
@@ -121,7 +129,7 @@ export default function ProjectsDashboard({
         description: "",
         favicon: "",
       };
-
+  
       setProjects(prevProjects => [...prevProjects, newProject]);
       navigate("/templatestep");
     } catch (error) {
@@ -129,6 +137,7 @@ export default function ProjectsDashboard({
       // Display an error message to the user
     }
   };
+  
 
 
 

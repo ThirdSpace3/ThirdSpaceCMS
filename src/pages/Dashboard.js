@@ -17,6 +17,9 @@ export default function Dashboard() {
   const selectedTemplate = sessionStorage.getItem("selectedTemplateId");
   const projectName = sessionStorage.getItem("projectName");
   const [currentProject, setCurrentProject] = useState(null);
+  const [activeMenuItem, setActiveMenuItem] = useState("projects");
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [projects, setProjects] = useState([]);
 
   // Redirect logic based on session data
   // useEffect(() => {
@@ -25,7 +28,6 @@ export default function Dashboard() {
   //   }
   // }, [isLoggedIn, walletId, selectedTemplate, projectName, navigate]);
 
-  const [projects, setProjects] = useState([]);
 
   // Updates localStorage whenever the projects state changes
   // useEffect(() => {
@@ -38,8 +40,6 @@ export default function Dashboard() {
     setActiveMenuItem("settings");
   };
 
-  const [activeMenuItem, setActiveMenuItem] = useState("projects");
-  const [selectedProject, setSelectedProject] = useState(null);
 
   const [username, setUsername] = useState(() => {
     return localStorage.getItem("username") || (walletId ? walletId.slice(0, 6) + "..." + walletId.slice(-4) : "User");
@@ -71,13 +71,7 @@ export default function Dashboard() {
   };
 
 
-  const handleProjectSettings = (project) => {
-    // Update the state of the selected project with the new data
-    setSelectedProject(project);
-  
-    // Open the settings modal or navigate to the settings page
-    handleOpenSettings(project);
-  };
+
   
 
   return (
@@ -94,6 +88,7 @@ export default function Dashboard() {
           {activeMenuItem === "projects" && (
             <ProjectsDashboard
               projects={projects}
+              setSelectedProject={setSelectedProject}
               handleOpenSettings={handleOpenSettings}
               setProjects={setProjects}
             />
@@ -101,10 +96,12 @@ export default function Dashboard() {
           {activeMenuItem === "settings" && (
             <SiteSettingsDashboard
               projects={projects}
+              selectedProject={selectedProject}
+              setProjects={setProjects}
               updateProject={updateProject}
               onReturnToProjects={() => setActiveMenuItem("projects")}
+              setActiveMenuItem={setActiveMenuItem}
               setCurrentProject={setCurrentProject}
-              handleProjectSettings={handleProjectSettings}
 
             />
           )}

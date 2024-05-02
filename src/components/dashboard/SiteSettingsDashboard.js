@@ -2,13 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import "./SiteSettingsDashboard.css";
 import "./DashboardMain.css";
 import "../Root.css";
-import { updateDoc, db, doc, getDoc } from "../../firebaseConfig";
+import { updateDoc, db, doc, getDoc, deleteDoc } from "../../firebaseConfig";
+import { useNavigate } from "react-router-dom";
 export default function SiteSettingsDashboard({
   projects,
+  setProjects,
   updateProject,
   onReturnToProjects,
   setCurrentProject,
   selectedProject,
+  setActiveMenuItem
 }) {
   const [newTemplateName, setNewTemplateName] = useState("");
   const [templateName, setTemplateName] = useState(selectedProject ? selectedProject.name : "");
@@ -19,7 +22,9 @@ export default function SiteSettingsDashboard({
   const [isSaved, setIsSaved] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
   const fileInputRef = useRef(null);
-  
+  const navigate = useNavigate();
+console.log("selectedProject const : ",selectedProject.id);
+
   const handleTemplateNameChange = (e) => {
     setTemplateName(e.target.value);
     setIsEdited(true);
@@ -69,7 +74,7 @@ export default function SiteSettingsDashboard({
   const handleSave = async () => {
     console.log(projects);
 
-    const projectRef = doc(db, "projects", walletID, "projectData", projects.id.toString());
+    const projectRef = doc(db, "projects", walletID, "projectData", selectedProject.id.toString());
     try {
       await updateDoc(projectRef, {
         name: templateName,
@@ -85,9 +90,25 @@ export default function SiteSettingsDashboard({
       console.error("Error updating document: ", error);
     }
   };
+
+  const handleDeleteProject = async (projectId) => {
+    try {
+      // Delete the project document from Firestore
+      await deleteDoc(doc(db, "projects", walletID, "projectData", projectId.toString()));
+      onReturnToProjects();
+
+      // You may also need to update the component state or session storage here
+      // For example, you can remove the deleted project from the 'projects' state
+      // setProjects((prevProjects) => prevProjects.filter((project) => project.id !== projectId));
+      setProjects("");
+      console.log("Project deleted successfully.");
+    } catch (err) {
+      console.error("Error deleting project:", err);
+    }
+  };
+  
   
 
-  
   // useEffect(() => {
   //   const fetchSelectedProject = async () => {
   //     const projectRef = doc(db, "projects", walletID, 'projectData', selectedProject.id);
@@ -102,7 +123,7 @@ export default function SiteSettingsDashboard({
   //     fetchSelectedProject();
   //   }
   // }, [selectedProject]);
-  
+
   return (
     <div className="dashboard-page-container">
       <div className="projects-header-sticky">
@@ -149,7 +170,7 @@ export default function SiteSettingsDashboard({
               </div>
             </div>
             <textarea
-              value={templateDescription}              
+              value={templateDescription}
               onChange={handleTemplateDescriptionChange}
               placeholder={projects.description}
             />
@@ -201,8 +222,8 @@ export default function SiteSettingsDashboard({
               */}
 
             </div>
-            <a href="" className="dashboard-settings-delete"><i class="bi bi-trash3"></i>
-              <p>Delete my website</p></a>
+            <a className="dashboard-settings-delete" onClick={() => handleDeleteProject(selectedProject.id)}><i class="bi bi-trash3"></i>
+  <p>Delete my website</p></a>
           </div>
         </div>
       </div>

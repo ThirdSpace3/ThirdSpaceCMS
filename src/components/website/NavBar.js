@@ -103,7 +103,7 @@ function Navbar() {
 
           {accounts.length > 0 && (
             <a
-              href={!hasWalletData ? "#/templatestep" : "#/dashboard"}
+              href={hasWalletData ? "#/templatestep" : "#/dashboard"}
               className="nav__cta nav-bg"
             >
               <span className="material-symbols-outlined">account_circle</span>
