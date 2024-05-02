@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./DashboardMain.css";
 import "../Root.css";
-
+import {setDoc, doc, db, getDoc} from "../../firebaseConfig"
 export default function ProfileDashboard({ updateUserDetails }) {
   const [userAccount, setUserAccount] = useState(sessionStorage.getItem("userAccount"));
   const [username, setUsername] = useState("");
@@ -102,32 +102,27 @@ const handleSubmit = async (event) => {
   }
 
   try {
-    const formData = new FormData();
-    formData.append('walletId', userAccount);
-    formData.append('username', username);
-    formData.append('description', description);
-    formData.append('profilePicture', fileInputRef.current.files[0]); // Append profile picture file
+    // Create a new document in Firestore with the user's wallet ID as the document ID
+    const userDocRef = doc(db, "users", userAccount);
 
-    const response = await fetch("/api/save-profile", {
-      method: "POST",
-      body: formData,
-    });
+    // Update the user's profile data in Firestore
+    await setDoc(userDocRef, {
+      username: username,
+      description: description,
+      profilePicture: fileInputRef.current.files[0] || "./images/avatar-placeholder.png", // You may need to modify this to store the file in Firebase Storage first
+    }, { merge: true });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Profile saved:", data);
-      setIsEdited(false);
-      setIsSaved(true);
-      sessionStorage.setItem("username", username);
-      sessionStorage.setItem("description", description);
-      updateUserDetails(username, description, data.profilePictureUrl); // Update with profile picture URL
-    } else {
-      console.error("Error saving profile:", response.statusText);
-    }
+    // Update the component state and session storage
+    setIsEdited(false);
+    setIsSaved(true);
+    sessionStorage.setItem("username", username);
+    sessionStorage.setItem("description", description);
+    updateUserDetails(username, description, /* profilePictureUrl */); // You may need to modify this to handle the profile picture URL
   } catch (err) {
     console.error("Error saving profile:", err);
   }
 };
+
 
   
 // ProfileDashboard component
@@ -141,24 +136,34 @@ useEffect(() => {
 
 const fetchProfile = async (walletId) => {
   try {
-    const response = await fetch(`/api/get-profile-by-wallet?walletId=${walletId}`);
-    if (response.ok) {
-      const data = await response.json();
+    // Check if the user's profile document exists in Firestore
+    const userDocRef = doc(db, "users", walletId);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (userDocSnap.exists()) {
+      // If the document exists, fetch the profile data from Firestore
+      const data = userDocSnap.data();
       setUsername(data.username || "My Username");
       setDescription(data.description || "");
       setProfilePicture(data.profilePicture || ''); // Set default value to empty string if profile picture doesn't exist
       console.log(data);
     } else {
-      setUsername(shortenAddress(userAccount));
+      // If the document doesn't exist, create a new document with default values
+      await setDoc(userDocRef, {
+        username: shortenAddress(walletId),
+        description: "",
+        profilePicture: "./images/avatar-placeholder.png"
+      });
+      setUsername(shortenAddress(walletId));
       setDescription("");
-      setProfilePicture("./images/avatar-placeholder.png"); // Set default value to empty string if profile picture doesn't exist
-
-      console.error("Failed to fetch profile data.");
+      setProfilePicture("./images/avatar-placeholder.png");
+      console.log("Created new profile document with default values.");
     }
   } catch (err) {
     console.error("Error fetching profile:", err);
   }
 };
+
 
   return (
     <>

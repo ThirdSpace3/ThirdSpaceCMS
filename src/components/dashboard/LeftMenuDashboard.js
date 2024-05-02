@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./DashboardMain.css";
 import "../Root.css";
 import PopupWallet from "../website/PopupWallet";
+import {db, collection, doc, getDoc } from "../../firebaseConfig";
 
 export default function LeftMenuDashboard({
   setActiveMenuItem,
@@ -14,31 +15,30 @@ export default function LeftMenuDashboard({
   const [localUsername, setLocalUsername] = useState("");
   const [localProfilePicture, setLocalProfilePicture] = useState("");
 
-  // useEffect(() => {
-  //   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-  //   const account = sessionStorage.getItem("userAccount");
-  //   if (isLoggedIn === "true" && account) {
-  //     fetchUserProfile(account);
-  //   } else {
-  //     setShowPopup(true);
-  //   }
-  // }, [userAccount]);
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    const account = sessionStorage.getItem("userAccount");
+    if (isLoggedIn === "true" && account) {
+      fetchUserProfile(account);
+    } else {
+      setShowPopup(true);
+    }
+  }, [userAccount]);
 
   const fetchUserProfile = async (walletId) => {
     try {
-      const response = await fetch(`/api/get-profile-by-wallet?walletId=${walletId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setLocalUsername(data.username);
-        setLocalProfilePicture(data.profilePicture);
+      const userRef = doc(db, "users", walletId);
+      const userDoc = await getDoc(userRef);
+  
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        setLocalUsername(userData.username || "");
+        setLocalProfilePicture(userData.profilePicture || "");
       } else {
-        setLocalUsername(shortenAddress(walletId));
-        setLocalProfilePicture("./images/avatar-placeholder.png");
-
-        console.error("Failed to fetch profile data.");
+        console.error("User document does not exist.");
       }
     } catch (err) {
-      console.error("Error fetching profile:", err);
+      console.error("Error fetching profile data from Firestore:", err);
     }
   };
 
