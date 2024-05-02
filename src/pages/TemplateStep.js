@@ -68,14 +68,14 @@ export default function TemplateStep() {
 
   // Retrieve or initialize the walletId
   let walletId = sessionStorage.getItem("userAccount");
-  useEffect(() => {
-    // Redirect if template process is completed
-    const isTemplateCompleted =
-      sessionStorage.getItem("isTemplateCompleted") === "true";
-    if (isTemplateCompleted) {
-      navigate("/dashboard");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   // Redirect if template process is completed
+  //   const isTemplateCompleted =
+  //     sessionStorage.getItem("isTemplateCompleted") === "true";
+  //   if (isTemplateCompleted) {
+  //     navigate("/dashboard");
+  //   }
+  // }, [navigate]);
 
   useEffect(() => {
     // Load stored data on component mount

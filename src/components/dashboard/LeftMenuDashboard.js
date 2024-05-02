@@ -14,15 +14,15 @@ export default function LeftMenuDashboard({
   const [localUsername, setLocalUsername] = useState("");
   const [localProfilePicture, setLocalProfilePicture] = useState("");
 
-  useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    const account = sessionStorage.getItem("userAccount");
-    if (isLoggedIn === "true" && account) {
-      fetchUserProfile(account);
-    } else {
-      setShowPopup(true);
-    }
-  }, [userAccount]);
+  // useEffect(() => {
+  //   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+  //   const account = sessionStorage.getItem("userAccount");
+  //   if (isLoggedIn === "true" && account) {
+  //     fetchUserProfile(account);
+  //   } else {
+  //     setShowPopup(true);
+  //   }
+  // }, [userAccount]);
 
   const fetchUserProfile = async (walletId) => {
     try {

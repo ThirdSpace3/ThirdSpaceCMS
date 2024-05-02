@@ -1,58 +1,44 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Navigate } from 'react-router-dom';
-import { db, doc, setDoc, updateDoc } from '../../../firebaseConfig'; // Ensure the path to your Firebase config is correct
+import { db, doc, setDoc } from '../../../firebaseConfig'; // Ensure the path to your Firebase config is correct
 
-const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, walletId, currentStep, inputValue, templateData }) => {
+const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, walletId, currentStep }) => {
   const [redirectToRoot, setRedirectToRoot] = useState(false);
-  const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
 
   const handleNextClick = async () => {
     if (isNextEnabled) {
       try {
-        console.log(selectedButtons);
-  
-        // Current timestamp to be used for createdAt or lastUpdated
         const currentTimestamp = new Date().toISOString();
-  
         if (currentStep === 5) {
-          const projectName = selectedButtons.name; // Or however you obtain the project name
-          const templateName = selectedButtons.templateselected; // Use the selectedButtons prop instead of sessionStorage
-  
-          // Create a new project object with a lastUpdated timestamp
+          // Assuming the first element is the relevant data as per your structure
+          const projectName = selectedButtons.name[0]; 
+          const templateName = selectedButtons.templateselected[0];
+          // Create a new project object
           const newProject = {
-            id: Date.now(), // Simple way to get a unique ID
+            id: Date.now(),
             name: projectName,
-            logiciel: templateName,
-            image: `./images/${templateName}screenshot.png`, // Example path, adjust as needed
-            createdAt: currentTimestamp, // Use the full timestamp instead of just the date
-            lastUpdated: currentTimestamp, // Same as createdAt initially
+            templateName: templateName,
+            createdAt: currentTimestamp,
+            lastUpdated: currentTimestamp,
             description: "",
             favicon: "",
           };
-  
-          // Retrieve existing projects and add the new one
-          const existingProjects = JSON.parse(localStorage.getItem('projects')) || [];
-          const updatedProjects = [...existingProjects, newProject];
-          localStorage.setItem('projects', JSON.stringify(updatedProjects));
-          sessionStorage.setItem("isLoggedIn", true);
-          sessionStorage.setItem('isTemplateCompleted', 'true');
-          setRedirectToRoot(true);
-  
-          // Save the new project data to Firestore with lastUpdated
-          await setDoc(doc(db, 'wallets', walletId, 'stepData', "data"), {
-            ...selectedButtons,
+
+          const collectionPath = 'projects'; // Adjust based on your actual requirements
+          const docPath = `${walletId}/projectData/${projectName}`; // Ensure an even number of segments
+
+          // Save to Firestore in the correct collection
+          await setDoc(doc(db, collectionPath, docPath), {
+            ...newProject,
             lastUpdated: currentTimestamp
           });
-  
-          // Optionally, if you're sending data to a backend, adjust and uncomment:
-          await axios.post('/api/final-submission', {
-            walletId,
-            data: { allStepsData: selectedButtons, templateName, projectName, lastUpdated: currentTimestamp },
-          });
-  
+
+          await setDoc(doc(db, 'wallets', walletId, 'stepdata', 'data'),{selectedButtons});
+
+          setRedirectToRoot(true);
+          sessionStorage.setItem('isLoggedIn', true);
+          sessionStorage.setItem('isTemplateCompleted', 'true');
         } else {
-          // Handle the next step for steps other than the last
           onNext();
         }
       } catch (error) {
@@ -60,7 +46,6 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
       }
     }
   };
-  
 
   return (
     <div className="btn-box">
@@ -69,10 +54,7 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
           Skip
         </button>
       )}
-      <button
-        className={`purple-light-btn ${!isNextEnabled ? 'disabled' : ''}`}
-        onClick={handleNextClick}
-      >
+      <button className={`purple-light-btn ${!isNextEnabled ? 'disabled' : ''}`} onClick={handleNextClick}>
         Next
       </button>
       {redirectToRoot && <Navigate to="/dashboard" replace />}

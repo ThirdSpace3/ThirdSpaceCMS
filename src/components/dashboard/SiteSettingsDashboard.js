@@ -2,27 +2,23 @@ import React, { useState, useEffect, useRef } from "react";
 import "./SiteSettingsDashboard.css";
 import "./DashboardMain.css";
 import "../Root.css";
-
+import { updateDoc, db, doc, setDoc } from "../../firebaseConfig";
 export default function SiteSettingsDashboard({
-  project,
+  projects,
   updateProject,
   onReturnToProjects,
+  setCurrentProject,
+  selectedProject,
 }) {
   const [newTemplateName, setNewTemplateName] = useState("");
-  const [templateName, setTemplateName] = useState(project ? project.name : "");
-
-  const [templateDescription, setTemplateDescription] = useState(
-    project ? project.description : ""
-  );
-  const [favicon, setFavicon] = useState(project ? project.favicon : "");
-  const [faviconPreview, setFaviconPreview] = useState(
-    project ? project.favicon : ""
-  );
+  const [templateName, setTemplateName] = useState(selectedProject ? selectedProject.name : "");
+  const [templateDescription, setTemplateDescription] = useState(selectedProject ? selectedProject.description : "");
+  const [favicon, setFavicon] = useState(selectedProject ? selectedProject.favicon : "");
+  const [faviconPreview, setFaviconPreview] = useState(selectedProject ? selectedProject.favicon : "");
   const [isEdited, setIsEdited] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
   const fileInputRef = useRef(null);
-
 
   const handleTemplateNameChange = (e) => {
     setTemplateName(e.target.value);
@@ -66,55 +62,61 @@ export default function SiteSettingsDashboard({
 
     fileInputRef.current.click();
   };
+  const walletID = sessionStorage.getItem("userAccount");
 
-const handleSave = () => {
-  const lastUpdated = new Date().toISOString();
 
-  const updatedProject = {
-    ...project,
-    name: templateName,
-    description: templateDescription,
-    favicon: favicon,
-    lastUpdated: lastUpdated, // Update the lastUpdated field with the new timestamp
-  };
 
-  updateProject(updatedProject);
-
-  // Save to localStorage
-  localStorage.setItem("projectData", JSON.stringify(updatedProject));
-
-  // Save to sessionStorage
-  sessionStorage.setItem("projectName", templateName);
-
-  setIsEdited(true);
-  setIsSaved(true);
-  setIsImageError(false);
+  const handleSave = async () => {
+    const lastUpdated = new Date().toISOString();
   
-  setTimeout(() => {
-    setIsSaved(false);
+    const updatedProject = {
+      ...projects,
+      name: templateName,
+      description: templateDescription,
+      favicon: favicon,
+      lastUpdated: lastUpdated, // Update the lastUpdated field with the new timestamp
+    };
+  
+    // Add a conditional check here
+    if (Array.isArray(projects)) {
+      updateProject(updatedProject);
+    }
+  
+    // Save to localStorage
+    localStorage.setItem("projectData", JSON.stringify(updatedProject));
+  
+    // Save to sessionStorage
+    sessionStorage.setItem("projectName", templateName);
+  
     setIsEdited(false);
+    setIsSaved(true);
+    setIsImageError(false);
+  
+    // Update the project in Firestore
+    // Corrected document reference, assuming 'wallets' is your main collection, 'walletID' is the document, 'stepData' is a sub-collection
+    const projectDocRef = doc(db, 'projects', walletID, 'projectData', templateName);
+  
+    try {
+      await setDoc(projectDocRef, updatedProject, { merge: true }); // Use setDoc with merge: true
+      // Add a conditional check here
+      if (Array.isArray(projects)) {
+        updateProject({ ...projects, name: templateName, description: templateDescription, favicon: favicon });
+      }
+      onReturnToProjects();
+      console.log("Project data updated successfully!");
+    } catch (error) {
+      console.error("Error updating project data:", error);
+    }
+  
+    setTimeout(() => {
+      setIsSaved(false);
+    }, 3000);
+  };
+  
 
-  }, 3000);
-};
-
-  // useEffect(() => {
-  //   const savedProjectData = JSON.parse(localStorage.getItem("projectData"));
-  //   if (savedProjectData && savedProjectData.id === project.id) {
-  //     setTemplateName(savedProjectData.name);
-  //     setTemplateDescription(savedProjectData.description);
-  //     setFavicon(savedProjectData.favicon);
-  //     setFaviconPreview(savedProjectData.favicon);
-  //   }
-  //   setIsEdited(false);
-  //   setIsSaved(false);
-  //   setIsImageError(false);
-  // }, [project]);
-
-  // useEffect(() => {
-  //   setIsEdited(false);
-  //   setIsSaved(false);
-  //   setIsImageError(false);
-  // }, [project]);
+  useEffect(() => {
+    console.log(projects);
+  }, []);
 
   return (
     <div className="dashboard-page-container">
@@ -187,15 +189,15 @@ const handleSave = () => {
                 </a>
 
                 {isImageError && (
-                <div className="dashboard-error">
-                  <div className="dashboard-icon-error">
-                    <p>!</p>
+                  <div className="dashboard-error">
+                    <div className="dashboard-icon-error">
+                      <p>!</p>
+                    </div>
+                    <p className="dashboard-msg-error">
+                      The image must be 300x300 px or smaller
+                    </p>
                   </div>
-                  <p className="dashboard-msg-error">
-                    The image must be 300x300 px or smaller
-                  </p>
-                </div>
-              )}
+                )}
               </div>
               <input
                 type="file"
@@ -204,14 +206,14 @@ const handleSave = () => {
                 ref={fileInputRef}
                 style={{ display: "none" }}
               />
-             
+
             </div>
           </div>
           <div className="dashboard-settings-item">
             <div className="dashboard-settings-title">
               {/* <h2>Delete website</h2>
               */}
-           
+
             </div>
             <a href="" className="dashboard-settings-delete"><i class="bi bi-trash3"></i>
               <p>Delete my website</p></a>

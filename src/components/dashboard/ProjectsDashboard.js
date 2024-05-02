@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ProjectsDashboard.css";
 import "./DashboardMain.css";
 import { useNavigate } from "react-router-dom";
-import { db, doc, getDoc } from "../../firebaseConfig";
+import { db, doc, getDoc, collection, query, where, getDocs } from "../../firebaseConfig";
 export default function ProjectsDashboard({
   projects,
   handleOpenSettings,
@@ -23,7 +23,7 @@ export default function ProjectsDashboard({
   const [userData, setUserData] = useState([]);
 
   // Add a new state for the filtered projects
-  const [filteredProjects, setFilteredProjects] = useState(projects);
+  const [filteredProjects, setFilteredProjects] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
 
@@ -32,34 +32,47 @@ export default function ProjectsDashboard({
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
+  
+  const fetchProjects = async (walletId) => {
+    try {
+      const collectionRef = collection(db, 'projects', walletId, 'projectData');
+      const querySnapshot = await getDocs(collectionRef);
+  
+      const projects = [];
+      querySnapshot.forEach((doc) => {
+        projects.push({ id: doc.id, ...doc.data() });
+      });
+  
+      setUserData(projects);
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+    }
+  };
+  
   // Modify the handleSelect function to filter the projects
   const handleSelect = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
-
+  
     // Filter the projects based on the selected option
+    let filteredProjects = [...userData];
     if (option.value === "option1") {
-      setFilteredProjects(
-        [...projects].sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        )
+      filteredProjects.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
     } else if (option.value === "option2") {
-      setFilteredProjects(
-        [...projects].sort(
-          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-        )
+      filteredProjects.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
       );
     } else if (option.value === "option3") {
-      setFilteredProjects(
-        [...projects].sort((a, b) => a.name.localeCompare(b.name))
-      );
+      filteredProjects.sort((a, b) => a.name.localeCompare(b.name));
     } else if (option.value === "option4") {
-      setFilteredProjects(
-        [...projects].sort((a, b) => b.name.localeCompare(a.name))
-      );
+      filteredProjects.sort((a, b) => b.name.localeCompare(a.name));
     }
+  
+    setFilteredProjects(filteredProjects);
   };
+  
 
   // Add an event handler for the search input field
   const handleSearch = (event) => {
@@ -80,10 +93,12 @@ export default function ProjectsDashboard({
     navigate(`/logiciel/${templateSelected}`);
   };
 
-  const handleProjectSettings = (index) => {
-    handleOpenSettings(index);
-    console.log(index);
+  const handleProjectSettings = (project) => {
+    handleOpenSettings(project);
+    setProjects(project);
+    console.log(project);
   };
+  
   const handleNewProjectClick = async () => {
     try {
       sessionStorage.removeItem("selectedTemplateId");
@@ -110,32 +125,8 @@ export default function ProjectsDashboard({
     }
   };
 
-  const fetchProjects = async (walletId) => {
-    try {
-      const docRef = doc(db, 'wallets', walletId, 'stepData', 'data');
-      const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        let data = docSnap.data();
-        const projects = data.name.map((name, index) => ({
-          name: name,
-          templateselected: data.templateselected[index],
-          lastUpdated: data.lastUpdated[index] // Assuming lastUpdated is an array similar to name and templateselected
-        }));
-        setUserData(projects);
-        // Find the most recently updated project
-        const mostRecent = projects.reduce((prev, current) => {
-          return (new Date(prev.lastUpdated) > new Date(current.lastUpdated)) ? prev : current;
-        }, projects[0]);
-        setRecentlyUpdatedProject(mostRecent);
-      } else {
-        navigate('../templatestep');
-        console.log("No such document!");
-      }
-    } catch (error) {
-      console.error("Error fetching document:", error);
-    }
-  };
+
   // useEffect(() => {
   //   // Check if there's any project with a name of null or undefined
   //   const hasInvalidProjectName = projects.some(project => project.name === null || project.name === undefined);
@@ -150,20 +141,6 @@ export default function ProjectsDashboard({
 
   // New state for the most recently updated project
 
-  useEffect(() => {
-    setFilteredProjects(projects);
-
-    // Determine the most recently updated project
-    const mostRecentProject = projects.reduce((acc, project) => {
-      const currentProjectDate = new Date(
-        project.lastUpdated || project.createdAt
-      );
-      const accDate = new Date(acc.lastUpdated || acc.createdAt);
-      return currentProjectDate > accDate ? project : acc;
-    }, projects[0]);
-
-    setRecentlyUpdatedProject(mostRecentProject);
-  }, [projects]);
 
   useEffect(() => {
     const storedProjects = JSON.parse(localStorage.getItem("projects"));
@@ -179,10 +156,6 @@ export default function ProjectsDashboard({
 
 
   useEffect(() => {
-    setFilteredProjects(projects);
-  }, [projects]);
-
-  useEffect(() => {
     const walletID = sessionStorage.getItem("userAccount");
     fetchProjects(walletID);
   }, []);
@@ -194,6 +167,23 @@ export default function ProjectsDashboard({
       setSelectedTemplate(foundTemplate);
     }
   }, [projects]);
+
+  useEffect(() => {
+    setFilteredProjects(userData);
+  
+    // Determine the most recently updated project
+    const mostRecentProject = userData.reduce((acc, project) => {
+      const currentProjectDate = new Date(
+        project.lastUpdated || project.createdAt
+      );
+      const accDate = new Date(acc.lastUpdated || acc.createdAt);
+      return currentProjectDate > accDate ? project : acc;
+    }, userData[0]);
+  
+    setRecentlyUpdatedProject(mostRecentProject);
+  }, [userData]);
+  
+
   return (
     <>
 
@@ -267,14 +257,14 @@ export default function ProjectsDashboard({
             {recentlyUpdatedProject && (
               <div className="projects-content-item">
                 <img
-                  src={recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateselected}screenshot.png`}
+                  src={recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateName}screenshot.png`}
                   alt={recentlyUpdatedProject.name}
-                  onClick={() => handleProjectClick(recentlyUpdatedProject.templateselected)}
+                  onClick={() => handleProjectClick(recentlyUpdatedProject.templateName)}
                 />
                 <div className="projects-content-item-info">
                   <p>{recentlyUpdatedProject.name}</p>
                   <p>Last updated: {new Date(recentlyUpdatedProject.lastUpdated).toLocaleString()}</p>
-                  <div onClick={() => handleProjectSettings(recentlyUpdatedProject.id)}>
+                  <div onClick={() => handleProjectSettings(recentlyUpdatedProject)}>
                     <i className="bi bi-three-dots"></i>
                   </div>
                 </div>
@@ -289,16 +279,16 @@ export default function ProjectsDashboard({
               <h2>All Projects</h2>
             </div>
             <div className="projects-content-listing">
-              {userData.map((project, index) => (
+            {filteredProjects.map((project, index) => (
                 <div key={index} className="projects-content-item">
                   <img
-                    src={`./images/${project.templateselected}screenshot.png` || "default-image.png"}
+                    src={`./images/${project.templateName}screenshot.png` || "default-image.png"}
                     alt={project.name}
-                    onClick={() => handleProjectClick(project.templateselected)}
+                    onClick={() => handleProjectClick(project.templateName)}
                   />
                   <div className="projects-content-item-info">
                     <p>{project.name}</p>
-                    <div onClick={() => handleProjectSettings(index)}>
+                    <div onClick={() => handleProjectSettings(project)}>
                       <i className="bi bi-three-dots"></i>
                     </div>
                   </div>
@@ -306,6 +296,7 @@ export default function ProjectsDashboard({
                 </div>
               ))}
             </div>
+
             {projects.length >= 3 && (
               <p className="dashboard-billing-header-warning">
                 <i class="bi bi-exclamation-triangle"></i>

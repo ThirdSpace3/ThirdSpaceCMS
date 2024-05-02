@@ -16,6 +16,7 @@ export default function Dashboard() {
   const walletId = sessionStorage.getItem("userAccount");
   const selectedTemplate = sessionStorage.getItem("selectedTemplateId");
   const projectName = sessionStorage.getItem("projectName");
+  const [currentProject, setCurrentProject] = useState(null);
 
   // Redirect logic based on session data
   // useEffect(() => {
@@ -51,6 +52,7 @@ export default function Dashboard() {
 
   const handleOpenSettings = (index) => {
     setSelectedProject(projects[index]);
+    setCurrentProject(index);
     setActiveMenuItem("settings");
   };
 
@@ -106,9 +108,10 @@ export default function Dashboard() {
           )}
           {activeMenuItem === "settings" && (
             <SiteSettingsDashboard
-              project={selectedProject}
+              projects={projects}
               updateProject={updateProject}
               onReturnToProjects={() => setActiveMenuItem("projects")}
+              setCurrentProject={setCurrentProject}
             />
           )}
           {activeMenuItem === "billing" && <BillingDashboard />}

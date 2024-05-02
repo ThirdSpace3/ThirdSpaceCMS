@@ -26,7 +26,7 @@ function Navbar() {
           if (userData) { // Check if stepData is present
             setHasStepData(true);
           }
-          navigate("/dashboard"); // Redirect to dashboard if wallet data exists
+          // navigate("/dashboard"); // Redirect to dashboard if wallet data exists
         } else {
           setHasWalletData(false);
         }
@@ -93,7 +93,7 @@ function Navbar() {
               href={hasWalletData ? "#/dashboard" : "#/templatestep"}
               className="nav__cta nav-bg"
             >
-              {hasWalletData ? "Dashboard" : "Get Started"}
+              { "Get Started"}
             </a>
           )}
 
