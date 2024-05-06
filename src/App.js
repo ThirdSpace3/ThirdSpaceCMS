@@ -17,9 +17,13 @@ import { ImageHistoryProvider } from "./hooks/ImageHistoryContext";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 import GetStartedMobile from "./components/website/GetStartedMobile";
 import AnalyticsWrapper from "./hooks/AnalyticsWrapper";
+import ReactGA from 'react-ga';
 
 export default function App() {
 
+  const TRACKING_ID = "G-83NKPT3B9E"; // Replace with your Google Analytics tracking ID
+  ReactGA.initialize(TRACKING_ID);
+  
   return (
     <div>
       <HashRouter>

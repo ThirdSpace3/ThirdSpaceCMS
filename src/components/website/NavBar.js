@@ -3,61 +3,39 @@ import "./NavBar.css";
 import { useNavigate } from "react-router-dom";
 import PopupWallet from "./PopupWallet.js";
 import { db, collection, getDocs } from '../../firebaseConfig'; // Assuming Firestore is correctly imported and configured
+import ReactGA from 'react-ga';
 
-function Navbar() {
+function Navbar({checkWalletData,hasWalletData, accounts, setAccounts}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [accounts, setAccounts] = useState([]);
-  const [hasWalletData, setHasWalletData] = useState(false);
-  const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
 
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
-
-
-  const checkWalletData = async () => {
-    const userAccount = sessionStorage.getItem("userAccount");
-    if (userAccount) {
-      const docRef = collection(db, 'projects', userAccount, 'projectData');
-      const docSnap = await getDocs(docRef);
-      if (!docSnap.empty) { // Check if the snapshot is not empty
-        setHasWalletData(true);
-        let userData = [];
-        docSnap.forEach((doc) => {
-          userData.push(doc.data());
-        });
-        console.log(userData);
-        if (userData.length > 0) { // Check if userData is present
-          setHasStepData(true);
-        }
-        // navigate("/dashboard"); // Redirect to dashboard if wallet data exists
-      } else {
-        setHasWalletData(false);
-      }
-      setAccounts([userAccount]);
-    }
-  };
-  
-
-    useEffect(() => {
-      const userAccount = sessionStorage.getItem("userAccount");
-      if (userAccount) {
-        setAccounts([userAccount]);
-        checkWalletData(userAccount);
-      }
-    }, []);
-
   const togglePopup = () => {
+    // Log the event in Google Analytics
+    ReactGA.event({
+      category: 'User',
+      action: 'Click on Wallet Button'
+    });
+  
     if (accounts.length > 0 && !hasWalletData) {
-      navigate("/templatestep"); // Navigate to the step if no wallet data found
+      navigate("/templatestep");
     } else {
-      setShowPopup(true); // Show popup to connect wallet
+      setShowPopup(true);
     }
   };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+    useEffect(() => {
+      ReactGA.pageview(window.location.pathname + window.location.search);
 
+      const userAccount = sessionStorage.getItem("userAccount");
+      if (userAccount) {
+        setAccounts([userAccount]);
+        checkWalletData(userAccount);
+      }
+    }, []);
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">

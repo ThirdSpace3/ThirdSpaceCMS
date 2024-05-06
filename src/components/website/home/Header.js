@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import PopupWallet from '../PopupWallet';
 import { useNavigate } from 'react-router-dom';
 
-function Header() {
+function Header({checkWalletData }) {
   const [showWalletPopup, setShowWalletPopup] = useState(false);
   const navigate = useNavigate();
   const userIsLoggedIn = () => {
@@ -47,7 +47,7 @@ function Header() {
         {/* <img src="./images/header-deco.png" alt="" className="header-deco" /> */}
 
       </section>
-      {showWalletPopup && <PopupWallet onClose={toggleWalletPopup} onUserLogin={handleUserLogin} />}
+      {showWalletPopup && <PopupWallet onClose={toggleWalletPopup} onUserLogin={handleUserLogin} checkWalletData ={checkWalletData}/>}
 
     </>
     

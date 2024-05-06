@@ -5,7 +5,7 @@ import PopupWallet from '../PopupWallet';
 import { useNavigate } from 'react-router-dom';
 
 
-function HowItWork() {
+function HowItWork({checkWalletData}) {
   const [activeTab, setActiveTab] = useState('TabA');
   const [showWalletPopup, setShowWalletPopup] = useState(false); // Add this line
   const navigate = useNavigate();
@@ -86,7 +86,7 @@ function HowItWork() {
                     </div>
                 )}
             </div>
-            {showWalletPopup && <PopupWallet onClose={toggleWalletPopup} onUserLogin={handleUserLogin} />}
+            {showWalletPopup && <PopupWallet onClose={toggleWalletPopup} onUserLogin={handleUserLogin} checkWalletData ={checkWalletData}/>}
 
         </section>
     );
