@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./SiteSettingsDashboard.css";
 import "./DashboardMain.css";
 import "../Root.css";
+import PopupDelete from "./PopupDelete";
 import { updateDoc, db, doc, getDoc, deleteDoc } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 export default function SiteSettingsDashboard({
@@ -107,6 +108,12 @@ console.log("selectedProject const : ",selectedProject.id);
         console.error("Error deleting project:", err);
       }
     }
+  };
+
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleClick = () => {
+    setShowPopup(true);
   };
   
   
@@ -223,6 +230,10 @@ console.log("selectedProject const : ",selectedProject.id);
             <div className="dashboard-settings-title">
               {/* <h2>Delete website</h2>
               */}
+              <button onClick={handleClick}>
+        Delete
+      </button>
+      {showPopup && <PopupDelete />}
             <a className="dashboard-settings-delete" onClick={() => handleDeleteProject(selectedProject.id)}><i class="bi bi-trash3"></i>
   <p>Delete my website</p></a>
             </div>

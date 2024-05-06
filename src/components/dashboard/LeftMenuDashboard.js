@@ -15,7 +15,7 @@ export default function LeftMenuDashboard({
   const [localUsername, setLocalUsername] = useState("");
   const [localProfilePicture, setLocalProfilePicture] = useState("");
 
-  useEffect(() => {
+  useEffect(() => { 
     const isLoggedIn = sessionStorage.getItem("isLoggedIn");
     const account = sessionStorage.getItem("userAccount");
     if (isLoggedIn === "true" && account) {

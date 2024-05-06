@@ -25,4 +25,4 @@ const db = getFirestore(firebaseApp);
 const analytics = getAnalytics(firebaseApp);
 
 
-export {analytics, db, doc, setDoc, updateDoc, where, getDocs, collection, query, getDoc, deleteDoc };
+export {analytics, db, doc, setDoc, updateDoc, where, getDocs, collection, query, getDoc, deleteDoc }; 
