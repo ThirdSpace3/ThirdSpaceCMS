@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useImageHistory } from "../../../hooks/ImageHistoryContext";
+
 const BackgroundSettings = ({
   isOpen,
   toggleSection,
@@ -10,34 +11,37 @@ const BackgroundSettings = ({
   const fileInputRef = useRef(null);
   const [currentColor, setCurrentColor] = useState("");
   const cssVarName = `--${selectedElement}-background-color`;
+  const backgroundImageCssVarName = `--${selectedElement}-background-image`;
   const storedColor = localStorage.getItem(cssVarName);
-  const { addImageToHistory, setImageHistory } = useImageHistory(); // Add setImageHistory here
+  const storedImageUrl = localStorage.getItem(backgroundImageCssVarName);
+  const { addImageToHistory } = useImageHistory();
+
+  useEffect(() => {
+    if (storedColor) {
+      setCurrentColor(storedColor);
+      document.documentElement.style.setProperty(cssVarName, storedColor);
+    }
+    if (storedImageUrl && storedImageUrl !== 'none') {
+      document.documentElement.style.setProperty(backgroundImageCssVarName, storedImageUrl);
+    }
+  }, [selectedElement]);
+
   const handleColorInput = (e) => {
     setCurrentColor(e.target.value);
   };
 
   const handleColorCommit = () => {
     const value = currentColor;
-    const cssVarName = `--${selectedElement}-background-color`;
-  
-    // Remove the background image
-    const backgroundImageCssVarName = `--${selectedElement}-background-image`;
-    document.documentElement.style.setProperty(backgroundImageCssVarName, 'none');
-  
+    // Set color and remove background image when changing color
     document.documentElement.style.setProperty(cssVarName, value);
+    document.documentElement.style.setProperty(backgroundImageCssVarName, 'none');
     logChange(selectedElement, { backgroundColor: value });
-    setSelectedColor(currentColor);
-  
-    // Store the selected color in local storage
+    setSelectedColor(value);
+    // Store the selected color and reset image in local storage
     localStorage.setItem(cssVarName, value);
-    const backgroundImage = document.documentElement.style.getPropertyValue(backgroundImageCssVarName);
-
-    if (backgroundImage !== 'none') {
-      setImageHistory(prevHistory => prevHistory.filter(img => img.url !== backgroundImage));
-    }
+    localStorage.setItem(backgroundImageCssVarName, 'none');
   };
-  
-  
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -48,29 +52,19 @@ const BackgroundSettings = ({
       const image = { url: imageUrl, category: "Background" };
       // Add the image to the history
       addImageToHistory(image);
-      // Now you can use imageUrl to set the background image
-      const cssVarName = `--${selectedElement}-background-image`;
+      // Set background image and store it
+      document.documentElement.style.setProperty(backgroundImageCssVarName, `url(${imageUrl})`);
       logChange(selectedElement, {
         backgroundImage: `url(${imageUrl})`,
         backgroundColor: 'transparent' // Set background color to transparent
       });
-      // Also set the correct CSS variable
-      document.documentElement.style.setProperty(cssVarName, `url(${imageUrl})`);
+      localStorage.setItem(backgroundImageCssVarName, `url(${imageUrl})`);
     };
   
     if (file) {
       reader.readAsDataURL(file);
     }
   };
-  
-
-  
-  useEffect(() => {
-    if (storedColor) {
-      setSelectedColor(storedColor);
-      document.documentElement.style.setProperty(cssVarName, storedColor);
-    }
-  }, [selectedElement]);
 
   return (
     <div className="parameters-wrapper">
@@ -83,11 +77,10 @@ const BackgroundSettings = ({
           <p className="parameters-content-line-title">Color</p>
           <input
             type="color"
-            value={storedColor || cssVarName}
+            value={currentColor}
             onInput={handleColorInput}
             onChange={handleColorCommit}
           />
-          {/* <button className="custom-file-upload" onClick={handleColorCommit}>Apply Color</button> */}
         </div>
         <div className="parameters-content-line-row">
           <p className="parameters-content-line-title">Image</p>
@@ -98,7 +91,7 @@ const BackgroundSettings = ({
               accept="image/*"
               hidden
               onChange={handleImageUpload}
-              />
+            />
             <i className="bi bi-plus"></i>
             <p>Add an Image</p>
           </label>

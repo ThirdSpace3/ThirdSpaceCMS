@@ -36,9 +36,6 @@ const HeaderSection = ({
       img.onload = () => resolve(img.height);
     });
   };
-  useEffect(() => {
-    getImageHeight(headerContent.image).then((height) => setImageHeight(height));
-  }, []);
 
   const handleTextChange = (newText, textType) => {
     setHeaderContent(prevContent => ({
@@ -60,26 +57,34 @@ const HeaderSection = ({
     console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
     setSelectedElement(identifier);
   };
+
+
+  
   useEffect(() => {
-    // This useEffect could also manage theme colors or other properties.
+    getImageHeight(headerContent.image).then((height) => setImageHeight(height));
+
     const cssVarName = `--header-background-color`;
+    const backgroundImageCssVarName = '--header-background-image'
     const storedColor = localStorage.getItem(cssVarName);
+    const storedImage = localStorage.getItem(backgroundImageCssVarName);
+
+    if (storedImage) {
+      document.documentElement.style.setProperty(backgroundImageCssVarName,storedImage);
+    }
+
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);
     }
-  }, [setSelectedColor]);
-  useEffect(() => {
+
     localStorage.setItem('header-content', JSON.stringify(headerContent));
-  }, [headerContent]);
-  
-  useEffect(() => {
+
     const storedContent = localStorage.getItem('header-content');
     if (storedContent) {
       const parsedContent = JSON.parse(storedContent);
       onContentChange(parsedContent);
     }
-  }, []);
+  },[headerContent,setSelectedColor]);
   return (
     <div className="sss-product-hero" style={headerStyle} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
       <h1 className="sss-product-hero-title" id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')} style={heroTitleStyles}>

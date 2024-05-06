@@ -14,6 +14,8 @@ export default function Home() {
   const [hasWalletData, setHasWalletData] = useState(false);
   const [accounts, setAccounts] = useState([]);
   console.log(accounts);
+  localStorage.clear();
+  sessionStorage.clear();
   // Clearing the entire session storage
   const checkWalletData = async () => {
     const userAccount = sessionStorage.getItem("userAccount");

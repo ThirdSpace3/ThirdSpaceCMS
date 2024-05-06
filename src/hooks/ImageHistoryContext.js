@@ -4,35 +4,49 @@ const ImageHistoryContext = createContext();
 
 export const useImageHistory = () => useContext(ImageHistoryContext);
 
+const localStorageKey = 'imageHistoryAppState';
+
 export const ImageHistoryProvider = ({ children }) => {
-    const [imageHistory, setImageHistory] = useState([]);
+    // Initial state setup from local storage
+    const initialState = JSON.parse(localStorage.getItem(localStorageKey)) || {
+        imageHistory: [],
+        componentImageUsage: {}
+    };
+
+    const [imageHistory, setImageHistory] = useState(initialState.imageHistory);
     const [selectedImage, setSelectedImage] = useState(null);
     const [isReplacementMode, setIsReplacementMode] = useState(false);
     const [activeComponent, setActiveComponent] = useState(null);
-    const [componentImageUsage, setComponentImageUsage] = useState({}); // Tracks which component is using which image
+    const [componentImageUsage, setComponentImageUsage] = useState(initialState.componentImageUsage);
     const [isFocused, setIsFocused] = useState(false); // To track if any image component is focused
+
+    // Effect to update local storage when imageHistory or componentImageUsage changes
+    useEffect(() => {
+        const stateToSave = {
+            imageHistory,
+            componentImageUsage
+        };
+        localStorage.setItem(localStorageKey, JSON.stringify(stateToSave));
+    }, [imageHistory, componentImageUsage]);
 
     const addImageToHistory = (image) => {
         setImageHistory(prevHistory => [...prevHistory, image]);
     };
 
     const enterReplacementMode = (componentName) => {
-        // console.log(`Entering replacement mode for: ${componentName}`);
         setActiveComponent(componentName);
         setIsReplacementMode(true);
     };
+
     const selectImage = (image) => {
         if (activeComponent) {
-          setSelectedImage(image);
-          setIsReplacementMode(false);
-          setComponentImageUsage(prev => ({ ...prev, [activeComponent]: image }));
+            setSelectedImage(image);
+            setIsReplacementMode(false);
+            setComponentImageUsage(prev => ({ ...prev, [activeComponent]: image }));
         } else {
-          console.log("No active component set when trying to select an image.");
+            console.log("No active component set when trying to select an image.");
         }
-      };
-      
-    
-    
+    };
 
     const clearSelectedImage = () => {
         const updatedUsage = { ...componentImageUsage };
@@ -47,7 +61,6 @@ export const ImageHistoryProvider = ({ children }) => {
         setSelectedImage(null); // Reset the selected image when focus is lost
     };
 
-    
     return (
         <ImageHistoryContext.Provider value={{
             imageHistory,

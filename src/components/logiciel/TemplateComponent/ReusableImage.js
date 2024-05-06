@@ -1,7 +1,6 @@
-// ReusableImage.js
 import React, { useState, useRef, useEffect } from "react";
-import "./ReusableImage.css";
 import { useImageHistory } from "../../../hooks/ImageHistoryContext";
+import "./ReusableImage.css";
 
 const ReusableImage = ({
   src,
@@ -11,15 +10,26 @@ const ReusableImage = ({
   imageHeight,
 }) => {
   const [showReplaceButton, setShowReplaceButton] = useState(false);
-  const [isEdited, setIsEdited] = useState(false); // Add this state variable
+  const [isEdited, setIsEdited] = useState(false);
   const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
   const [currentSrc, setCurrentSrc] = useState(src);
   const imageContainerRef = useRef(null);
 
   useEffect(() => {
+    const savedSrc = localStorage.getItem(`imageSrc-${identifier}`);
+    if (savedSrc) {
+      setCurrentSrc(savedSrc);
+    }
+  }, [identifier]);
+
+  useEffect(() => {
+    localStorage.setItem(`imageSrc-${identifier}`, currentSrc);
+  }, [currentSrc, identifier]);
+
+  useEffect(() => {
     if (activeComponent === identifier && selectedImage && currentSrc !== selectedImage) {
       setCurrentSrc(selectedImage);
-      setIsEdited(true); // Set isEdited to true after editing
+      setIsEdited(true);
     }
     if (activeComponent !== identifier) {
       setShowReplaceButton(false);
@@ -27,7 +37,7 @@ const ReusableImage = ({
   }, [selectedImage, activeComponent, identifier, currentSrc]);
 
   const handleImageClick = () => {
-    if (!isEdited) { // Only allow editing if the image has not been edited before
+    if (!isEdited) {
       enterReplacementMode(identifier);
       setShowReplaceButton(true);
     }
@@ -55,7 +65,7 @@ const ReusableImage = ({
         className={`image-component ${showReplaceButton ? 'selected' : ''}`}
         style={{ height: imageHeight }}
       />
-      {showReplaceButton && !isEdited && ( // Only show replace button if the image has not been edited
+      {showReplaceButton && !isEdited && (
         <button className="popup-button" onClick={openImagePanel}>
           Replace Image <i className="bi bi-arrow-repeat"></i>
         </button>
