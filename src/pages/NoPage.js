@@ -40,7 +40,17 @@ export default function NoPage() {
         accounts={accounts}
         setAccounts={setAccounts}
 
-      />            <h2>Error 404: Not found</h2>
+      />                        <div className="comingsoon-container">
+        <h1>Error 404: Not found</h1>
+        <p>
+          Sorry we could not find the page you were looking for!
+        </p>
+        <a href="/home" className="purple-btn">
+          Go Back Home
+        </a>
+        <img src="./images/header-deco.png" className="comingsoon-bg" />
+      </div>
+
         </>
     )
 }
