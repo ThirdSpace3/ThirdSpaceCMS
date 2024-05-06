@@ -2,11 +2,21 @@ import React, { useState } from "react";
 import "./PopupDelete.css";
 import "../Root.css";
 
-export default function PopupDelete() {
-  const [showPopup, setShowPopup] = useState(true); // Initialisé à true pour afficher la popup par défaut
+export default function PopupDelete({ projectId, handleDeleteProject, projectName }) {
+  const [showPopup, setShowPopup] = useState(true);
+  const [inputValue, setInputValue] = useState('');
 
   const handleClosePopup = () => {
     setShowPopup(false);
+  };
+
+  const handleDelete = (projectId) => {
+    if (inputValue.trim() === projectName) { // assuming projectName is passed as prop
+      handleClosePopup();
+      handleDeleteProject(projectId);
+    } else {
+      alert("The project name does not match. Please check and try again.");
+    }
   };
 
   return (
@@ -19,25 +29,21 @@ export default function PopupDelete() {
         <div className="popup-delete-banner">
           <p className="popup-delete-banner-text">
             You are trying to delete the{" "}
-            <span className="bold">Project Name</span> project!
+            <span className="bold">{projectName}</span> project!
           </p>
         </div>
-        <p className="popup-delete-text">
-          This action <span className="bold">CANNOT</span> be undone. This
-          will permanently delete the <span className="bold">Project Name</span>{" "}
-          projetct's files and assets.
-        </p>
         <div className="popup-delete-box">
           <p className="popup-delete-box-text">
             Please type in the project's name to confirm.
           </p>
-          <input className="popup-delete-box-input" />
-          <button className="popup-delete-box-button">
+          <input className="popup-delete-box-input" value={inputValue} onChange={e => setInputValue(e.target.value)} />
+          <button className="popup-delete-box-button" onClick={() => handleDelete(projectId)}>
             I understand, delete the project
           </button>
+
         </div>
       </div>
     </div>
   );
 }
- 
+

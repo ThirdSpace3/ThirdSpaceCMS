@@ -24,7 +24,7 @@ export default function SiteSettingsDashboard({
   const [isImageError, setIsImageError] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
-console.log("selectedProject const : ",selectedProject.id);
+  console.log("selectedProject const : ", selectedProject.id);
 
   const handleTemplateNameChange = (e) => {
     setTemplateName(e.target.value);
@@ -93,12 +93,11 @@ console.log("selectedProject const : ",selectedProject.id);
   };
 
   const handleDeleteProject = async (projectId) => {
-    if (window.confirm(`Are you sure you want to delete ${selectedProject.name}? This action is irreversible.`)) {
       try {
         // Delete the project document from Firestore
         await deleteDoc(doc(db, "projects", walletID, "projectData", projectId.toString()));
         onReturnToProjects();
-  
+
         // You may also need to update the component state or session storage here
         // For example, you can remove the deleted project from the 'projects' state
         // setProjects((prevProjects) => prevProjects.filter((project) => project.id !== projectId));
@@ -106,7 +105,6 @@ console.log("selectedProject const : ",selectedProject.id);
         console.log("Project deleted successfully.");
       } catch (err) {
         console.error("Error deleting project:", err);
-      }
     }
   };
 
@@ -115,9 +113,9 @@ console.log("selectedProject const : ",selectedProject.id);
   const handleClick = () => {
     setShowPopup(true);
   };
-  
-  
-  
+
+
+
 
   // useEffect(() => {
   //   const fetchSelectedProject = async () => {
@@ -231,11 +229,11 @@ console.log("selectedProject const : ",selectedProject.id);
               {/* <h2>Delete website</h2>
               */}
               <button onClick={handleClick}>
-        Delete
-      </button>
-      {showPopup && <PopupDelete />}
-            <a className="dashboard-settings-delete" onClick={() => handleDeleteProject(selectedProject.id)}><i class="bi bi-trash3"></i>
-  <p>Delete my website</p></a>
+                Delete
+              </button>
+              {showPopup && <PopupDelete projectName={selectedProject.name} projectId={selectedProject.id} handleDeleteProject={handleDeleteProject}/>}
+              {/* <a className="dashboard-settings-delete" onClick={() => handleDeleteProject(selectedProject.id)}><i class="bi bi-trash3"></i>
+                <p>Delete my website</p></a> */}
             </div>
 
           </div>
