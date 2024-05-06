@@ -19,7 +19,7 @@ const HeaderSection = ({
     heroTitle: localStorage.getItem('header-heroTitle-text') || 'The first user-friendly website builder',
     heroDescription: localStorage.getItem('header-heroDescription-text') || 'Rorem ipsum dolor sit amet consectetur. Gravida convallis orci ultrices non. Ultricies tempor at ut cursus mi. Aliquam sed amet vitae orci ac penatibus consectetur.',
     joinUs: localStorage.getItem('header-joinUs-text') || 'Join Us',
-    image: "./images/templates-img/3sproduct/3sproduct-hero.png"
+    image: localStorage.getItem('header-image') || "./images/templates-img/3sproduct/3sproduct-hero.png"
   });
 
   const { style, getComponentStyle, updateStyle } = useStyle();
@@ -85,6 +85,14 @@ const HeaderSection = ({
       onContentChange(parsedContent);
     }
   },[headerContent,setSelectedColor]);
+
+
+  useEffect(() => {
+  if (selectedImage && activeComponent === 'HeaderSection') {
+    setHeaderContent(prev => ({ ...prev, image: selectedImage }));
+    localStorage.setItem('header-image', selectedImage);
+  }
+}, [selectedImage, activeComponent]);
   return (
     <div className="sss-product-hero" style={headerStyle} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
       <h1 className="sss-product-hero-title" id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')} style={heroTitleStyles}>
@@ -111,11 +119,11 @@ const HeaderSection = ({
       <ReusableImage
         src={headerContent.image}
         alt="Hero Image"
-        onClick={() => enterReplacementMode('HeaderSection')}
+        onClick={enterReplacementMode}
         openImagePanel={openImagePanel}
         identifier="HeaderSection"
         imageHeight={imageHeight}
-        selectImage={handleComponentClick}
+        selectImage={selectImage}
       />
     </div>
   );

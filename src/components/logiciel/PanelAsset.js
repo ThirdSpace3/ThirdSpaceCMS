@@ -55,12 +55,11 @@ export default function PanelAsset() {
   };
 
   const handleImageSelect = (image) => {
-    // Here you need to ensure that `enterReplacementMode` is called with the correct component identifier.
-    // This identifier should be the one from the component that is currently active or about to be made active.
-    // For demonstration, let's assume `PanelAsset` can determine the active component somehow or receives it as a prop.
-    enterReplacementMode(activeComponent); // Make sure activeComponent is correctly managed.
-    selectImage(image.url);
-};
+    enterReplacementMode(activeComponent); // Engage replacement mode.
+    selectImage(image.url); // Set the image as selected for editing.
+  
+  };
+  
 useEffect(() => {
   console.log(`Active Component: ${activeComponent}, Selected Image: ${selectedImage}`);
 }, [activeComponent, selectedImage]);

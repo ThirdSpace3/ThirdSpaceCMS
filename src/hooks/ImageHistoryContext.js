@@ -41,7 +41,6 @@ export const ImageHistoryProvider = ({ children }) => {
     const selectImage = (image) => {
         if (activeComponent) {
             setSelectedImage(image);
-            setIsReplacementMode(false);
             setComponentImageUsage(prev => ({ ...prev, [activeComponent]: image }));
         } else {
             console.log("No active component set when trying to select an image.");

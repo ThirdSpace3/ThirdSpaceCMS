@@ -37,6 +37,8 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         maxHeight: `${spanRef.current.offsetHeight + spanRef.current.offsetHeight}px`, // add 15% to height
         minWidth: `${spanRef.current.offsetWidth}px`,
         minHeight: `${spanRef.current.offsetHeight}px`, // use minHeight to allow expansion
+        height: styles.height,
+        width: styles.width,
         fontFamily: styles.fontFamily,
         fontSize: styles.fontSize,
         fontWeight: styles.fontWeight,
