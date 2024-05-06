@@ -13,7 +13,7 @@ export default function Home() {
   const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
   const [hasWalletData, setHasWalletData] = useState(false);
   const [accounts, setAccounts] = useState([]);
-
+  console.log(accounts);
   // Clearing the entire session storage
   const checkWalletData = async () => {
     const userAccount = sessionStorage.getItem("userAccount");

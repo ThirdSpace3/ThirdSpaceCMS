@@ -4,11 +4,16 @@ import "./DashboardMain.css";
 import { useNavigate } from "react-router-dom";
 import { db, doc, getDoc, collection, query, where, getDocs } from "../../firebaseConfig";
 import _ from 'lodash';
+import PopupWallet from "../website/PopupWallet";
 export default function ProjectsDashboard({
   projects,
   setSelectedProject,
   handleOpenSettings,
   setProjects,
+  userData,
+  setUserData,
+  isLoading,
+  fetchProjects,
 }) {
   // Options pour le Dropdown
   const dropdownOptions = [
@@ -23,13 +28,11 @@ export default function ProjectsDashboard({
   const [isOpen, setIsOpen] = useState(false);
   // Initialise selectedOption avec la première option
   const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
-  const [userData, setUserData] = useState([]);
 
   // Add a new state for the filtered projects
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   // Add a new state for the search input value
   const [searchValue, setSearchValue] = useState("");
@@ -37,23 +40,6 @@ export default function ProjectsDashboard({
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   
-  const fetchProjects = async (walletId) => {
-    try {
-      const collectionRef = collection(db, 'projects', walletId, 'projectData');
-      const querySnapshot = await getDocs(collectionRef);
-
-      const projects = [];
-      querySnapshot.forEach((doc) => {
-        projects.push({ id: doc.id, ...doc.data() });
-      });
-
-      setUserData(projects);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching documents:", error);
-      setIsLoading(false);
-    }
-  };
   
   // Modify the handleSelect function to filter the projects
   const handleSelect = (option) => {
@@ -167,14 +153,6 @@ export default function ProjectsDashboard({
   // useEffect(() => {
   //   localStorage.setItem("projects", JSON.stringify(projects));
   // }, [projects]);
-
-
-  useEffect(() => {
-    const walletID = sessionStorage.getItem("userAccount");
-    fetchProjects(walletID);
-  }, []);
-
-
   // useEffect(() => {
   //   const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
   //   if (selectedTemplateId) {
@@ -183,7 +161,10 @@ export default function ProjectsDashboard({
   //   }
   // }, [projects]);
   console.log(userData);
-
+  useEffect(() => {
+    const walletID = sessionStorage.getItem("userAccount");
+    fetchProjects(walletID);
+  }, []);
   useEffect(() => {
     setFilteredProjects(userData);
 
@@ -198,8 +179,8 @@ export default function ProjectsDashboard({
 
     setRecentlyUpdatedProject(mostRecentProject);
     if (isEmpty(userData) && !isLoading) {
-      navigate("../templatestep");
-      sessionStorage.setItem("currentStep", "1");
+      // navigate("../templatestep");
+      // sessionStorage.setItem("currentStep", "1");
     }
   }, [userData, navigate, isLoading]);
 

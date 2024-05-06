@@ -8,36 +8,17 @@ import { wait } from "@testing-library/user-event/dist/utils";
 function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
   const [showMore, setShowMore] = useState(false);
   const [hasWallet, setHasWallet] = useState(false);
+  const [wallets, setWallets] = useState({ hasEthereum: false, hasSolana: false });
+
   console.log(db);
 
-  useEffect(() => {
-    const checkForWallet = () => {
-      if (window.ethereum || "solana" in window) {
-        setHasWallet(true);
-      }
-    };
 
-    checkForWallet();
-  }, []);
 
   const toggleShowMore = (e) => {
     e.preventDefault();
     setShowMore(!showMore);
   };
 
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (e.target.id === "popup") {
-        onClose();
-      }
-    };
-
-    document.addEventListener("click", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, [onClose]);
 
   const handleLoginWithMetamask = async () => {
     if (window.ethereum) {
@@ -60,7 +41,6 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
           method: "personal_sign",
           params: [message, account],
         });
-        console.log("Signature:", signature);
 
         if (typeof onUserLogin === "function") {
           onUserLogin(account);
@@ -122,7 +102,28 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
   };
 
   // https://docs.unstoppabledomains.com/identity/overview/login-with-unstoppable/
+  useEffect(() => {
+    const checkForWallet = () => {
+      if (window.ethereum || "solana" in window) {
+        setHasWallet(true);
+      }
+    };
 
+    checkForWallet();
+  }, []);
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (e.target.id === "popup") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [onClose]);
   return (
     <div className="popup" id="popup" style={{ display: "flex" }}>
       <div className="popup-content">

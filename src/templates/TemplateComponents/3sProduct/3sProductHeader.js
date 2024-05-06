@@ -96,10 +96,10 @@ const HeaderSection = ({
           style={heroDescriptionStyles}
         />
       </p>
-      <a href="#" id='herojoinUs' className="sss-product-hero-cta" onClick={(event) => handleComponentClick(event, 'joinUs')}>
+      <a href="#" id='herojoinUs' className="sss-product-hero-cta" onClick={(event) => handleComponentClick(event, 'herojoinUs')}>
         <EditableText
           text={headerContent.joinUs}
-          onChange={(newText) => handleTextChange(newText, 'joinUs')}
+          onChange={(newText) => handleTextChange(newText, 'herojoinUs')}
           style={herojoinUsStyles}
         />
       </a>

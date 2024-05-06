@@ -34,18 +34,20 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
       const styles = window.getComputedStyle(spanRef.current);
       computedStyle.current = {
         width: `${spanRef.current.offsetWidth}px`,
-        minHeight: `${spanRef.current.offsetHeight}px`, // use minHeight to allow expansion
+        height: `${spanRef.current.offsetHeight}px`, // use minHeight to allow expansion
         fontFamily: styles.fontFamily,
         fontSize: styles.fontSize,
         fontWeight: styles.fontWeight,
         color: styles.color,
         backgroundColor: styles.backgroundColor,
         border: 'none',
-        padding: '0',
+        padding: styles.padding,
+        textAlign: styles.textAlign, // Ensure text alignment is copied
+        lineHeight: styles.lineHeight, // Copy line height for consistent text positioning
       };
     }
   };
-
+  
   useEffect(() => {
     if (isEditing && textAreaRef.current) {
       textAreaRef.current.focus();
@@ -61,6 +63,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
             ref={textAreaRef}
             style={computedStyle.current}
             className={`editable-text-area ${error ? 'error' : ''}`}
+            resize={'none'}
         />
     );
   } else {
@@ -68,9 +71,10 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         <div
             ref={spanRef}
             onClick={handleSpanClick}
-            style={style}
+            style={style }
             className={`editable-text-span ${error ? 'error' : ''}`}
             id={selectElement}
+            
         >
             {text}
         </div>

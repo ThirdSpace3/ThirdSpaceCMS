@@ -7,32 +7,43 @@ import SiteSettingsDashboard from "../components/dashboard/SiteSettingsDashboard
 import ProfileDashboard from "../components/dashboard/ProfileDashboard";
 import BillingDashboard from "../components/dashboard/BillingDashboard";
 import { useNavigate } from "react-router-dom";
+import PopupWallet from "../components/website/PopupWallet";
+import { db, collection, getDocs } from '../firebaseConfig'; // Assuming Firestore is correctly imported and configured
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [hasWalletData, setHasWalletData] = useState(false);
+  const [accounts, setAccounts] = useState([]);
+  const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
+  const [showPopup, setShowPopup] = useState(false);
 
   // Retrieval from sessionStorage
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
   const walletId = sessionStorage.getItem("userAccount");
   const selectedTemplate = sessionStorage.getItem("selectedTemplateId");
   const projectName = sessionStorage.getItem("projectName");
   const [currentProject, setCurrentProject] = useState(null);
   const [activeMenuItem, setActiveMenuItem] = useState("projects");
   const [selectedProject, setSelectedProject] = useState(null);
-  const [projects, setProjects] = useState([]);
+  const [project, setProjects] = useState([]);
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn") === 'true';  // Ensure this is a boolean
+  const projects = JSON.parse(localStorage.getItem("projects") || '[]');
+  const [userData, setUserData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Redirect logic based on session data
-  // useEffect(() => {
-  //   if (!isLoggedIn || !walletId || !selectedTemplate || !projectName) {
-  //     navigate("/templatestep");
-  //   }
-  // }, [isLoggedIn, walletId, selectedTemplate, projectName, navigate]);
+  console.log(isLoggedIn);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      // Potentially open a login modal or redirect
+      console.log('Not logged in');
+    } else {
+      // Fetch projects and other user data here
+      fetchProjects();
+      console.log('Logged in');
+    }
+  }, [isLoggedIn]); // Depend on the isLoggedIn state
 
 
-  // Updates localStorage whenever the projects state changes
-  // useEffect(() => {
-  //   localStorage.setItem("projects", JSON.stringify(projects));
-  // }, [projects]);
 
   const handleOpenSettings = (index) => {
     setSelectedProject(projects[index]);
@@ -69,11 +80,53 @@ export default function Dashboard() {
     setProjects(updatedProjects);
     setSelectedProject(updatedProject);
   };
+  const fetchProjects = async (walletId) => {
+    try {
+      const collectionRef = collection(db, 'projects', walletId, 'projectData');
+      const querySnapshot = await getDocs(collectionRef);
 
+      const projects = [];
+      querySnapshot.forEach((doc) => {
+        projects.push({ id: doc.id, ...doc.data() });
+      });
+
+      setUserData(projects);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+      setIsLoading(false);
+    }
+  };
+  const checkWalletData = async () => {
+    const userAccount = sessionStorage.getItem("userAccount");
+    if (userAccount) {
+      const docRef = collection(db, 'projects', userAccount, 'projectData');
+      const docSnap = await getDocs(docRef);
+      if (!docSnap.empty) { // Check if the snapshot is not empty
+        setHasWalletData(true);
+        let userData = [];
+        docSnap.forEach((doc) => {
+          userData.push(doc.data());
+        });
+        console.log(userData);
+        if (userData.length > 0) { // Check if userData is present
+          setHasStepData(true);
+        }
+        // navigate("/dashboard"); // Redirect to dashboard if wallet data exists
+      } else {
+        setHasWalletData(false);
+      }
+      setAccounts([userAccount]);
+    }
+  };
 
 
   
+  // The rest of your existing code...
 
+  if (!isLoggedIn) {
+    return <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])}/>;
+  }
   return (
     <>
       <div className="dashboard-container">
@@ -91,6 +144,10 @@ export default function Dashboard() {
               setSelectedProject={setSelectedProject}
               handleOpenSettings={handleOpenSettings}
               setProjects={setProjects}
+              userData={userData}
+              isLoading={isLoading}
+              setUserData={setUserData}
+              fetchProjects={fetchProjects}
             />
           )}
           {activeMenuItem === "settings" && (

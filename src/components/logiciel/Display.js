@@ -27,7 +27,7 @@ export default function Display() {
   const [showPopup, setShowPopup] = useState(false);
   const [TemplateContent, setTemplateContent] = useState({});
 
-  
+
   const handleSettingsChange = (elementId, newSettings) => {
     console.log("Updating settings for:", elementId, "new settings received:", newSettings);
     setSettings(prevSettings => {
@@ -55,6 +55,8 @@ export default function Display() {
   useEffect(() => {
     loadSettingsFromLocalStorage();
   }, []);
+
+  
   const selectElement = (elementId) => {
     console.log('selectElement elementId:', elementId);
 
@@ -149,11 +151,11 @@ export default function Display() {
     sessionStorage.clear('editLogs');
     console.log(sessionStorage.getItem('editLogs'));
   };
-  
+
   const applyStylesFromLogs = useCallback(() => {
     const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
     const newSettings = {};
-  
+
     logs.forEach(log => {
       const { elementId, newStyles } = log;
       newSettings[elementId] = {
@@ -161,7 +163,7 @@ export default function Display() {
         ...newStyles
       };
     });
-  
+
     setSettings(newSettings);
   }, []);
   useEffect(() => {
@@ -170,7 +172,7 @@ export default function Display() {
 
   return (
     <>
-     
+
       <div className="displayWrapper">
         {!isPreviewMode && (
           <LeftBar
@@ -182,15 +184,16 @@ export default function Display() {
 
         )}
         <div className="displayColumnWrapper">
-        <TopBar 
-        onSaveClick={saveSettings} 
-        onUndoClick={undo} 
-        onRedoClick={redo} 
-        onDeviceChange={(size) => setSelectedDeviceSize(size)} 
-        onPreview={handlePreview} 
-        showPopup={showPopup} // Add this line
-        setShowPopup={setShowPopup}
-        />
+          <TopBar
+            onSaveClick={saveSettings}
+            onUndoClick={undo}
+            onRedoClick={redo}
+            onDeviceChange={(size) => setSelectedDeviceSize(size)}
+            onPreview={handlePreview}
+            showPopup={showPopup} // Add this line
+            setShowPopup={setShowPopup}
+          />
+
           <Canva
             TemplateContent={TemplateContent}
             setTemplateContent={setTemplateContent}
@@ -208,15 +211,14 @@ export default function Display() {
             selectedColor={selectedColor} setSelectedColor={setSelectedColor}
           />
 
-
         </div>
         {!isPreviewMode && (
-          <RightBar 
-          handleSettingsChange={handleSettingsChange} 
-          selectedElement={selectedElement} 
-          logChange={logChange} 
-          selectedColor={selectedColor} 
-          setSelectedColor={setSelectedColor}/>
+          <RightBar
+            handleSettingsChange={handleSettingsChange}
+            selectedElement={selectedElement}
+            logChange={logChange}
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor} />
         )}
       </div>
     </>

@@ -109,22 +109,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     }
   }, [selectedImage, activeComponent]);
   
-  const handleFeaturesClick = () => {
-    console.log("Features clicked, setting selected element to 'features'");
-    setSelectedElement('features');
-  };
 
-  useEffect(() => {
-    const featuresElement = document.querySelector('.sss-product-features');
-    if (featuresElement) {
-      featuresElement.addEventListener('click', handleFeaturesClick);
-    }
-    return () => {
-      if (featuresElement) {
-        featuresElement.removeEventListener('click', handleFeaturesClick);
-      }
-    };
-  }, []);
 
   const handleImageClick = (index) => {
     const identifier = `featureImage-${index}`;

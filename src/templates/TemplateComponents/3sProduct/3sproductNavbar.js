@@ -30,9 +30,9 @@ const Navbar = ({
     const { setSelectedComponent, selectedComponent, updateStyle, getComponentStyle } = useStyle();
     const navbarStyles = getComponentStyle('navbar');
     const homeStyles = getComponentStyle('home');
-    const aboutStyles = getComponentStyle('about');
+    const navaboutStyles = getComponentStyle('navabout');
     const featuresStyles = getComponentStyle('navfeatures');
-    const joinUsStyles = getComponentStyle('joinUs');
+    const joinUsStylesNav = getComponentStyle('joinUsNav');
 
     const getImageHeight = (src) => {
         return new Promise((resolve) => {
@@ -113,8 +113,8 @@ const Navbar = ({
                     />
                 </div>
                 <ul className="sss-product-navbar-links-box">
-                    <li id='home' onClick={(event) => handleComponentClick(event, 'home')} >
-                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}>
+                    <li >
+                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} id='home' onClick={(event) => handleComponentClick(event, 'home')} >
                             <EditableText
                                 text={navbarContent.home}
                                 onChange={(newText) => handleTextChange(newText, 'home')}
@@ -122,17 +122,17 @@ const Navbar = ({
                             />
                         </Link>
                     </li>
-                    <li id='about' onClick={(event) => handleComponentClick(event, 'about')} >
-                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}>
+                    <li >
+                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} id='navabout' onClick={(event) => handleComponentClick(event, 'navabout')} >
                             <EditableText
                                 text={navbarContent.about}
-                                onChange={(newText) => handleTextChange(newText, 'about')}
-                                style={aboutStyles}
+                                onChange={(newText) => handleTextChange(newText, 'navabout')}
+                                style={navaboutStyles}
                             />
                         </Link>
                     </li>
-                    <li id='navfeatures' onClick={(event) => handleComponentClick(event, 'navfeatures')} >
-                        <Link className="sss-product-navbar-links" >
+                    <li >
+                        <Link className="sss-product-navbar-links" id='navfeatures' onClick={(event) => handleComponentClick(event, 'navfeatures')} >
                             <EditableText
                                 text={navbarContent.features}
                                 onChange={(newText) => handleTextChange(newText, 'navfeatures')}
@@ -142,12 +142,12 @@ const Navbar = ({
                     </li>
 
                 </ul>
-                <a id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')} style={{ ...joinUsStyles }}>
-                    <Link className="sss-product-navbar-cta">
+                <a >
+                    <Link className="sss-product-navbar-cta" id='joinUsNav' onClick={(event) => handleComponentClick(event, 'joinUsNav')}>
                         <EditableText
                             text={navbarContent.joinUs}
-                            onChange={(newText) => handleTextChange(newText, 'joinUs')}
-                            style={joinUsStyles}
+                            onChange={(newText) => handleTextChange(newText, 'joinUsNav')}
+                            style={joinUsStylesNav}
                         />
                     </Link>
                 </a>

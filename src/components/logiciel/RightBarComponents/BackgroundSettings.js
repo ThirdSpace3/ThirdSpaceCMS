@@ -10,6 +10,7 @@ const BackgroundSettings = ({
   const fileInputRef = useRef(null);
   const [currentColor, setCurrentColor] = useState("");
   const cssVarName = `--${selectedElement}-background-color`;
+  const storedColor = localStorage.getItem(cssVarName);
 
   const handleColorInput = (e) => {
     setCurrentColor(e.target.value);
@@ -29,7 +30,6 @@ const BackgroundSettings = ({
   
 
   useEffect(() => {
-    const storedColor = localStorage.getItem(cssVarName);
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);
@@ -47,10 +47,11 @@ const BackgroundSettings = ({
           <p className="parameters-content-line-title">Color</p>
           <input
             type="color"
-            value={currentColor}
+            value={storedColor || cssVarName}
             onInput={handleColorInput}
+            onChange={handleColorCommit}
           />
-          <button className="custom-file-upload" onClick={handleColorCommit}>Apply Color</button>
+          {/* <button className="custom-file-upload" onClick={handleColorCommit}>Apply Color</button> */}
         </div>
         <div className="parameters-content-line-row">
           <p className="parameters-content-line-title">Image</p>
