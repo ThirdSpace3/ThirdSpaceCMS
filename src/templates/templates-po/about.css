@@ -5,12 +5,15 @@
     --about-link-color: #8f9bb7;
     --about-cta-background-color: #7214ff;
     --about-background-color: #200627;
+    --about-background-image: ;
   }
 
   
   /*==================== ABOUT ====================*/
   .sss-product-about {
     background-color: var(--about-background-color);
+    background-image: var(--about-background-image);
+
     display: flex;
     flex-direction: column;
     gap: 40px;

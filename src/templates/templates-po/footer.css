@@ -1,14 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
 :root {
-    --navbar-border-color: #151934;
-    --navbar-link-color: #8f9bb7;
-    --navbar-cta-background-color: #7214ff;
+    --footer-border-color: #151934;
+    --footer-link-color: #8f9bb7;
+    --footer-cta-background-color: #7214ff;
     --footer-background-color: #200627;
+    --footer-background-image: ;
+  
   }
 
 .sss-product-footer {
-    background-color: var(--footer-background-color);
+    background-color: var(--footer-background-color);    
+    background-image: var(--footer-background-image);
+
     display: flex;
     flex-direction: column;
     align-items: center;

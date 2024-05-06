@@ -92,20 +92,23 @@ console.log("selectedProject const : ",selectedProject.id);
   };
 
   const handleDeleteProject = async (projectId) => {
-    try {
-      // Delete the project document from Firestore
-      await deleteDoc(doc(db, "projects", walletID, "projectData", projectId.toString()));
-      onReturnToProjects();
-
-      // You may also need to update the component state or session storage here
-      // For example, you can remove the deleted project from the 'projects' state
-      // setProjects((prevProjects) => prevProjects.filter((project) => project.id !== projectId));
-      setProjects("");
-      console.log("Project deleted successfully.");
-    } catch (err) {
-      console.error("Error deleting project:", err);
+    if (window.confirm(`Are you sure you want to delete ${selectedProject.name}? This action is irreversible.`)) {
+      try {
+        // Delete the project document from Firestore
+        await deleteDoc(doc(db, "projects", walletID, "projectData", projectId.toString()));
+        onReturnToProjects();
+  
+        // You may also need to update the component state or session storage here
+        // For example, you can remove the deleted project from the 'projects' state
+        // setProjects((prevProjects) => prevProjects.filter((project) => project.id !== projectId));
+        setProjects("");
+        console.log("Project deleted successfully.");
+      } catch (err) {
+        console.error("Error deleting project:", err);
+      }
     }
   };
+  
   
   
 
@@ -220,10 +223,10 @@ console.log("selectedProject const : ",selectedProject.id);
             <div className="dashboard-settings-title">
               {/* <h2>Delete website</h2>
               */}
-
-            </div>
             <a className="dashboard-settings-delete" onClick={() => handleDeleteProject(selectedProject.id)}><i class="bi bi-trash3"></i>
   <p>Delete my website</p></a>
+            </div>
+
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './EditableText.css';
 
-const EditableText = ({ text, onChange, style, handleSettingsChange, textType, selectElement,isPreviewMode  }) => {
+const EditableText = ({ text, onChange, style, handleSettingsChange, textType, selectElement, isPreviewMode }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text);
   const [error, setError] = useState(false);
@@ -33,8 +33,10 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
     if (spanRef.current) {
       const styles = window.getComputedStyle(spanRef.current);
       computedStyle.current = {
-        width: `${spanRef.current.offsetWidth}px`,
-        height: `${spanRef.current.offsetHeight}px`, // use minHeight to allow expansion
+        maxWidth: `${spanRef.current.offsetWidth + spanRef.current.offsetWidth}px`, // add 15% to width
+        maxHeight: `${spanRef.current.offsetHeight + spanRef.current.offsetHeight}px`, // add 15% to height
+        minWidth: `${spanRef.current.offsetWidth}px`,
+        minHeight: `${spanRef.current.offsetHeight}px`, // use minHeight to allow expansion
         fontFamily: styles.fontFamily,
         fontSize: styles.fontSize,
         fontWeight: styles.fontWeight,
@@ -44,43 +46,45 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         padding: styles.padding,
         textAlign: styles.textAlign, // Ensure text alignment is copied
         lineHeight: styles.lineHeight, // Copy line height for consistent text positioning
+        whiteSpace: 'pre-wrap', // allow text to wrap to next line
+        overflowWrap: 'break-word', // allow long words to break to next line
       };
     }
   };
-  
+
+
+
   useEffect(() => {
     if (isEditing && textAreaRef.current) {
       textAreaRef.current.focus();
     }
   }, [isEditing]);
 
-  if (isEditing) {
-    return (
+  return (
+    <>
+      {isEditing ? (
         <textarea
-            value={currentText}
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-            ref={textAreaRef}
-            style={computedStyle.current}
-            className={`editable-text-area ${error ? 'error' : ''}`}
-            resize={'none'}
+          value={currentText}
+          onChange={handleInputChange}
+          onBlur={handleBlur}
+          ref={textAreaRef}
+          style={computedStyle.current}
+          className={`editable-text-area ${error ? 'error' : ''}`}
         />
-    );
-  } else {
-    return (
+      ) : (
         <div
-            ref={spanRef}
-            onClick={handleSpanClick}
-            style={style }
-            className={`editable-text-span ${error ? 'error' : ''}`}
-            id={selectElement}
-            
+          ref={spanRef}
+          onClick={handleSpanClick}
+          style={{ ...style, whiteSpace: 'pre-wrap' }} // add whiteSpace style to div
+          className={`editable-text-span ${error ? 'error' : ''}`}
+          id={selectElement}
         >
-            {text}
+          {text}
         </div>
-    );
-  }
-  
+      )}
+    </>
+  );
 };
+
 
 export default EditableText;

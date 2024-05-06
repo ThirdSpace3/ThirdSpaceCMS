@@ -90,7 +90,8 @@ export default function RightBar({handleSettingsChange, selectedElement, logChan
             selectedElement={selectedElement} // Pass selectedElement as a prop
             logChange={logChange}
             onSettingsChange={logChange}
-            selectedColor={selectedColor} setSelectedColor={setSelectedColor}
+            selectedColor={selectedColor} 
+            setSelectedColor={setSelectedColor}
           />
 
 

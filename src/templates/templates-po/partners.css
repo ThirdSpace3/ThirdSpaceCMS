@@ -5,12 +5,14 @@
     --navbar-link-color: #8f9bb7;
     --navbar-cta-background-color: #7214ff;
     --partners-background-color: #200627;
+    --partners-background-image: ;
   }
 
 
   /*==================== PARTNERS ====================*/
 .sss-product-partners {
   background-color: var(--partners-background-color);
+  background-image: var(--partners-background-image);
     display: flex;
     flex-direction: column;
     gap: 40px;

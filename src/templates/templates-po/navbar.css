@@ -7,7 +7,7 @@
   --navbar-cta-background-color: #7214ff;
   --navbar-background-color: #200627; /* Add this for navbar background color */
   --navbar-text-color: #8f9bb7;
-
+  --navbar-background-image: ;
   }
   .sss-product-container {
     container-type: inline-size;
@@ -17,8 +17,8 @@
   
       width: 100%;
     border-bottom: 1px solid var(--Neutral-gray-600, var(--navbar-border-color));
-    background-color: var(--navbar-background-color) !important; /* Use the new variable here */
-
+    background-color: var(--navbar-background-color); /* Use the new variable here */
+    background-image: var(--navbar-background-image);
   }
   .sss-product-navbar-navbar {
     display: flex;

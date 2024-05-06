@@ -65,7 +65,7 @@ export default function TypographySettings({
     onSettingsChange(selectedElement, { typography: newStyle });
     localStorage.setItem(`typographySettings-${selectedElement}`, JSON.stringify(newStyle));
   };
-  
+
 
   useEffect(() => {
     const element = document.getElementById(selectedElement);
@@ -204,23 +204,23 @@ export default function TypographySettings({
             </div>
           </div>
           <div className="parameters-content-line">
-  <p className="parameters-content-line-title">Text Align</p>
-  <div className="parameters-content-line-container">
-    {['left', 'center', 'right', 'justify'].map((align) => (
-      <a
-        key={align}
-        href="#"
-        className={`parameters-content-line-item ${typographyStyle.textAlign === align ? "selected" : ""}`}
-        onClick={(e) => {
-          e.preventDefault();
-          handleTextAlign(align);
-        }}
-      >
-        <i className={`bi bi-text-${align}`}></i>
-      </a>
-    ))}
-  </div>
-</div>
+            <p className="parameters-content-line-title">Text Align</p>
+            <div className="parameters-content-line-container">
+              {['left', 'center', 'right', 'justify'].map((align) => (
+                <a
+                  key={align}
+                  href="#"
+                  className={`parameters-content-line-item ${typographyStyle.textAlign === align ? "selected" : ""}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleTextAlign(align);
+                  }}
+                >
+                  <i className={`bi bi-text-${align}`}></i>
+                </a>
+              ))}
+            </div>
+          </div>
 
         </div>
         <hr className="parameters-wrapper-separation" />

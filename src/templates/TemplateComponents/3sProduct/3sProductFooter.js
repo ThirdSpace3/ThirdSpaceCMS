@@ -82,6 +82,8 @@ const Footer = ({
     if (identifier.includes("Footer")) {
       enterReplacementMode(identifier);
     }
+    console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
+
   };
 
   useEffect(() => {

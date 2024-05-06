@@ -92,6 +92,8 @@ useEffect(() => {
     switch (image.category) {
       case "Photo":
         return <img src={image.url} alt="Preview" className={previewClass} />;
+      case "Background": // Handle background images
+        return <img src={image.url} alt="Preview" className={previewClass} />;
       case "Video":
         return (
           <video className={previewClass} width="120" height="90" controls>
@@ -109,6 +111,7 @@ useEffect(() => {
         );
     }
   };
+
 
   return (
     <div className="navbar-panel">

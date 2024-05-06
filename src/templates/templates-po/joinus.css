@@ -1,16 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
 
 :root {
-    --navbar-border-color: #151934;
-    --navbar-link-color: #8f9bb7;
-    --navbar-cta-background-color: #7214ff;
+    --joinUs-border-color: #151934;
+    --joinUs-link-color: #8f9bb7;
+    --joinUs-cta-background-color: #7214ff;
     --joinUs-background-color: #200627;
+    --joinUs-background-image: ;
   }
 
 
 .sss-product-joinus-main{
   background-color: var(--joinUs-background-color);
-  
+  background-image: var(--joinUs-background-image);
+
 
 }
 .sss-product-joinus {

@@ -28,7 +28,12 @@ const PartnersSection = ({
     localStorage.setItem('partners-partnersTitle-text', newText);
     updateStyle('partnersTitle', { text: newText });
   };
-
+  const handleComponentClick = (event, identifier) => {
+    event.preventDefault(); // This will prevent the default action of the anchor tag
+    event.stopPropagation(); // Stop the event from propagating up
+    console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
+    setSelectedElement(identifier);
+};
   const handleImageChange = (index, newSrc) => {
     const updatedImages = [...partnerImages];
     updatedImages[index].src = newSrc;
@@ -43,7 +48,7 @@ const PartnersSection = ({
   }, [partnersTitleText, partnerImages, onContentChange]);
 
   return (
-    <div className="sss-product-partners" style={partnerStyle} onClick={event => setSelectedElement('partners')}>
+    <div className="sss-product-partners" style={partnerStyle} onClick={event => handleComponentClick(event, 'partners')}>
       <h2 id='partners' className="sss-product-partners-title" onClick={event => event.stopPropagation()}>
         <EditableText
           text={partnersTitleText}

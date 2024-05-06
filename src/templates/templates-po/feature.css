@@ -5,11 +5,13 @@
     --navbar-link-color: #8f9bb7;
     --navbar-cta-background-color: #7214ff;
     --features-background-color: #200627;
+    --features-background-image: ;
   }
 
 
 .sss-product-features {
     background-color: var(--features-background-color);
+    background-image: var(--features-background-image);
     display: flex;
     flex-direction: column;
     gap: 30px;

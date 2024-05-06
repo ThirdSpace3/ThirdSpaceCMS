@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-
+import { useImageHistory } from "../../../hooks/ImageHistoryContext";
 const BackgroundSettings = ({
   isOpen,
   toggleSection,
@@ -11,7 +11,7 @@ const BackgroundSettings = ({
   const [currentColor, setCurrentColor] = useState("");
   const cssVarName = `--${selectedElement}-background-color`;
   const storedColor = localStorage.getItem(cssVarName);
-
+  const { addImageToHistory, setImageHistory } = useImageHistory(); // Add setImageHistory here
   const handleColorInput = (e) => {
     setCurrentColor(e.target.value);
   };
@@ -20,15 +20,51 @@ const BackgroundSettings = ({
     const value = currentColor;
     const cssVarName = `--${selectedElement}-background-color`;
   
+    // Remove the background image
+    const backgroundImageCssVarName = `--${selectedElement}-background-image`;
+    document.documentElement.style.setProperty(backgroundImageCssVarName, 'none');
+  
     document.documentElement.style.setProperty(cssVarName, value);
     logChange(selectedElement, { backgroundColor: value });
     setSelectedColor(currentColor);
   
     // Store the selected color in local storage
     localStorage.setItem(cssVarName, value);
+    const backgroundImage = document.documentElement.style.getPropertyValue(backgroundImageCssVarName);
+
+    if (backgroundImage !== 'none') {
+      setImageHistory(prevHistory => prevHistory.filter(img => img.url !== backgroundImage));
+    }
+  };
+  
+  
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+  
+    reader.onloadend = () => {
+      const imageUrl = reader.result;
+      // Add the "Background" category to the image
+      const image = { url: imageUrl, category: "Background" };
+      // Add the image to the history
+      addImageToHistory(image);
+      // Now you can use imageUrl to set the background image
+      const cssVarName = `--${selectedElement}-background-image`;
+      logChange(selectedElement, {
+        backgroundImage: `url(${imageUrl})`,
+        backgroundColor: 'transparent' // Set background color to transparent
+      });
+      // Also set the correct CSS variable
+      document.documentElement.style.setProperty(cssVarName, `url(${imageUrl})`);
+    };
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
   };
   
 
+  
   useEffect(() => {
     if (storedColor) {
       setSelectedColor(storedColor);
@@ -61,8 +97,8 @@ const BackgroundSettings = ({
               type="file"
               accept="image/*"
               hidden
-              onChange={(e) => handleColorCommit(e, "backgroundImage", selectedElement)}
-            />
+              onChange={handleImageUpload}
+              />
             <i className="bi bi-plus"></i>
             <p>Add an Image</p>
           </label>
