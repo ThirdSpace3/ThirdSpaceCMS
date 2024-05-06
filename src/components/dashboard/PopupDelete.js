@@ -1,13 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./PopupDelete.css";
 import "../Root.css";
 
-export default function PopupDelete({ projectId, handleDeleteProject, projectName }) {
-  const [showPopup, setShowPopup] = useState(true);
+export default function PopupDelete({ projectId, handleDeleteProject, projectName, showPopup, setShowPopup }) {
   const [inputValue, setInputValue] = useState('');
+  useEffect(() => {
+    // Add when mounted
+    document.addEventListener("mousedown", handleClickOutside);
+    // Remove when unmounted
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleClosePopup = () => {
     setShowPopup(false);
+  };
+
+  const handleClickOutside = (event) => {
+    // If the clicked element is the backdrop, close the popup
+    if (event.target.className.includes("popup-delete-bg")) {
+      handleClosePopup();
+    }
   };
 
   const handleDelete = (projectId) => {
@@ -18,6 +32,8 @@ export default function PopupDelete({ projectId, handleDeleteProject, projectNam
       alert("The project name does not match. Please check and try again.");
     }
   };
+
+  if (!showPopup) return null;
 
   return (
     <div className={showPopup ? "popup-delete-bg" : "popup-delete-bg hidden"}>

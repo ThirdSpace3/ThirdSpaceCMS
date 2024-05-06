@@ -231,7 +231,7 @@ export default function SiteSettingsDashboard({
               <button onClick={handleClick}>
                 Delete
               </button>
-              {showPopup && <PopupDelete projectName={selectedProject.name} projectId={selectedProject.id} handleDeleteProject={handleDeleteProject}/>}
+              {showPopup && <PopupDelete showPopup={showPopup} setShowPopup={setShowPopup} projectName={selectedProject.name} projectId={selectedProject.id} handleDeleteProject={handleDeleteProject}/>}
               {/* <a className="dashboard-settings-delete" onClick={() => handleDeleteProject(selectedProject.id)}><i class="bi bi-trash3"></i>
                 <p>Delete my website</p></a> */}
             </div>
