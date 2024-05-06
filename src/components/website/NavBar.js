@@ -5,7 +5,7 @@ import PopupWallet from "./PopupWallet.js";
 import { db, collection, getDocs } from '../../firebaseConfig'; // Assuming Firestore is correctly imported and configured
 import ReactGA from 'react-ga';
 
-function Navbar({checkWalletData,hasWalletData, accounts, setAccounts}) {
+function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [showPopup, setShowPopup] = useState(false);
@@ -16,7 +16,7 @@ function Navbar({checkWalletData,hasWalletData, accounts, setAccounts}) {
       category: 'User',
       action: 'Click on Wallet Button'
     });
-  
+
     if (accounts.length > 0 && !hasWalletData) {
       navigate("/templatestep");
     } else {
@@ -27,15 +27,15 @@ function Navbar({checkWalletData,hasWalletData, accounts, setAccounts}) {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-    useEffect(() => {
-      ReactGA.pageview(window.location.pathname + window.location.search);
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
 
-      const userAccount = sessionStorage.getItem("userAccount");
-      if (userAccount) {
-        setAccounts([userAccount]);
-        checkWalletData(userAccount);
-      }
-    }, []);
+    const userAccount = sessionStorage.getItem("userAccount");
+    if (userAccount) {
+      setAccounts([userAccount]);
+      checkWalletData(userAccount);
+    }
+  }, []);
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">
@@ -79,6 +79,7 @@ function Navbar({checkWalletData,hasWalletData, accounts, setAccounts}) {
             </a>
           )}
 
+
           {accounts.length > 0 && (
             <a
               href={hasWalletData ? "#/templatestep" : "#/dashboard"}
@@ -107,10 +108,10 @@ function Navbar({checkWalletData,hasWalletData, accounts, setAccounts}) {
             onClick={toggleMenu}
           />
         </div>
-        <div 
-         className={`navbar__mobile-content ${isMenuOpen ? "animate__fadeInLeft" : ""}`}
-         style={{ display: isMenuOpen ? "block" : "none", left: isMenuOpen ? '-11%' : '-150%' }}
-         >
+        <div
+          className={`navbar__mobile-content ${isMenuOpen ? "animate__fadeInLeft" : ""}`}
+          style={{ display: isMenuOpen ? "block" : "none", left: isMenuOpen ? '-11%' : '-150%' }}
+        >
           <ul className="nav__links">
             <li>
               <a href="/#/home" className="nav__links-btn">
@@ -136,7 +137,7 @@ function Navbar({checkWalletData,hasWalletData, accounts, setAccounts}) {
         </div>
       </div>
 
-      {showPopup && <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])}/>}
+      {showPopup && <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />}
     </nav>
   );
 }

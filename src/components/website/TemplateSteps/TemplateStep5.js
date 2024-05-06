@@ -71,7 +71,6 @@
       // Load the initial value of the input from sessionStorage
       const savedInput = sessionStorage.getItem(`inputValue-${currentStep}`);
       if (savedInput) {
-        setInputValue(savedInput);
         updateNextButtonState(savedInput.trim() !== '');
       }
     }, [currentStep, updateNextButtonState]);
@@ -91,7 +90,7 @@
           <div className="template-input-box">
             <input
               type="text"
-              placeholder="Choose a name..."
+              placeholder={"Choose a name..." || {inputValue}}
               value={inputValue}
               onChange={handleInputChange}
               onBlur={handleInputBlur}

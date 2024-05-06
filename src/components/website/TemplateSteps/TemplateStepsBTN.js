@@ -26,12 +26,22 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
 
           const collectionPath = 'projects'; // Adjust based on your actual requirements
           const docPath = `${walletId}/projectData/${newProject.id}`; // Ensure an even number of segments
-
+          console.log("Collection Path:", collectionPath);
+          console.log("Document Path:", docPath);
+          console.log("Full Path:", `${collectionPath}/${docPath}`);
+          console.log("Wallet ID:", walletId);
+          console.log("Project ID:", newProject.id);
+          
           // Save to Firestore in the correct collection
-          await setDoc(doc(db, collectionPath, docPath), {
-            ...newProject,
-            lastUpdated: currentTimestamp
-          });
+          try {
+            await setDoc(doc(db, `${collectionPath}/${docPath}`), {
+                ...newProject,
+                lastUpdated: currentTimestamp
+            });
+        } catch (error) {
+            console.error("Failed to write document:", error);
+        }
+        
 
           await setDoc(doc(db, 'wallets', walletId),{selectedButtons});
 

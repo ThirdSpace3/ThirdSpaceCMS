@@ -14,8 +14,8 @@ export default function Home() {
   const [hasWalletData, setHasWalletData] = useState(false);
   const [accounts, setAccounts] = useState([]);
   console.log(accounts);
-  localStorage.clear();
-  sessionStorage.clear(); 
+  // localStorage.clear();
+  // sessionStorage.clear(); 
   // Clearing the entire session storage
   const checkWalletData = async () => {
     const userAccount = sessionStorage.getItem("userAccount");
@@ -32,14 +32,18 @@ export default function Home() {
         if (userData.length > 0) { // Check if userData is present
           setHasStepData(true);
         }
-        // navigate("/dashboard"); // Redirect to dashboard if wallet data exists
       } else {
         setHasWalletData(false);
       }
       setAccounts([userAccount]);
     }
   };
-
+  
+  useEffect(() => {
+    console.log("Accounts:", accounts);
+    console.log("Has Wallet Data:", hasWalletData);
+  }, [accounts, hasWalletData]);
+  
   return (
     <>
       <NavBar

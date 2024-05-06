@@ -28,7 +28,7 @@ export default function ProjectsDashboard({
   const [isOpen, setIsOpen] = useState(false);
   // Initialise selectedOption avec la première option
   const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
-
+  const [displaErrorMessage, setDisplayErrorMessage] = useState(false);
   // Add a new state for the filtered projects
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -95,10 +95,11 @@ export default function ProjectsDashboard({
   const handleNewProjectClick = async () => {
     try {
       if (userData.length >= 3) {
-        // Display an error message if there are already 3 or more projects
-        alert("You can't create more than 3 projects.");
+        setDisplayErrorMessage(true); // Set error display here
+        // alert("You can't create more than 3 projects.");
         return;
       }
+      setDisplayErrorMessage(false); // Ensure error message is hidden if condition is not met
   
       sessionStorage.removeItem("selectedTemplateId");
       sessionStorage.removeItem("projectName");
@@ -120,9 +121,9 @@ export default function ProjectsDashboard({
       navigate("/templatestep");
     } catch (error) {
       console.error("Failed to create new project:", error);
-      // Display an error message to the user
     }
   };
+  
   
 
 
@@ -243,7 +244,7 @@ export default function ProjectsDashboard({
               <button
                 className="projects-navbar-btn"
                 onClick={handleNewProjectClick}
-                disabled={projects.length >= 3}
+                disabled={projects.length == 3}
               >
                 <i className="bi bi-plus-circle"></i> New Project
               </button>
@@ -300,12 +301,13 @@ export default function ProjectsDashboard({
               ))}
             </div>
 
-            {projects.length >= 3 && (
-              <p className="dashboard-billing-header-warning">
-                <i class="bi bi-exclamation-triangle"></i>
-                You can't create more than 3 projects.
-              </p>
-            )}
+            {displaErrorMessage && (
+  <p className="dashboard-billing-header-warning">
+    <i className="bi bi-exclamation-triangle"></i>
+    You can't create more than 3 projects.
+  </p>
+)}
+
           </div>
         </div>
       </div>

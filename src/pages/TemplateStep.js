@@ -17,6 +17,7 @@ export default function TemplateStep() {
   const [currentStep, setCurrentStep] = useState(initialStep);
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const walletId = sessionStorage.getItem("userAccount");
 
   const [selectedButtons, setSelectedButtons] = useState({
     1: [],
@@ -67,7 +68,6 @@ export default function TemplateStep() {
   };
 
   // Retrieve or initialize the walletId
-  let walletId = sessionStorage.getItem("userAccount");
   // useEffect(() => {
   //   // Redirect if template process is completed
   //   const isTemplateCompleted =
@@ -83,10 +83,14 @@ export default function TemplateStep() {
     // if (storedButtons) {
     //   setSelectedButtons(JSON.parse(storedButtons));
     // }
+    const userData = sessionStorage.getItem("userData");
     sessionStorage.setItem("currentStep", currentStep.toString());
     // Ensure walletId is not lost upon updating currentStep
     if (walletId) {
       sessionStorage.setItem("userAccount", walletId);
+    }
+    if(userData === "true"){
+      navigate('../dashboard');
     }
   }, [currentStep, walletId]);
 

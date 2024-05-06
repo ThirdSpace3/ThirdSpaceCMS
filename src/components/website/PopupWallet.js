@@ -46,6 +46,8 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
           onUserLogin(account);
           sessionStorage.setItem("isLoggedIn", "true"); // Set login flag in session storage
           sessionStorage.setItem("userAccount", account); // Save user account in session storage
+          checkWalletData(account);
+
         } else {
           console.error("onUserLogin is not a function");
         }
@@ -68,7 +70,9 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
           const publicKey = response.publicKey.toString();
           try {
             await setDoc(doc(db, 'wallets', publicKey), { walletId: publicKey });
-            sessionStorage.setItem("isLoggedIn", true);
+            sessionStorage.setItem("isLoggedIn", "true");
+            sessionStorage.setItem("userAccount", publicKey); // Save user account
+
             console.log(sessionStorage.getItem("isLoggedIn"));
           } catch (error) {
             console.error("Error saving wallet ID to Firestore:", error);
@@ -84,6 +88,8 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
             onUserLogin(publicKey);
             sessionStorage.setItem("isLoggedIn", "true"); // Set login flag
             sessionStorage.setItem("userAccount", publicKey); // Save user account
+            checkWalletData(publicKey);
+
           } else {
             console.error("onUserLogin is not a function");
           }
@@ -98,7 +104,6 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
         "Solana object not found! Make sure Phantom wallet is installed."
       );
     }
-    checkWalletData();
   };
 
   // https://docs.unstoppabledomains.com/identity/overview/login-with-unstoppable/
@@ -124,6 +129,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, [onClose]);
+  
   return (
     <div className="popup" id="popup" style={{ display: "flex" }}>
       <div className="popup-content">
