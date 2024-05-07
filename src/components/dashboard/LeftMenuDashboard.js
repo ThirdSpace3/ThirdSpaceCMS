@@ -124,10 +124,10 @@ export default function LeftMenuDashboard({
         </div>
         <div className="left-menu-bottom">
           <div className="left-menu-links">
-            <a href="/#/home" className="left-menu-item">
+            {/* <a href="/#/home" className="left-menu-item">
               <i class="bi bi-house-door"></i>
               <p>Back Home</p>
-            </a>
+            </a> */}
             <a
               href="https://discord.gg/kehHCkUGRU" target="_blank"
               className="left-menu-item"

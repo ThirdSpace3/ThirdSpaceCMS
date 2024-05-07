@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.f421dd30.css",
-    "main.js": "./static/js/main.83e778a8.js",
+    "main.js": "./static/js/main.35eb55ed.js",
     "static/media/getintouch-bg.png": "./static/media/getintouch-bg.82a67b95b13de4c3a3ed.png",
     "static/media/3sproduct-joinus-2.png": "./static/media/3sproduct-joinus-2.825aa45aa0e6d2926ad0.png",
     "static/media/bootstrap-icons.woff?": "./static/media/bootstrap-icons.39795c0b4513de014cf8.woff",
@@ -9,10 +9,10 @@
     "static/media/header-deco.png": "./static/media/header-deco.70eca015b03e1c9a32ff.png",
     "index.html": "./index.html",
     "main.f421dd30.css.map": "./static/css/main.f421dd30.css.map",
-    "main.83e778a8.js.map": "./static/js/main.83e778a8.js.map"
+    "main.35eb55ed.js.map": "./static/js/main.35eb55ed.js.map"
   },
   "entrypoints": [
     "static/css/main.f421dd30.css",
-    "static/js/main.83e778a8.js"
+    "static/js/main.35eb55ed.js"
   ]
 }

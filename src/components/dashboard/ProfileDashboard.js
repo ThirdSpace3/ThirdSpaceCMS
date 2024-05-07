@@ -77,8 +77,8 @@ export default function ProfileDashboard({ updateUserDetails }) {
       image.src = URL.createObjectURL(file);
       image.onload = () => {
         // Check dimensions before setting
-        if (image.width > 300 || image.height > 300) {
-          setImageError("The image must be smaller than 300x300 px");
+        if (image.width > 2000 || image.height > 2000 && image.sizes < 1000000) {
+          setImageError("The image must be smaller than 2000x2000 px or lighter than 1MB");
         } else {
           setProfilePicture(image.src); // Set the image URL for preview
           setImageError(null);

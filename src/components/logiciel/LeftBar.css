@@ -229,3 +229,33 @@
   opacity: 0.5;
   pointer-events: none; /* Disable clicking on used images */
 }
+
+.panel-toggle-wrapper{
+  z-index: 9999;
+  display: flex;
+  top: 50%;
+  right: -20px;
+  position: absolute;
+}
+.panel-toggle-btn {
+  color: var(--white);
+  padding: 10px 6px;
+  background-color: var(--menu-bg);
+  border-radius: 10px 10px 10px 10px;
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
+.sidebar {
+  position: relative;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: var(--menu-bg);
+  gap: 0;
+  transition: left 1s ease-in-out; /* Applies a smooth transition on the 'left' property */
+}
+
+.sidebar-collapsed {
+  left: -536px; /* Hides the sidebar by moving it to the left */
+}

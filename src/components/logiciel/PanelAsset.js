@@ -4,7 +4,7 @@ import "../Root.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useImageHistory } from "../../hooks/ImageHistoryContext";
 
-export default function PanelAsset() {
+export default function PanelAsset({setVisiblePanel, visiblePanel}) {
   const {
     addImageToHistory, imageHistory, selectImage, selectedImage,
     setSelectedImage, componentImageUsage, clearSelectedImage, activeComponent, enterReplacementMode
@@ -14,6 +14,12 @@ export default function PanelAsset() {
   const [filteredHistory, setFilteredHistory] = useState(imageHistory);
   const dropdownRef = useRef(null);
   const fileInputRef = useRef(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const toggleSidebarCollapse = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+    setVisiblePanel(visiblePanel === null);
+
+  };
 
   const options = ["All Assets", "Photo", "Document", "Video"];
 
@@ -113,7 +119,7 @@ useEffect(() => {
 
 
   return (
-    <div className="navbar-panel">
+    <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}>
       <input
         type="file"
         ref={fileInputRef}
@@ -151,6 +157,9 @@ useEffect(() => {
             {renderPreview(image)}
           </div>
         ))}
+      </div>
+      <div className="panel-toggle-wrapper">
+      <i className={`bi ${isSidebarCollapsed ? "bi-chevron-right" : "bi-chevron-left"} panel-toggle-btn`} onClick={toggleSidebarCollapse}></i>
       </div>
     </div>
   );

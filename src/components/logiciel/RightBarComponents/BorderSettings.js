@@ -86,6 +86,69 @@ export default function BorderSettings({
         >
           {/* Icons for selecting the side */}
           <div className="borders-container">
+
+            <div className="borders-selection-icon-parameters">
+              <div className="parameters-content-line-row">
+                <p className="parameters-content-line-title">Style</p>
+                <div className="parameters-content-line-container">
+                  <i className={`bi bi-x ${selectedBorderStyle === "none" ? "selected-icon" : ""}`}
+                    onClick={() => setSelectedBorderStyle("none")}></i>
+                  <i className={`bi bi-dash-lg ${selectedBorderStyle === "solid" ? "selected-icon" : ""}`}
+                    onClick={() => setSelectedBorderStyle("solid")}></i>
+                  <i className={`bi bi-dash ${selectedBorderStyle === "dashed" ? "selected-icon" : ""}`}
+                    onClick={() => setSelectedBorderStyle("dashed")}></i>
+                </div>
+              </div>
+              <div className="parameters-content-line-row">
+                <p className="parameters-content-line-title">Size</p>
+                <div className="parameters-content-line-container">
+                  <input
+                    type="number"
+                    min="0"
+                    max="20"
+                    step="1"
+                    value={
+                      isAllSidesSelected
+                        ? borderSizes.top
+                        : borderSizes[activeBorderSide]
+                    }
+                    onChange={(e) => {
+                      if (isAllSidesSelected) {
+                        handleAllBorderSizeChange(e.target.value);
+                      } else {
+                        handleBorderSizeChange(activeBorderSide, e.target.value);
+                      }
+                    }}
+                  />
+                  <span className="px-label">px</span>
+                </div>
+              </div>
+              <div className="parameters-content-line-row">
+                <p className="parameters-content-line-title">Color</p>
+
+                <input
+                  className="parameters-color-picker"
+                  type="color"
+                  value={borderColor}
+                  onChange={e => setBorderColor(e.target.value)}
+                />
+              </div>
+              <div className="parameters-content-line-row">
+            <p className="parameters-content-line-title">Radius</p>
+            <div className="parameters-content-line-container">
+              <input
+                type="number"
+                min="0"
+                max="100"
+                step="1"
+                defaultValue="0"
+                onChange={e => setBorderRadius(e.target.value)}
+
+              />
+              <span className="px-label">px</span>
+            </div>
+          </div>
+            </div>
             <div className="borders-selection-icon-box">
               <div
                 className={`borders-selection-icon ${
@@ -151,70 +214,10 @@ export default function BorderSettings({
                 />
               </div>
             </div>
-            <div className="borders-selection-icon-parameters">
-              <div className="parameters-content-line-row">
-                <p className="parameters-content-line-title">Style</p>
-                <div className="parameters-content-line-container">
-                  <i className={`bi bi-x ${selectedBorderStyle === "none" ? "selected-icon" : ""}`}
-                    onClick={() => setSelectedBorderStyle("none")}></i>
-                  <i className={`bi bi-dash-lg ${selectedBorderStyle === "solid" ? "selected-icon" : ""}`}
-                    onClick={() => setSelectedBorderStyle("solid")}></i>
-                  <i className={`bi bi-dash ${selectedBorderStyle === "dashed" ? "selected-icon" : ""}`}
-                    onClick={() => setSelectedBorderStyle("dashed")}></i>
-                </div>
-              </div>
-              <div className="parameters-content-line-row">
-                <p className="parameters-content-line-title">Size</p>
-                <div className="parameters-content-line-container">
-                  <input
-                    type="number"
-                    min="0"
-                    max="20"
-                    step="1"
-                    value={
-                      isAllSidesSelected
-                        ? borderSizes.top
-                        : borderSizes[activeBorderSide]
-                    }
-                    onChange={(e) => {
-                      if (isAllSidesSelected) {
-                        handleAllBorderSizeChange(e.target.value);
-                      } else {
-                        handleBorderSizeChange(activeBorderSide, e.target.value);
-                      }
-                    }}
-                  />
-                  <span className="px-label">px</span>
-                </div>
-              </div>
-              <div className="parameters-content-line-row">
-                <p className="parameters-content-line-title">Color</p>
-
-                <input
-                  className="parameters-color-picker"
-                  type="color"
-                  value={borderColor}
-                  onChange={e => setBorderColor(e.target.value)}
-                />
-              </div>
-            </div>
           </div>
 
-          <div className="parameters-content-line-row">
-            <p className="parameters-content-line-title">Border Radius</p>
-            <div className="parameters-content-line-container">
-              <input
-                type="number"
-                min="0"
-                max="100"
-                step="1"
-                defaultValue="0"
-                onChange={e => setBorderRadius(e.target.value)}
 
-              />
-              <span className="px-label">px</span>
-            </div>
-          </div>
+          
         </div>
         <hr className="parameters-wrapper-separation" />
       </div>

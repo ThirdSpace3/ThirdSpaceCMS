@@ -43,7 +43,7 @@ export default function SiteSettingsDashboard({
     if (file) {
       const img = new Image();
       img.onload = () => {
-        if (img.width > 300 || img.height > 300) {
+        if (img.width > 2000 || img.height > 2000) {
           setIsImageError(true);
         } else {
           setIsImageError(false);
@@ -219,7 +219,7 @@ export default function SiteSettingsDashboard({
                       <p>!</p>
                     </div>
                     <p className="dashboard-msg-error">
-                      The image must be 300x300 px or smaller
+                      The image must be 2000x2000 px or smaller or lighter than 1MB
                     </p>
                   </div>
                 )}

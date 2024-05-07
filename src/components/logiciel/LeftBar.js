@@ -66,7 +66,7 @@ export default function LeftBar({ handleEditorChange, visiblePanel, setVisiblePa
         {visiblePanel === "file" && <PanelFile handleSwitch={handleSwitch} />}
         {visiblePanel === "layers" && <PanelLayers />}
         {visiblePanel === "images" && (
-          <PanelAsset imageHistory={imageHistory} setSelectedImage={setSelectedImage} />
+          <PanelAsset imageHistory={imageHistory} setSelectedImage={setSelectedImage} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
         )}
       </div>
     </>
