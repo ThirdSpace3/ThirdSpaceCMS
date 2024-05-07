@@ -39,13 +39,13 @@ export default function ProjectsDashboard({
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  
-  
+
+
   // Modify the handleSelect function to filter the projects
   const handleSelect = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
-  
+
     // Filter the projects based on the selected option
     let filteredProjects = [...userData];
     if (option.value === "option1") {
@@ -61,10 +61,10 @@ export default function ProjectsDashboard({
     } else if (option.value === "option4") {
       filteredProjects.sort((a, b) => b.name.localeCompare(a.name));
     }
-  
+
     setFilteredProjects(filteredProjects);
   };
-  
+
 
   // Add an event handler for the search input field
   const handleSearch = (event) => {
@@ -91,7 +91,7 @@ export default function ProjectsDashboard({
     setProjects(project);
     console.log(project);
   };
-  
+
   const handleNewProjectClick = async () => {
     try {
       if (userData.length >= 3) {
@@ -100,13 +100,13 @@ export default function ProjectsDashboard({
         return;
       }
       setDisplayErrorMessage(false); // Ensure error message is hidden if condition is not met
-  
+
       sessionStorage.removeItem("selectedTemplateId");
       sessionStorage.removeItem("projectName");
-  
+
       sessionStorage.setItem("currentStep", "4");
       sessionStorage.setItem("isTemplateCompleted", "false");
-  
+
       const newProject = {
         id: projects.length + 1,
         name: "",
@@ -116,15 +116,15 @@ export default function ProjectsDashboard({
         description: "",
         favicon: "",
       };
-  
+
       setProjects(prevProjects => [...prevProjects, newProject]);
       navigate("/templatestep");
     } catch (error) {
       console.error("Failed to create new project:", error);
     }
   };
-  
-  
+
+
 
 
 
@@ -249,7 +249,14 @@ export default function ProjectsDashboard({
                 <i className="bi bi-plus-circle"></i> New Project
               </button>
             </div>
+
           </div>
+          {displaErrorMessage && (
+          <p className="dashboard-billing-header-warning">
+            <i className="bi bi-exclamation-triangle"></i>
+            You can't create more than 3 projects.
+          </p>
+        )}
         </div>
 
         <div className="projects-content">
@@ -283,7 +290,7 @@ export default function ProjectsDashboard({
               <h2>All Projects</h2>
             </div>
             <div className="projects-content-listing">
-            {filteredProjects.map((project, index) => (
+              {filteredProjects.map((project, index) => (
                 <div key={index} className="projects-content-item">
                   <img
                     src={`./images/${project.templateName}screenshot.png` || "default-image.png"}
@@ -301,12 +308,7 @@ export default function ProjectsDashboard({
               ))}
             </div>
 
-            {displaErrorMessage && (
-  <p className="dashboard-billing-header-warning">
-    <i className="bi bi-exclamation-triangle"></i>
-    You can't create more than 3 projects.
-  </p>
-)}
+
 
           </div>
         </div>
