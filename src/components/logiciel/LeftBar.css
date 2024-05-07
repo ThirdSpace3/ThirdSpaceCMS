@@ -234,14 +234,14 @@
   z-index: 9999;
   display: flex;
   top: 50%;
-  right: -20px;
+  right: -25px;
   position: absolute;
 }
 .panel-toggle-btn {
   color: var(--white);
-  padding: 10px 6px;
+  padding: 10px 7px 10px 3px;
   background-color: var(--menu-bg);
-  border-radius: 10px 10px 10px 10px;
+  border-radius: 0px 10px 10px 0px;
   transform: translateY(-2px);
   cursor: pointer;
 }

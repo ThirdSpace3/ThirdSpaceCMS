@@ -15,13 +15,13 @@ export default function PanelAsset({setVisiblePanel, visiblePanel}) {
   const dropdownRef = useRef(null);
   const fileInputRef = useRef(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [draggedImage, setDraggedImage] = useState(null);
+  const options = ["All Assets", "Photo", "Document", "Video"];
+
   const toggleSidebarCollapse = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
     setVisiblePanel(visiblePanel === null);
-
   };
-
-  const options = ["All Assets", "Photo", "Document", "Video"];
 
   useEffect(() => {
     if (selectedOption === "All Assets") {
@@ -38,7 +38,13 @@ export default function PanelAsset({setVisiblePanel, visiblePanel}) {
     files.forEach((file) => {
       const mimeType = file.type;
       let category = "Unknown";
-
+  
+      // Check if the file size is less than 1 MB (1,000,000 bytes)
+      if (file.size >= 1e6) {
+        alert(`File "${file.name}" is too large. Please select an image smaller than 1 MB.`);
+        return;
+      }
+  
       if (mimeType.startsWith("image/")) {
         category = "Photo";
       } else if (mimeType.startsWith("video/")) {
@@ -50,11 +56,12 @@ export default function PanelAsset({setVisiblePanel, visiblePanel}) {
       ) {
         category = "Document";
       }
-
+  
       const newImageUrl = URL.createObjectURL(file);
       addImageToHistory({ url: newImageUrl, category });
     });
   };
+  
 
   const handleUploadClick = () => {
     fileInputRef.current.click();
@@ -63,13 +70,11 @@ export default function PanelAsset({setVisiblePanel, visiblePanel}) {
   const handleImageSelect = (image) => {
     enterReplacementMode(activeComponent); // Engage replacement mode.
     selectImage(image.url); // Set the image as selected for editing.
-  
   };
-  
-useEffect(() => {
-  console.log(`Active Component: ${activeComponent}, Selected Image: ${selectedImage}`);
-}, [activeComponent, selectedImage]);
 
+  useEffect(() => {
+    console.log(`Active Component: ${activeComponent}, Selected Image: ${selectedImage}`);
+  }, [activeComponent, selectedImage]);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -91,6 +96,33 @@ useEffect(() => {
     };
   }, []);
 
+  const handleDragStart = (e, image) => {
+    setDraggedImage(image);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    if (draggedImage) {
+      handleImageSelect(draggedImage);
+    }
+    setDraggedImage(null);
+  };
+  const handleEmptySlotDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleEmptySlotDrop = (e) => {
+    e.preventDefault();
+  
+    const files = Array.from(e.dataTransfer.files);
+    handleFileChange({ target: { files } }); // Pass an object with the 'files' property set to the array of files
+  };
+  
+  
   const renderPreview = (image) => {
     const isUsed = Object.values(componentImageUsage).includes(image.url);
     const previewClass = isUsed ? "image-used" : "image-preview";
@@ -117,9 +149,10 @@ useEffect(() => {
     }
   };
 
-
   return (
-    <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}>
+    <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}         onDragOver={handleEmptySlotDragOver}
+    onDrop={handleEmptySlotDrop}
+>
       <input
         type="file"
         ref={fileInputRef}
@@ -140,7 +173,7 @@ useEffect(() => {
             {selectedOption} <i className={`bi bi-caret-down-fill ${isOpen ? "rotate" : ""}`}></i>
           </button>
           {isOpen && (
-            <ul className = "dropdown-options open">
+            <ul className="dropdown-options open">
               {options.filter(option => option !== selectedOption).map(option => (
                 <li key={option} className="dropdown-option" onClick={() => handleOptionClick(option)}>
                   {option}
@@ -151,15 +184,24 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className="ImagePreview">
+      <div className="ImagePreview" onDragOver={handleDragOver} onDrop={handleDrop}>
+      {/* <div
+        className="empty-slot"
+        onDragOver={handleEmptySlotDragOver}
+        onDrop={handleEmptySlotDrop}
+      >
+        <i className="bi bi-cloud-upload"></i>
+        <p>Drag and drop images here</p>
+      </div> */}
         {filteredHistory.map((image, index) => (
-          <div key={index} className={`image-preview ${image.url === selectedImage ? "selected" : ""}`} onClick={() => handleImageSelect(image)}>
+          <div key={index} className={`image-preview ${image.url === selectedImage ? "selected" : ""}`} onClick={() => handleImageSelect(image)} onDragStart={(e) => handleDragStart(e, image)} draggable>
             {renderPreview(image)}
           </div>
         ))}
+        
       </div>
       <div className="panel-toggle-wrapper">
-      <i className={`bi ${isSidebarCollapsed ? "bi-chevron-right" : "bi-chevron-left"} panel-toggle-btn`} onClick={toggleSidebarCollapse}></i>
+        <i className={`bi ${isSidebarCollapsed ? "bi-chevron-right" : "bi-chevron-left"} panel-toggle-btn`} onClick={toggleSidebarCollapse}></i>
       </div>
     </div>
   );
