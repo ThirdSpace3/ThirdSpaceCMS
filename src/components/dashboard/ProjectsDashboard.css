@@ -12,17 +12,14 @@
   padding-left: 30px;
   padding-top: 15px;
   align-items: center;
+  
 }
 
 .projects-header-sticky {
   position: sticky;
   top: 0;
   background-color: var(--white);
-  justify-content: flex-end;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
+
 }
 .projects-header h1 {
   color: var(--menu-bg);

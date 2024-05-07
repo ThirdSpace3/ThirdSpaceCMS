@@ -3,7 +3,7 @@ import "./SiteSettingsDashboard.css";
 import "./DashboardMain.css";
 import "../Root.css";
 import PopupDelete from "./PopupDelete";
-import { updateDoc, db, doc, getDoc, deleteDoc } from "../../firebaseConfig";
+import { updateDoc, db, doc, getDoc, deleteDoc, getStorage, ref, uploadBytes, getDownloadURL} from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 export default function SiteSettingsDashboard({
   projects,
@@ -45,11 +45,10 @@ export default function SiteSettingsDashboard({
       img.onload = () => {
         if (img.width > 300 || img.height > 300) {
           setIsImageError(true);
-          // setIsEdited(false);
         } else {
           setIsImageError(false);
           setFaviconPreview(URL.createObjectURL(file));
-
+  
           const reader = new FileReader();
           reader.onloadend = () => {
             setFavicon(reader.result);
@@ -62,6 +61,7 @@ export default function SiteSettingsDashboard({
       img.src = URL.createObjectURL(file);
     }
   };
+  
 
   const handleUploadButtonClick = (e) => {
     e.preventDefault(); // This line prevents the default anchor action
@@ -73,15 +73,24 @@ export default function SiteSettingsDashboard({
 
 
   const handleSave = async () => {
-    console.log(projects);
-
     const projectRef = doc(db, "projects", walletID, "projectData", selectedProject.id.toString());
     try {
+      let faviconUrl = faviconPreview; // Use existing favicon URL by default
+  
+      // Check if a new file has been loaded for the favicon
+      if (fileInputRef.current.files[0]) {
+        const storage = getStorage();
+        const storageRef = ref(storage, `ImageProjects/${selectedProject.name}/favicon`);
+        await uploadBytes(storageRef, fileInputRef.current.files[0]);
+        faviconUrl = await getDownloadURL(storageRef);
+      }
+  
       await updateDoc(projectRef, {
         name: templateName,
         description: templateDescription,
-        favicon: favicon,
+        favicon: faviconUrl,
       });
+  
       setIsEdited(false);
       setIsSaved(true);
       setTimeout(() => {
@@ -91,6 +100,7 @@ export default function SiteSettingsDashboard({
       console.error("Error updating document: ", error);
     }
   };
+  
 
   const handleDeleteProject = async (projectId) => {
       try {

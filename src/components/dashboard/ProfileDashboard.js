@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./DashboardMain.css";
 import "../Root.css";
-import {setDoc, doc, db, getDoc} from "../../firebaseConfig"
+import {setDoc, doc, db, getDoc, getStorage, ref, uploadBytes, getDownloadURL} from "../../firebaseConfig"
 export default function ProfileDashboard({ updateUserDetails }) {
   const [userAccount, setUserAccount] = useState(sessionStorage.getItem("userAccount"));
   const [username, setUsername] = useState("");
@@ -102,26 +102,43 @@ const handleSubmit = async (event) => {
   }
 
   try {
+    const storage = getStorage();
+    const profileImageFile = fileInputRef.current.files[0];
+
+    // Check if there's a new file to upload
+    let profileImageUrl = profilePicture; // Maintain existing URL if no new image
+    if (profileImageFile) {
+      const storageRef = ref(storage, `ImageDashboard/profileImages/${userAccount}`);
+      await uploadBytes(storageRef, profileImageFile);
+      profileImageUrl = await getDownloadURL(storageRef);
+    }
+
     // Create a new document in Firestore with the user's wallet ID as the document ID
     const userDocRef = doc(db, "users", userAccount);
 
     // Update the user's profile data in Firestore
-    await setDoc(userDocRef, {
-      username: username,
-      description: description,
-      profilePicture: fileInputRef.current.files[0] || "./images/avatar-placeholder.png", // You may need to modify this to store the file in Firebase Storage first
-    }, { merge: true });
+    await setDoc(
+      userDocRef,
+      {
+        username: username,
+        description: description,
+        profilePicture: profileImageUrl,
+      },
+      { merge: true }
+    );
 
     // Update the component state and session storage
     setIsEdited(false);
     setIsSaved(true);
     sessionStorage.setItem("username", username);
     sessionStorage.setItem("description", description);
-    updateUserDetails(username, description, /* profilePictureUrl */); // You may need to modify this to handle the profile picture URL
+    sessionStorage.setItem("profilePicture", profileImageUrl);
+    updateUserDetails(username, description, profileImageUrl);
   } catch (err) {
     console.error("Error saving profile:", err);
   }
 };
+
 
 
   

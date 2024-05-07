@@ -38,7 +38,7 @@ export default function Dashboard() {
       console.log('Not logged in');
     } else {
       // Fetch projects and other user data here
-      fetchProjects();
+      fetchProjects(walletId);
       console.log('Logged in');
     }
   }, [isLoggedIn]); // Depend on the isLoggedIn state
@@ -80,8 +80,12 @@ export default function Dashboard() {
     setProjects(updatedProjects);
     setSelectedProject(updatedProject);
   };
+
+  
   const fetchProjects = async (walletId) => {
     try {
+
+      if (walletId) {
       const collectionRef = collection(db, 'projects', walletId, 'projectData');
       const querySnapshot = await getDocs(collectionRef);
 
@@ -92,7 +96,12 @@ export default function Dashboard() {
 
       setUserData(projects);
       setIsLoading(false);
-    } catch (error) {
+    }  
+      else {
+        console.error("walletId is undefined");
+      }
+    }
+     catch (error) {
       console.error("Error fetching documents:", error);
       setIsLoading(false);
     }
