@@ -36,7 +36,7 @@ export default function App() {
               <Route path="/products" element={<Products />} />
               <Route path="/ressources" element={<Ressources />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/logiciel" element={<Logiciel />} />
+              <Route path="/builder" element={<Logiciel />} />
               <Route path="/templates" element={<TemplateStep />} />
               <Route path="/templatestep" element={<TemplateStep />} />
               <Route path="/dashboard" element={<Dashboard />} />
@@ -48,7 +48,7 @@ export default function App() {
 
 
               <Route
-                path="/logiciel/:templateName"
+                path="/builder/:templateName"
                 element={<Display />}
               />{" "}
               {/* Add this line for the dynamic route */}

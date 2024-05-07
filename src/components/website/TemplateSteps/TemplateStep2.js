@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './TemplateSteps.css';
 import '../../Root.css';
-
+import NavbarSteps from './TemplateNavbar';
 const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButtons, currentStep }) => {
     const [inputValue, setInputValue] = useState('');
 
@@ -76,6 +76,8 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
 
     return (
         <div id="etape2">
+                  <NavbarSteps />
+
             <div className="step-box">
                 <h2 className="template-title">What are your main objectives?</h2>
                 <p className="template-subtitle">Select all the items that apply...</p>

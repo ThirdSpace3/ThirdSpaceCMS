@@ -82,7 +82,7 @@ export default function ProjectsDashboard({
 
 
   const handleProjectClick = (templateSelected) => {
-    navigate(`/logiciel/${templateSelected}`);
+    navigate(`/builder/${templateSelected}`);
   };
 
   const handleProjectSettings = (project) => {

@@ -138,7 +138,7 @@
   height: 100%;
 }
 
-.popup-button {
+/* .popup-button {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -157,7 +157,7 @@
   cursor: pointer;
   opacity: 1;
   transition: opacity 0.3s ease;
-}
+} */
 
 .image-component:focus-within + .popup-button {
   opacity: 1;

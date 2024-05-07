@@ -1,5 +1,5 @@
   import React, { useState, useEffect } from 'react';
-
+import NavbarSteps from './TemplateNavbar';
   const TemplateStep5 = ({ updateNextButtonState, currentStep, setSelectedButtons }) => {
     const [inputValue, setInputValue] = useState('');
 
@@ -84,6 +84,8 @@
 
     return (
       <div id="etape5">
+              <NavbarSteps />
+
         <div className="step-box">
           <h2 className="template-title">Choose a name for your project</h2>
           <p className="template-subtitle">You can always change your mind later.</p>

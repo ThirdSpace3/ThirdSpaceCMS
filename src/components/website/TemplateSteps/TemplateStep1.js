@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../Root.css';
-
+import NavbarSteps from './TemplateNavbar';
 const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedButtons, setSelectedButtons, currentStep,  isLoggedIn}) => {
   const [inputValue, setInputValue] = useState('');
 
@@ -89,6 +89,8 @@ const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedBu
 
     return (
         <div id="etape1">
+                <NavbarSteps />
+
             <div className="step-box">
                 <h2 className="template-title">What is your site about?</h2>
                 <p className="template-subtitle">This will enable us to give you some initial ideas and examples.</p>
