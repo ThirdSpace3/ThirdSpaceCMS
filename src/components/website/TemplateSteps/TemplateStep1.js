@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import '../../Root.css';
 
-const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedButtons, setSelectedButtons, currentStep }) => {
+const TemplateStep1 = ({ updateNextButtonState, handleFinalInputSave, selectedButtons, setSelectedButtons, currentStep,  isLoggedIn}) => {
   const [inputValue, setInputValue] = useState('');
 
   // Clear session storage when component mounts, except critical data
   useEffect(() => {
+    console.log(isLoggedIn);
+
     // Temporarily store critical data
     const criticalData = sessionStorage.getItem('stepData');
 

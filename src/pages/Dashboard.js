@@ -35,6 +35,10 @@ export default function Dashboard() {
   useEffect(() => {
     if (!isLoggedIn) {
       // Potentially open a login modal or redirect
+      const walletId = sessionStorage.getItem("userAccount");
+      if(walletId ==! null){
+        fetchProjects(walletId);
+      }
       console.log('Not logged in');
     } else {
       // Fetch projects and other user data here

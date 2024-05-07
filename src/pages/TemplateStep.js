@@ -18,7 +18,7 @@ export default function TemplateStep() {
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const walletId = sessionStorage.getItem("userAccount");
-
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const [selectedButtons, setSelectedButtons] = useState({
     1: [],
     2: [],
@@ -29,7 +29,6 @@ export default function TemplateStep() {
   });
   const [projects, setProjects] = useState([]);
 
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
   const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   useEffect(() => {
@@ -83,6 +82,7 @@ export default function TemplateStep() {
     // if (storedButtons) {
     //   setSelectedButtons(JSON.parse(storedButtons));
     // }
+
     const userData = sessionStorage.getItem("userData");
     sessionStorage.setItem("currentStep", currentStep.toString());
     // Ensure walletId is not lost upon updating currentStep
@@ -142,7 +142,9 @@ export default function TemplateStep() {
   useEffect(() => {
     console.log("Selected buttons updated:", selectedButtons);
     sessionStorage.setItem("selectedButtons", JSON.stringify(selectedButtons));
-  }, [selectedButtons]);
+    console.log(isLoggedIn);
+
+  }, [selectedButtons, isLoggedIn]);
 
   return (
     <>
@@ -160,6 +162,7 @@ export default function TemplateStep() {
               currentStep={currentStep}
               inputValue={inputValue}
               setInputValue={setInputValue}
+              isLoggedIn={isLoggedIn}
             />
           )}
 
