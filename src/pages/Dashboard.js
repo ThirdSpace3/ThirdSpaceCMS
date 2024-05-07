@@ -25,7 +25,7 @@ export default function Dashboard() {
   const [activeMenuItem, setActiveMenuItem] = useState("projects");
   const [selectedProject, setSelectedProject] = useState(null);
   const [project, setProjects] = useState([]);
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn") === 'true';  // Ensure this is a boolean
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");  // Ensure this is a boolean
   const projects = JSON.parse(localStorage.getItem("projects") || '[]');
   const [userData, setUserData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

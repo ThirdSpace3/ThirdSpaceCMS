@@ -7,12 +7,9 @@ import { wait } from "@testing-library/user-event/dist/utils";
 
 function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
   const [showMore, setShowMore] = useState(false);
-  const [hasWallet, setHasWallet] = useState(false);
   const [wallets, setWallets] = useState({ hasEthereum: false, hasSolana: false });
-
-  console.log(db);
-
-
+  const [walletAvailable, setWalletAvailable] = useState(true);
+  const [phantomInitiated, setPhantomInitiated] = useState(false);
 
   const toggleShowMore = (e) => {
     e.preventDefault();
@@ -44,7 +41,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
 
         if (typeof onUserLogin === "function") {
           onUserLogin(account);
-          sessionStorage.setItem("isLoggedIn", "true"); // Set login flag in session storage
+          sessionStorage.setItem("isLoggedIn", true); // Set login flag in session storage
           sessionStorage.setItem("userAccount", account); // Save user account in session storage
           checkWalletData(account);
 
@@ -70,7 +67,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
           const publicKey = response.publicKey.toString();
           try {
             await setDoc(doc(db, 'wallets', publicKey), { walletId: publicKey });
-            sessionStorage.setItem("isLoggedIn", "true");
+            sessionStorage.setItem("isLoggedIn", true);
             sessionStorage.setItem("userAccount", publicKey); // Save user account
 
             console.log(sessionStorage.getItem("isLoggedIn"));
@@ -109,14 +106,13 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
   // https://docs.unstoppabledomains.com/identity/overview/login-with-unstoppable/
   useEffect(() => {
     const checkForWallet = () => {
-      if (window.ethereum || "solana" in window) {
-        setHasWallet(true);
-      }
+      // Check if either Metamask or Phantom is available
+      const hasWallet = !!window.ethereum || "solana" in window;
+      setWalletAvailable(hasWallet);
+      console.log(hasWallet);
     };
 
     checkForWallet();
-  }, []);
-  useEffect(() => {
     const handleOutsideClick = (e) => {
       if (e.target.id === "popup") {
         onClose();
@@ -129,7 +125,10 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
       document.removeEventListener("click", handleOutsideClick);
     };
   }, [onClose]);
-  
+  const handleCreatePhantomWallet = () => {
+    setPhantomInitiated(true);
+    window.open("https://phantom.app/download", "_blank");
+  };
   return (
     <div className="popup" id="popup" style={{ display: "flex" }}>
       <div className="popup-content">
@@ -146,15 +145,16 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
           />
           <h2>Connect to Third Space</h2>
         </div>
-        {!hasWallet && (
+        {!walletAvailable && (
           <div className="popup-wallet-warning">
             <p>
-              To use Third Space, you need to connect via a wallet.We haven't
-              found one on your browser.
+              To use Third Space, you need to connect via a wallet. We haven't
+              found one on your browser. 
+              Finish the entiere profile creation in order to be able to login !
             </p>
-            <a href="https://phantom.app/" target="__blank">
+            <a href="https://phantom.app/" target="_blank">
               Create a wallet with Phantom{" "}
-              <i class="bi bi-arrow-right-short"></i>
+              <i className="bi bi-arrow-right-short"></i>
             </a>
           </div>
         )}

@@ -228,12 +228,12 @@ export default function SiteSettingsDashboard({
             <div className="dashboard-settings-title">
               {/* <h2>Delete website</h2>
               */}
-              <button onClick={handleClick}>
+              {/* <button onClick={handleClick}>
                 Delete
-              </button>
+              </button> */}
               {showPopup && <PopupDelete showPopup={showPopup} setShowPopup={setShowPopup} projectName={selectedProject.name} projectId={selectedProject.id} handleDeleteProject={handleDeleteProject}/>}
-              {/* <a className="dashboard-settings-delete" onClick={() => handleDeleteProject(selectedProject.id)}><i class="bi bi-trash3"></i>
-                <p>Delete my website</p></a> */}
+              <a className="dashboard-settings-delete" onClick={handleClick}><i class="bi bi-trash3"></i>
+                <p>Delete my website</p></a>
             </div>
 
           </div>

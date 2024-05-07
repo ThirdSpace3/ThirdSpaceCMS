@@ -4,6 +4,7 @@ import "../Root.css";
 
 export default function PopupDelete({ projectId, handleDeleteProject, projectName, showPopup, setShowPopup }) {
   const [inputValue, setInputValue] = useState('');
+
   useEffect(() => {
     // Add when mounted
     document.addEventListener("mousedown", handleClickOutside);
@@ -25,13 +26,14 @@ export default function PopupDelete({ projectId, handleDeleteProject, projectNam
   };
 
   const handleDelete = (projectId) => {
-    if (inputValue.trim() === projectName) { // assuming projectName is passed as prop
+    if (inputValue.trim() === projectName) {
       handleClosePopup();
       handleDeleteProject(projectId);
-    } else {
-      alert("The project name does not match. Please check and try again.");
     }
   };
+
+  // Check if the input matches the project name
+  const isInputMatching = inputValue.trim() === projectName;
 
   if (!showPopup) return null;
 
@@ -52,14 +54,21 @@ export default function PopupDelete({ projectId, handleDeleteProject, projectNam
           <p className="popup-delete-box-text">
             Please type in the project's name to confirm.
           </p>
-          <input className="popup-delete-box-input" value={inputValue} onChange={e => setInputValue(e.target.value)} />
-          <button className="popup-delete-box-button" onClick={() => handleDelete(projectId)}>
+          <input
+            className="popup-delete-box-input"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+          />
+          <button
+            className={`popup-delete-box-button ${isInputMatching ? 'able' : 'disabled'}`}
+            onClick={() => handleDelete(projectId)}
+            disabled={!isInputMatching}
+          >
             I understand, delete the project
           </button>
-
+          
         </div>
       </div>
     </div>
   );
 }
-
