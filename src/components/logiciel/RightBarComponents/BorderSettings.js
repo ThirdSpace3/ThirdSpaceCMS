@@ -3,30 +3,25 @@ import { useStyle } from "../../../hooks/StyleContext";
 import "../RightBar.css";
 
 export default function BorderSettings({ toggleSection, isOpen, selectedElement }) {
-  const [selectedBorderStyle, setSelectedBorderStyle] = useState("none");
+  const [selectedBorderStyle, setSelectedBorderStyle] = useState("solid"); // Default to solid
   const [borderColor, setBorderColor] = useState("#000000");
   const [borderRadius, setBorderRadius] = useState(0);
-
-  // Initialize border sizes with default values for all sides
   const [borderSizes, setBorderSizes] = useState({ top: 0, right: 0, bottom: 0, left: 0 });
-
   const [activeBorderSide, setActiveBorderSide] = useState("all");
   const isAllSidesSelected = activeBorderSide === "all";
 
-  const { getComponentStyle, updateStyle } = useStyle(); 
+  const { getComponentStyle, updateStyle } = useStyle();
 
-  // Update the state variables with the current styles of the selected element
   const loadCurrentStyles = () => {
     if (!selectedElement) return;
 
     const styles = getComponentStyle(selectedElement);
     if (!styles) return;
 
-    setSelectedBorderStyle(styles.borderStyle || "none");
+    setSelectedBorderStyle( "solid"); // Default to solid
     setBorderColor(styles.borderColor || "#000000");
     setBorderRadius(parseInt(styles.borderRadius, 10) || 0);
 
-    // Set border sizes individually, if specified, or use a single value for all sides
     setBorderSizes({
       top: parseInt(styles.borderTopWidth || styles.borderWidth, 10) || 0,
       right: parseInt(styles.borderRightWidth || styles.borderWidth, 10) || 0,
@@ -35,7 +30,14 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
     });
   };
 
-  // Update the styles whenever the state changes
+  useEffect(() => {
+    loadCurrentStyles();
+  }, [selectedElement]);
+
+  useEffect(() => {
+    updateBorderSettings();
+  }, [selectedBorderStyle, borderSizes, borderColor, borderRadius]);
+
   const updateBorderSettings = () => {
     const borderStyleObject = {};
 
@@ -56,16 +58,19 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
     });
   };
 
-  // Effect to load styles when `selectedElement` changes
   useEffect(() => {
+    if (!selectedElement) return;
+  
+    // Load current styles
     loadCurrentStyles();
-  }, [selectedElement]);
-
-  // Update border settings whenever any state variable changes
-  useEffect(() => {
-    updateBorderSettings();
-  }, [selectedBorderStyle, borderSizes, borderColor, borderRadius]);
-
+  
+    // Defaulting when new element is selected
+    const styles = getComponentStyle(selectedElement);
+    if (!styles || !styles.borderStyle) {
+      updateStyle(selectedElement, { borderStyle: 'solid', borderWidth: '1px' });
+    }
+  }, [selectedElement]); // Dependency on selectedElement to detect changes
+  
   return (
     <div>
       <div className="parameters-wrapper">
