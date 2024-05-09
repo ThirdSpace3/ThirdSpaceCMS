@@ -26,7 +26,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
         const account = accounts[0];
         try {
           await setDoc(doc(db, 'wallets', account), { walletId: account });
-          sessionStorage.setItem("isLoggedIn", true);
+          sessionStorage.setItem("isLoggedIn", "true");
 
           console.log("Wallet ID saved to Firestore:", account);
         } catch (error) {
@@ -41,7 +41,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
 
         if (typeof onUserLogin === "function") {
           onUserLogin(account);
-          sessionStorage.setItem("isLoggedIn", true); // Set login flag in session storage
+          sessionStorage.setItem("isLoggedIn", "true"); // Set login flag in session storage
           sessionStorage.setItem("userAccount", account); // Save user account in session storage
           checkWalletData(account);
 

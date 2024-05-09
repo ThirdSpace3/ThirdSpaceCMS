@@ -18,7 +18,7 @@ export default function LeftMenuDashboard({
   useEffect(() => { 
     const isLoggedIn = sessionStorage.getItem("isLoggedIn");
     const account = sessionStorage.getItem("userAccount");
-    if (isLoggedIn === "true" && account) {
+    if (account) {
       fetchUserProfile(account);
     } else {
       setShowPopup(true);
@@ -70,12 +70,12 @@ export default function LeftMenuDashboard({
   };
   return (
     <>
-      {showPopup && (
+      {/* {showPopup && (
         <PopupWallet
           onClose={() => setShowPopup(false)}
           onUserLogin={handleLogin}
         />
-      )}
+      )} */}
       <div className="left-menu-container">
         <div className="left-menu-top">
           <div className="profile-container">

@@ -49,7 +49,7 @@ const PartnersSection = ({
 
   return (
     <div className="sss-product-partners" style={partnerStyle} onClick={event => handleComponentClick(event, 'partners')}>
-      <h2 id='partners' className="sss-product-partners-title" onClick={event => event.stopPropagation()}>
+      <h2 id='partnersTitle' className="sss-product-partners-title" onClick={event => handleComponentClick(event, 'partnersTitle')}>
         <EditableText
           text={partnersTitleText}
           onChange={handleTextChange}

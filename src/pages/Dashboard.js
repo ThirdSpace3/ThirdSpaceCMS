@@ -33,17 +33,17 @@ export default function Dashboard() {
   console.log(isLoggedIn);
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      // Potentially open a login modal or redirect
-      const walletId = sessionStorage.getItem("userAccount");
-      if(walletId ==! null){
-        fetchProjects(walletId);
-      }
-      console.log('Not logged in');
-    } else {
+    if (walletId) {
+
       // Fetch projects and other user data here
       fetchProjects(walletId);
       console.log('Logged in');
+    } else {
+      // Potentially open a login modal or redirect
+      const walletId = sessionStorage.getItem("userAccount");
+      console.log(walletId);
+      console.log('Not logged in');
+
     }
   }, [isLoggedIn]); // Depend on the isLoggedIn state
 
@@ -85,27 +85,27 @@ export default function Dashboard() {
     setSelectedProject(updatedProject);
   };
 
-  
+
   const fetchProjects = async (walletId) => {
     try {
 
       if (walletId) {
-      const collectionRef = collection(db, 'projects', walletId, 'projectData');
-      const querySnapshot = await getDocs(collectionRef);
+        const collectionRef = collection(db, 'projects', walletId, 'projectData');
+        const querySnapshot = await getDocs(collectionRef);
 
-      const projects = [];
-      querySnapshot.forEach((doc) => {
-        projects.push({ id: doc.id, ...doc.data() });
-      });
+        const projects = [];
+        querySnapshot.forEach((doc) => {
+          projects.push({ id: doc.id, ...doc.data() });
+        });
 
-      setUserData(projects);
-      setIsLoading(false);
-    }  
+        setUserData(projects);
+        setIsLoading(false);
+      }
       else {
         console.error("walletId is undefined");
       }
     }
-     catch (error) {
+    catch (error) {
       console.error("Error fetching documents:", error);
       setIsLoading(false);
     }
@@ -134,11 +134,11 @@ export default function Dashboard() {
   };
 
 
-  
+
   // The rest of your existing code...
 
-  if (!isLoggedIn) {
-    return <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])}/>;
+  if (!walletId) {
+    return <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />;
   }
   return (
     <>

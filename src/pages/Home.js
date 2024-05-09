@@ -36,6 +36,8 @@ export default function Home() {
         setHasWalletData(false);
       }
       setAccounts([userAccount]);
+      sessionStorage.setItem("userAccount", userAccount);
+      console.log(userAccount);
     }
   };
   

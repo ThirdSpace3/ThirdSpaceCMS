@@ -40,11 +40,18 @@ export default function TypographySettings({
     const newStyle = { [styleProperty]: value, styleProperty, type };
     updateStyle(selectedElement, newStyle); // Update using the context method
     onSettingsChange(selectedElement, newStyle); // Also propagate this change via callback
-
+  
+    // Update the typographyStyle state
+    setTypographyStyle(prevState => ({
+      ...prevState,
+      [styleProperty]: value
+    }));
+  
     // Store the new settings in localStorage
     const newTypographyStyle = { ...typographyStyle, [styleProperty]: value };
     localStorage.setItem(`typographySettings-${selectedElement}`, JSON.stringify(newTypographyStyle));
   };
+  
 
 
   const handleTextDecoration = (decorationType) => {
