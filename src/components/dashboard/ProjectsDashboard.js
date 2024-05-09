@@ -107,17 +107,7 @@ export default function ProjectsDashboard({
       sessionStorage.setItem("currentStep", "4");
       sessionStorage.setItem("isTemplateCompleted", "false");
 
-      const newProject = {
-        id: projects.length + 1,
-        name: "",
-        logiciel: "",
-        image: "",
-        createdAt: new Date().toISOString().slice(0, 10),
-        description: "",
-        favicon: "",
-      };
 
-      setProjects(prevProjects => [...prevProjects, newProject]);
       navigate("/templatestep");
     } catch (error) {
       console.error("Failed to create new project:", error);

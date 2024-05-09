@@ -21,24 +21,28 @@ export const StyleProvider = ({ children }) => {
 
   const updateStyle = (componentName, newStyle) => {
     setStyle(prevStyle => {
-        const updatedStyle = {
-            ...prevStyle,
-            [componentName]: { ...prevStyle[componentName], ...newStyle }
+        const updatedComponentStyle = {
+            ...prevStyle[componentName],
+            ...newStyle
         };
-        return updatedStyle;
-    });
-  };
 
-  const updateSettings = (newSettings) => {
-    setSettings(prevSettings => {
-      const updatedSettings = {
-        ...prevSettings,
-        textStyles: { ...prevSettings.textStyles, ...newSettings.textStyles },
-        ...newSettings
-      };
-      return updatedSettings;
+        // Direct DOM manipulation for instant update
+        const element = document.getElementById(componentName);
+        if (element) {
+            Object.keys(newStyle).forEach(key => {
+                element.style[key] = newStyle[key];
+            });
+        }
+
+        return {
+            ...prevStyle,
+            [componentName]: updatedComponentStyle
+        };
     });
-  };
+    console.log(`Styles updated for ${componentName}:`, newStyle);
+};
+
+
 
   const getComponentStyle = (componentName) => {
     return style[componentName] || {};
@@ -55,6 +59,18 @@ export const StyleProvider = ({ children }) => {
   const applyGlobalStyles = (globalStyles) => {
     setStyle(prevStyle => ({ ...prevStyle, ...globalStyles }));
   };
+  // const updateSettings = (newSettings) => {
+  //   setSettings(prevSettings => {
+  //     const updatedSettings = {
+  //       ...prevSettings,
+  //       textStyles: { ...prevSettings.textStyles, ...newSettings.textStyles },
+  //       ...newSettings
+  //     };
+  //     return updatedSettings;
+  //   });
+  // };
+
+
 
   return (
     <StyleContext.Provider value={{
@@ -64,7 +80,6 @@ export const StyleProvider = ({ children }) => {
       resetStyle, 
       applyGlobalStyles, 
       setSelectedComponent, 
-      updateSettings
     }}>
       {children}
     </StyleContext.Provider>

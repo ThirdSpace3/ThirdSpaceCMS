@@ -34,6 +34,7 @@ const TopBar = ({
 
   const handlePropulseClick = () => {
     setShowPopup(!showPopup);
+    onSaveClick();
   };
 
   const toggleCollapse = () => {

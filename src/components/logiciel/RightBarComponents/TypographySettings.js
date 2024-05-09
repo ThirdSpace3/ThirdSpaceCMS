@@ -6,13 +6,15 @@ export default function TypographySettings({
   toggleSection,
   isOpen,
   onSettingsChange,
-
 }) {
-  const [style, setStyle] = useState({});
   const [typographyStyle, setTypographyStyle] = useState({});
-  const [selectedAlign, setSelectedAlign] = useState(null);
-  const [selectedDecoration, setSelectedDecoration] = useState(null);
-  const { updateStyle } = useStyle(); // Get the function to update the style
+  const [selectedDecorations, setSelectedDecorations] = useState({
+    italic: false,
+    underline: false,
+    lineThrough: false,
+  });
+
+  const { updateStyle } = useStyle(); // Function to update the style
 
   const handleTextAlign = (alignType) => {
     const newStyle = {
@@ -21,79 +23,70 @@ export default function TypographySettings({
     };
     setTypographyStyle(newStyle);
     onSettingsChange(selectedElement, { typography: newStyle });
-
-    // Store the new settings in localStorage
     localStorage.setItem(`typographySettings-${selectedElement}`, JSON.stringify(newStyle));
   };
 
   function rgbToHex(rgb) {
-    // This will convert an RGB color format to HEX
-    if (!rgb) return '#000000'; // default to black if undefined
-    let [r, g, b] = rgb.match(/\d+/g).map(Number);
-    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+    if (!rgb || !/^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/.test(rgb)) {
+      return "#000000";  // Default color or handle error as needed
+    }
+    const [r, g, b] = rgb.match(/\d+/g).map(Number);
+    return (
+      "#" +
+      ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()
+    );
   }
-
-
+  
   const handleInputChange = (e, styleProperty, type) => {
-    const value = type === 'number' ? parseInt(e.target.value, 10) : e.target.value;
-    console.log(`Updating style of ${selectedElement} with ${styleProperty}: ${value}`);
-    const newStyle = { [styleProperty]: value, styleProperty, type };
-    updateStyle(selectedElement, newStyle); // Update using the context method
-    onSettingsChange(selectedElement, newStyle); // Also propagate this change via callback
-  
-    // Update the typographyStyle state
-    setTypographyStyle(prevState => ({
-      ...prevState,
-      [styleProperty]: value
-    }));
-  
-    // Store the new settings in localStorage
-    const newTypographyStyle = { ...typographyStyle, [styleProperty]: value };
-    localStorage.setItem(`typographySettings-${selectedElement}`, JSON.stringify(newTypographyStyle));
-  };
-  
-
+    const value = type === "number" ? parseInt(e.target.value, 10) : e.target.value;
+    const newStyle = { ...typographyStyle, [styleProperty]: value };
+    setTypographyStyle(newStyle);
+    updateStyle(selectedElement, newStyle);  // Propagate the change immediately
+};
 
   const handleTextDecoration = (decorationType) => {
-    const newStyle = { ...typographyStyle };
-    switch (decorationType) {
-      case "italic":
-        newStyle.fontStyle = typographyStyle.fontStyle === "italic" ? "normal" : "italic";
-        break;
-      case "underline":
-        newStyle.textDecoration = typographyStyle.textDecoration === "underline" ? "none" : "underline";
-        break;
-      case "line-through":
-        newStyle.textDecoration = typographyStyle.textDecoration === "line-through" ? "none" : "line-through";
-        break;
-    }
+    const newDecorations = { ...selectedDecorations };
+    newDecorations[decorationType] = !newDecorations[decorationType];
+    
+    const newStyle = {
+      ...typographyStyle,
+      fontStyle: newDecorations.italic ? "italic" : "normal",
+      textDecoration: `${newDecorations.underline ? "underline " : ""}${newDecorations.lineThrough ? "line-through" : ""}`.trim(),
+    };
+
+    setSelectedDecorations(newDecorations);
     setTypographyStyle(newStyle);
-    updateStyle(selectedElement, newStyle); // Assuming updateStyle accepts an object
+    updateStyle(selectedElement, newStyle);
     onSettingsChange(selectedElement, { typography: newStyle });
     localStorage.setItem(`typographySettings-${selectedElement}`, JSON.stringify(newStyle));
   };
-
 
   useEffect(() => {
     const element = document.getElementById(selectedElement);
     if (element) {
       const computedStyle = window.getComputedStyle(element);
       const initialSettings = {
-        fontFamily: computedStyle.fontFamily.replace(/['"]/g, ""), // Normalize font family
+        fontFamily: computedStyle.fontFamily.replace(/['"]/g, ""),
         fontWeight: computedStyle.fontWeight,
-        fontSize: computedStyle.fontSize.replace("px", ""), // Strip 'px' to make it a pure number
+        fontSize: computedStyle.fontSize.replace("px", ""),
         color: computedStyle.color,
         textAlign: computedStyle.textAlign,
         fontStyle: computedStyle.fontStyle.includes("italic") ? "italic" : "normal",
-        textDecoration: computedStyle.textDecoration.includes("underline") ? "underline" : (computedStyle.textDecoration.includes("line-through") ? "line-through" : "none"),
+        textDecoration: computedStyle.textDecoration.includes("underline")
+          ? "underline"
+          : computedStyle.textDecoration.includes("line-through")
+          ? "line-through"
+          : "none",
       };
 
       setTypographyStyle(initialSettings);
+      setSelectedDecorations({
+        italic: initialSettings.fontStyle === "italic",
+        underline: initialSettings.textDecoration.includes("underline"),
+        lineThrough: initialSettings.textDecoration.includes("line-through"),
+      });
     }
   }, [selectedElement]);
-
-
-
 
   return (
     <div>
@@ -104,27 +97,30 @@ export default function TypographySettings({
         >
           <p className="parameters-wrapper-title">Typographie</p>
           <i
-            className={`bi bi-caret-down-fill ${isOpen.typographie ? "rotate" : ""
-              }`}
+            className={`bi bi-caret-down-fill ${
+              isOpen.typographie ? "rotate" : ""
+            }`}
           ></i>
         </div>
         <div
-          className={`parameters-wrapper-content ${isOpen.typographie ? "open" : ""
-            }`}
+          className={`parameters-wrapper-content ${
+            isOpen.typographie ? "open" : ""
+          }`}
         >
           <div className="parameters-content-line-row">
             <p className="parameters-content-line-title">Font Family</p>
             <div className="font-family-dropdown">
-              <select value={typographyStyle.fontFamily || 'DefaultFontFamily'} onChange={(e) => handleInputChange(e, "fontFamily", "select")}>
-                <option value="Outfit" default >Outfit</option>
+              <select
+                value={typographyStyle.fontFamily || "DefaultFontFamily"}
+                onChange={(e) => handleInputChange(e, "fontFamily", "select")}
+              >
+                <option value="Outfit">Outfit</option>
                 <option value="Arial">Arial</option>
                 <option value="Verdana">Verdana</option>
                 <option value="Helvetica">Helvetica</option>
                 <option value="Times New Roman">Times New Roman</option>
                 <option value="Courier">Courier</option>
               </select>
-
-
             </div>
           </div>
 
@@ -132,7 +128,7 @@ export default function TypographySettings({
             <p className="parameters-content-line-title">Font Weight</p>
             <div className="font-family-dropdown">
               <select
-                value={typographyStyle.fontWeight || '400'} // Default to 'normal' weight
+                value={typographyStyle.fontWeight || "400"}
                 onChange={(e) => handleInputChange(e, "fontWeight", "select")}
               >
                 <option value="100">Thin</option>
@@ -148,9 +144,8 @@ export default function TypographySettings({
             </div>
           </div>
 
-
           <div className="parameters-content-line-row">
-            <p className="parameters-content-line-title">Font Size</p>
+            <p class="parameters-content-line-title">Font Size</p>
             <div className="parameters-content-line-container">
               <input
                 type="number"
@@ -168,67 +163,60 @@ export default function TypographySettings({
             <p className="parameters-content-line-title">Color</p>
             <input
               type="color"
-              value={typographyStyle.color ? rgbToHex(typographyStyle.color) : '#000000'} // default to black if no color is set
+              value={typographyStyle.color ? rgbToHex(typographyStyle.color) : "#000000"}
               onChange={(e) => handleInputChange(e, "color")}
             />
-
           </div>
 
           <div className="parameters-content-line">
             <p className="parameters-content-line-title">Text Decoration</p>
             <div className="parameters-content-line-container">
-              <a
-                href="#"
-                className={`parameters-content-line-item ${selectedDecoration === "italic" ? "selected" : ""
-                  }`}
-                onClick={(e) => {
-                  e.preventDefault(); // This will prevent the default link behavior
-                  handleTextDecoration("italic");
-                }}
-              >
-                <i className="bi bi-type-italic"></i>
-              </a>
-              <hr className="parameters-content-line-separation" />
-              <a href="#" className={`parameters-content-line-item ${selectedDecoration === "underline" ? "selected" : ""}`}
-                onClick={(e) => {
-                  e.preventDefault(); // Prevent default link behavior
-                  handleTextDecoration("underline");
-                }}>
-                <i className="bi bi-type-underline"></i>
-              </a>
-
-              <hr className="parameters-content-line-separation" />
-              <a
-                href="#"
-                className={`parameters-content-line-item ${selectedDecoration === "line-through" ? "selected" : ""}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleTextDecoration("line-through");
-                }}
-              >
-                <i className="bi bi-type-strikethrough"></i>
-              </a>
-            </div>
-          </div>
-          <div className="parameters-content-line">
-            <p className="parameters-content-line-title">Text Align</p>
-            <div className="parameters-content-line-container">
-              {['left', 'center', 'right', 'justify'].map((align) => (
+              {["italic", "underline", "lineThrough"].map((type) => (
                 <a
-                  key={align}
                   href="#"
-                  className={`parameters-content-line-item ${typographyStyle.textAlign === align ? "selected" : ""}`}
+                  key={type}
+                  className={`parameters-content-line-item ${
+                    selectedDecorations[type] ? "rightbar-selected" : ""
+                  }`}
                   onClick={(e) => {
                     e.preventDefault();
-                    handleTextAlign(align);
+                    handleTextDecoration(type);
                   }}
                 >
-                  <i className={`bi bi-text-${align}`}></i>
+                  <i
+                    className={`bi bi-type-${type === "lineThrough" ? "strikethrough" : type} ${
+                      selectedDecorations[type] ? "rightbar-selected" : ""
+                    }`}
+                  ></i>
                 </a>
               ))}
             </div>
           </div>
 
+          <div className="parameters-content-line">
+            <p className="parameters-content-line-title">Text Align</p>
+            <div className="parameters-content-line-container">
+              {["left", "center", "right", "justify"].map((align) => (
+                <a
+                  key={align}
+                  href="#"
+                  className={`parameters-content-line-item ${
+                    typographyStyle.textAlign === align ? "rightbar-selected" : ""
+                  }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleTextAlign(align);
+                  }}
+                >
+                  <i
+                    className={`bi bi-text-${align} ${
+                      typographyStyle.textAlign === align ? "rightbar-selected" : ""
+                    }`}
+                  ></i>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
         <hr className="parameters-wrapper-separation" />
       </div>

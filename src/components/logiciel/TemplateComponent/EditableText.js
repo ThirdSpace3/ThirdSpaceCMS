@@ -50,6 +50,8 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
         lineHeight: styles.lineHeight, // Copy line height for consistent text positioning
         whiteSpace: 'pre-wrap', // allow text to wrap to next line
         overflowWrap: 'break-word', // allow long words to break to next line
+        textDecorationLine: styles.textDecorationLine,
+        fontStyle: styles.fontStyle,
       };
     }
   };

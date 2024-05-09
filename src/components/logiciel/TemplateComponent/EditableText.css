@@ -2,8 +2,8 @@
 
 .editable-text-input,
 .editable-text-span {
-  border: 2px solid transparent; /* Change the border color to transparent */
-  padding: 2px 4px;
+  /* border: 2px solid transparent; Change the border color to transparent */
+  /* padding: 2px 4px; */
   border-radius: 3px;
   background-color: inherit;
   color: inherit;
@@ -11,15 +11,16 @@
 
 /* editableText.css */
 
-.editable-text-input:hover,
-.editable-text-input:focus-within,
-.editable-text-input.active,
-.editable-text-span:hover,
-.editable-text-span.active,
-.editable-text-input:focus {
+.editable-text-input:focus, .editable-text-input.active, .editable-text-input:hover {
+  background-color: red;  /* light blue background to indicate focus or hover */
+  border: 2px solid #217bf4;   /* blue border to indicate focus or selection */
+  cursor: text;                /* cursor changes to indicate editable */
+}
 
-  border: 2px solid #217bf4;
-  cursor: pointer;
+.editable-text-span:hover, .editable-text-span.active {
+  /* background-color: aliceblue;  light blue background for hover */
+  border: 2px solid #217bf4;   /* blue border for hover */
+  cursor: pointer;             /* cursor changes to indicate it's clickable */
 }
 
 /* ... other styles */

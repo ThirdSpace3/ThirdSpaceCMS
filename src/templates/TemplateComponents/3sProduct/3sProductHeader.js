@@ -18,7 +18,7 @@ const HeaderSection = ({
   const [headerContent, setHeaderContent] = useState({
     heroTitle: localStorage.getItem('header-heroTitle-text') || 'The first user-friendly website builder',
     heroDescription: localStorage.getItem('header-heroDescription-text') || 'Rorem ipsum dolor sit amet consectetur. Gravida convallis orci ultrices non. Ultricies tempor at ut cursus mi. Aliquam sed amet vitae orci ac penatibus consectetur.',
-    joinUs: localStorage.getItem('header-joinUs-text') || 'Join Us',
+    herojoinUs: localStorage.getItem('header-joinUs-text') || 'Join Us',
     image: localStorage.getItem('header-image') || "./images/templates-img/3sproduct/3sproduct-hero.png"
   });
 
@@ -59,7 +59,7 @@ const HeaderSection = ({
   };
 
 
-  
+
   useEffect(() => {
     getImageHeight(headerContent.image).then((height) => setImageHeight(height));
 
@@ -69,7 +69,7 @@ const HeaderSection = ({
     const storedImage = localStorage.getItem(backgroundImageCssVarName);
 
     if (storedImage) {
-      document.documentElement.style.setProperty(backgroundImageCssVarName,storedImage);
+      document.documentElement.style.setProperty(backgroundImageCssVarName, storedImage);
     }
 
     if (storedColor) {
@@ -84,36 +84,33 @@ const HeaderSection = ({
       const parsedContent = JSON.parse(storedContent);
       onContentChange(parsedContent);
     }
-  },[headerContent,setSelectedColor]);
+  }, [headerContent, setSelectedColor]);
 
 
   useEffect(() => {
-  if (selectedImage && activeComponent === 'HeaderSection') {
-    setHeaderContent(prev => ({ ...prev, image: selectedImage }));
-    localStorage.setItem('header-image', selectedImage);
-  }
-}, [selectedImage, activeComponent]);
+    if (selectedImage && activeComponent === 'HeaderSection') {
+      setHeaderContent(prev => ({ ...prev, image: selectedImage }));
+      localStorage.setItem('header-image', selectedImage);
+    }
+  }, [selectedImage, activeComponent]);
   return (
     <div className="sss-product-hero" style={headerStyle} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
       <h1 className="sss-product-hero-title" id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')} style={heroTitleStyles}>
         <EditableText
           text={headerContent.heroTitle}
           onChange={(newText) => handleTextChange(newText, 'heroTitle')}
-
         />
       </h1>
-      <p className="sss-product-hero-text" id='heroDescription' onClick={(event) => handleComponentClick(event, 'heroDescription')}>
+      <p className="sss-product-hero-text" id='heroDescription' onClick={(event) => handleComponentClick(event, 'heroDescription')} style={heroDescriptionStyles}>
         <EditableText
           text={headerContent.heroDescription}
           onChange={(newText) => handleTextChange(newText, 'heroDescription')}
-          style={heroDescriptionStyles}
         />
       </p>
-      <a href="#" id='herojoinUs' className="sss-product-hero-cta" onClick={(event) => handleComponentClick(event, 'herojoinUs')}>
+      <a href="#" id='herojoinUs' className="sss-product-hero-cta" onClick={(event) => handleComponentClick(event, 'herojoinUs')} style={herojoinUsStyles}>
         <EditableText
-          text={headerContent.joinUs}
+          text={headerContent.herojoinUs}
           onChange={(newText) => handleTextChange(newText, 'herojoinUs')}
-          style={herojoinUsStyles}
         />
       </a>
       <ReusableImage

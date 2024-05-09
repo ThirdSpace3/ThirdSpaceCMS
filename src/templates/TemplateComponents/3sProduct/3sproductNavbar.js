@@ -20,8 +20,8 @@ const Navbar = ({
     const [navbarContent, setNavbarContent] = useState({
         home: localStorage.getItem('navbar-home-text') || 'Home',
         about: localStorage.getItem('navbar-about-text') || 'About',
-        features: localStorage.getItem('navbar-navfeatures-text') || 'Features',
-        joinUs: localStorage.getItem('navbar-joinUs-text') || 'Join Us',
+        navfeatures: localStorage.getItem('navbar-navfeatures-text') || 'Features',
+        joinUsNav: localStorage.getItem('navbar-joinUs-text') || 'Join Us',
         image: "./images/templates-img/3sproduct/3sproduct-logo.png"
     });
 
@@ -134,7 +134,7 @@ const Navbar = ({
                     <li >
                         <Link className="sss-product-navbar-links" id='navfeatures' onClick={(event) => handleComponentClick(event, 'navfeatures')} >
                             <EditableText
-                                text={navbarContent.features}
+                                text={navbarContent.navfeatures}
                                 onChange={(newText) => handleTextChange(newText, 'navfeatures')}
                                 style={featuresStyles}
                             />
@@ -145,7 +145,7 @@ const Navbar = ({
                 <a >
                     <Link className="sss-product-navbar-cta" id='joinUsNav' onClick={(event) => handleComponentClick(event, 'joinUsNav')}>
                         <EditableText
-                            text={navbarContent.joinUs}
+                            text={navbarContent.joinUsNav}
                             onChange={(newText) => handleTextChange(newText, 'joinUsNav')}
                             style={joinUsStylesNav}
                         />

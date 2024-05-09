@@ -108,16 +108,18 @@ const AboutSection = ({
   return (
     <div className="sss-product-about" style={{ ...aboutStyles}} id='about' onClick={(event) => handleComponentClick(event, 'about')}>
       <div className="sss-product-about-header">
-        <h2 className="sss-product-about-title" id='title' onClick={(event) => handleComponentClick(event, 'title')} style={{ ...aboutTitleStyle }}>
+        <h2 className="sss-product-about-title" id='title' onClick={(event) => handleComponentClick(event, 'title')} >
           <EditableText
             text={aboutTitleText}
             onChange={(text) => handleTextChange(text, 'title')}
+            style={{ ...aboutTitleStyle }}
           />
         </h2>
-        <p className="sss-product-about-text" id='description' onClick={(event) => handleComponentClick(event, 'description')} style={{ ...aboutDescriptionStyles }}>
+        <p className="sss-product-about-text" id='description' onClick={(event) => handleComponentClick(event, 'description')} >
           <EditableText
             text={aboutDescriptionText}
             onChange={(text) => handleTextChange(text, 'description')}
+            style={{ ...aboutDescriptionStyles }}
           />
         </p>
       </div>

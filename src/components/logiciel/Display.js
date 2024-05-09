@@ -27,6 +27,21 @@ export default function Display() {
   const [showPopup, setShowPopup] = useState(false);
   const [TemplateContent, setTemplateContent] = useState({});
 
+  
+  const checkAndSetLogin = () => {
+    // Assuming you have a function to check if user is logged in
+    const isLoggedIn = true; // This should be your actual login check
+    const walletId = sessionStorage.getItem("userAccount");
+    console.log(walletId);
+    if (walletId) {
+      localStorage.setItem('userAccount', walletId);
+    }
+  };
+
+  React.useEffect(() => {
+    checkAndSetLogin();
+  }, []);
+
 
   const handleSettingsChange = (elementId, newSettings) => {
     console.log("Updating settings for:", elementId, "new settings received:", newSettings);
@@ -44,17 +59,17 @@ export default function Display() {
     });
   };
 
-  const loadSettingsFromLocalStorage = () => {
-    const settingsFromLocalStorage = localStorage.getItem('settings');
-    if (settingsFromLocalStorage) {
-      const parsedSettings = JSON.parse(settingsFromLocalStorage);
-      setSettings(parsedSettings);
-    }
-  };
+  // const loadSettingsFromLocalStorage = () => {
+  //   const settingsFromLocalStorage = localStorage.getItem('settings');
+  //   if (settingsFromLocalStorage) {
+  //     const parsedSettings = JSON.parse(settingsFromLocalStorage);
+  //     setSettings(parsedSettings);
+  //   }
+  // };
 
-  useEffect(() => {
-    loadSettingsFromLocalStorage();
-  }, []);
+  // useEffect(() => {
+  //   loadSettingsFromLocalStorage();
+  // }, []);
 
   
   const selectElement = (elementId) => {
@@ -79,6 +94,7 @@ export default function Display() {
 
   const saveSettings = async () => {
     const walletId = sessionStorage.getItem("userAccount");
+    console.log(walletId);
     if (!walletId) {
       alert("No wallet ID found. Please log in.");
       return;
@@ -97,18 +113,6 @@ export default function Display() {
       console.error("Error saving settings:", error);
       alert("Failed to save settings. See console for more details.");
     }
-  };
-
-  const handleEditorChange = (editor) => {
-    setActiveEditor(editor);
-  };
-
-  const handleDeviceChange = (size) => {
-    setSelectedDeviceSize(size);
-  };
-
-  const addImageToHistory = (imageURL) => {
-    setImageHistory((prevHistory) => [...prevHistory, imageURL]);
   };
 
   const handlePreview = () => {
@@ -139,6 +143,7 @@ export default function Display() {
       document.removeEventListener('click', handleGlobalClick);
     };
   }, [clearFocus]);  // Including clearFocus to handle changes correctly
+
   const logChange = (elementId, newStyles) => {
     const timestamp = new Date().toISOString();
     const logEntry = { timestamp, elementId, newStyles };
@@ -166,6 +171,7 @@ export default function Display() {
 
     setSettings(newSettings);
   }, []);
+  
   useEffect(() => {
     applyStylesFromLogs();
   }, [applyStylesFromLogs]);

@@ -144,9 +144,9 @@
   /* Ajustez cette valeur en fonction de la hauteur maximale attendue du contenu. */
 }
 
-.selected,
+.rightbar-selected,
 .parameters-content-line-item.selected {
-  color: white;
+  color: white !important;
 }
 .parameters-content-line-button {
   background-color: transparent;
@@ -456,7 +456,9 @@
   width: 100%;
   display: none;
 }
-
+.selected-icon{
+  color: white !important;
+}
 /* ====TYPOGRAPHIE CSS==== */
 
 .font-family-dropdown {

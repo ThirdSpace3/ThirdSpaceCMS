@@ -72,86 +72,87 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
     console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
     setSelectedElement(identifier);
   };
-  
+
   // Update image interaction to better manage clicks and mode switching
   const handleImageClick = () => {
     console.log("Join Us image clicked, opening replacement mode.");
     enterReplacementMode('JoinUsSection');
     setSelectedElement('JoinUsImage');
   };
-  
-  
+
+
   useEffect(() => {
     const cssVarName = `--joinUs-background-color`;
     const storedColor = localStorage.getItem(cssVarName);
-  
+
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);
     }
   }, [setSelectedColor]);
-  
-// Storing text changes in localStorage and updating state
-useEffect(() => {
-  localStorage.setItem('joinUsTitleText', joinUsTitleText);
-  localStorage.setItem('joinUsDescriptionText', joinUsDescriptionText);
-  localStorage.setItem('joinUsCta', joinUsCta);
-  // Inside JoinUsSection, call onContentChange with the updated state
-onContentChange({
-  title: joinUsTitleText,
-  description: joinUsDescriptionText,
-  cta: joinUsCta,
-  imageUrl: joinUsImageUrl
-});
 
-}, [joinUsTitleText, joinUsDescriptionText, joinUsCta]);
+  // Storing text changes in localStorage and updating state
+  useEffect(() => {
+    localStorage.setItem('joinUsTitleText', joinUsTitleText);
+    localStorage.setItem('joinUsDescriptionText', joinUsDescriptionText);
+    localStorage.setItem('joinUsCta', joinUsCta);
+    // Inside JoinUsSection, call onContentChange with the updated state
+    onContentChange({
+      title: joinUsTitleText,
+      description: joinUsDescriptionText,
+      cta: joinUsCta,
+      imageUrl: joinUsImageUrl
+    });
 
-// Update image URL in state and possibly local storage if necessary
-useEffect(() => {
-  if (activeComponent === 'JoinUsImage' && selectedImage !== joinUsImageUrl) {
-    setJoinUsImageUrl(selectedImage);
-    // Optionally, save to localStorage if you plan to persist images changes
-    // localStorage.setItem('joinUsImageUrl', selectedImage);
-  }
-}, [selectedImage, activeComponent]);
-useEffect(() => {
-  getImageHeight(joinUsImageUrl).then((height) => setImageHeight(height));
-}, []);
-return (
-  <div className='sss-product-joinus-main' style={JoinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
-    <div className="sss-product-joinus">
-      <ReusableImage
-        src={joinUsImageUrl}
-        alt="Join Us Logo"
-        onClick={handleImageClick}
-        openImagePanel={openImagePanel}
-        selectedImage={activeComponent === 'JoinUsImage' ? selectedImage : null}
-        identifier="JoinUs"
-        imageHeight={imageHeight}
-      />
-      <h2 className="sss-product-joinus-title" id='joinUsTitle' onClick={(event) => handleComponentClick(event, 'joinUsTitle')}>
-        <EditableText
-          text={joinUsTitleText}
-          onChange={(newText) => handleTextChange(newText, 'joinUsTitle')}
-          style={joinUsTitleStyles}
+  }, [joinUsTitleText, joinUsDescriptionText, joinUsCta]);
+
+  // Update image URL in state and possibly local storage if necessary
+  useEffect(() => {
+    if (activeComponent === 'JoinUsImage' && selectedImage !== joinUsImageUrl) {
+      setJoinUsImageUrl(selectedImage);
+      // Optionally, save to localStorage if you plan to persist images changes
+      // localStorage.setItem('joinUsImageUrl', selectedImage);
+    }
+  }, [selectedImage, activeComponent]);
+  useEffect(() => {
+    getImageHeight(joinUsImageUrl).then((height) => setImageHeight(height));
+  }, []);
+  return (
+    <div className='sss-product-joinus-main' style={JoinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
+      <div className="sss-product-joinus">
+        <ReusableImage
+          src={joinUsImageUrl}
+          alt="Join Us Logo"
+          onClick={handleImageClick}
+          openImagePanel={openImagePanel}
+          selectedImage={activeComponent === 'JoinUsImage' ? selectedImage : null}
+          identifier="JoinUs"
+          imageHeight={imageHeight}
         />
-      </h2>
-      <p className='sss-product-joinus-text' id='joinUsDescription' onClick={(event) => handleComponentClick(event, 'joinUsDescription')} style={joinUsescriptionStyles}>
-        <EditableText
-          text={joinUsDescriptionText}
-          onChange={(newText) => handleTextChange(newText, 'joinUsDescription')}
-        />
-      </p>
-      <Link to="/join-us" className="sss-product-navbar-cta" id='joinUsCta' onClick={(event) => handleComponentClick(event, 'joinUsCta')}>
-        <EditableText
-          text={joinUsCta}
-          style={joinUsCtaStyles}
-          onChange={(newText) => handleTextChange(newText, 'joinUsCta')}
-        />
-      </Link>
+        <h2 className="sss-product-joinus-title" id='joinUsTitle' onClick={(event) => handleComponentClick(event, 'joinUsTitle')}>
+          <EditableText
+            text={joinUsTitleText}
+            onChange={(newText) => handleTextChange(newText, 'joinUsTitle')}
+            style={joinUsTitleStyles}
+          />
+        </h2>
+        <p className='sss-product-joinus-text' id='joinUsDescription' onClick={(event) => handleComponentClick(event, 'joinUsDescription')} >
+          <EditableText
+            text={joinUsDescriptionText}
+            onChange={(newText) => handleTextChange(newText, 'joinUsDescription')}
+            style={joinUsescriptionStyles}
+          />
+        </p>
+        <Link to="/join-us" className="sss-product-navbar-cta" id='joinUsCta' onClick={(event) => handleComponentClick(event, 'joinUsCta')}>
+          <EditableText
+            text={joinUsCta}
+            style={joinUsCtaStyles}
+            onChange={(newText) => handleTextChange(newText, 'joinUsCta')}
+          />
+        </Link>
+      </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default JoinUsSection;

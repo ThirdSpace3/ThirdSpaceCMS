@@ -140,6 +140,8 @@ export default function Dashboard() {
   if (!walletId) {
     return <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />;
   }
+
+  
   return (
     <>
       <div className="dashboard-container">
