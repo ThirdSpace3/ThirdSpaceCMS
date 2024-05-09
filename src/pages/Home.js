@@ -7,7 +7,7 @@ import GetInTouch from "../components/website/home/GetInTouch";
 import Footer from "../components/website/Footer";
 import ReportBugBTN from "../components/website/ReportBugBTN";
 import React, { useState, useEffect } from "react";
-import { db, collection, getDocs } from '../firebaseConfig'; // Assuming Firestore is correctly imported and configured
+import { db, collection, getDocs, doc, getDoc } from '../firebaseConfig'; // Assuming Firestore is correctly imported and configured
 
 export default function Home() {
   const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
@@ -20,24 +20,29 @@ export default function Home() {
   const checkWalletData = async () => {
     const userAccount = sessionStorage.getItem("userAccount");
     if (userAccount) {
-      const docRef = collection(db, 'projects', userAccount, 'projectData');
-      const docSnap = await getDocs(docRef);
-      if (!docSnap.empty) { // Check if the snapshot is not empty
-        setHasWalletData(true);
-        let userData = [];
-        docSnap.forEach((doc) => {
-          userData.push(doc.data());
-        });
-        console.log(userData);
-        if (userData.length > 0) { // Check if userData is present
-          setHasStepData(true);
+      try {
+        const docRef = doc(db, 'wallets', userAccount); // Correctly reference the document
+        const docSnap = await getDoc(docRef); // Use getDoc to fetch the document snapshot
+  
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.selectedButtons && Object.keys(data.selectedButtons).length > 0) {
+            setHasWalletData(true);
+            setHasStepData(true); // Assume step data availability correlates with wallet data
+          } else {
+            setHasWalletData(false);
+            setHasStepData(false);
+          }
+        } else {
+          setHasWalletData(false);
+          setHasStepData(false);
         }
-      } else {
+      } catch (error) {
+        console.error("Error fetching wallet data:", error);
         setHasWalletData(false);
+        setHasStepData(false);
       }
-      setAccounts([userAccount]);
-      sessionStorage.setItem("userAccount", userAccount);
-      console.log(userAccount);
+      setAccounts([userAccount]); // Ensure user account is set
     }
   };
   

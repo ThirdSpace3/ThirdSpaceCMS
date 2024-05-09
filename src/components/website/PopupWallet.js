@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./PopupWallet.css";
 import axios from "axios";
 import "../Root.css";
-import {db, doc, setDoc } from '../../firebaseConfig'
+import { db, doc, getDoc, setDoc } from '../../firebaseConfig';
 import { wait } from "@testing-library/user-event/dist/utils";
 
 function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
@@ -17,91 +17,93 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
   };
 
 
-  const handleLoginWithMetamask = async () => {
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        const account = accounts[0];
-        try {
-          await setDoc(doc(db, 'wallets', account), { walletId: account });
-          sessionStorage.setItem("isLoggedIn", "true");
+// Separate authentication functions for Ethereum and Solana
+const authenticateWithEthereum = async (walletId) => {
+  try {
+    const message = "Please sign this message to confirm your identity.";
+    // Ensure the parameters are correctly formatted
+    const signature = await window.ethereum.request({
+      method: "personal_sign",
+      params: [message, walletId], // Ensure that walletId is the currently connected Ethereum address
+    });
+    processLogin(walletId);
+  } catch (error) {
+    console.error("Error during Ethereum authentication:", error);
+  }
+};
 
-          console.log("Wallet ID saved to Firestore:", account);
-        } catch (error) {
-          console.error("Error saving wallet ID to Firestore:", error);
-        }
+const authenticateWithSolana = async (publicKey) => {
+  try {
+    const message = new TextEncoder().encode("Please sign this message to confirm your identity.");
+    const signedMessage = await window.solana.signMessage(message, "utf8");
+    processLogin(publicKey);
+  } catch (error) {
+    console.error("Error during Solana authentication:", error);
+  }
+};
 
-        const message = "Please sign this message to confirm your identity.";
-        const signature = await window.ethereum.request({
-          method: "personal_sign",
-          params: [message, account],
-        });
+const processLogin = (walletId) => {
+  if (typeof onUserLogin === "function") {
+    onUserLogin(walletId);
+    sessionStorage.setItem("isLoggedIn", "true");
+    sessionStorage.setItem("userAccount", walletId);
+    checkWalletData(walletId);
+  } else {
+    console.error("onUserLogin is not a function");
+  }
+  onClose();
+};
 
-        if (typeof onUserLogin === "function") {
-          onUserLogin(account);
-          sessionStorage.setItem("isLoggedIn", "true"); // Set login flag in session storage
-          sessionStorage.setItem("userAccount", account); // Save user account in session storage
-          checkWalletData(account);
+// Usage in handleLoginWithMetamask
+const handleLoginWithMetamask = async () => {
+  if (window.ethereum) {
+    try {
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      const account = accounts[0];
+      const walletRef = doc(db, 'wallets', account);
+      const walletSnap = await getDoc(walletRef);
 
-        } else {
-          console.error("onUserLogin is not a function");
-        }
-        onClose();
-        console.log("onUserLogin prop type:", typeof onUserLogin);
-      } catch (error) {
-        console.error("Error connecting to MetaMask:", error);
+      if (!walletSnap.exists()) {
+        await setDoc(walletRef, { walletId: account });
+        console.log("Wallet ID saved to Firestore:", account);
+      } else {
+        console.log("Wallet data retrieved:", walletSnap.data());
       }
-    } else {
-      console.log("MetaMask is not installed");
+
+      authenticateWithEthereum(account);
+    } catch (error) {
+      console.error("Error with MetaMask login:", error);
     }
-  };
+  } else {
+    console.log("MetaMask is not installed");
+  }
+};
 
-  const handleLoginWithPhantom = async () => {
-    if ("solana" in window) {
-      try {
-        const provider = window.solana;
-        if (provider.isPhantom) {
-          const response = await provider.connect();
-          const publicKey = response.publicKey.toString();
-          try {
-            await setDoc(doc(db, 'wallets', publicKey), { walletId: publicKey });
-            sessionStorage.setItem("isLoggedIn", true);
-            sessionStorage.setItem("userAccount", publicKey); // Save user account
+// Usage in handleLoginWithPhantom
+const handleLoginWithPhantom = async () => {
+  if ("solana" in window && window.solana.isPhantom) {
+    try {
+      const response = await window.solana.connect();
+      const publicKey = response.publicKey.toString();
+      const walletRef = doc(db, 'wallets', publicKey);
+      const walletSnap = await getDoc(walletRef);
 
-            console.log(sessionStorage.getItem("isLoggedIn"));
-          } catch (error) {
-            console.error("Error saving wallet ID to Firestore:", error);
-          }
-
-          // Create a message to sign
-          const message = new TextEncoder().encode(
-            "Please sign this message to confirm your identity."
-          );
-          const signed = await provider.signMessage(message, "utf8");
-          // Use onUserLogin function here as well
-          if (typeof onUserLogin === "function") {
-            onUserLogin(publicKey);
-            sessionStorage.setItem("isLoggedIn", "true"); // Set login flag
-            sessionStorage.setItem("userAccount", publicKey); // Save user account
-            checkWalletData(publicKey);
-
-          } else {
-            console.error("onUserLogin is not a function");
-          }
-          onClose(); // Optionally close the popup after login
-        }
-      } catch (error) {
-        console.error("Error connecting to Phantom:", error);
-        //window.open("https://phantom.app/download", "_blank");
+      if (!walletSnap.exists()) {
+        await setDoc(walletRef, { walletId: publicKey });
+        console.log("Wallet ID saved to Firestore:", publicKey);
+      } else {
+        console.log("Wallet data retrieved:", walletSnap.data());
       }
-    } else {
-      console.log(
-        "Solana object not found! Make sure Phantom wallet is installed."
-      );
+
+      authenticateWithSolana(publicKey);
+    } catch (error) {
+      console.error("Error connecting to Phantom:", error);
     }
-  };
+  } else {
+    console.log("Phantom wallet is not installed");
+  }
+};
+
 
   // https://docs.unstoppabledomains.com/identity/overview/login-with-unstoppable/
   useEffect(() => {

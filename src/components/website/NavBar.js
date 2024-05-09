@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./NavBar.css";
 import { useNavigate } from "react-router-dom";
 import PopupWallet from "./PopupWallet.js";
-import { db, collection, getDocs } from '../../firebaseConfig'; // Assuming Firestore is correctly imported and configured
 import ReactGA from 'react-ga';
 
 function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
@@ -27,6 +26,10 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+
+
+  
   useEffect(() => {
     ReactGA.pageview(window.location.pathname + window.location.search);
 
@@ -68,21 +71,11 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
 
           {accounts.length === 0 ? (
             <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
-              Connect Wallet
+              Get Started
             </a>
           ) : (
             <a
-              href={!hasWalletData ? "#/templatestep" : "#/dashboard"}
-              className="nav__cta nav-bg"
-            >
-              {!hasWalletData ? "Get Started" : "Dashboard"}
-            </a>
-          )}
-
-
-          {accounts.length > 0 && (
-            <a
-              href={hasWalletData ? "#/templatestep" : "#/dashboard"}
+              href={hasWalletData ? "#/dashboard" : "#/templatestep"}
               className="nav__cta nav-bg"
             >
               <span className="material-symbols-outlined">account_circle</span>
