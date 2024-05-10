@@ -9,7 +9,7 @@ import BillingDashboard from "../components/dashboard/BillingDashboard";
 import { useNavigate } from "react-router-dom";
 import PopupWallet from "../components/website/PopupWallet";
 import { db, collection, getDocs } from '../firebaseConfig'; // Assuming Firestore is correctly imported and configured
-
+import ReportBugBTN from "../components/website/ReportBugBTN";
 export default function Dashboard() {
   const navigate = useNavigate();
   const [hasWalletData, setHasWalletData] = useState(false);
@@ -182,6 +182,8 @@ export default function Dashboard() {
             <ProfileDashboard updateUserDetails={updateUserDetails} />
           )}
         </div>
+        <ReportBugBTN />
+
       </div>
     </>
   );

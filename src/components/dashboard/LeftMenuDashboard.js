@@ -128,14 +128,14 @@ export default function LeftMenuDashboard({
               <i class="bi bi-house-door"></i>
               <p>Back Home</p>
             </a> */}
-            <a
+            {/* <a
               href="https://discord.gg/kehHCkUGRU" target="_blank"
               className="left-menu-item"
 
             >
               <i className="bi bi-bug"></i>
               <p>Report Bug</p>
-            </a>
+            </a> */}
             {/* <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("settings", event)}> */}
           </div>
 

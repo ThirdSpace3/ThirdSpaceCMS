@@ -89,7 +89,7 @@ export default function TemplateStep() {
     if (walletId) {
       sessionStorage.setItem("userAccount", walletId);
     }
-    if(userData === "true"){
+    if (userData === "true") {
       navigate('../dashboard');
     }
   }, [currentStep, walletId]);
@@ -139,6 +139,13 @@ export default function TemplateStep() {
       }));
     }
   };
+
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
   useEffect(() => {
     console.log("Selected buttons updated:", selectedButtons);
     sessionStorage.setItem("selectedButtons", JSON.stringify(selectedButtons));
@@ -211,6 +218,7 @@ export default function TemplateStep() {
             <TemplateStepsBTN
               onNext={handleNext}
               onIgnore={handleIgnore}
+              onBack={handleBack} // Add this line
               isNextEnabled={isNextEnabled}
               selectedButtons={selectedButtons}
               walletId={walletId}
@@ -220,12 +228,13 @@ export default function TemplateStep() {
               setProjects={setProjects}
               setProjectName={setProjectName}
             />
+
           )}
         </>
       )}
       {/* Components outside the conditional rendering remain unchanged */}
       <ReportBugBTN />
-      {currentStep !== 4 &&  <TemplateProgressBar currentStep={currentStep} />}
+      {currentStep !== 4 && <TemplateProgressBar currentStep={currentStep} />}
     </>
   );
 }

@@ -1,19 +1,135 @@
-/*==================== BTN REPORT BUG ====================*/
-
 .btn-report-bug {
-    padding: 10px;
-    border-radius: 25px;
-    background: var(--purple);
-    color: white;
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    font-size: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  .btn-report-bug:hover {
-    background: var(--deep-purple);
-  }
+  padding: 10px;
+  border-radius: 25px;
+  background: var(--purple); /* Define this variable in your root CSS */
+  color: white;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.btn-report-bug:hover {
+  background: var(--deep-purple); /* Define this variable in your root CSS */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  font-family: inter;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+  position: relative; /* For absolute positioning of close button */
+}
+
+.close-popup-button {
+  position: relative;
+  top: -10px;
+  left : 540px;
+  cursor: pointer;
+  font-size: 36px;
+  color: #aaa;
+}
+
+.report-title {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  font-family: outfit;
+  
+}
+
+.modal-form textarea, .modal-form input[type="file"] {
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.modal-form .submitButton {
+  padding: 10px 20px;
+  background-color: #9600fa;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-form button:hover {
+  background-color:var(--deep-purple);
+}
+
+.drag-drop-input {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;}
+
+.drag-drop-input:hover,
+.drag-drop-input.active {
+  border-color: #666; /* Change border color on hover and when active */
+}
+
+.modal-form input[type="file"] {
+  width: 100%; /* Ensuring the file input takes the full space */
+  height: 100%; /* Ensuring the file input takes the full space */
+}
+.image-preview-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.image-preview {
+  max-width: 100%; /* Ensure the image does not overflow the modal */
+  height: auto;
+}
+
+.remove-image-button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  border: none;
+  background: var(--deep-purple);
+  font-size: 20px;
+  cursor: pointer;
+  color: lightgray;
+  padding: 5px 7px 5px 7px;
+  border-radius: 10px;
+}

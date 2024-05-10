@@ -53,13 +53,13 @@ export default function LeftBar({ handleEditorChange, visiblePanel, setVisiblePa
               <i className="bi bi-images"></i>
             </a>
           </div>
-          <a
+          {/* <a
             href="https://discord.gg/kehHCkUGRU"
             className="navbar-bugicon"
             target="_blank"
           >
             <i className="bi bi-bug"></i>
-          </a>
+          </a> */}
         </div>
 
         {visiblePanel === "plus" && <PanelPlus />}

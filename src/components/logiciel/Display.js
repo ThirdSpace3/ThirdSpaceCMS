@@ -8,7 +8,7 @@ import './Display.css';
 import { StyleProvider } from '../../hooks/StyleContext';
 import { ImageHistoryProvider, useImageHistory } from '../../hooks/ImageHistoryContext';
 import Canva from './Canva';
-
+import ReportBugBTN from '../website/ReportBugBTN';
 export default function Display() {
   const [settings, setSettings] = useState({});
   const [settingsHistory, setSettingsHistory] = useState([settings]);
@@ -226,6 +226,8 @@ export default function Display() {
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor} />
         )}
+              <ReportBugBTN />
+
       </div>
     </>
   );
