@@ -34,12 +34,12 @@ const Footer = () => {
           <h3 className="footer-column-title">Legal</h3>
           <ul className="footer-column-content">
             <li className="coming-soon">
-              <a href="/#/terms" target="_blank">
+              <a href="/#/terms">
                 Terms
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/privacy-policy" target="_blank">
+              <a href="/#/privacy-policy">
                 Privacy Policy
               </a>
             </li>
