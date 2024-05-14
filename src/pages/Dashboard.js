@@ -18,6 +18,7 @@ export default function Dashboard() {
   const [showPopup, setShowPopup] = useState(false);
 
   // Retrieval from sessionStorage
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const walletId = sessionStorage.getItem("userAccount");
   const selectedTemplate = sessionStorage.getItem("selectedTemplateId");
   const projectName = sessionStorage.getItem("projectName");
@@ -25,7 +26,6 @@ export default function Dashboard() {
   const [activeMenuItem, setActiveMenuItem] = useState("projects");
   const [selectedProject, setSelectedProject] = useState(null);
   const [project, setProjects] = useState([]);
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn");  // Ensure this is a boolean
   const projects = JSON.parse(localStorage.getItem("projects") || '[]');
   const [userData, setUserData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -137,11 +137,12 @@ export default function Dashboard() {
 
   // The rest of your existing code...
 
-  if (!walletId) {
-    return <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />;
-  }
+  // if (!walletId) {
+  //   return <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />;
+  // }
 
-  
+  if (isLoggedIn === "true") {
+
   return (
     <>
       <div className="dashboard-container">
@@ -186,5 +187,8 @@ export default function Dashboard() {
 
       </div>
     </>
-  );
+  );} else {
+    return <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />;
+
+  }
 }

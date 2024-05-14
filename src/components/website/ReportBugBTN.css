@@ -12,6 +12,7 @@
   justify-content: center;
   z-index: 1000;
   border: none;
+  cursor: pointer;
 }
 .btn-report-bug:hover {
   background: var(--deep-purple); /* Define this variable in your root CSS */

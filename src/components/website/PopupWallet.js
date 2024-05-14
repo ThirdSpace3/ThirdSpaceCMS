@@ -54,6 +54,7 @@ const processLogin = (walletId) => {
   onClose();
 };
 
+
 // Usage in handleLoginWithMetamask
 const handleLoginWithMetamask = async () => {
   if (window.ethereum) {

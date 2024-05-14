@@ -164,7 +164,7 @@ const ReportBugBTN = () => {
                                     onDragLeave={handleDrag}
                                     onDrop={handleDrop}
                                     onClick={() => document.getElementById('imageUpload').click()}>
-                                    <i className="bi bi-download"></i>
+                                    <i class="bi bi-download"></i>
                                     Paste or Drag & Drop images here or click to select image.
                                 </div>
                             )}
