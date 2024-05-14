@@ -195,41 +195,28 @@ export default function ProjectsDashboard({
                 ></input>
               </div>
               <div className="project-navbar-dropdown">
-                <div
-                  className="project-navbar-dropdown-header"
-                  onClick={toggleDropdown}
-                >
-                  <i
-                    className={`bi ${selectedOption.icon} project-navbar-dropdown-icon`}
-                  ></i>
-                  <p className="project-navbar-dropdown-option">
-                    {selectedOption.text}
-                  </p>
-                  <i
-                    className={`bi bi-caret-down-fill ${isOpen ? "open" : ""
-                      } project-navbar-dropdown-icon`}
-                  ></i>
+                <div className="project-navbar-dropdown-header" onClick={toggleDropdown}>
+                  <i className={`bi ${selectedOption.icon} project-navbar-dropdown-icon`}></i>
+                  <p className="project-navbar-dropdown-option">{selectedOption.text}</p>
+                  <i className={`bi bi-caret-down-fill ${isOpen ? "open" : ""} project-navbar-dropdown-icon`}></i>
                 </div>
+
                 {isOpen && (
                   <div className="project-navbar-dropdown-list">
-                    {dropdownOptions
-                      .filter((option) => option.value !== selectedOption.value)
-                      .map((option) => (
-                        <div
-                          key={option.value}
-                          className="project-navbar-dropdown-item"
-                          onClick={() => handleSelect(option)}
-                        >
-                          <i
-                            className={`bi ${option.icon} project-navbar-dropdown-icon`}
-                          ></i>
-                          <p className="project-navbar-dropdown-option">
-                            {option.text}
-                          </p>
-                        </div>
-                      ))}
+                    {dropdownOptions.map((option) => (
+                      <div
+                        key={option.value}
+                        className={`project-navbar-dropdown-item ${selectedOption.value === option.value ? 'selected-filter' : ''}`}
+                        onClick={() => handleSelect(option)}
+                      >
+                        <i className={`bi ${option.icon} project-navbar-dropdown-icon`}></i>
+                        <p className="project-navbar-dropdown-option">{option.text}</p>
+                      </div>
+                    ))}
                   </div>
                 )}
+
+
               </div>
               <button
                 className="projects-navbar-btn"
@@ -242,11 +229,11 @@ export default function ProjectsDashboard({
 
           </div>
           {displaErrorMessage && (
-          <p className="dashboard-billing-header-warning">
-            <i className="bi bi-exclamation-triangle"></i>
-            You can't create more than 3 projects.
-          </p>
-        )}
+            <p className="dashboard-billing-header-warning">
+              <i className="bi bi-exclamation-triangle"></i>
+              You can't create more than 3 projects.
+            </p>
+          )}
         </div>
 
         <div className="projects-content">

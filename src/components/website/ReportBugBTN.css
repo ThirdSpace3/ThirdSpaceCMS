@@ -39,7 +39,10 @@
   max-width: 600px;
   position: relative; /* For absolute positioning of close button */
 }
-
+.saved-message{
+  display: flex;
+  justify-content: space-around  
+}
 .close-popup-button {
   position: relative;
   top: -10px;
