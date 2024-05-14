@@ -175,7 +175,9 @@ export default function Display() {
   useEffect(() => {
     applyStylesFromLogs();
   }, [applyStylesFromLogs]);
-
+  const handleSelectedElementChange = useCallback((elementId) => {
+    setSelectedElement(elementId);
+  }, []);
   return (
     <>
 
@@ -209,7 +211,7 @@ export default function Display() {
             handleSettingsChange={handleSettingsChange}
             selectedElement={selectedElement}
             setSelectedElement={setSelectedElement}
-            selectElement={selectElement}
+            selectElement={handleSelectedElementChange} // Pass the callback function here
             isPreviewMode={isPreviewMode}
             openImagePanel={openImagePanel}
             setSelectedImage={setSelectedImage}
@@ -222,6 +224,7 @@ export default function Display() {
           <RightBar
             handleSettingsChange={handleSettingsChange}
             selectedElement={selectedElement}
+            handleSelectedElementChange={handleSelectedElementChange} // Pass the callback function here
             logChange={logChange}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor} />

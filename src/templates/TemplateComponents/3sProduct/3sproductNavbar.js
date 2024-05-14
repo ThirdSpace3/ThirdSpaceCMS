@@ -7,10 +7,6 @@ import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 
 const Navbar = ({
-    toggleMenu,
-    menuToggleImg,
-    settings,
-    handleSettingsChange,
     openImagePanel,
     setSelectedElement,
     setSelectedColor,
@@ -19,7 +15,7 @@ const Navbar = ({
     const { selectedImage, isReplacementMode, enterReplacementMode, selectImage, activeComponent } = useImageHistory();
     const [navbarContent, setNavbarContent] = useState({
         home: localStorage.getItem('navbar-home-text') || 'Home',
-        about: localStorage.getItem('navbar-about-text') || 'About',
+        navabout: localStorage.getItem('navbar-about-text') || 'About',
         navfeatures: localStorage.getItem('navbar-navfeatures-text') || 'Features',
         joinUsNav: localStorage.getItem('navbar-joinUs-text') || 'Join Us',
         image: "./images/templates-img/3sproduct/3sproduct-logo.png"
@@ -125,7 +121,7 @@ const Navbar = ({
                     <li >
                         <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} id='navabout' onClick={(event) => handleComponentClick(event, 'navabout')} >
                             <EditableText
-                                text={navbarContent.about}
+                                text={navbarContent.navabout}
                                 onChange={(newText) => handleTextChange(newText, 'navabout')}
                                 style={navaboutStyles}
                             />

@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './EditableText.css';
+import { useStyle } from '../../../hooks/StyleContext';
 
-const EditableText = ({ text, onChange, style, handleSettingsChange, textType, selectElement, isPreviewMode }) => {
+const EditableText = ({ text, onChange, style, textType, selectElement, isPreviewMode }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text);
   const [error, setError] = useState(false);
   const spanRef = useRef(null);
   const textAreaRef = useRef(null);
+  const { updateStyle } = useStyle();
 
   const computedStyle = useRef({});
 
@@ -22,9 +24,7 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
     } else {
       setIsEditing(false);
       onChange(currentText);
-      if (typeof handleSettingsChange === 'function') {
-        handleSettingsChange(textType, { text: currentText });
-      }
+      updateStyle(selectElement, { text: currentText });
     }
   };
 
@@ -55,8 +55,6 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
       };
     }
   };
-
-
 
   useEffect(() => {
     if (isEditing && textAreaRef.current) {
@@ -89,6 +87,5 @@ const EditableText = ({ text, onChange, style, handleSettingsChange, textType, s
     </>
   );
 };
-
 
 export default EditableText;
