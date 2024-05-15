@@ -234,7 +234,7 @@ export default function TemplateStep() {
       )}
       {/* Components outside the conditional rendering remain unchanged */}
       <ReportBugBTN />
-      {currentStep !== 4 && <TemplateProgressBar currentStep={currentStep} />}
+      {currentStep !== 4 && <TemplateProgressBar currentStep={currentStep} setCurrentStep={setCurrentStep}/>}
     </>
   );
 }
