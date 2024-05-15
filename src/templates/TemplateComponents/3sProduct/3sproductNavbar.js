@@ -5,6 +5,7 @@ import EditableText from '../../../components/logiciel/TemplateComponent/Editabl
 import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
+import EditableButton from '../../../components/logiciel/TemplateComponent/EditableButton';
 
 const Navbar = ({
     openImagePanel,
@@ -58,11 +59,11 @@ const Navbar = ({
         }));
         localStorage.setItem(`navbar-${textType}-text`, newText);
         updateStyle(textType, { text: newText });
-      onContentChange({
-    ...navbarContent,
-    [textType]: newText
-  });
-};
+        onContentChange({
+            ...navbarContent,
+            [textType]: newText
+        });
+    };
 
     const handleDoubleClick = (event) => {
         event.preventDefault();  // Prevent the default link behavior
@@ -139,12 +140,14 @@ const Navbar = ({
 
                 </ul>
                 <a >
-                    <Link className="sss-product-navbar-cta" id='joinUsNav' onClick={(event) => handleComponentClick(event, 'joinUsNav')}>
-                        <EditableText
+                    <Link onClick={(event) => handleComponentClick(event, 'joinUsNav')}>
+                        {/* <EditableButton
+                            className="sss-product-navbar-cta"
+                            id='joinUsNav'
                             text={navbarContent.joinUsNav}
                             onChange={(newText) => handleTextChange(newText, 'joinUsNav')}
                             style={joinUsStylesNav}
-                        />
+                        /> */}
                     </Link>
                 </a>
                 {/* Menu mobile toggler */}

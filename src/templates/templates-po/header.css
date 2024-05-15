@@ -52,7 +52,7 @@
 
 .sss-product-hero-cta {
   border-radius: 36px;
-  background: var(--navbar-cta-background-color);
+  background: var(--header-cta-background-color); /* Ensure correct variable is used */
   display: flex;
   padding: 10px 25px;
   justify-content: center;
@@ -64,6 +64,7 @@
   font-style: normal;
   font-weight: 400;
 }
+
 
 .sss-product-hero-img {
   max-width: 800px;

@@ -1,0 +1,102 @@
+/* EditableButton.css */
+
+.editable-button {
+    display: inline-block;
+    background-color: inherit;
+    color: inherit;
+    border: 2px solid;
+    padding: inherit;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.editable-button:hover {
+    background-color: #e1e1e1;
+}
+
+.editable-button.error {
+    border-color: red; /* Indicate error */
+}
+
+.editable-button-textarea {
+    width: inherit;
+    height: inherit; /* Match the typical height of a button */
+    padding: inherit; /* Padding for the textarea */
+    border-radius: inherit;
+    border: inherit solid #217bf4; /* Blue border to indicate focus or selection */
+    resize: none; /* Disables resizing */
+    scrollbar-width: none;
+    display: flex;
+    align-items: center;
+}
+
+.editable-button-textarea.error {
+    background-color: red;
+}
+
+.hidden-text-measure {
+    font-family: inherit; 
+    font-size: inherit;
+    padding: inherit;
+    border: none;
+}
+
+.link-settings-modal {
+    color: white;
+    font-family: outfit;
+    position: absolute; /* Use fixed to position relative to the viewport */
+    transform: translate(-10%, 10%);
+    background-color: #292929;
+    border: 1px solid black;
+    padding: 10px;
+    width: 300px; /* Adjust width as necessary */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.link-settings-content{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 5px;
+}
+
+.close-button {
+    position: absolute;
+    top: 0;
+    right: 1;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 10px;
+    color: inherit;
+}
+
+.edit-link-button {
+    margin-top: 10px;
+    color: purple;
+    border-color: purple;
+}
+
+.edit-link-button.selected {
+    background-color: purple;
+    color: white;
+}
+
+/* Additional styles for checkbox and inputs within modal */
+input[type="checkbox"] {
+margin-right: 10px;
+margin-left: 30px;
+
+}
+
+.link-settings-target-chooser{
+display: flex;
+justify-content: center;
+
+}

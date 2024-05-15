@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useStyle } from "../../../hooks/StyleContext";
 import "../RightBar.css";
 
@@ -29,35 +29,25 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
       left: parseInt(styles.borderLeftWidth || styles.borderWidth, 10) || 0,
     });
   };
-
-  useEffect(() => {
-    loadCurrentStyles();
-  }, [selectedElement]);
-
-  useEffect(() => {
-    updateBorderSettings();
-  }, [selectedBorderStyle, borderSizes, borderColor, borderRadius]);
-
-  const updateBorderSettings = () => {
-    const borderStyleObject = {};
-
+  const updateBorderSettings = useCallback(() => {
+    const borderStyleObject = {
+      borderStyle: selectedBorderStyle,
+      borderColor: borderColor,
+      borderRadius: `${borderRadius}px`,
+    };
+  
     if (isAllSidesSelected) {
       borderStyleObject.borderWidth = `${borderSizes.top}px`;
     } else {
-      borderStyleObject.borderTopWidth = `${borderSizes.top}px`;
-      borderStyleObject.borderRightWidth = `${borderSizes.right}px`;
-      borderStyleObject.borderBottomWidth = `${borderSizes.bottom}px`;
-      borderStyleObject.borderLeftWidth = `${borderSizes.left}px`;
+      ['top', 'right', 'bottom', 'left'].forEach(side => {
+        const prop = `border${side.charAt(0).toUpperCase() + side.slice(1)}Width`;
+        borderStyleObject[prop] = `${borderSizes[side]}px`;
+      });
     }
-
-    updateStyle(selectedElement, {
-      borderStyle: selectedBorderStyle,
-      ...borderStyleObject,
-      borderColor: borderColor,
-      borderRadius: `${borderRadius}px`,
-    });
-  };
-
+  
+    updateStyle(selectedElement, borderStyleObject);
+  }, [selectedBorderStyle, borderSizes, borderColor, borderRadius, selectedElement, isAllSidesSelected]);
+  
   useEffect(() => {
     if (!selectedElement) return;
   
@@ -70,6 +60,15 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
       updateStyle(selectedElement, { borderStyle: 'solid', borderWidth: '1px' });
     }
   }, [selectedElement]); // Dependency on selectedElement to detect changes
+  
+  useEffect(() => {
+    // Call updateBorderSettings only if there's a selected element
+    if (selectedElement) {
+      updateBorderSettings();
+    }
+  }, [updateBorderSettings, selectedElement]);
+  
+  
   
   return (
     <div>
