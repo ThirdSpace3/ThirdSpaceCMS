@@ -29,6 +29,12 @@
     scrollbar-width: none;
     display: flex;
     align-items: center;
+    background-color: inherit; /* Ensure background matches */
+    color: inherit; /* Ensure text color matches */
+    align-content: center;
+    z-index: 1; /* Add this to make sure the textarea is above the button */
+    text-align: center;
+    justify-content: center;
 }
 
 .editable-button-textarea.error {
@@ -86,7 +92,18 @@
 .edit-link-button.selected {
     background-color: purple;
     color: white;
-}
+    background-color: #7214ff;
+    font-family: Inter;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-radius: 4px;
+    position: absolute;
+    top: 9.8%;
+    z-index: 2; /* Add this to make sure the button is above the textarea */
+  }
+  
+
+
 
 /* Additional styles for checkbox and inputs within modal */
 input[type="checkbox"] {

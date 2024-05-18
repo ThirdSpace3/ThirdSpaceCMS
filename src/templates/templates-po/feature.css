@@ -3,7 +3,7 @@
 :root {
     --navbar-border-color: #151934;
     --navbar-link-color: #8f9bb7;
-    --navbar-cta-background-color: #7214ff;
+    --feature-cta-background-color: #7214ff;
     --features-background-color: #200627;
     --features-background-image: ;
   }
@@ -67,15 +67,10 @@
     font-style: normal;
     font-weight: 400;
   }
-  .sss-product-features-box-top-left-cta {
+  .sss-product-feature-cta {
     border-radius: 46px;
     border: 1.2px solid #282d45;
-    background: linear-gradient(
-      261deg,
-      rgba(21, 25, 52, 0.52) 14.6%,
-      rgba(21, 25, 52, 0.08) 49.66%,
-      rgba(21, 25, 52, 0.49) 87.77%
-    );
+    background: var(--feature-cta-background-color);
     display: flex;
     padding: 15px 25px;
     justify-content: center;

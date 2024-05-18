@@ -3,11 +3,13 @@ import '../../templates-po/feature.css';
 import { Link } from 'react-router-dom';
 
 import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
+import EditableButton from '../../../components/logiciel/TemplateComponent/EditableButton';
+
 import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 import { get } from 'lodash';
-const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor ,onContentChange }) => {
+const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor, onContentChange }) => {
   const { getComponentStyle } = useStyle();
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
 
@@ -27,8 +29,8 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     return storedText
       ? { text: storedText }
       : {
-          text: 'Rorem ipsum dolor sit amet consectetur. Proin dignissim tortor mauris viverra sed volutpat mauris. Amet nisi amet commodo adipiscing ut imperdiet nunc.',
-        };
+        text: 'Rorem ipsum dolor sit amet consectetur. Proin dignissim tortor mauris viverra sed volutpat mauris. Amet nisi amet commodo adipiscing ut imperdiet nunc.',
+      };
   });
 
   const [mobileAppsText, setMobileAppsText] = useState(() => {
@@ -41,8 +43,8 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     return storedText
       ? { text: storedText }
       : {
-          text: 'Prem ipsum dolor sit amet consectetur. Viverra sed dignissim risus aliquet condimentum. Vulputate varius feugiat egestas congue.',
-        };
+        text: 'Prem ipsum dolor sit amet consectetur. Viverra sed dignissim risus aliquet condimentum. Vulputate varius feugiat egestas congue.',
+      };
   });
 
   const [uploadShareText, setUploadShareText] = useState(() => {
@@ -55,13 +57,17 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     return storedText
       ? { text: storedText }
       : {
-          text: 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.',
-        };
+        text: 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.',
+      };
   });
 
   const [joinUsText, setJoinUsText] = useState(() => {
     const storedText = localStorage.getItem('joinUsText');
     return storedText ? storedText : 'Join Us';
+  });
+  const [joinUsLink, setJoinUsLink] = useState({
+    url: '#',
+    openInNewTab: false
   });
 
   // State for image sources
@@ -82,7 +88,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
   const mobileAppsDescriptionStyles = getComponentStyle('mobileAppDescription');
   const uploadShareTitleStyles = getComponentStyle('uploadShareTitle');
   const uploadShareDescriptionStyles = getComponentStyle('uploadShareDescription');
-  const featuresJoinsUsStyles = getComponentStyle('featuresJoinUs');
+  const featuresJoinsUsStyles = getComponentStyle('feature-cta');
 
   const getImageHeight = (src) => {
     return new Promise((resolve) => {
@@ -108,8 +114,16 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
       setFeature3Image(selectedImage);
     }
   }, [selectedImage, activeComponent]);
-  
 
+  const handleJoinUsTextChange = (newText) => {
+    setJoinUsText(newText);
+    localStorage.setItem('joinUsText', newText);
+  };
+
+  const handleJoinUsLinkChange = (newLink) => {
+    setJoinUsLink(newLink);
+    localStorage.setItem('joinUsLink', JSON.stringify(newLink));
+  };
 
   const handleImageClick = (index) => {
     const identifier = `featureImage-${index}`;
@@ -163,7 +177,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
       console.log("Features clicked, setting selected element to 'features'");
       setSelectedElement('features');
     };
-  
+
     featuresElement?.addEventListener('click', eventHandler);
     return () => {
       featuresElement?.removeEventListener('click', eventHandler);
@@ -173,7 +187,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
   useEffect(() => {
     const cssVarName = `--features-background-color`;
     const storedColor = localStorage.getItem(cssVarName);
-  
+
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);
@@ -190,16 +204,16 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     localStorage.setItem('joinUsText', joinUsText);
   }, [featuresTitleText, endToEndText, endToEndDesc.text, mobileAppsText, mobileAppsDesc.text, uploadShareText, uploadShareDesc.text, joinUsText]);
   // Assuming there's a prop from the parent component named `onContentChange`
-useEffect(() => {
-  onContentChange({
-    title: featuresTitleText,
-    endToEnd: { title: endToEndText, description: endToEndDesc.text },
-    mobileApps: { title: mobileAppsText, description: mobileAppsDesc.text },
-    uploadShare: { title: uploadShareText, description: uploadShareDesc.text },
-    joinUsText: joinUsText,
-    images: [feature1Image, feature2Image, feature3Image]
-  });
-}, [featuresTitleText, endToEndText, endToEndDesc.text, mobileAppsText, mobileAppsDesc.text, uploadShareText, uploadShareDesc.text, joinUsText, feature1Image, feature2Image, feature3Image]);
+  useEffect(() => {
+    onContentChange({
+      title: featuresTitleText,
+      endToEnd: { title: endToEndText, description: endToEndDesc.text },
+      mobileApps: { title: mobileAppsText, description: mobileAppsDesc.text },
+      uploadShare: { title: uploadShareText, description: uploadShareDesc.text },
+      joinUsText: joinUsText,
+      images: [feature1Image, feature2Image, feature3Image]
+    });
+  }, [featuresTitleText, endToEndText, endToEndDesc.text, mobileAppsText, mobileAppsDesc.text, uploadShareText, uploadShareDesc.text, joinUsText, feature1Image, feature2Image, feature3Image]);
 
   return (
     <div className="sss-product-features" style={{ ...featureStyles }} id='features' onClick={(event) => handleComponentClick(event, 'features')}>
@@ -218,23 +232,29 @@ useEffect(() => {
               <EditableText
                 text={endToEndText}
                 onChange={(newText) => setEndToEndText(newText)}
-                style={{...endToEndTitleStyles}}
+                style={{ ...endToEndTitleStyles }}
               />
             </h3>
-            <p className='sss-product-features-box-top-left-text'  id='endToEndDescription' onClick={(event) => handleComponentClick(event, 'endToEndDescription')} >
+            <p className='sss-product-features-box-top-left-text' id='endToEndDescription' onClick={(event) => handleComponentClick(event, 'endToEndDescription')} >
               <EditableText
                 text={endToEndDesc.text}
                 onChange={(newText) => setEndToEndDesc({ ...endToEndDesc, text: newText })}
-                style={{...endToEndDescriptionStyles}}
+                style={{ ...endToEndDescriptionStyles }}
               />
             </p>
-            <Link to="/join-us" className="sss-product-navbar-cta" id='featuresJoinUs' onClick={(event) => handleComponentClick(event, 'featuresJoinUs')} >
-              <EditableText
+            <Link to={joinUsLink.url}  onClick={(event) => handleComponentClick(event, 'feature-cta')} target={joinUsLink.openInNewTab ? "_blank" : "_self"}>
+              <EditableButton
+                className="sss-product-feature-cta" 
+                id='feature-cta'
                 text={joinUsText}
-                onChange={(newText) => setEndToEndDesc({ ...endToEndDesc, text: newText })}
-                style={{...featuresJoinsUsStyles}}
+                link={joinUsLink}
+                onChange={handleJoinUsTextChange}
+                onLinkChange={handleJoinUsLinkChange}
+                style={{ ...featuresJoinsUsStyles }}
               />
-            </Link>          </div>
+            </Link>
+
+          </div>
           <div className="sss-product-features-box-top-right">
             <ReusableImage
               src={feature1Image}
@@ -261,18 +281,18 @@ useEffect(() => {
               identifier={"Feature2"}
               imageHeight={imageHeight2}
             />
-            <h3 className="sss-product-features-box-bottom-left-title"  id='mobileAppTitle' onClick={(event) => handleComponentClick(event, 'mobileAppTitle')}>
+            <h3 className="sss-product-features-box-bottom-left-title" id='mobileAppTitle' onClick={(event) => handleComponentClick(event, 'mobileAppTitle')}>
               <EditableText
                 text={mobileAppsText}
                 onChange={(newText) => setMobileAppsText(newText)}
-                style={{...mobileAppsTitleStyles}}
+                style={{ ...mobileAppsTitleStyles }}
               />
             </h3>
             <p className='sss-product-features-box-top-left-text' id='mobileAppDescription' onClick={(event) => handleComponentClick(event, 'mobileAppDescription')} >
               <EditableText
                 text={mobileAppsDesc.text}
                 onChange={(newText) => setMobileAppsDesc({ ...mobileAppsDesc, text: newText })}
-                style={{...mobileAppsDescriptionStyles}}
+                style={{ ...mobileAppsDescriptionStyles }}
               />
             </p>
           </div>
@@ -281,14 +301,14 @@ useEffect(() => {
               <EditableText
                 text={uploadShareText}
                 onChange={(newText) => setUploadShareText(newText)}
-                 style={{...uploadShareTitleStyles}}
+                style={{ ...uploadShareTitleStyles }}
               />
             </h3>
             <p className='sss-product-features-box-top-left-text' id='uploadShareDescription' onClick={(event) => handleComponentClick(event, 'uploadShareDescription')} >
               <EditableText
                 text={uploadShareDesc.text}
                 onChange={(newText) => setUploadShareDesc({ ...uploadShareDesc, text: newText })}
-                style={{...uploadShareDescriptionStyles}}
+                style={{ ...uploadShareDescriptionStyles }}
               />
             </p>
             <ReusableImage

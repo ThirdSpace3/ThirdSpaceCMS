@@ -55,7 +55,7 @@
   }
   .sss-product-joinus-cta {
     border-radius: 36px;
-    background: #7214ff;
+    background: var(--joinUs-cta-background-color);
     display: inline-flex;
     padding: 10px 25px;
     justify-content: center;

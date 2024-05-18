@@ -19,8 +19,10 @@ const Navbar = ({
         navabout: localStorage.getItem('navbar-about-text') || 'About',
         navfeatures: localStorage.getItem('navbar-navfeatures-text') || 'Features',
         joinUsNav: localStorage.getItem('navbar-joinUs-text') || 'Join Us',
+        joinUsNavLink: JSON.parse(localStorage.getItem('navbar-joinUs-link')) || { url: '#', openInNewTab: false },
         image: "./images/templates-img/3sproduct/3sproduct-logo.png"
     });
+
 
     const [imageHeight, setImageHeight] = useState(null);
 
@@ -29,7 +31,7 @@ const Navbar = ({
     const homeStyles = getComponentStyle('home');
     const navaboutStyles = getComponentStyle('navabout');
     const featuresStyles = getComponentStyle('navfeatures');
-    const joinUsStylesNav = getComponentStyle('joinUsNav');
+    const joinUsStylesNav = getComponentStyle('navbar-cta');
 
     const getImageHeight = (src) => {
         return new Promise((resolve) => {
@@ -64,7 +66,15 @@ const Navbar = ({
             [textType]: newText
         });
     };
-
+    const handleLinkChange = (newLink, linkType) => {
+        setNavbarContent(prevContent => ({
+            ...prevContent,
+            [`${linkType}Link`]: newLink
+        }));
+        localStorage.setItem(`navbar-${linkType}-link`, JSON.stringify(newLink));
+        updateStyle(linkType, { link: newLink });
+    };
+    
     const handleDoubleClick = (event) => {
         event.preventDefault();  // Prevent the default link behavior
         event.stopPropagation(); // Stop propagation to avoid unwanted side effects
@@ -139,17 +149,18 @@ const Navbar = ({
                     </li>
 
                 </ul>
-                <a >
-                    <Link onClick={(event) => handleComponentClick(event, 'joinUsNav')}>
-                        {/* <EditableButton
-                            className="sss-product-navbar-cta"
-                            id='joinUsNav'
-                            text={navbarContent.joinUsNav}
-                            onChange={(newText) => handleTextChange(newText, 'joinUsNav')}
-                            style={joinUsStylesNav}
-                        /> */}
-                    </Link>
+                <a href={navbarContent.joinUsNavLink.url} target={navbarContent.joinUsNavLink.openInNewTab ? "_blank" : "_self"} onClick={(event) => handleComponentClick(event, 'navbar-cta')}>
+                    <EditableButton
+                        id='navbar-cta'
+                        text={navbarContent.joinUsNav}
+                        link={navbarContent.joinUsNavLink}
+                        onChange={(newText) => handleTextChange(newText, 'navbar-cta')}
+                        onLinkChange={(newLink) => handleLinkChange(newLink, 'navbar-cta')}
+                        style={joinUsStylesNav}
+                        className="sss-product-navbar-cta"
+                    />
                 </a>
+
                 {/* Menu mobile toggler */}
                 {/* <img
             src={menuToggleImg}

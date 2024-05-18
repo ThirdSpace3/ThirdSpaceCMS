@@ -28,7 +28,7 @@ const HeaderSection = ({
   const headerStyle = getComponentStyle('header');
   const heroTitleStyles = getComponentStyle('heroTitle');
   const heroDescriptionStyles = getComponentStyle('heroDescription');
-  const herojoinUsStyles = getComponentStyle('herojoinUs');
+  const herojoinUsStyles = getComponentStyle('header-cta');
   const [imageHeight, setImageHeight] = useState(null);
 
   const handleTextChange = (newText, textType) => {
@@ -73,12 +73,12 @@ const HeaderSection = ({
           onChange={(newText) => handleTextChange(newText, 'heroDescription')}
         />
       </p>
-      <a href={headerContent.herojoinUsLink.url} target={headerContent.herojoinUsLink.openInNewTab ? "_blank" : "_self"} onClick={(event) => handleComponentClick(event, 'herojoinUs')}>
+      <a className='sss-product-hero-cta' href={headerContent.herojoinUsLink.url} target={headerContent.herojoinUsLink.openInNewTab ? "_blank" : "_self"} onClick={(event) => handleComponentClick(event, 'header-cta')}>
         <EditableButton
-          id='herojoinUs'
+          id='header-cta'
           text={headerContent.herojoinUs}
           link={headerContent.herojoinUsLink}
-          onChange={(newText) => handleTextChange(newText, 'herojoinUs')}
+          onChange={(newText) => handleTextChange(newText, 'header-cta')}
           onLinkChange={handleLinkChange}
           style={herojoinUsStyles}
           className="sss-product-hero-cta"

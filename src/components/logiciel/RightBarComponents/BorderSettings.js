@@ -23,10 +23,10 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
     setBorderRadius(parseInt(styles.borderRadius, 10) || 0);
 
     setBorderSizes({
-      top: parseInt(styles.borderTopWidth || styles.borderWidth, 10) || 0,
-      right: parseInt(styles.borderRightWidth || styles.borderWidth, 10) || 0,
-      bottom: parseInt(styles.borderBottomWidth || styles.borderWidth, 10) || 0,
-      left: parseInt(styles.borderLeftWidth || styles.borderWidth, 10) || 0,
+      top: parseInt(styles.borderTopWidth) ,
+      right: parseInt(styles.borderRightWidth ) ,
+      bottom: parseInt(styles.borderBottomWidth ) ,
+      left: parseInt(styles.borderLeftWidth ),
     });
   };
   const updateBorderSettings = useCallback(() => {

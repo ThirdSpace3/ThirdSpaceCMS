@@ -5,6 +5,7 @@ import ReusableImage from '../../../components/logiciel/TemplateComponent/Reusab
 import { useStyle } from '../../../hooks/StyleContext';
 import { useImageHistory } from '../../../hooks/ImageHistoryContext';
 import { Link } from 'react-router-dom';
+import EditableButton from '../../../components/logiciel/TemplateComponent/EditableButton';
 
 const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setSelectedColor, onContentChange }) => {
   const { getComponentStyle, updateStyle } = useStyle();
@@ -30,7 +31,11 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
   const JoinUsStyles = getComponentStyle('joinUs');
   const joinUsTitleStyles = getComponentStyle('joinUsTitle');
   const joinUsescriptionStyles = getComponentStyle('joinUsDescription');
-  const joinUsCtaStyles = getComponentStyle('joinUsCta');
+  const joinUsCtaStyles = getComponentStyle('joinUs-cta');
+  const [joinUsCtaLink, setJoinUsCtaLink] = useState({
+    url: '#',
+    openInNewTab: false
+  });
 
   const [imageHeight, setImageHeight] = useState(null);
   const getImageHeight = (src) => {
@@ -41,6 +46,15 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
     });
   };
 
+  const handleCtaTextChange = (newText) => {
+    setJoinUsCta(newText);
+    localStorage.setItem('joinUsCta', newText);
+  };
+
+  const handleCtaLinkChange = (newLink) => {
+    setJoinUsCtaLink(newLink);
+    localStorage.setItem('joinUsCtaLink', JSON.stringify(newLink));
+  };
 
   const handleTextChange = (newText, textType) => {
     console.log(`Updating text for ${textType}: ${newText}`);
@@ -143,12 +157,17 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
             style={joinUsescriptionStyles}
           />
         </p>
-        <Link to="/join-us" className="sss-product-navbar-cta" id='joinUsCta' onClick={(event) => handleComponentClick(event, 'joinUsCta')}>
-          <EditableText
+        <Link onClick={(event) => handleComponentClick(event, 'joinUs-cta')}>
+          <EditableButton
+            id='joinUs-cta'
+            className="sss-product-joinus-cta"
             text={joinUsCta}
+            link={joinUsCtaLink}
+            onChange={handleCtaTextChange}
+            onLinkChange={handleCtaLinkChange}
             style={joinUsCtaStyles}
-            onChange={(newText) => handleTextChange(newText, 'joinUsCta')}
           />
+
         </Link>
       </div>
     </div>
