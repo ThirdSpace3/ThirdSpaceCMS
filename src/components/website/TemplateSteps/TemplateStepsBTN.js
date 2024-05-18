@@ -59,11 +59,11 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
 
   return (
     <div className="btn-box">      
-    {currentStep > 1 && currentStep !== 5 && (
+    {/* {currentStep > 1 && currentStep !== 5 && (
         <button className="purple-light-btn" onClick={onBack}>
           Back
         </button>
-      )}
+      )} */}
       {currentStep !== 3 && currentStep !== 4 && currentStep !== 5 && (
         <button className="ignore-btn" onClick={onIgnore}>
           Skip

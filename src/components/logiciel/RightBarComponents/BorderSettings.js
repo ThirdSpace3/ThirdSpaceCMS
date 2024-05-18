@@ -36,6 +36,7 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
       left: parseInt(styles.borderLeftWidth, 10) || 0
     });
   };
+  
   const updateBorderSettings = useCallback(() => {
     const borderStyleObject = {
       borderStyle: selectedBorderStyle,

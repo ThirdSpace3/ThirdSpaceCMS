@@ -31,6 +31,16 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
 
   
   useEffect(() => {
+
+
+    const shouldOpenWalletPopup = localStorage.getItem('openWalletPopup');
+    if (shouldOpenWalletPopup === 'true') {
+      setShowPopup(true); // Assuming setShowPopup controls the visibility of your wallet popup
+      localStorage.removeItem('openWalletPopup'); // Remove the flag to avoid repeated popups
+    }
+
+
+
     ReactGA.pageview(window.location.pathname + window.location.search);
 
     const userAccount = sessionStorage.getItem("userAccount");
@@ -130,7 +140,7 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
         </div>
       </div>
 
-      {showPopup && <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />}
+      {showPopup && <PopupWallet setShowPopup={setShowPopup} onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />}
     </nav>
   );
 }

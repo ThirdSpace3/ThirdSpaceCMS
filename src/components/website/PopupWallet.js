@@ -5,11 +5,12 @@ import "../Root.css";
 import { db, doc, getDoc, setDoc } from '../../firebaseConfig';
 import { wait } from "@testing-library/user-event/dist/utils";
 
-function PopupWallet({ onClose, onUserLogin, checkWalletData }) {
+function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
   const [showMore, setShowMore] = useState(false);
   const [wallets, setWallets] = useState({ hasEthereum: false, hasSolana: false });
   const [walletAvailable, setWalletAvailable] = useState(true);
   const [phantomInitiated, setPhantomInitiated] = useState(false);
+  const [customErrorMessage, setCustomErrorMessage] = useState("");
 
   const toggleShowMore = (e) => {
     e.preventDefault();
@@ -57,6 +58,7 @@ const processLogin = (walletId) => {
 
 // Usage in handleLoginWithMetamask
 const handleLoginWithMetamask = async () => {
+  // Recheck for Ethereum wallet each time the function is invoked
   if (window.ethereum) {
     try {
       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -80,8 +82,10 @@ const handleLoginWithMetamask = async () => {
   }
 };
 
+
 // Usage in handleLoginWithPhantom
 const handleLoginWithPhantom = async () => {
+  // Check for Phantom wallet each time the function is invoked
   if ("solana" in window && window.solana.isPhantom) {
     try {
       const response = await window.solana.connect();
@@ -99,20 +103,34 @@ const handleLoginWithPhantom = async () => {
       authenticateWithSolana(publicKey);
     } catch (error) {
       console.error("Error connecting to Phantom:", error);
+      setCustomErrorMessage('Something went wrong, check if your wallet is correctly installed. If its the case try refreshing the page');
     }
   } else {
-    console.log("Phantom wallet is not installed");
+    if (phantomInitiated) {
+      // If the user has previously tried to create a wallet and it's still not detected
+      console.log("Phantom wallet still not installed. Refreshing the page.");
+      localStorage.setItem('openWalletPopup', 'true'); // Set flag in localStorage
+      window.location.reload();
+    } else {
+      console.log("Phantom wallet is not installed. Please install and retry.");
+      setPhantomInitiated(true);
+    }
   }
 };
 
 
+
+
   // https://docs.unstoppabledomains.com/identity/overview/login-with-unstoppable/
+
   useEffect(() => {
     const checkForWallet = () => {
-      // Check if either Metamask or Phantom is available
-      const hasWallet = !!window.ethereum || "solana" in window;
+      const hasWallet = !!window.ethereum || ("solana" in window && window.solana.isPhantom);
       setWalletAvailable(hasWallet);
       console.log(hasWallet);
+      if (!hasWallet) {
+        setCustomErrorMessage('To use Third Space, you need to connect via a wallet. We haven’t found one on your browser. Finish the entire profile creation in order to be able to log in!');
+      }
     };
 
     checkForWallet();
@@ -123,15 +141,13 @@ const handleLoginWithPhantom = async () => {
     };
 
     document.addEventListener("click", handleOutsideClick);
-
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [onClose]);
-  const handleCreatePhantomWallet = () => {
-    setPhantomInitiated(true);
-    window.open("https://phantom.app/download", "_blank");
-  };
+  }, [onClose]); // Dependencies array includes only `onClose` as it's a prop that could potentially update
+
+
+
   return (
     <div className="popup" id="popup" style={{ display: "flex" }}>
       <div className="popup-content">
@@ -148,12 +164,10 @@ const handleLoginWithPhantom = async () => {
           />
           <h2>Connect to Third Space</h2>
         </div>
-        {!walletAvailable && (
+        {customErrorMessage && (
           <div className="popup-wallet-warning">
             <p>
-              To use Third Space, you need to connect via a wallet. We haven't
-              found one on your browser. 
-              Finish the entiere profile creation in order to be able to login !
+             {customErrorMessage}
             </p>
             <a href="https://phantom.app/" target="_blank">
               Create a wallet with Phantom{" "}

@@ -92,3 +92,9 @@
   border-color: var(--navbar-border-color);
   /* use the same color variable as the navbar */
 }
+
+.join-us-btn{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

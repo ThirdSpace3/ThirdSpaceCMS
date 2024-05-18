@@ -124,7 +124,9 @@
 .image-preview {
   max-width: 100%; /* Ensure the image does not overflow the modal */
   height: auto;
+  max-height: 250px;
 }
+
 
 .remove-image-button {
   position: absolute;

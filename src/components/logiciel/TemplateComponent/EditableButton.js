@@ -11,34 +11,7 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
   const buttonRef = useRef(null);
   const textAreaRef = useRef(null);
   const textWidthRef = useRef(null);
-  const modalRef = useRef(null); // Ref for the modal to handle outside clicks
-
-  useEffect(() => {
-    if (buttonRef.current && textAreaRef.current) {
-      textAreaRef.current.style.width = `${buttonRef.current.offsetWidth}px`;
-    }
-  }, [text]);
-
-  useEffect(() => {
-    if (textWidthRef.current && textAreaRef.current) {
-      textAreaRef.current.style.width = `${textWidthRef.current.offsetWidth + 20}px`;
-    }
-  }, [currentText]);
-
-  // Listen for clicks outside the modal
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setIsLinkEditing(false); // Close modal if clicking outside
-      }
-    }
-    // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [modalRef]);
+  const modalRef = useRef(null);
 
   const handleInputChange = (event) => {
     const inputText = event.target.value;
@@ -46,7 +19,11 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
     setCurrentText(inputText);
   };
 
-  const handleBlur = () => {
+  const handleBlur = (event) => {
+    const editLinkButton = document.querySelector('.edit-link-button');
+    if (event.target === editLinkButton || event.relatedTarget === editLinkButton) {
+      return;
+    }
     if (!currentText.trim()) {
       setCurrentText(text);
       onChange(text);
@@ -61,7 +38,6 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
     setIsEditing(true);
   };
 
-
   const toggleLinkEdit = () => {
     setIsLinkEditing(!isLinkEditing);
     if (isLinkEditing === true) {
@@ -70,14 +46,36 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
     }
   };
 
-
   const handleLinkChange = () => {
     onLinkChange({ url: currentLink, openInNewTab });
     setIsEditing(false);
     setIsLinkEditing(false);
-
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      const editLinkButton = document.querySelector('.edit-link-button');
+      if (modalRef.current && !modalRef.current.contains(event.target) && event.target !== editLinkButton) {
+        setIsLinkEditing(false);
+        setIsEditing(false);
+        event.preventDefault();  // <-- This might be causing issues
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [modalRef]);
+
+  useEffect(() => {
+    if (isEditing) {
+      textAreaRef.current.focus();
+    }
+  }, [isEditing]);
+
+  useEffect(() => {
+    console.log("Component rendered with openInNewTab:", openInNewTab);
+  }, [openInNewTab]);
   return (
     <>
       {isEditing ? (
@@ -98,30 +96,26 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
             <div ref={modalRef} className="link-settings-modal">
               <button className="close-button" onClick={toggleLinkEdit}>X</button>
               <h4>Link Settings</h4>
-
-              <hr></hr>
+              <hr />
               <div className='link-settings-content'>
-
                 <p>URL</p>
                 <input type="text" value={currentLink} onChange={e => setCurrentLink(e.target.value)} />
               </div>
-              <label className='link-settings-target-chooser'>
+              <label className='link-settings-target-chooser' onClick={(e) => setOpenInNewTab(!openInNewTab)}>
                 <input
                   type="checkbox"
                   checked={openInNewTab}
                   onChange={(e) => {
-                    setOpenInNewTab(!openInNewTab);
-                    onLinkChange({ url: currentLink, openInNewTab: !openInNewTab });
+                    console.log("Checkbox clicked, current state:", openInNewTab);
+                    setOpenInNewTab(e.target.checked);
                   }}
                 />
                 Open in new tab
               </label>
 
+
             </div>
           )}
-          <span ref={textWidthRef} className="hidden-text-measure" aria-hidden="true" style={{ ...style, visibility: 'hidden', position: 'absolute', whiteSpace: 'pre' }}>
-            {currentText || ' '}
-          </span>
         </>
       ) : (
         <button

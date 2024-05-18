@@ -1,13 +1,13 @@
 /* EditableButton.css */
-
 .editable-button {
     display: inline-block;
     background-color: inherit;
     color: inherit;
-    border: 2px solid;
-    padding: inherit;
+    padding: 10px; /* Define specific padding */
     cursor: pointer;
-    border-radius: 5px;
+    width: 150px; /* Define fixed width */
+    height: 40px; /* Define fixed height */
+    text-align: center;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
@@ -15,18 +15,16 @@
     background-color: #e1e1e1;
 }
 
-.editable-button.error {
-    border-color: red; /* Indicate error */
-}
+
+
+
 
 .editable-button-textarea {
-    width: inherit;
-    height: inherit; /* Match the typical height of a button */
-    padding: inherit; /* Padding for the textarea */
-    border-radius: inherit;
-    border: inherit solid #217bf4; /* Blue border to indicate focus or selection */
+    width: 150px; /* Match the button's width */
+    max-height: 40px; /* Match the button's height */
+    padding: 4px; /* Match the button's padding */
     resize: none; /* Disables resizing */
-    scrollbar-width: none;
+    scrollbar-width: none; /* Hide scrollbar */
     display: flex;
     align-items: center;
     background-color: inherit; /* Ensure background matches */
@@ -37,9 +35,11 @@
     justify-content: center;
 }
 
-.editable-button-textarea.error {
-    background-color: red;
+.editable-button.error, .editable-button-textarea.error {
+    border-color: red; /* Consistent error indication */
+    background-color: #ffe6e6; /* Light red background for error state */
 }
+
 
 .hidden-text-measure {
     font-family: inherit; 
@@ -52,7 +52,7 @@
     color: white;
     font-family: outfit;
     position: absolute; /* Use fixed to position relative to the viewport */
-    transform: translate(-10%, 10%);
+    transform: translate(0%, 15%);
     background-color: #292929;
     border: 1px solid black;
     padding: 10px;
@@ -62,6 +62,7 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
+    top:9.4%;
 }
 
 .link-settings-content{
@@ -85,12 +86,6 @@
 
 .edit-link-button {
     margin-top: 10px;
-    color: purple;
-    border-color: purple;
-}
-
-.edit-link-button.selected {
-    background-color: purple;
     color: white;
     background-color: #7214ff;
     font-family: Inter;

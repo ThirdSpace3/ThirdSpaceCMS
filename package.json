@@ -14,6 +14,7 @@
     "ethers": "^6.11.1",
     "express": "^4.18.3",
     "firebase": "^10.11.1",
+    "firebase-functions": "^5.0.1",
     "firebase-tools": "^13.8.0",
     "html2canvas": "^1.4.1",
     "ipfs": "^0.66.1",
