@@ -90,7 +90,7 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
             maxLength={250}
           />
           {!isLinkEditing && (
-            <button onClick={toggleLinkEdit} className="edit-link-button">Edit Link</button>
+            <button onClick={toggleLinkEdit} className="edit-link-button">Edit Link <i class="bi bi-pencil-square"></i></button>
           )}
           {isLinkEditing && (
             <div ref={modalRef} className="link-settings-modal">
@@ -102,13 +102,13 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
                 <input type="text" value={currentLink} onChange={e => setCurrentLink(e.target.value)} />
               </div>
               <label className='link-settings-target-chooser' onClick={(e) => setOpenInNewTab(!openInNewTab)}>
-                <input
+              <input
                   type="checkbox"
-                  checked={openInNewTab}
                   onChange={(e) => {
                     console.log("Checkbox clicked, current state:", openInNewTab);
-                    setOpenInNewTab(e.target.checked);
+                    setOpenInNewTab(!openInNewTab);
                   }}
+                  checked={openInNewTab}
                 />
                 Open in new tab
               </label>

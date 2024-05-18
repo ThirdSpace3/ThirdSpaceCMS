@@ -1,6 +1,8 @@
 const functions = require('firebase-functions');
 const nodemailer = require('nodemailer');
-const {google} = require('googleapis');
+const { google } = require('googleapis');
+const fs = require('fs');
+const path = require('path');
 
 // Setting up Gmail configuration using environment variables
 const gmailEmail = functions.config().gmail.email;
@@ -16,7 +18,7 @@ const mailTransport = nodemailer.createTransport({
 });
 
 // Initialize the Gmail API
-const gmail = google.gmail({version: 'v1', auth: new google.auth.GoogleAuth({
+const gmail = google.gmail({ version: 'v1', auth: new google.auth.GoogleAuth({
   credentials: {
     client_email: functions.config().gmail.client_email,
     private_key: functions.config().gmail.private_key.replace(/\\n/g, '\n')
@@ -28,12 +30,20 @@ exports.sendEmailOnFirestoreWrite = functions.firestore
   .document('reports/{reportId}')
   .onCreate(async (snap, context) => {
     const newData = snap.data();
+    
+    // Assuming the image is accessible via a URL stored in newData.imageUrl
+    const imageUrl = newData.imageUrl;
 
     const mailOptions = {
       from: gmailEmail,
       to: gmailEmail,  // Specify the recipient's email address
       subject: 'New Report Notification',
-      text: `A new report has been submitted: Description: ${newData.description}, Image URL: ${newData.imageUrl}`
+      html: `
+        <p>A new report has been submitted:</p>
+        <p>Description: ${newData.description}</p>
+        <p>Image:</p>
+        <img src="${imageUrl}" alt="Report Image" style="width:600px; height:auto;"/>
+      `
     };
 
     try {

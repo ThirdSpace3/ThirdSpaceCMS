@@ -89,12 +89,12 @@
     color: white;
     background-color: #7214ff;
     font-family: Inter;
-    padding-right: 5px;
-    padding-left: 5px;
-    border-radius: 4px;
+    padding: 3px 10px 3px 10px ;
+    border-radius: 8px;
     position: absolute;
-    top: 9.8%;
+    top: 9.4%;
     z-index: 2; /* Add this to make sure the button is above the textarea */
+    border: none;
   }
   
 
