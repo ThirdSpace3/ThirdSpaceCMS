@@ -15,27 +15,37 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
   const loadCurrentStyles = () => {
     if (!selectedElement) return;
 
+    const element = document.querySelector(selectedElement);
+    if (!element) return;
+
     const styles = getComponentStyle(selectedElement);
     if (!styles) return;
 
-    setSelectedBorderStyle( "solid"); // Default to solid
-    setBorderColor(styles.borderColor || "#000000");
-    setBorderRadius(parseInt(styles.borderRadius, 10) || 0);
+    setSelectedBorderStyle(styles.borderStyle || "solid");
+    setBorderColor(styles.borderColor || "#ffffff");
+
+    const computedStyle = window.getComputedStyle(element);
+    const radius = computedStyle.borderRadius || styles.borderRadius;
+    const parsedBorderRadius = parseInt(radius, 10);
+    setBorderRadius(!isNaN(parsedBorderRadius) ? parsedBorderRadius : 0);
 
     setBorderSizes({
-      top: parseInt(styles.borderTopWidth) ,
-      right: parseInt(styles.borderRightWidth ) ,
-      bottom: parseInt(styles.borderBottomWidth ) ,
-      left: parseInt(styles.borderLeftWidth ),
+      top: parseInt(styles.borderTopWidth, 10) || 0,
+      right: parseInt(styles.borderRightWidth, 10) || 0,
+      bottom: parseInt(styles.borderBottomWidth, 10) || 0,
+      left: parseInt(styles.borderLeftWidth, 10) || 0
     });
   };
   const updateBorderSettings = useCallback(() => {
     const borderStyleObject = {
       borderStyle: selectedBorderStyle,
-      borderColor: borderColor,
-      borderRadius: `${borderRadius}px`,
+      borderColor: borderColor
     };
-  
+
+    if (borderRadius > 0) {
+      borderStyleObject.borderRadius = `${borderRadius}px`;
+    }
+
     if (isAllSidesSelected) {
       borderStyleObject.borderWidth = `${borderSizes.top}px`;
     } else {
@@ -44,32 +54,30 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
         borderStyleObject[prop] = `${borderSizes[side]}px`;
       });
     }
-  
+
     updateStyle(selectedElement, borderStyleObject);
   }, [selectedBorderStyle, borderSizes, borderColor, borderRadius, selectedElement, isAllSidesSelected]);
-  
+
   useEffect(() => {
     if (!selectedElement) return;
-  
+
     // Load current styles
     loadCurrentStyles();
-  
+
     // Defaulting when new element is selected
     const styles = getComponentStyle(selectedElement);
     if (!styles || !styles.borderStyle) {
       updateStyle(selectedElement, { borderStyle: 'solid', borderWidth: '1px' });
     }
   }, [selectedElement]); // Dependency on selectedElement to detect changes
-  
+
   useEffect(() => {
     // Call updateBorderSettings only if there's a selected element
     if (selectedElement) {
       updateBorderSettings();
     }
   }, [updateBorderSettings, selectedElement]);
-  
-  
-  
+
   return (
     <div>
       <div className="parameters-wrapper">
@@ -96,7 +104,7 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
                     min="0"
                     max="20"
                     step="1"
-                    value={isAllSidesSelected ? borderSizes.top : borderSizes[activeBorderSide]}
+                    value={isAllSidesSelected ? borderSizes.all : borderSizes[activeBorderSide]}
                     onChange={(e) => {
                       const value = parseInt(e.target.value, 10);
                       if (isAllSidesSelected) {
@@ -132,7 +140,7 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
                 <div className={`borders-selection-icon ${activeBorderSide === "all" ? "active-border-icon" : ""}`} onClick={() => setActiveBorderSide("all")}>
                   <img src="./images/borders-all-icon.png" />
                 </div>
-                <div class={`borders-selection-icon ${activeBorderSide === "right" ? "active-border-icon" : ""}`} onClick={() => setActiveBorderSide("right")}>
+                <div className={`borders-selection-icon ${activeBorderSide === "right" ? "active-border-icon" : ""}`} onClick={() => setActiveBorderSide("right")}>
                   <img src="./images/borders-right-icon.png" />
                 </div>
               </div>

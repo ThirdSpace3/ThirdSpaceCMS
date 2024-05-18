@@ -18,8 +18,8 @@ const Navbar = ({
         home: localStorage.getItem('navbar-home-text') || 'Home',
         navabout: localStorage.getItem('navbar-about-text') || 'About',
         navfeatures: localStorage.getItem('navbar-navfeatures-text') || 'Features',
-        joinUsNav: localStorage.getItem('navbar-joinUs-text') || 'Join Us',
-        joinUsNavLink: JSON.parse(localStorage.getItem('navbar-joinUs-link')) || { url: '#', openInNewTab: false },
+        joinUsNav: localStorage.getItem('navbar-navbar-cta-text') || 'Join Us',
+        joinUsNavLink: JSON.parse(localStorage.getItem('navbar-navbar-cta-link')) || { url: '#', openInNewTab: false },
         image: "./images/templates-img/3sproduct/3sproduct-logo.png"
     });
 
@@ -121,17 +121,19 @@ const Navbar = ({
                 </div>
                 <ul className="sss-product-navbar-links-box">
                     <li >
-                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} id='home' onClick={(event) => handleComponentClick(event, 'home')} >
+                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} onClick={(event) => handleComponentClick(event, 'home')} >
                             <EditableText
                                 text={navbarContent.home}
                                 onChange={(newText) => handleTextChange(newText, 'home')}
-                                style={homeStyles}
+                                style={homeStyles} 
+                                id='home'
                             />
                         </Link>
                     </li>
                     <li >
-                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} id='navabout' onClick={(event) => handleComponentClick(event, 'navabout')} >
+                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}  onClick={(event) => handleComponentClick(event, 'navabout')} >
                             <EditableText
+                            id='navabout'
                                 text={navbarContent.navabout}
                                 onChange={(newText) => handleTextChange(newText, 'navabout')}
                                 style={navaboutStyles}
@@ -139,8 +141,9 @@ const Navbar = ({
                         </Link>
                     </li>
                     <li >
-                        <Link className="sss-product-navbar-links" id='navfeatures' onClick={(event) => handleComponentClick(event, 'navfeatures')} >
+                        <Link className="sss-product-navbar-links"  onClick={(event) => handleComponentClick(event, 'navfeatures')} >
                             <EditableText
+                            id='navfeatures'
                                 text={navbarContent.navfeatures}
                                 onChange={(newText) => handleTextChange(newText, 'navfeatures')}
                                 style={featuresStyles}

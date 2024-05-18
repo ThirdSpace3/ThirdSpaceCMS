@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './EditableButton.css';
 
-const EditableButton = ({ id, text, onChange, link, onLinkChange, style, className, selectedColor, setSelectedColor }) => {
+const EditableButton = ({ id, text, onChange, link, onLinkChange, style, className }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text);
   const [currentLink, setCurrentLink] = useState(link.url);
@@ -76,9 +76,6 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
     setIsEditing(false);
     setIsLinkEditing(false);
 
-  };
-  const applyColorChange = (newColor) => {
-    setSelectedColor(newColor); // Update the color in the parent component or context
   };
 
   return (

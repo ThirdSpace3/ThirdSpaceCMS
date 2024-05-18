@@ -20,7 +20,7 @@ const HeaderSection = ({
   const [headerContent, setHeaderContent] = useState({
     heroTitle: localStorage.getItem('header-heroTitle-text') || 'The first user-friendly website builder',
     heroDescription: localStorage.getItem('header-heroDescription-text') || 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
-    herojoinUs: localStorage.getItem('header-joinUs-text') || 'Join Us',
+    herojoinUs: localStorage.getItem('header-header-cta-text') || 'Join Us',
     herojoinUsLink: JSON.parse(localStorage.getItem('header-joinUs-link')) || { url: '#', openInNewTab: false },
     image: localStorage.getItem('header-image') || "./images/templates-img/3sproduct/3sproduct-hero.png"
   });

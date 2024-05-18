@@ -18,6 +18,7 @@ export default function TemplateStep() {
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const walletId = sessionStorage.getItem("userAccount");
+  console.log(walletId);
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const [selectedButtons, setSelectedButtons] = useState({
     1: [],
