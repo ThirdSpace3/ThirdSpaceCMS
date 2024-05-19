@@ -73,7 +73,7 @@ const HeaderSection = ({
           onChange={(newText) => handleTextChange(newText, 'heroDescription')}
         />
       </p>
-      <a className='sss-product-hero-cta' href={headerContent.herojoinUsLink.url} target={headerContent.herojoinUsLink.openInNewTab ? "_blank" : "_self"} onClick={(event) => handleComponentClick(event, 'header-cta')}>
+      <a  href={headerContent.herojoinUsLink.url} target={headerContent.herojoinUsLink.openInNewTab ? "_blank" : "_self"} onClick={(event) => handleComponentClick(event, 'header-cta')}>
         <EditableButton
           id='header-cta'
           text={headerContent.herojoinUs}
