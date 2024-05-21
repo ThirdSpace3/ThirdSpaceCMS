@@ -8,7 +8,7 @@ function Roadmap()  {
         <section class="roadmap section" id="roadmap">
 
  <p class="section-label">Features Roadmap</p>
-    <h2 class="section-title">Want to know what is comming ?</h2>
+    <h2 class="section-title">Want to know what is coming ?</h2>
 
     <div class="roadmap-content">
         <div class="roadmap-content-row">

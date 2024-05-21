@@ -21,7 +21,7 @@ function Solutions() {
                     <img src="./images/solutions-2.png" alt="" class="solutions-img"/>
                 </div>
                 <h3 class="solutions-card-title">Sections and Blocks</h3>
-                <p class="solutions-card-text">Use a large amount of setions and  blocks, already seted up for you to use. </p>
+                <p class="solutions-card-text">Use a large amount of sections and  blocks, already set up for you to use. </p>
             </div>
             <div class="solutions-card">
                 <div class="solutions-img-box">

@@ -69,7 +69,7 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
             </li>
             <li className="coming-soon">
               <a href="/#/ressources" className="nav__links-btn">
-                Ressources
+                Resources
               </a>
             </li>
             <li className="coming-soon">
