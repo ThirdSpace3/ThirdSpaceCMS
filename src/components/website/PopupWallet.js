@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./PopupWallet.css";
 import axios from "axios";
 import "../Root.css";
-import { db, doc, getDoc, setDoc } from '../../firebaseConfig';
+import { db, doc, getDoc, setDoc, updateDoc } from '../../firebaseConfig';
 import { wait } from "@testing-library/user-event/dist/utils";
+import ReactGA from 'react-ga';
+
+// Initialize Google Analytics
+ReactGA.initialize('G-83NKPT3B9E');
 
 function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
   const [showMore, setShowMore] = useState(false);
@@ -18,112 +22,130 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     setShowMore(!showMore);
   };
 
-
-// Separate authentication functions for Ethereum and Solana
-const authenticateWithEthereum = async (walletId) => {
-  try {
-    const message = "Please sign this message to confirm your identity.";
-    // Ensure the parameters are correctly formatted
-    const signature = await window.ethereum.request({
-      method: "personal_sign",
-      params: [message, walletId], // Ensure that walletId is the currently connected Ethereum address
+  const logEvent = (eventName, eventData) => {
+    ReactGA.event({
+      category: 'User',
+      action: eventName,
+      label: eventData
     });
-    processLogin(walletId);
-  } catch (error) {
-    console.error("Error during Ethereum authentication:", error);
-  }
-};
+  };
 
-const authenticateWithSolana = async (publicKey) => {
-  try {
-    const message = new TextEncoder().encode("Please sign this message to confirm your identity.");
-    const signedMessage = await window.solana.signMessage(message, "utf8");
-    processLogin(publicKey);
-  } catch (error) {
-    console.error("Error during Solana authentication:", error);
-  }
-};
+  const saveLoginEvent = async (walletId, walletType) => {
+    const userRef = doc(db, 'wallets', walletId);
+    const userDoc = await getDoc(userRef);
 
-const processLogin = (walletId) => {
-  if (typeof onUserLogin === "function") {
-    onUserLogin(walletId);
-    sessionStorage.setItem("isLoggedIn", "true");
-    sessionStorage.setItem("userAccount", walletId);
-    checkWalletData(walletId);
-  } else {
-    console.error("onUserLogin is not a function");
-  }
-  onClose();
-};
-
-
-// Usage in handleLoginWithMetamask
-const handleLoginWithMetamask = async () => {
-  // Recheck for Ethereum wallet each time the function is invoked
-  if (window.ethereum) {
-    try {
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-      const account = accounts[0];
-      const walletRef = doc(db, 'wallets', account);
-      const walletSnap = await getDoc(walletRef);
-
-      if (!walletSnap.exists()) {
-        await setDoc(walletRef, { walletId: account });
-        console.log("Wallet ID saved to Firestore:", account);
-      } else {
-        console.log("Wallet data retrieved:", walletSnap.data());
-      }
-
-      authenticateWithEthereum(account);
-    } catch (error) {
-      console.error("Error with MetaMask login:", error);
-    }
-  } else {
-    console.log("MetaMask is not installed");
-  }
-};
-
-
-// Usage in handleLoginWithPhantom
-const handleLoginWithPhantom = async () => {
-  // Check for Phantom wallet each time the function is invoked
-  if ("solana" in window && window.solana.isPhantom) {
-    try {
-      const response = await window.solana.connect();
-      const publicKey = response.publicKey.toString();
-      const walletRef = doc(db, 'wallets', publicKey);
-      const walletSnap = await getDoc(walletRef);
-
-      if (!walletSnap.exists()) {
-        await setDoc(walletRef, { walletId: publicKey });
-        console.log("Wallet ID saved to Firestore:", publicKey);
-      } else {
-        console.log("Wallet data retrieved:", walletSnap.data());
-      }
-
-      authenticateWithSolana(publicKey);
-    } catch (error) {
-      console.error("Error connecting to Phantom:", error);
-      setCustomErrorMessage('Something went wrong, check if your wallet is correctly installed. If its the case try refreshing the page');
-    }
-  } else {
-    if (phantomInitiated) {
-      // If the user has previously tried to create a wallet and it's still not detected
-      console.log("Phantom wallet still not installed. Refreshing the page.");
-      localStorage.setItem('openWalletPopup', 'true'); // Set flag in localStorage
-      window.location.reload();
+    if (userDoc.exists()) {
+      await updateDoc(userRef, {
+        lastLogin: new Date().toISOString(),
+        walletType,
+        clicks: userDoc.data().clicks ? userDoc.data().clicks + 1 : 1
+      });
     } else {
-      console.log("Phantom wallet is not installed. Please install and retry.");
-      setPhantomInitiated(true);
+      await setDoc(userRef, {
+        walletId,
+        walletType,
+        firstLogin: new Date().toISOString(),
+        lastLogin: new Date().toISOString(),
+        clicks: 1
+      });
     }
-  }
-};
 
+    console.log("Login event saved to Firestore:", walletId);
+  };
 
+  const authenticateWithEthereum = async (walletId) => {
+    try {
+      const message = "Please sign this message to confirm your identity.";
+      const signature = await window.ethereum.request({
+        method: "personal_sign",
+        params: [message, walletId],
+      });
+      processLogin(walletId, 'Ethereum');
+    } catch (error) {
+      console.error("Error during Ethereum authentication:", error);
+    }
+  };
 
+  const authenticateWithSolana = async (publicKey) => {
+    try {
+      const message = new TextEncoder().encode("Please sign this message to confirm your identity.");
+      const signedMessage = await window.solana.signMessage(message, "utf8");
+      processLogin(publicKey, 'Solana');
+    } catch (error) {
+      console.error("Error during Solana authentication:", error);
+    }
+  };
 
-  // https://docs.unstoppabledomains.com/identity/overview/login-with-unstoppable/
+  const processLogin = (walletId, walletType) => {
+    if (typeof onUserLogin === "function") {
+      onUserLogin(walletId);
+      sessionStorage.setItem("isLoggedIn", "true");
+      sessionStorage.setItem("userAccount", walletId);
+      checkWalletData(walletId);
+      saveLoginEvent(walletId, walletType);
+    } else {
+      console.error("onUserLogin is not a function");
+    }
+    onClose();
+  };
 
+  const handleLoginWithMetamask = async () => {
+    logEvent('Click', 'Metamask Login Attempt');
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const account = accounts[0];
+        const walletRef = doc(db, 'wallets', account);
+        const walletSnap = await getDoc(walletRef);
+
+        if (!walletSnap.exists()) {
+          await setDoc(walletRef, { walletId: account });
+          console.log("Wallet ID saved to Firestore:", account);
+        } else {
+          console.log("Wallet data retrieved:", walletSnap.data());
+        }
+
+        authenticateWithEthereum(account);
+      } catch (error) {
+        console.error("Error with MetaMask login:", error);
+      }
+    } else {
+      console.log("MetaMask is not installed");
+    }
+  };
+
+  const handleLoginWithPhantom = async () => {
+    logEvent('Click', 'Phantom Login Attempt');
+    if ("solana" in window && window.solana.isPhantom) {
+      try {
+        const response = await window.solana.connect();
+        const publicKey = response.publicKey.toString();
+        const walletRef = doc(db, 'wallets', publicKey);
+        const walletSnap = await getDoc(walletRef);
+
+        if (!walletSnap.exists()) {
+          await setDoc(walletRef, { walletId: publicKey });
+          console.log("Wallet ID saved to Firestore:", publicKey);
+        } else {
+          console.log("Wallet data retrieved:", walletSnap.data());
+        }
+
+        authenticateWithSolana(publicKey);
+      } catch (error) {
+        console.error("Error connecting to Phantom:", error);
+        setCustomErrorMessage('Something went wrong, check if your wallet is correctly installed. If its the case try refreshing the page');
+      }
+    } else {
+      if (phantomInitiated) {
+        console.log("Phantom wallet still not installed. Refreshing the page.");
+        localStorage.setItem('openWalletPopup', 'true');
+        window.location.reload();
+      } else {
+        console.log("Phantom wallet is not installed. Please install and retry.");
+        setPhantomInitiated(true);
+      }
+    }
+  };
 
   const isMobileDevice = () => {
     return /Mobi|Android/i.test(navigator.userAgent);
@@ -151,8 +173,7 @@ const handleLoginWithPhantom = async () => {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [onClose]); // Dependencies array includes only `onClose` as it's a prop that could potentially update
-
+  }, [onClose]);
 
   if (isMobile) {
     return null; // Do not render the popup on mobile devices
@@ -207,7 +228,7 @@ const handleLoginWithPhantom = async () => {
           </button>
           {/* Coming Soon */}
           <button className="wallet-btn wallet-btn-comingsoon">
-            <i class="bi bi-lock-fill"></i>
+            <i className="bi bi-lock-fill"></i>
             Coming Soon
           </button>
         </div>

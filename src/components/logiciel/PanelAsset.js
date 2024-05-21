@@ -4,10 +4,17 @@ import "../Root.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useImageHistory } from "../../hooks/ImageHistoryContext";
 
-export default function PanelAsset({setVisiblePanel, visiblePanel}) {
+export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
   const {
-    addImageToHistory, imageHistory, selectImage, selectedImage,
-    setSelectedImage, componentImageUsage, clearSelectedImage, activeComponent, enterReplacementMode
+    addImageToHistory,
+    imageHistory,
+    selectImage,
+    selectedImage,
+    setSelectedImage,
+    componentImageUsage,
+    clearSelectedImage,
+    activeComponent,
+    enterReplacementMode
   } = useImageHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Assets");
@@ -38,13 +45,13 @@ export default function PanelAsset({setVisiblePanel, visiblePanel}) {
     files.forEach((file) => {
       const mimeType = file.type;
       let category = "Unknown";
-  
+
       // Check if the file size is less than 1 MB (1,000,000 bytes)
       if (file.size >= 1e6) {
         alert(`File "${file.name}" is too large. Please select an image smaller than 1 MB.`);
         return;
       }
-  
+
       if (mimeType.startsWith("image/")) {
         category = "Photo";
       } else if (mimeType.startsWith("video/")) {
@@ -56,12 +63,11 @@ export default function PanelAsset({setVisiblePanel, visiblePanel}) {
       ) {
         category = "Document";
       }
-  
+
       const newImageUrl = URL.createObjectURL(file);
       addImageToHistory({ url: newImageUrl, category });
     });
   };
-  
 
   const handleUploadClick = () => {
     fileInputRef.current.click();
@@ -111,6 +117,7 @@ export default function PanelAsset({setVisiblePanel, visiblePanel}) {
     }
     setDraggedImage(null);
   };
+
   const handleEmptySlotDragOver = (e) => {
     e.preventDefault();
   };
@@ -121,8 +128,7 @@ export default function PanelAsset({setVisiblePanel, visiblePanel}) {
     const files = Array.from(e.dataTransfer.files);
     handleFileChange({ target: { files } }); // Pass an object with the 'files' property set to the array of files
   };
-  
-  
+
   const renderPreview = (image) => {
     const isUsed = Object.values(componentImageUsage).includes(image.url);
     const previewClass = isUsed ? "image-used" : "image-preview";
@@ -150,9 +156,7 @@ export default function PanelAsset({setVisiblePanel, visiblePanel}) {
   };
 
   return (
-    <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}         onDragOver={handleEmptySlotDragOver}
-    onDrop={handleEmptySlotDrop}
->
+    <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`} onDragOver={handleEmptySlotDragOver} onDrop={handleEmptySlotDrop}>
       <input
         type="file"
         ref={fileInputRef}
@@ -185,14 +189,6 @@ export default function PanelAsset({setVisiblePanel, visiblePanel}) {
       </div>
 
       <div className="ImagePreview" onDragOver={handleDragOver} onDrop={handleDrop}>
-      {/* <div
-        className="empty-slot"
-        onDragOver={handleEmptySlotDragOver}
-        onDrop={handleEmptySlotDrop}
-      >
-        <i className="bi bi-cloud-upload"></i>
-        <p>Drag and drop images here</p>
-      </div> */}
         {filteredHistory.map((image, index) => (
           <div key={index} className={`image-preview ${image.url === selectedImage ? "selected" : ""}`} onClick={() => handleImageSelect(image)} onDragStart={(e) => handleDragStart(e, image)} draggable>
             {renderPreview(image)}

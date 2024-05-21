@@ -1,18 +1,28 @@
-import './Header.css'
-import '../../Root.css'
+// Header.js
+import './Header.css';
+import '../../Root.css';
 import React, { useState } from 'react';
 import PopupWallet from '../PopupWallet';
 import { useNavigate } from 'react-router-dom';
+import ReactGA from 'react-ga';
 
-function Header({checkWalletData }) {
+function Header({ checkWalletData }) {
   const [showWalletPopup, setShowWalletPopup] = useState(false);
   const navigate = useNavigate();
+
   const userIsLoggedIn = () => {
     const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
     return isLoggedIn;
   };
 
   const toggleWalletPopup = () => {
+    // Log the "Get Started" button click event to Google Analytics
+    ReactGA.event({
+      category: 'Button',
+      action: 'Click',
+      label: 'Get Started',
+    });
+
     console.log(userIsLoggedIn);
     if (!userIsLoggedIn()) { // If user is not logged in
       setShowWalletPopup(!showWalletPopup); // Toggle wallet popup
@@ -20,15 +30,14 @@ function Header({checkWalletData }) {
       navigate('./templatestep'); // Navigate to './templatestep' route
     }
   };
-  
 
   const handleUserLogin = (userAccount) => {
     // Handle user login here
     console.log('User logged in:', userAccount);
   };
+
   return (
     <>
-
       <section className="header section">
         <div className="header__left">
           <h1 className="header__title">Web3's Easiest Builder. Dive in Code-Free.</h1>
@@ -40,17 +49,12 @@ function Header({checkWalletData }) {
             </a>
           </div>
         </div>
-        <div className="header__right" >
-        <img src="./images/header-img.png" alt=""/>
-
+        <div className="header__right">
+          <img src="./images/header-img.png" alt=""/>
         </div>
-        {/* <img src="./images/header-deco.png" alt="" className="header-deco" /> */}
-
       </section>
-      {showWalletPopup && <PopupWallet onClose={toggleWalletPopup} onUserLogin={handleUserLogin} checkWalletData ={checkWalletData}/>}
-
+      {showWalletPopup && <PopupWallet onClose={toggleWalletPopup} onUserLogin={handleUserLogin} checkWalletData={checkWalletData} />}
     </>
-    
   );
 }
 

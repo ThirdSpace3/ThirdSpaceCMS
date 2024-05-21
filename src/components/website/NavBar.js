@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from "react";
-import "./NavBar.css";
-import { useNavigate } from "react-router-dom";
-import PopupWallet from "./PopupWallet.js";
+// NavBar.js
+import React, { useState, useEffect } from 'react';
+import './NavBar.css';
+import { useNavigate } from 'react-router-dom';
+import PopupWallet from './PopupWallet.js';
 import ReactGA from 'react-ga';
 
 function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
+
   const togglePopup = () => {
     // Log the event in Google Analytics
     ReactGA.event({
-      category: 'User',
-      action: 'Click on Wallet Button'
+      category: 'Button',
+      action: 'Click',
+      label: 'Get Started from Navbar',
     });
 
     if (accounts.length > 0 && !hasWalletData) {
@@ -27,19 +29,12 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
     setIsMenuOpen(!isMenuOpen);
   };
 
-
-
-  
   useEffect(() => {
-
-
     const shouldOpenWalletPopup = localStorage.getItem('openWalletPopup');
     if (shouldOpenWalletPopup === 'true') {
       setShowPopup(true); // Assuming setShowPopup controls the visibility of your wallet popup
       localStorage.removeItem('openWalletPopup'); // Remove the flag to avoid repeated popups
     }
-
-
 
     ReactGA.pageview(window.location.pathname + window.location.search);
 
@@ -49,6 +44,7 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
       checkWalletData(userAccount);
     }
   }, []);
+
   return (
     <nav className="navbar__padding">
       <div className="navbar__pc">

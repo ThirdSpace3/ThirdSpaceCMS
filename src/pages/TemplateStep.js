@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import ReactGA from 'react-ga';
+import { db, doc, getDoc, setDoc, updateDoc } from '../firebaseConfig';
 
 // Import your template steps and other components
 import TemplateStep1 from "../components/website/TemplateSteps/TemplateStep1";
@@ -12,13 +13,13 @@ import TemplateStepsBTN from "../components/website/TemplateSteps/TemplateStepsB
 import ReportBugBTN from "../components/website/ReportBugBTN";
 import TemplateProgressBar from "../components/website/TemplateSteps/TemplateProgressBar";
 import TemplateStepsMobile from "../components/website/TemplateSteps/TemplateStepsMobile";
+
 export default function TemplateStep() {
   const initialStep = Number(sessionStorage.getItem("currentStep")) || 1;
   const [currentStep, setCurrentStep] = useState(initialStep);
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const walletId = sessionStorage.getItem("userAccount");
-  console.log(walletId);
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const [selectedButtons, setSelectedButtons] = useState({
     1: [],
@@ -26,26 +27,67 @@ export default function TemplateStep() {
     3: [],
     name: [],
     templateselected: [],
-
   });
   const [projects, setProjects] = useState([]);
-
   const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [projectName, setProjectName] = useState("");
+
+  const logEvent = async (eventType, additionalData = {}) => {
+    const eventData = {
+      walletId,
+      eventType,
+      timestamp: new Date().toISOString(),
+      step: currentStep,
+      ...additionalData,
+    };
+
+    // Log to Google Analytics
+    ReactGA.event({
+      category: 'Template Steps',
+      action: eventType,
+      label: `Step ${currentStep}`,
+      ...additionalData,
+    });
+
+    // Log to Firestore
+    if (walletId) {
+      const eventRef = doc(db, 'events', `${walletId}-${eventType}-${Date.now()}`);
+      await setDoc(eventRef, eventData);
+    }
+  };
+
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
 
+    // Log entering the template steps
+    logEvent('Enter Template Steps');
+
     // Cleanup listener on component unmount
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      logEvent('Quit Template Steps');
+    };
   }, []);
+
+  useEffect(() => {
+    const userData = sessionStorage.getItem("userData");
+    sessionStorage.setItem("currentStep", currentStep.toString());
+
+    if (walletId) {
+      sessionStorage.setItem("userAccount", walletId);
+    }
+    if (userData === "true") {
+      navigate('../dashboard');
+    }
+  }, [currentStep, walletId, navigate]);
 
   const createProjectAndRedirect = () => {
     const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
     const selectedTemplateName = sessionStorage.getItem("selectedTemplateName");
     const projectName = sessionStorage.getItem("projectName");
 
-    // Create a new project object with the selected template and name
     const newProject = {
       id: projects.length + 1,
       name: projectName,
@@ -56,46 +98,15 @@ export default function TemplateStep() {
       favicon: "",
     };
 
-    // Add the new project to the projects state
     setProjects([...projects, newProject]);
     sessionStorage.setItem(
       "projects",
       JSON.stringify([...projects, newProject])
     );
 
-    // Perform any additional operations needed before redirecting to the dashboard
+    logEvent('Complete Template Steps');
     navigate("/dashboard");
   };
-
-  // Retrieve or initialize the walletId
-  // useEffect(() => {
-  //   // Redirect if template process is completed
-  //   const isTemplateCompleted =
-  //     sessionStorage.getItem("isTemplateCompleted") === "true";
-  //   if (isTemplateCompleted) {
-  //     navigate("/dashboard");
-  //   }
-  // }, [navigate]);
-
-  useEffect(() => {
-    // Load stored data on component mount
-    // const storedButtons = sessionStorage.getItem("selectedButtons");
-    // if (storedButtons) {
-    //   setSelectedButtons(JSON.parse(storedButtons));
-    // }
-
-    const userData = sessionStorage.getItem("userData");
-    sessionStorage.setItem("currentStep", currentStep.toString());
-    // Ensure walletId is not lost upon updating currentStep
-    if (walletId) {
-      sessionStorage.setItem("userAccount", walletId);
-    }
-    if (userData === "true") {
-      navigate('../dashboard');
-    }
-  }, [currentStep, walletId]);
-
-  const [projectName, setProjectName] = useState("");
 
   const handleNext = () => {
     const sessionData = sessionStorage.getItem("stepData")
@@ -107,15 +118,11 @@ export default function TemplateStep() {
       sessionStorage.setItem("stepData", JSON.stringify(sessionData));
     }
     if (currentStep < 5) {
-      // Proceed to the next step if it's not the last step
-
       setCurrentStep(currentStep + 1);
-    }
-    if (currentStep === 5) {
+    } else {
       createProjectAndRedirect();
     }
 
-    // Re-set the walletId to ensure it's not lost during navigation
     if (walletId) {
       sessionStorage.setItem("userAccount", walletId);
     }
@@ -125,7 +132,6 @@ export default function TemplateStep() {
     if (currentStep <= 6) {
       setCurrentStep(currentStep + 1);
     }
-    // Optionally ensure walletId is preserved here too, depending on your application's flow
   };
 
   const updateNextButtonState = (isEnabled) => {
@@ -148,18 +154,14 @@ export default function TemplateStep() {
   };
 
   useEffect(() => {
-    console.log("Selected buttons updated:", selectedButtons);
     sessionStorage.setItem("selectedButtons", JSON.stringify(selectedButtons));
-    console.log(isLoggedIn);
-
-  }, [selectedButtons, isLoggedIn]);
+  }, [selectedButtons]);
 
   return (
     <>
       {windowWidth < 768 ? (
         <TemplateStepsMobile />
       ) : (
-        // The rest of your component logic remains unchanged, displaying the appropriate step based on 'currentStep'
         <>
           {currentStep === 1 && (
             <TemplateStep1
@@ -219,7 +221,7 @@ export default function TemplateStep() {
             <TemplateStepsBTN
               onNext={handleNext}
               onIgnore={handleIgnore}
-              onBack={handleBack} // Add this line
+              onBack={handleBack}
               isNextEnabled={isNextEnabled}
               selectedButtons={selectedButtons}
               walletId={walletId}
@@ -229,13 +231,12 @@ export default function TemplateStep() {
               setProjects={setProjects}
               setProjectName={setProjectName}
             />
-
           )}
         </>
       )}
-      {/* Components outside the conditional rendering remain unchanged */}
       <ReportBugBTN />
-      {currentStep !== 4 && <TemplateProgressBar currentStep={currentStep} setCurrentStep={setCurrentStep}/>}
+      {currentStep !== 4 && <TemplateProgressBar currentStep={currentStep} setCurrentStep={setCurrentStep} />}
     </>
   );
 }
+

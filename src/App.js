@@ -34,7 +34,7 @@ export default function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/products" element={<Products />} />
-              <Route path="/ressources" element={<Ressources />} />
+              <Route path="/resources" element={<Ressources />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/builder" element={<Logiciel />} />
               <Route path="/templates" element={<TemplateStep />} />
