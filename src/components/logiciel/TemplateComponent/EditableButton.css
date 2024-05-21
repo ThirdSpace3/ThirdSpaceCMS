@@ -8,7 +8,6 @@
     width: 150px; /* Define fixed width */
     height: 40px; /* Define fixed height */
     text-align: center;
-    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .editable-button:hover {

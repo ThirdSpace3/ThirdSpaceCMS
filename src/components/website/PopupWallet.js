@@ -11,6 +11,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
   const [walletAvailable, setWalletAvailable] = useState(true);
   const [phantomInitiated, setPhantomInitiated] = useState(false);
   const [customErrorMessage, setCustomErrorMessage] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
 
   const toggleShowMore = (e) => {
     e.preventDefault();
@@ -123,7 +124,13 @@ const handleLoginWithPhantom = async () => {
 
   // https://docs.unstoppabledomains.com/identity/overview/login-with-unstoppable/
 
+
+  const isMobileDevice = () => {
+    return /Mobi|Android/i.test(navigator.userAgent);
+  };
+
   useEffect(() => {
+    setIsMobile(isMobileDevice());
     const checkForWallet = () => {
       const hasWallet = !!window.ethereum || ("solana" in window && window.solana.isPhantom);
       setWalletAvailable(hasWallet);
@@ -147,6 +154,9 @@ const handleLoginWithPhantom = async () => {
   }, [onClose]); // Dependencies array includes only `onClose` as it's a prop that could potentially update
 
 
+  if (isMobile) {
+    return null; // Do not render the popup on mobile devices
+  }
 
   return (
     <div className="popup" id="popup" style={{ display: "flex" }}>

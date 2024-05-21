@@ -26,6 +26,8 @@ export default function Display() {
   const [selectedColor, setSelectedColor] = useState(""); // State to hold the confirmed color
   const [showPopup, setShowPopup] = useState(false);
   const [TemplateContent, setTemplateContent] = useState({});
+  // const walletId = sessionStorage.getItem("userAccount");
+  // console.log(walletId);
 
   
   const checkAndSetLogin = () => {
@@ -38,9 +40,6 @@ export default function Display() {
     }
   };
 
-  React.useEffect(() => {
-    checkAndSetLogin();
-  }, []);
 
 
   const handleSettingsChange = (elementId, newSettings) => {
@@ -121,10 +120,12 @@ export default function Display() {
   const openImagePanel = () => {
     setActivePanel("images");
   };
+
+  
   useEffect(() => {
+    checkAndSetLogin();
     setActiveEditor(templateName);
     console.log('Active template:', templateName);
-
   }, [templateName]);
 
 
