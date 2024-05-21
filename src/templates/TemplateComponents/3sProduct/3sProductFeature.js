@@ -242,7 +242,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
                 style={{ ...endToEndDescriptionStyles }}
               />
             </p>
-            <Link to={joinUsLink.url}  onClick={(event) => handleComponentClick(event, 'feature-cta')} target={joinUsLink.openInNewTab ? "_blank" : "_self"}>
+            <Link to={joinUsLink.url}  onClick={(event) => handleComponentClick(event, 'feature-cta')} target={joinUsLink.openInNewTab ? "_blank" : "_self"} className='position-relative'>
               <EditableButton
                 className="sss-product-feature-cta" 
                 id='feature-cta'

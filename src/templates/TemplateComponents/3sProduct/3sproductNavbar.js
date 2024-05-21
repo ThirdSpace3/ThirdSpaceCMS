@@ -152,7 +152,7 @@ const Navbar = ({
                     </li>
 
                 </ul>
-                <a href={navbarContent.joinUsNavLink.url} target={navbarContent.joinUsNavLink.openInNewTab ? "_blank" : "_self"} onClick={(event) => handleComponentClick(event, 'navbar-cta')}>
+                <a href={navbarContent.joinUsNavLink.url} target={navbarContent.joinUsNavLink.openInNewTab ? "_blank" : "_self"} className='position-relative' onClick={(event) => handleComponentClick(event, 'navbar-cta')}>
                     <EditableButton
                         id='navbar-cta'
                         text={navbarContent.joinUsNav}

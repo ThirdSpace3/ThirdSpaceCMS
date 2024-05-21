@@ -95,8 +95,8 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
           {isLinkEditing && (
             <div ref={modalRef} className="link-settings-modal">
               <div className='link-title'>
-              <button className="link-close-button" onClick={toggleLinkEdit}>X</button>
               <h4>Link Settings</h4>
+              <button className="link-close-button" onClick={toggleLinkEdit}><i class="bi bi-x"></i></button>
               </div>
               <hr />
               <div className='link-settings-content'>

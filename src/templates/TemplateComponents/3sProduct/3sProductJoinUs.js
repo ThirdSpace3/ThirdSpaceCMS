@@ -157,7 +157,7 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
             style={joinUsescriptionStyles}
           />
         </p>
-        <Link onClick={(event) => handleComponentClick(event, 'joinUs-cta')}>
+        <Link onClick={(event) => handleComponentClick(event, 'joinUs-cta')} className='position-relative'>
           <EditableButton
             id='joinUs-cta'
             className="sss-product-joinus-cta"
