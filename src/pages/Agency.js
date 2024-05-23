@@ -4,6 +4,7 @@ import "../components/website/agency.css";
 import React, { useState, useRef } from "react";
 import { db, collection, getDocs } from "../firebaseConfig"; // Assuming Firestore is correctly imported and configured
 import { Link } from "react-router-dom";
+import ContactForm from "../components/website/ContactForm";
 
 export default function Agency() {
   const [hasWalletData, setHasWalletData] = useState(false);
@@ -129,8 +130,10 @@ export default function Agency() {
             to give everyone the opportunity to boost their business on Web 3.
           </p>
           <div className="agency-portfolio-box">
-          <div  className="agency-portfolio-card">
-            <h3></h3>
+          <div className="agency-portfolio-card">
+            <h3 className="agency-portfolio-card-title">Project Title</h3>
+            <a className="agency-portfolio-card-link">View more <i class="bi bi-arrow-right"></i></a>
+            <p className="agency-portfolio-card-label">Website</p>
 
           </div>
 
@@ -138,7 +141,7 @@ export default function Agency() {
 
         </div>
         <div className="agency-cta" ref={ctaRef}>
-
+<ContactForm />
         </div>
       </div>
 

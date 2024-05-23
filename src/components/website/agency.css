@@ -1,0 +1,52 @@
+.agency-content {
+display: flex;
+flex-direction: column;
+gap: 35px;
+padding: 40px 8%;
+}
+.agency-header,
+.agency-services {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+}
+.agency-header-title {
+
+}
+.agency-header-text {
+
+}
+.agency-header-cta {
+
+}
+.agency-services-title,
+.agency-portfolio-title {
+    
+}
+.agency-services-text,
+.agency-portfolio-text {
+
+}
+.agency-services-box,
+.agency-portfolio-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+    .agency-services-box,
+    .agency-portfolio-box {
+        grid-template-columns: repeat(2, 1fr);    }
+  }
+@media (max-width: 767px) {
+    .agency-services-box,
+    .agency-portfolio-box {
+      grid-template-columns: 1fr;
+    }
+  }
+.agency-services-item {
+
+}
