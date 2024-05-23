@@ -1,7 +1,7 @@
 import NavBar from "../components/website/NavBar";
 import Footer from "../components/website/Footer";
 import "../components/website/agency.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { db, collection, getDocs } from "../firebaseConfig"; // Assuming Firestore is correctly imported and configured
 import { Link } from "react-router-dom";
 
@@ -9,6 +9,7 @@ export default function Agency() {
   const [hasWalletData, setHasWalletData] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
+  const ctaRef = useRef(null); // Create a ref for the CTA div
 
   const checkWalletData = async () => {
     const userAccount = sessionStorage.getItem("userAccount");
@@ -34,6 +35,11 @@ export default function Agency() {
       setAccounts([userAccount]);
     }
   };
+
+  const scrollToCTA = () => {
+    ctaRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <>
       <NavBar
@@ -49,7 +55,7 @@ export default function Agency() {
             We, at Third Space, will co-construct the project with you! We want
             to give everyone the opportunity to boost their business on Web 3.
           </p>
-          <Link className="agency-header-cta">Contact Us</Link>
+          <Link to="#" onClick={scrollToCTA} className="agency-header-cta">Contact Us</Link>
         </div>
         <div className="agency-services">
         <h2 className="agency-services-title">3S Agency</h2>
@@ -131,7 +137,7 @@ export default function Agency() {
           </div>
 
         </div>
-        <div className="agency-cta">
+        <div className="agency-cta" ref={ctaRef}>
 
         </div>
       </div>
