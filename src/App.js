@@ -18,6 +18,9 @@ import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 import GetStartedMobile from "./components/website/GetStartedMobile";
 import AnalyticsWrapper from "./hooks/AnalyticsWrapper";
 import ReactGA from 'react-ga';
+import Agency from "./pages/Agency";
+import Builder from "./pages/Builder";
+import Academy from "./pages/Academy";
 
 export default function App() {
 
@@ -44,6 +47,10 @@ export default function App() {
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/get-started-mobile" element={<GetStartedMobile />} />
+              <Route path="/3s-agency" element={<Agency />} />
+              <Route path="/3s-builder" element={<Builder />} />
+              <Route path="/3s-academy" element={<Academy />} />
+
 
 
 

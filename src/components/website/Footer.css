@@ -8,6 +8,7 @@ footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding: 40px 10%;
   }
   .footer-column {
     display: flex;
