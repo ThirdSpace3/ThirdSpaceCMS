@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "./TemplateComponents/3sProduct/3sproductNavbar";
 import HeaderSection from "./TemplateComponents/3sProduct/3sProductHeader";
 import PartnersSection from "./TemplateComponents/3sProduct/3sProductPartners";
@@ -12,11 +12,18 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
   const [navbarContent, setNavbarContent] = useState({});
   const [headerContent, setHeaderContent] = useState({});
-  const [partnersContent, setPartnersContent] = useState({}); // Manage partners content
-  const [aboutSection, setAboutSection] = useState({}); // Manage partners content
-  const [featureSection, setFeatureSection] = useState({}); // Manage partners content
-  const [joinUsSection , setJoinUsSection ] = useState({}); // Manage partners content
-  const [footerSection , setFooterSection ] = useState({}); // Manage partners content
+  const [partnersContent, setPartnersContent] = useState({});
+  const [aboutSection, setAboutSection] = useState({});
+  const [featureSection, setFeatureSection] = useState({});
+  const [joinUsSection , setJoinUsSection ] = useState({});
+  const [footerSection , setFooterSection ] = useState({});
+
+  const headerRef = useRef(null);
+  const partnersRef = useRef(null);
+  const aboutRef = useRef(null);
+  const featuresRef = useRef(null);
+  const joinUsRef = useRef(null);
+  const footerRef = useRef(null);
 
   const toggleMenu = (event) => {
     event.preventDefault();
@@ -33,7 +40,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
     setTemplateContent({
       navbar: navbarContent,
       header: headerContent,
-      partners: partnersContent, // Ensure this data is also managed
+      partners: partnersContent,
       aboutSection:aboutSection,
       featureSection:featureSection,
       joinUsSection:joinUsSection,
@@ -51,18 +58,26 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
-        selectedImage={selectedImage} // Pass down the selectedImage prop
+        selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
         logChange={logChange}
-        selectedColor={selectedColor} 
+        selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setNavbarContent}
-
+        sections={{
+          header: headerRef,
+          partners: partnersRef,
+          about: aboutRef,
+          features: featuresRef,
+          joinUs: joinUsRef,
+          footer: footerRef
+        }}
       />
       
       <HeaderSection
+        ref={headerRef}
         style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
@@ -71,84 +86,80 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor} 
+        selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setHeaderContent}
-
-
       />
 
       <PartnersSection
+        ref={partnersRef}
         style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
-        selectedImage={selectedImage} // Pass down the selectedImage prop
+        selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor} 
+        selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setPartnersContent}
-
       />
       <AboutSection
+        ref={aboutRef}
         style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
-        selectedImage={selectedImage} // Pass down the selectedImage prop
+        selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor} 
+        selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setAboutSection}
-
-
       />
       <FeaturesSection
+        ref={featuresRef}
         style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
-        selectedImage={selectedImage} // Pass down the selectedImage prop
+        selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor} 
+        selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setFeatureSection}
-
-
       />
       <JoinUsSection
+        ref={joinUsRef}
         style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
-        selectedImage={selectedImage} // Pass down the selectedImage prop
+        selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor} 
+        selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setJoinUsSection}
-
       />
       <Footer
+        ref={footerRef}
         style={settings}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
-        selectedImage={selectedImage} // Pass down the selectedImage prop
+        selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor} 
+        selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setFooterSection}
-
       />
     </div>
   );

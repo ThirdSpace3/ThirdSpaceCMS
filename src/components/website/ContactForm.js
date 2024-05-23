@@ -1,5 +1,6 @@
 import './ContactForm.css';
 import React, { useState } from 'react';
+import { db, collection, addDoc, serverTimestamp } from '../../firebaseConfig'; // Make sure to replace with your Firebase configuration file
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,9 @@ const ContactForm = () => {
     services: [],
     message: ''
   });
+  const [isSubmitted, setIsSubmitted] = useState(false); // State variable for submission status
+
+  const walletId = sessionStorage.getItem("userAccount");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -25,10 +29,37 @@ const ContactForm = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add form submission logic here
-    console.log('Form submitted:', formData);
+
+    // Ensure the website field has a proper URL format
+    let formattedWebsite = formData.website.trim();
+    if (formattedWebsite && !formattedWebsite.match(/^https?:\/\//)) {
+      formattedWebsite = `https://${formattedWebsite}`;
+    }
+
+    const dataToSave = {
+      ...formData,
+      website: formattedWebsite,
+      walletId: walletId || null,
+      timestamp: serverTimestamp() // Add timestamp here
+    };
+
+    try {
+      const docRef = await addDoc(collection(db, "contacts"), dataToSave);
+      console.log("Document written with ID: ", docRef.id);
+      setIsSubmitted(true); // Set the submission status to true on success
+      setFormData({
+        name: '',
+        email: '',
+        website: '',
+        services: [],
+        message: ''
+      }); // Reset the form fields
+
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   };
 
   return (
@@ -59,7 +90,7 @@ const ContactForm = () => {
         <div className="contactform-row">
           <label htmlFor="website">Existing Website</label>
           <input
-            type="url"
+            type="text"
             id="website"
             name="website"
             value={formData.website}
@@ -143,6 +174,11 @@ const ContactForm = () => {
         <div className="contactform-row">
           <button type="submit">Submit</button>
         </div>
+        {isSubmitted && (
+        <div className="success-message">
+          Your form has been successfully submitted!
+        </div>
+      )}
       </form>
     </div>
   );

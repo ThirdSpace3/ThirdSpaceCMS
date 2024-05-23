@@ -11,7 +11,8 @@ const Navbar = ({
     openImagePanel,
     setSelectedElement,
     setSelectedColor,
-    onContentChange
+    onContentChange,
+    sections // New prop for section refs
 }) => {
     const { selectedImage, isReplacementMode, enterReplacementMode, selectImage, activeComponent } = useImageHistory();
     const [navbarContent, setNavbarContent] = useState({
@@ -22,7 +23,6 @@ const Navbar = ({
         joinUsNavLink: JSON.parse(localStorage.getItem('navbar-navbar-cta-link')) || { url: '#', openInNewTab: false },
         image: "./images/templates-img/3sproduct/3sproduct-logo.png"
     });
-
 
     const [imageHeight, setImageHeight] = useState(null);
 
@@ -49,6 +49,9 @@ const Navbar = ({
         event.stopPropagation(); // Stop the event from propagating up
         console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
         setSelectedElement(identifier);
+        if (sections[identifier] && sections[identifier].current) {
+            sections[identifier].current.scrollIntoView({ behavior: 'smooth' });
+        }
     };
 
     const handleTextChange = (newText, textType) => {
@@ -66,6 +69,7 @@ const Navbar = ({
             [textType]: newText
         });
     };
+
     const handleLinkChange = (newLink, linkType) => {
         setNavbarContent(prevContent => ({
             ...prevContent,
@@ -74,11 +78,12 @@ const Navbar = ({
         localStorage.setItem(`navbar-${linkType}-link`, JSON.stringify(newLink));
         updateStyle(linkType, { link: newLink });
     };
-    
+
     const handleDoubleClick = (event) => {
         event.preventDefault();  // Prevent the default link behavior
         event.stopPropagation(); // Stop propagation to avoid unwanted side effects
     };
+
     useEffect(() => {
         const cssVarName = `--navbar-background-color`;
         const storedColor = localStorage.getItem(cssVarName);
@@ -120,39 +125,38 @@ const Navbar = ({
                     />
                 </div>
                 <ul className="sss-product-navbar-links-box">
-                    <li >
-                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} onClick={(event) => handleComponentClick(event, 'home')} >
+                    <li>
+                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} onClick={(event) => handleComponentClick(event, 'header')}>
                             <EditableText
                                 text={navbarContent.home}
                                 onChange={(newText) => handleTextChange(newText, 'home')}
-                                style={homeStyles} 
+                                style={homeStyles}
                                 id='home'
                             />
                         </Link>
                     </li>
-                    <li >
-                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick}  onClick={(event) => handleComponentClick(event, 'navabout')} >
+                    <li>
+                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} onClick={(event) => handleComponentClick(event, 'about')}>
                             <EditableText
-                            id='navabout'
+                                id='navabout'
                                 text={navbarContent.navabout}
                                 onChange={(newText) => handleTextChange(newText, 'navabout')}
                                 style={navaboutStyles}
                             />
                         </Link>
                     </li>
-                    <li >
-                        <Link className="sss-product-navbar-links"  onClick={(event) => handleComponentClick(event, 'navfeatures')} >
+                    <li>
+                        <Link className="sss-product-navbar-links" onClick={(event) => handleComponentClick(event, 'features')}>
                             <EditableText
-                            id='navfeatures'
+                                id='navfeatures'
                                 text={navbarContent.navfeatures}
                                 onChange={(newText) => handleTextChange(newText, 'navfeatures')}
                                 style={featuresStyles}
                             />
                         </Link>
                     </li>
-
                 </ul>
-                <a href={navbarContent.joinUsNavLink.url} target={navbarContent.joinUsNavLink.openInNewTab ? "_blank" : "_self"} className='position-relative' onClick={(event) => handleComponentClick(event, 'navbar-cta')}>
+                <a href={navbarContent.joinUsNavLink.url} target={navbarContent.joinUsNavLink.openInNewTab ? "_blank" : "_self"} className='position-relative' onClick={(event) => handleComponentClick(event, 'joinUs')}>
                     <EditableButton
                         id='navbar-cta'
                         text={navbarContent.joinUsNav}
@@ -163,17 +167,6 @@ const Navbar = ({
                         className="sss-product-navbar-cta"
                     />
                 </a>
-
-                {/* Menu mobile toggler */}
-                {/* <img
-            src={menuToggleImg}
-            className="sss-product-navbar-mobile-toggle"
-            onClick={(event) => {
-                toggleMenu(event);
-                setSelectedElement('menuToggle');
-            }}
-            alt="Menu Toggle"
-        /> */}
             </nav>
         </div>
     );
