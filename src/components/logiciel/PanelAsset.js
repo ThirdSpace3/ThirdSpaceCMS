@@ -23,6 +23,7 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
   const fileInputRef = useRef(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [draggedImage, setDraggedImage] = useState(null);
+  const [isDragging, setIsDragging] = useState(false); // New state variable
   const options = ["All Assets", "Photo", "Document", "Video"];
 
   const toggleSidebarCollapse = () => {
@@ -46,7 +47,6 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
       const mimeType = file.type;
       let category = "Unknown";
 
-      // Check if the file size is less than 1 MB (1,000,000 bytes)
       if (file.size >= 1e6) {
         alert(`File "${file.name}" is too large. Please select an image smaller than 1 MB.`);
         return;
@@ -67,6 +67,9 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
       const newImageUrl = URL.createObjectURL(file);
       addImageToHistory({ url: newImageUrl, category });
     });
+
+    // Hide .asset-dragdrop and show .ImagePreview after file upload
+    setIsDragging(false);
   };
 
   const handleUploadClick = () => {
@@ -108,6 +111,7 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
 
   const handleDragOver = (e) => {
     e.preventDefault();
+    setIsDragging(true); // Show .asset-dragdrop while dragging
   };
 
   const handleDrop = (e) => {
@@ -116,18 +120,51 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
       handleImageSelect(draggedImage);
     }
     setDraggedImage(null);
+    setIsDragging(false); // Hide .asset-dragdrop after drop
   };
 
   const handleEmptySlotDragOver = (e) => {
     e.preventDefault();
+    setIsDragging(true); // Show .asset-dragdrop while dragging
   };
 
   const handleEmptySlotDrop = (e) => {
     e.preventDefault();
   
     const files = Array.from(e.dataTransfer.files);
-    handleFileChange({ target: { files } }); // Pass an object with the 'files' property set to the array of files
+    handleFileChange({ target: { files } });
+    setIsDragging(false); // Hide .asset-dragdrop after drop
   };
+
+  const handleDragLeave = () => {
+    setIsDragging(false); // Hide .asset-dragdrop when dragging leaves
+  };
+
+  useEffect(() => {
+    const handleWindowDragOver = (e) => {
+      e.preventDefault();
+      setIsDragging(true);
+    };
+
+    const handleWindowDrop = (e) => {
+      e.preventDefault();
+      setIsDragging(false);
+    };
+
+    const handleWindowDragLeave = () => {
+      setIsDragging(false);
+    };
+
+    window.addEventListener("dragover", handleWindowDragOver);
+    window.addEventListener("drop", handleWindowDrop);
+    window.addEventListener("dragleave", handleWindowDragLeave);
+
+    return () => {
+      window.removeEventListener("dragover", handleWindowDragOver);
+      window.removeEventListener("drop", handleWindowDrop);
+      window.removeEventListener("dragleave", handleWindowDragLeave);
+    };
+  }, []);
 
   const renderPreview = (image) => {
     const isUsed = Object.values(componentImageUsage).includes(image.url);
@@ -156,7 +193,7 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
   };
 
   return (
-    <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`} onDragOver={handleEmptySlotDragOver} onDrop={handleEmptySlotDrop}>
+    <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`} onDragOver={handleEmptySlotDragOver} onDrop={handleEmptySlotDrop} onDragLeave={handleDragLeave}>
       <input
         type="file"
         ref={fileInputRef}
@@ -188,14 +225,22 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
         </div>
       </div>
 
-      <div className="ImagePreview" onDragOver={handleDragOver} onDrop={handleDrop}>
-        {filteredHistory.map((image, index) => (
-          <div key={index} className={`image-preview ${image.url === selectedImage ? "selected" : ""}`} onClick={() => handleImageSelect(image)} onDragStart={(e) => handleDragStart(e, image)} draggable>
-            {renderPreview(image)}
-          </div>
-        ))}
-        
-      </div>
+      {/* Conditionally render .ImagePreview and .assets-dragdrop */}
+      {!isDragging ? (
+        <div className="ImagePreview" onDragOver={handleDragOver} onDrop={handleDrop}>
+          {filteredHistory.map((image, index) => (
+            <div key={index} className={`image-preview ${image.url === selectedImage ? "selected" : ""}`} onClick={() => handleImageSelect(image)} onDragStart={(e) => handleDragStart(e, image)} draggable>
+              {renderPreview(image)}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="assets-dragdrop">
+          <i className="bi bi-box-arrow-in-down"></i>
+          <p>Add to my assets</p>
+        </div>
+      )}
+
       <div className="panel-toggle-wrapper">
         <i className={`bi ${isSidebarCollapsed ? "bi-chevron-right" : "bi-chevron-left"} panel-toggle-btn`} onClick={toggleSidebarCollapse}></i>
       </div>

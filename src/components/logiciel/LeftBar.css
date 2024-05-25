@@ -259,3 +259,26 @@
 .sidebar-collapsed {
   left: -536px; /* Hides the sidebar by moving it to the left */
 }
+
+.assets-dragdrop {
+  display: flex;
+flex-direction: column;
+margin: 10px 8px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+flex: 1 0 0;
+align-self: stretch;
+border: 1px dashed var(--text-editor);
+color: var(--text-editor);
+text-align: center;
+font-family: Outfit;
+font-size: 15px;
+font-style: normal;
+font-weight: 400;
+line-height: 120%; /* 18px */
+}
+.assets-dragdrop i {
+  font-size: 20px;
+}
+
