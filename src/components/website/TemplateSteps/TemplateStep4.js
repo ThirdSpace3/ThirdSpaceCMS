@@ -2,12 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import NavbarSteps from "./TemplateNavbar";
 // Import your template components
-import TemplateFullText from "../../../templates/EditableDiv";
-import TemplateImg_txt from "../../../templates/TemplateImg_txt";
-import { TemplateTest1 } from "../../../templates";
-import { Template2 } from "../../../templates";
 import SSSProduct from "../../../templates/3s-Product";
-
+import SSSPortfolio from "../../../templates/3s-Portfolio";
 // Assuming html2canvas is used elsewhere in your component or project
 
 const initialTemplates = [
@@ -16,6 +12,13 @@ const initialTemplates = [
     name: "SSSProduct",
     component: SSSProduct,
     screenshot: "./images/SSSProductscreenshot.png",
+  },
+
+  {
+    id: "SSSPortfolio",
+    name: "SSSPortfolio",
+    component: SSSPortfolio,
+    screenshot: "./images/SSSPortfolioscreenshot.png",
   },
   // {
   //   id: "TemplateFullText",

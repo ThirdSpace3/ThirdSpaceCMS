@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import '../../templates-po/feature.css';
+import '../css/feature.css';
 import { Link } from 'react-router-dom';
 
-import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
-import EditableButton from '../../../components/logiciel/TemplateComponent/EditableButton';
+import EditableText from '../../../../components/logiciel/TemplateComponent/EditableText';
+import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
 
-import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
-import { useStyle } from '../../../hooks/StyleContext';
-import { useImageHistory } from '../../../hooks/ImageHistoryContext';
+import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
+import { useStyle } from '../../../../hooks/StyleContext';
+import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import { get } from 'lodash';
 const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor, onContentChange }) => {
   const { getComponentStyle } = useStyle();

@@ -1,19 +1,13 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import TemplateFullText from '../templates/EditableDiv';
-import TemplateImg_txt from '../templates/TemplateImg_txt';
-import TemplateTest1 from '../templates/TemplateTest1';
-import { Template2 } from '../templates';
 import SSSProduct from '../templates/3s-Product';
+import SSSPortfolio from '../templates/3s-Portfolio';
 import TemplatePreviewTopbar from '../components/website/TemplatePreviewTopbar';
 import { useLocation } from 'react-router-dom';
 
 const templateComponents = {
-  TemplateFullText,
-  TemplateImg_txt,
-  TemplateTest1,
-  Template2,
   SSSProduct,
+  SSSPortfolio,
 };
 
 const TemplatePreview = () => {

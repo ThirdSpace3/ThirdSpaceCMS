@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import '../../templates-po/navbar.css';
-import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
-import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
-import { useStyle } from '../../../hooks/StyleContext';
-import { useImageHistory } from '../../../hooks/ImageHistoryContext';
-import EditableButton from '../../../components/logiciel/TemplateComponent/EditableButton';
+import EditableText from '../../../../components/logiciel/TemplateComponent/EditableText';
+import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
+import { useStyle } from '../../../../hooks/StyleContext';
+import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
+import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
+import '../css/navbar.css';
 
 const Navbar = ({
     openImagePanel,
@@ -158,13 +158,13 @@ const Navbar = ({
                 </ul>
                 <a href={navbarContent.joinUsNavLink.url} target={navbarContent.joinUsNavLink.openInNewTab ? "_blank" : "_self"} className='position-relative' onClick={(event) => handleComponentClick(event, 'joinUs')}>
                     <EditableButton
+                        className="sss-product-navbar-cta"
                         id='navbar-cta'
                         text={navbarContent.joinUsNav}
                         link={navbarContent.joinUsNavLink}
                         onChange={(newText) => handleTextChange(newText, 'navbar-cta')}
                         onLinkChange={(newLink) => handleLinkChange(newLink, 'navbar-cta')}
                         style={joinUsStylesNav}
-                        className="sss-product-navbar-cta"
                     />
                 </a>
             </nav>

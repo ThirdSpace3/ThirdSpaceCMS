@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import Navbar from "./TemplateComponents/3sProduct/3sproductNavbar";
-import HeaderSection from "./TemplateComponents/3sProduct/3sProductHeader";
-import PartnersSection from "./TemplateComponents/3sProduct/3sProductPartners";
-import AboutSection from "./TemplateComponents/3sProduct/3sProductAbout";
-import FeaturesSection from "./TemplateComponents/3sProduct/3sProductFeature";
-import JoinUsSection from "./TemplateComponents/3sProduct/3sProductJoinUs";
-import Footer from "./TemplateComponents/3sProduct/3sProductFooter";
+import Navbar from "./TemplateComponents/3sProduct/components/3sproductNavbar";
+import HeaderSection from "./TemplateComponents/3sProduct/components/3sProductHeader";
+import PartnersSection from "./TemplateComponents/3sProduct/components/3sProductPartners";
+import AboutSection from "./TemplateComponents/3sProduct/components/3sProductAbout";
+import FeaturesSection from "./TemplateComponents/3sProduct/components/3sProductFeature";
+import JoinUsSection from "./TemplateComponents/3sProduct/components/3sProductJoinUs";
+import Footer from "./TemplateComponents/3sProduct/components/3sProductFooter";
 
 const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logChange, selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);

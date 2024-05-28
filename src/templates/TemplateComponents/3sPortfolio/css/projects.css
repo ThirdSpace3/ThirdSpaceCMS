@@ -1,0 +1,25 @@
+@import './PortfolioVariables.css';
+
+.portfolio-projects {
+    background-color: var(--bg-color-primary);
+    color: var(--text-color-secondary);
+    padding: var(--base-padding);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: 20px auto;
+    max-width: 800px;
+  }
+  
+  .project-card {
+    background-color: var(--bg-color-secondary);
+    color: var(--text-color-primary);
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+  }
+  
+  .project-card:hover {
+    transform: translateY(-5px);
+  }

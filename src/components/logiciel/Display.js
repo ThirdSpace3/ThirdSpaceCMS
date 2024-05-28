@@ -26,6 +26,10 @@ export default function Display() {
   const [selectedColor, setSelectedColor] = useState(""); // State to hold the confirmed color
   const [showPopup, setShowPopup] = useState(false);
   const [TemplateContent, setTemplateContent] = useState({});
+
+  const walletId = sessionStorage.getItem('userAccount');
+  console.log(walletId);
+
   // const walletId = sessionStorage.getItem("userAccount");
   // console.log(walletId);
 

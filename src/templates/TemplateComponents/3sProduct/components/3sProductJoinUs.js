@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import '../../templates-po/joinus.css';
-import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
-import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
-import { useStyle } from '../../../hooks/StyleContext';
-import { useImageHistory } from '../../../hooks/ImageHistoryContext';
+import '../css/joinus.css';
+import EditableText from '../../../../components/logiciel/TemplateComponent/EditableText';
+import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
+import { useStyle } from '../../../../hooks/StyleContext';
+import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import { Link } from 'react-router-dom';
-import EditableButton from '../../../components/logiciel/TemplateComponent/EditableButton';
+import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
 
 const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setSelectedColor, onContentChange }) => {
   const { getComponentStyle, updateStyle } = useStyle();

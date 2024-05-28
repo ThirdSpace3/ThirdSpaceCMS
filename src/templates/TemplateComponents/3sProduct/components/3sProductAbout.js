@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import '../../templates-po/about.css';
-import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
-import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
-import { useStyle } from '../../../hooks/StyleContext';
-import { useImageHistory } from '../../../hooks/ImageHistoryContext';
+import '../css/about.css';
+import EditableText from '../../../../components/logiciel/TemplateComponent/EditableText';
+import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
+import { useStyle } from '../../../../hooks/StyleContext';
+import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 
 const AboutSection = ({
   handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor, onContentChange }) => {

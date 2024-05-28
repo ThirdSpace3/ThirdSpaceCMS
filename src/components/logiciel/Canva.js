@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './Canva.css';
 import '../Root.css';
-import TemplateFullText from '../../templates/EditableDiv';
-import TemplateImg_txt from '../../templates/TemplateImg_txt';
-import Template2 from '../../templates/Template2';
-import TemplateTest1 from '../../templates/TemplateTest1';
 import SSSProduct from '../../templates/3s-Product';
-import { useImageHistory } from '../../hooks/ImageHistoryContext';
+import SSSPortfolio from '../../templates/3s-Portfolio';
 
-export default function Canva({TemplateContent, setTemplateContent, selectedColor,setSelectedColor,logChange, templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
+export default function Canva({TemplateContent, setTemplateContent, selectedColor, setSelectedColor, logChange, templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
   const templateComponents = {
-    TemplateFullText,
-    TemplateImg_txt,
-    Template2,
-    TemplateTest1,
     SSSProduct,
+    SSSPortfolio
   };
 
   const FallbackTemplate = () => <div>Template not found.</div>;
@@ -25,11 +18,10 @@ export default function Canva({TemplateContent, setTemplateContent, selectedColo
   useEffect(() => {
     setCanvasSize({ width: deviceSize, height: '100vh' });
   }, [deviceSize]);
-  // console.log('selectElement prop in Canva:', selectElement);
 
   return (
     <div className='canva-wrapper' style={{ width: canvasSize.width, height: canvasSize.height, overflowY: 'auto' }}>
-     <SelectedTemplate
+      <SelectedTemplate
         deviceSize={deviceSize}
         settings={settings}
         handleSettingsChange={handleSettingsChange}

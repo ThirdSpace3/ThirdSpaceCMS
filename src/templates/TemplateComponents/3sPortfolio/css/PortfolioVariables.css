@@ -1,0 +1,20 @@
+:root {
+    --font-primary: 'Poppins', sans-serif; /* Primary font for headings and bold text */
+    --font-secondary: 'Inter', sans-serif; /* Secondary font for body text and details */
+    --headerContent-background-color: #0A0A23;
+    --PortfolioNavbar-background-color:'';
+    --PortfolioAbout-background-color:'';
+    --PortfolioContact-background-color:'';
+    --PortfolioExperience-background-color:'';
+    --PortfolioProjects-background-color:'';
+    --text-color-primary: #FFFFFF;
+    --text-color-secondary: #CCCCCC;
+    --accent-color: #C77BFF;
+    --base-padding: 20px;
+    --border-radius: 10px;
+    --box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    --transition: all 0.3s ease;
+  }
+  .portfolio-container{
+    background-color: var(--headerContent-background-color);
+  }

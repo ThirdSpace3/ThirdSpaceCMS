@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import '../../templates-po/footer.css';
-import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
-import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
-import { useStyle } from '../../../hooks/StyleContext';
-import { useImageHistory } from '../../../hooks/ImageHistoryContext';
+import '../css/footer.css';
+import EditableText from '../../../../components/logiciel/TemplateComponent/EditableText';
+import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
+import { useStyle } from '../../../../hooks/StyleContext';
+import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 
 const Footer = ({
   handleSettingsChange,

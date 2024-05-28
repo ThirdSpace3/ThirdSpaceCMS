@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import '../../templates-po/header.css';
-import EditableText from '../../../components/logiciel/TemplateComponent/EditableText';
-import ReusableImage from '../../../components/logiciel/TemplateComponent/ReusableImage';
-import EditableButton from '../../../components/logiciel/TemplateComponent/EditableButton';
-import { useStyle } from '../../../hooks/StyleContext';
-import { useImageHistory } from '../../../hooks/ImageHistoryContext';
+import '../css/header.css';
+import EditableText from '../../../../components/logiciel/TemplateComponent/EditableText';
+import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
+import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
+import { useStyle } from '../../../../hooks/StyleContext';
+import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 
 const HeaderSection = ({
   settings,

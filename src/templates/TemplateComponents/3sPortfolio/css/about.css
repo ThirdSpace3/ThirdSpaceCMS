@@ -1,0 +1,13 @@
+@import './PortfolioVariables.css';
+
+.portfolio-about {
+    background-color: var(--bg-color-primary);
+    color: var(--text-color-primary);
+    padding: var(--base-padding);
+    text-align: center;
+    font-family: var(--font-family);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin: 20px auto;
+    max-width: 800px;
+  }
