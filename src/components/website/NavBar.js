@@ -100,8 +100,8 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
             id="menuIcon"
             src={
               isMenuOpen
-                ? "/images/navbar-close.png"
-                : "/images/navbar-burger.png"
+                ? "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fnavbar-close.png?alt=media&token=3ececfa1-9c7d-450d-8443-53acccc54ffe"
+                : "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fnavbar-burger.png?alt=media&token=bf53017c-e2e0-4108-be6f-7a657e38f786"
             }
             alt=""
             onClick={toggleMenu}

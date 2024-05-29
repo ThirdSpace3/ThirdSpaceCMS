@@ -10,23 +10,36 @@ const AboutSection = ({
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
-  const [aboutImages, setAboutImages] = useState(Array(6).fill().map((_, i) => `gs://third--space.appspot.com/ImageLogiciel/templateimages/3sproduct-about-${i + 1}.png`));
+  // State for managing about images
+  const [aboutImages, setAboutImages] = useState(() => {
+    const storedImages = localStorage.getItem('about-images');
+    return storedImages ? JSON.parse(storedImages) : [
+      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-about-1.png?alt=media&token=9ca80d2e-270b-46a0-8557-433bfdada20a', id: 'aboutImage-1' },
+      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-about-2.png?alt=media&token=16fae0b2-1ee9-43f5-8e07-99f406f3ee2c', id: 'aboutImage-2' },
+      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-about-3.png?alt=media&token=5133fe7c-62b1-49db-9776-188c2aefe6de', id: 'aboutImage-3' },
+      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-about-4.png?alt=media&token=94093593-f989-4fc0-9ea5-4b3f8160ba33', id: 'aboutImage-4' },
+      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-about-5.png?alt=media&token=85a1cb0d-da50-4649-82a1-dfed7e70e6a5', id: 'aboutImage-5' },
+      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-about-6.png?alt=media&token=995009fa-e65d-4953-8492-2a3e2ca9070a', id: 'aboutImage-6' }
+    ];
+  });
+
   // Initialize feature titles and descriptions with unique placeholder texts for each card
   const [aboutTitleText, setAboutTitleText] = useState(localStorage.getItem('about-title-text') || 'The best features to help you create all your projects');
   const [aboutDescriptionText, setAboutDescriptionText] = useState(localStorage.getItem('about-description-text') || 'Apsum dolor sit amet consectetur...');
-  
+
   const [featureTitles, setFeatureTitles] = useState(
     Array(6).fill().map((_, i) => localStorage.getItem(`feature-title-${i}`) || `Feature Title ${i + 1}`)
   );
   const [featureDescriptions, setFeatureDescriptions] = useState(
     Array(6).fill().map((_, i) => localStorage.getItem(`feature-description-${i}`) || 'Feature description for item ' + (i + 1))
   );
-  
+
   const aboutStyles = getComponentStyle('about');
   const aboutTitleStyle = getComponentStyle('title');
   const aboutDescriptionStyles = getComponentStyle('description');
   const featureTitlesStyles = getComponentStyle('featureTitles');
   const featureDescriptionsStyles = getComponentStyle('featureDescriptions');
+
   // Initialize styles for each feature card
   const [featureTitleStyles, setFeatureTitleStyles] = useState(Array(6).fill().map(() => ({ featureTitlesStyles })));
   const [featureDescriptionStyles, setFeatureDescriptionStyles] = useState(Array(6).fill().map(() => ({ featureDescriptionsStyles })));
@@ -39,10 +52,10 @@ const AboutSection = ({
       img.onload = () => resolve(img.height);
     });
   };
-  useEffect(() => {
-    getImageHeight(`gs://third--space.appspot.com/ImageLogiciel/templateimages/3sproduct-about-1.png`).then((height) => setImageHeight(height));
-  }, []);
 
+  useEffect(() => {
+    getImageHeight('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-about-1.png?alt=media&token=9ca80d2e-270b-46a0-8557-433bfdada20a').then((height) => setImageHeight(height));
+  }, []);
 
   const handleComponentClick = (event, identifier, index = null) => {
     event.preventDefault();
@@ -55,7 +68,6 @@ const AboutSection = ({
     console.log(`${identifier} at index ${index} clicked, setting selected element to '${elementID}'`);
     setSelectedElement(elementID);
   };
-
 
   const handleTextChange = (newText, identifier, index = null) => {
     if (identifier === 'title') {
@@ -81,13 +93,11 @@ const AboutSection = ({
     }
     updateStyle(identifier, { text: newText });
   };
-  
-
 
   useEffect(() => {
-    const cssVarName = `--about-background-color`;
+    const cssVarName = '--about-background-color';
     const storedColor = localStorage.getItem(cssVarName);
-    
+
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);
@@ -102,20 +112,20 @@ const AboutSection = ({
       images: aboutImages,
       features: featureTitles.map((title, i) => ({ title, description: featureDescriptions[i] }))
     });
+    localStorage.setItem('about-images', JSON.stringify(aboutImages));
   }, [aboutTitleText, aboutDescriptionText, aboutImages, featureTitles, featureDescriptions, onContentChange]);
 
-
   return (
-    <div className="sss-product-about" style={{ ...aboutStyles}} id='about' onClick={(event) => handleComponentClick(event, 'about')}>
+    <div className="sss-product-about" style={{ ...aboutStyles }} id='about' onClick={(event) => handleComponentClick(event, 'about')}>
       <div className="sss-product-about-header">
-        <h2 className="sss-product-about-title" id='title' onClick={(event) => handleComponentClick(event, 'title')} >
+        <h2 className="sss-product-about-title" id='title' onClick={(event) => handleComponentClick(event, 'title')}>
           <EditableText
             text={aboutTitleText}
             onChange={(text) => handleTextChange(text, 'title')}
             style={{ ...aboutTitleStyle }}
           />
         </h2>
-        <p className="sss-product-about-text" id='description' onClick={(event) => handleComponentClick(event, 'description')} >
+        <p className="sss-product-about-text" id='description' onClick={(event) => handleComponentClick(event, 'description')}>
           <EditableText
             text={aboutDescriptionText}
             onChange={(text) => handleTextChange(text, 'description')}
@@ -124,13 +134,18 @@ const AboutSection = ({
         </p>
       </div>
       <div className="sss-product-about-box">
-        {aboutImages.map((src, index) => (
-          <div key={index} className="sss-product-about-item">
+        {aboutImages.map((image, index) => (
+          <div key={image.id} className="sss-product-about-item">
             <ReusableImage
-              src={src}
+              src={image.src}
               alt={`Feature ${index + 1}`}
               openImagePanel={() => openImagePanel(`aboutImage-${index}`)}
-              onImageChange={(newSrc) => selectImage(newSrc, index)}
+              onImageChange={(newSrc) => {
+                const updatedImages = [...aboutImages];
+                updatedImages[index].src = newSrc;
+                setAboutImages(updatedImages);
+                selectImage(newSrc, index);
+              }}
               selectedImage={activeComponent === `aboutImage-${index}` ? selectedImage : null}
               style={{ height: '150px', width: 'auto' }}
               identifier={`aboutImage-${index}`}
@@ -153,9 +168,6 @@ const AboutSection = ({
           </div>
         ))}
       </div>
-
-
-
     </div>
   );
 };

@@ -9,46 +9,42 @@ import BorderSettings from "./RightBarComponents/BorderSettings";
 import BackgroundSettings from "./RightBarComponents/BackgroundSettings";
 import TypographySettings from "./RightBarComponents/TypographySettings";
 import { useImageHistory } from '../../hooks/ImageHistoryContext';
-export default function RightBar({handleSettingsChange, selectedElement, logChange, selectedColor, setSelectedColor }) {
+export default function RightBar({ handleSettingsChange, selectedElement, logChange, selectedColor, setSelectedColor }) {
+    const { addImageToHistory } = useImageHistory();
+    const [isOpen, setIsOpen] = useState({
+      size: true,
+      background: true,
+      typographie: true,
+      border: true,
+      logs: true,
+    });
   
-  const { addImageToHistory } = useImageHistory();
-
-  const [isOpen, setIsOpen] = useState({
-    size: true,
-    background: true,
-    typographie: true,
-    border: true,
-    logs: true,  // Added a toggle for the Log Viewer
-
-  });  
-  const toggleSection = (section) => {
-    setIsOpen((prevState) => ({
-      ...prevState,
-      [section]: !prevState[section],
-    }));
-  };
-
-  const onSettingsChange = (elementId, newStyles) => {
-    const element = document.getElementById(elementId);
-    if (element) {
-      // Apply the new styles to the element
-      Object.keys(newStyles).forEach(styleKey => {
-        const styleValue = newStyles[styleKey];
-        if (typeof styleValue === 'object') {
-          Object.keys(styleValue).forEach(subKey => {
-            element.style[subKey] = styleValue[subKey];
-          });
-        } else {
-          element.style[styleKey] = styleValue;
-        }
-      });
-      logChange(elementId, newStyles);  // Log this change
-      console.log(`Styles applied to ${elementId}:`, newStyles);
-      handleSettingsChange(elementId, newStyles); // Update settings in Display component
-    } else {
-      console.error(`No element found with ID ${elementId}`);
-    }
-  };
+    const toggleSection = (section) => {
+      setIsOpen((prevState) => ({
+        ...prevState,
+        [section]: !prevState[section],
+      }));
+    };
+  
+    const onSettingsChange = (elementId, newStyles) => {
+      const element = document.getElementById(elementId);
+      if (element) {
+        Object.keys(newStyles).forEach(styleKey => {
+          const styleValue = newStyles[styleKey];
+          if (typeof styleValue === 'object') {
+            Object.keys(styleValue).forEach(subKey => {
+              element.style[subKey] = styleValue[subKey];
+            });
+          } else {
+            element.style[styleKey] = styleValue;
+          }
+        });
+        logChange(elementId, newStyles);
+        handleSettingsChange(elementId, newStyles);
+      } else {
+        console.error(`No element found with ID ${elementId}`);
+      }
+    };
   return (
     <>
       <div className="rightbar-wrapper">
