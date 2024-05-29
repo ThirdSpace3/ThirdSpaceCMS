@@ -45,12 +45,12 @@ function Header({ checkWalletData }) {
           <div className="header__cta">
             <a className="purple-btn" id="getstarted-btn" onClick={toggleWalletPopup}>Get Started</a>
             <a href="https://discord.gg/dked3DEngT" className="purple-light-btn" target='_blank'>
-              <img src="./images/logo-discord-1.png" alt="" className="cta-icon" />Join the community
+              <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-discord-1.png?alt=media&token=e4217e64-8ce7-466e-a29c-c097508e506b" alt="" className="cta-icon" />Join the community
             </a>
           </div>
         </div>
         <div className="header__right">
-          <img src="./images/header-img.png" alt=""/>
+          <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fheader-img.png?alt=media&token=b2aeaa97-1713-4b21-9fa6-00195415cc4e" alt=""/>
         </div>
       </section>
       {showWalletPopup && <PopupWallet onClose={toggleWalletPopup} onUserLogin={handleUserLogin} checkWalletData={checkWalletData} />}

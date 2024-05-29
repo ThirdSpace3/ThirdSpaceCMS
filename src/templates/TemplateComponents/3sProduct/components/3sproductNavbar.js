@@ -21,7 +21,7 @@ const Navbar = ({
         navfeatures: localStorage.getItem('navbar-navfeatures-text') || 'Features',
         joinUsNav: localStorage.getItem('navbar-navbar-cta-text') || 'Join Us',
         joinUsNavLink: JSON.parse(localStorage.getItem('navbar-navbar-cta-link')) || { url: '#', openInNewTab: false },
-        image: "./images/templates-img/3sproduct/3sproduct-logo.png"
+        image: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-logo.png?alt=media&token=7e46320d-7e7d-45a2-9684-6ac565f97c71"
     });
 
     const [imageHeight, setImageHeight] = useState(null);

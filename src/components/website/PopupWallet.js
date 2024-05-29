@@ -219,14 +219,14 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     <div className="popup" id="popup" style={{ display: "flex" }}>
       <div className="popup-content">
         <img
-          src="/images/navbar-close.png"
+          src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fnavbar-close.png?alt=media&token=3424048f-f9b6-4779-8229-c671b9d3b7ae"
           alt="Close"
           className="close-button"
           onClick={onClose}
         />
         <div className="popup-wallet-header">
           <img
-            src="./images/3s-logo-picto.png"
+            src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2F3s-logo-picto.png?alt=media&token=eccaecaa-e624-4bb4-a1ad-54f181d09510"
             className="popup-wallet-main-img"
           />
           <h2>Connect to Third Space</h2>
@@ -250,7 +250,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
             className="wallet-btn"
             onClick={handleLoginWithPhantom}
           >
-            <img src="/images/phantom-logo.png" alt="" />
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fphantom-logo.png?alt=media&token=5ffe611b-3ccd-4663-81e4-59feeb1dbba7" alt="" />
             Continue with Phantom
           </button>
           {/* Metamask */}
@@ -259,7 +259,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
             className="wallet-btn"
             onClick={handleLoginWithMetamask}
           >
-            <img src="/images/metamask-logo.png" alt="" />
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmetamask-logo.png?alt=media&token=507097be-0cc4-4d93-a87b-99c67d82cfe5" alt="" />
             Continue with Metamask
           </button>
           {/* Unstoppable */}
@@ -268,7 +268,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
             className="wallet-btn"
             onClick={handleLoginWithUnstoppable}
           >
-            <img src="/images/unstoppable-logo.png" alt="" />
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Funstoppable-logo.png?alt=media&token=0f717b17-649d-4265-a93e-574fe086de32" alt="" />
             Continue with Unstoppable
           </button>
           {/* Coming Soon */}

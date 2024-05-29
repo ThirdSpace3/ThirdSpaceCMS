@@ -26,7 +26,7 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
     return storedText ? storedText : 'Join Us';
   });
 
-  const [joinUsImageUrl, setJoinUsImageUrl] = useState("./images/templates-img/3sproduct/3sproduct-joinus-1.png");
+  const [joinUsImageUrl, setJoinUsImageUrl] = useState("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-joinus-1.png?alt=media&token=ab70cb1a-9791-4402-b8db-76c1c790ec91");
 
   const JoinUsStyles = getComponentStyle('joinUs');
   const joinUsTitleStyles = getComponentStyle('joinUsTitle');

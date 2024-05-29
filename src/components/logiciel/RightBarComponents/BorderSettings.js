@@ -132,21 +132,21 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
             </div>
             <div className="borders-selection-icon-box">
               <div className={`borders-selection-icon ${activeBorderSide === "top" ? "active-border-icon" : ""}`} onClick={() => setActiveBorderSide("top")}>
-                <img src="./images/borders-top-icon.png" />
+                <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Frightbar%2Fborders-top-icon.png?alt=media&token=115d5f29-9523-4e71-8cc7-a64aa5aac7bf" />
               </div>
               <div className="borders-selection-icon-side">
                 <div className={`borders-selection-icon ${activeBorderSide === "left" ? "active-border-icon" : ""}`} onClick={() => setActiveBorderSide("left")}>
-                  <img src="./images/borders-left-icon.png" />
+                  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Frightbar%2Fborders-left-icon.png?alt=media&token=bbee1697-1a24-42a8-91f3-50e499080a49" />
                 </div>
                 <div className={`borders-selection-icon ${activeBorderSide === "all" ? "active-border-icon" : ""}`} onClick={() => setActiveBorderSide("all")}>
-                  <img src="./images/borders-all-icon.png" />
+                  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Frightbar%2Fborders-all-icon.png?alt=media&token=8d7888b1-adf4-4630-b9a6-ce2623f734db" />
                 </div>
                 <div className={`borders-selection-icon ${activeBorderSide === "right" ? "active-border-icon" : ""}`} onClick={() => setActiveBorderSide("right")}>
-                  <img src="./images/borders-right-icon.png" />
+                  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Frightbar%2Fborders-right-icon.png?alt=media&token=d662d919-13b0-4dfa-83ad-9329e618ffec" />
                 </div>
               </div>
               <div className={`borders-selection-icon ${activeBorderSide === "bottom" ? "active-border-icon" : ""}`} onClick={() => setActiveBorderSide("bottom")}>
-                <img src="./images/borders-bottom-icon.png" />
+                <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Frightbar%2Fborders-bottom-icon.png?alt=media&token=ab9d150d-5e6d-4224-8b82-e4a29b8239e6" />
               </div>
             </div>
           </div>

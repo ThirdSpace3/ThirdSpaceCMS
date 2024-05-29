@@ -95,7 +95,7 @@ export default function BillingDashboard() {
                     Freemium
                   </h3>
                   <div className="dashboard-billing-plans-price">
-                    <img src="./images/icon-usdc.png" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Fmain%2Ficon-usdc.png?alt=media&token=61dea3a4-ca19-411a-bd5e-b93bafae1717" />
                     <p className="dashboard-billing-plans-price-tag">0</p>
                     <p className="dashboard-billing-plans-price-label">
                       / Month (HT)
@@ -139,7 +139,7 @@ export default function BillingDashboard() {
                     Basic
                   </h3>
                   <div className="dashboard-billing-plans-price">
-                    <img src="./images/icon-usdc.png" />
+                  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Fmain%2Ficon-usdc.png?alt=media&token=61dea3a4-ca19-411a-bd5e-b93bafae1717" />
                     <p className="dashboard-billing-plans-price-tag-white">
                       12.49
                     </p>
@@ -185,7 +185,7 @@ export default function BillingDashboard() {
                     Profesionnal
                   </h3>
                   <div className="dashboard-billing-plans-price">
-                    <img src="./images/icon-usdc.png" />
+                  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Fmain%2Ficon-usdc.png?alt=media&token=61dea3a4-ca19-411a-bd5e-b93bafae1717" />
                     <p className="dashboard-billing-plans-price-tag">29.99</p>
                     <p className="dashboard-billing-plans-price-label">
                       / Month (HT)
@@ -229,7 +229,7 @@ export default function BillingDashboard() {
                       Extension Pack
                     </h3>
                     <div className="dashboard-billing-plans-price">
-                      <img src="./images/icon-usdc.png" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Fmain%2Ficon-usdc.png?alt=media&token=61dea3a4-ca19-411a-bd5e-b93bafae1717" />
                       <p className="dashboard-billing-plans-price-tag">9.99</p>
                       <p className="dashboard-billing-plans-price-label">
                         / Month (HT)
@@ -307,7 +307,7 @@ export default function BillingDashboard() {
                 </a>
               </div>
               <div className="dashboard-billing-plans-price">
-                <img src="./images/icon-usdc.png" />
+              <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Fmain%2Ficon-usdc.png?alt=media&token=61dea3a4-ca19-411a-bd5e-b93bafae1717" />
                 <p className="dashboard-billing-plans-price-tag">5.99</p>
                 <p className="dashboard-billing-plans-price-label">
                   / Month (HT)

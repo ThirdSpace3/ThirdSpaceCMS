@@ -10,7 +10,7 @@ const AboutSection = ({
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
-  const [aboutImages, setAboutImages] = useState(Array(6).fill().map((_, i) => `./images/templates-img/3sproduct/3sproduct-about-${i + 1}.png`));
+  const [aboutImages, setAboutImages] = useState(Array(6).fill().map((_, i) => `gs://third--space.appspot.com/ImageLogiciel/templateimages/3sproduct-about-${i + 1}.png`));
   // Initialize feature titles and descriptions with unique placeholder texts for each card
   const [aboutTitleText, setAboutTitleText] = useState(localStorage.getItem('about-title-text') || 'The best features to help you create all your projects');
   const [aboutDescriptionText, setAboutDescriptionText] = useState(localStorage.getItem('about-description-text') || 'Apsum dolor sit amet consectetur...');
@@ -40,7 +40,7 @@ const AboutSection = ({
     });
   };
   useEffect(() => {
-    getImageHeight(`./images/templates-img/3sproduct/3sproduct-about-1.png`).then((height) => setImageHeight(height));
+    getImageHeight(`gs://third--space.appspot.com/ImageLogiciel/templateimages/3sproduct-about-1.png`).then((height) => setImageHeight(height));
   }, []);
 
 

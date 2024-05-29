@@ -19,7 +19,8 @@ const PartnersSection = ({
   // State for managing partner title and images
   const [partnersTitleText, setPartnersTitleText] = useState(localStorage.getItem('partners-partnersTitle-text') || 'Trusted by teams at over 1,000 of the world\'s leading organizations');
   const [partnerImages, setPartnerImages] = useState(() => Array(7).fill().map((_, i) => ({
-    src: `./images/templates-img/3sproduct/3sproduct-partners-${i + 1}.png`,
+    
+    src: `gs://third--space.appspot.com/ImageLogiciel/templateimages/3sproduct-partners-${i + 1}.png`,
     id: `partnerImage-${i + 1}`
   })));
 

@@ -20,9 +20,9 @@ const Footer = ({
   const [aboutText, setAboutText] = useState(localStorage.getItem('aboutText') || 'About');
   const [featuresText, setFeaturesText] = useState(localStorage.getItem('featuresText') || 'Features');
 
-  const [footerLogoSrc, setFooterLogoSrc] = useState("./images/templates-img/3sproduct/3sproduct-logo.png");
-  const [footerTwitterSrc, setFooterTwitterSrc] = useState("./images/templates-img/3sproduct/3sproduct-footer-1.png");
-  const [footerLinkedInSrc, setFooterLinkedInSrc] = useState("./images/templates-img/3sproduct/3sproduct-footer-4.png");
+  const [footerLogoSrc, setFooterLogoSrc] = useState("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-logo.png?alt=media&token=7e46320d-7e7d-45a2-9684-6ac565f97c71");
+  const [footerTwitterSrc, setFooterTwitterSrc] = useState("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-footer-1.png?alt=media&token=44a94263-3fb4-4f6f-a9a0-d030033c136d");
+  const [footerLinkedInSrc, setFooterLinkedInSrc] = useState("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-footer-4.png?alt=media&token=b8d5125f-8b20-4701-86fd-8defd1aef14e");
 
   // Dynamically update parent component state
   useEffect(() => {

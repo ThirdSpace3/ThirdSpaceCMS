@@ -49,7 +49,7 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
     <nav className="navbar__padding">
       <div className="navbar__pc">
         <a href="/#/home" className="nav__logo">
-          <img src="./images/3s-logo.png" alt="thirdspace logo" />
+          <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
         </a>
         <div className="navbar__right">
           <ul className="nav__links nav-bg">
@@ -93,7 +93,7 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
       <div className="navbar__mobile">
         <div className="navbar__mobile-head">
           <a href="index.html" className="nav__logo">
-            <img src="/images/3s-logo.png" alt="thirdspace logo" />
+          <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
           </a>
           <img
             className="navbar__mobile-menuIcon"

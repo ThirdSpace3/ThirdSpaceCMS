@@ -22,7 +22,7 @@ const HeaderSection = ({
     heroDescription: localStorage.getItem('header-heroDescription-text') || 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
     herojoinUs: localStorage.getItem('header-header-cta-text') || 'Join Us',
     herojoinUsLink: JSON.parse(localStorage.getItem('header-joinUs-link')) || { url: '#', openInNewTab: false },
-    image: localStorage.getItem('header-image') || "./images/templates-img/3sproduct/3sproduct-hero.png"
+    image: localStorage.getItem('header-image') || "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-hero.png?alt=media&token=44a64698-ecd8-4bca-8dea-b522c6505eed"
   });
 
   const headerStyle = getComponentStyle('header');

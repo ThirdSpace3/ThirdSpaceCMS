@@ -71,9 +71,9 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
   });
 
   // State for image sources
-  const [feature1Image, setFeature1Image] = useState('./images/templates-img/3sproduct/3sproduct-feature-1.png');
-  const [feature2Image, setFeature2Image] = useState('./images/templates-img/3sproduct/3sproduct-feature-2.png');
-  const [feature3Image, setFeature3Image] = useState('./images/templates-img/3sproduct/3sproduct-feature-3.png');
+  const [feature1Image, setFeature1Image] = useState('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-feature-1.png?alt=media&token=b7b15512-08ec-4d4a-a27f-f9dc04cbb5d5');
+  const [feature2Image, setFeature2Image] = useState('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-feature-2.png?alt=media&token=832071f6-e477-4f93-b294-ec2b2263ab18');
+  const [feature3Image, setFeature3Image] = useState('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-feature-3.png?alt=media&token=4b618f41-4413-463e-b04d-f785eac8c15f');
   const [imageHeight1, setImage1Height] = useState(null);
   const [imageHeight2, setImage2Height] = useState(null);
   const [imageHeight3, setImage3Height] = useState(null);

@@ -64,7 +64,7 @@ function HowItWork({ checkWalletData }) {
                 <p>Using and easy process, create an account with your wallets and start creating your own space.</p>
                 <button className="purple-light-btn mobile-get-started" onClick={toggleWalletPopup}>Get Started</button>
               </div>
-              <img src="./images/howitworkd-1.png" alt=""/>
+              <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fhowitworkd-1.png?alt=media&token=7047dfd5-6aa9-43b0-9190-b95c8e2b9120" alt=""/>
             </div>
           </div>
         )}
@@ -76,7 +76,7 @@ function HowItWork({ checkWalletData }) {
                 <p>Choose between our solutions what work best for you. Be accompanied at each step of the process.</p>
                 <button className="purple-light-btn mobile-get-started" onClick={toggleWalletPopup}>Get Started</button>
               </div>
-              <img src="./images/howitworkd-2.png" alt=""/>
+              <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fhowitworkd-2.png?alt=media&token=93370f54-755e-4043-9020-a8a4b3e31025" alt=""/>
             </div>
           </div>
         )}
@@ -88,7 +88,7 @@ function HowItWork({ checkWalletData }) {
                 <p>Now that your solution is defined, you can start to put your imagination and creativity to work to bring your new project to life.</p>
                 <button className="purple-light-btn mobile-get-started" onClick={toggleWalletPopup}>Get Started</button>
               </div>
-              <img src="./images/howitworkd-3.png" alt=""/>
+              <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fhowitworkd-3.png?alt=media&token=8de70d41-e97e-47bc-b48e-e86d0990cff1" alt=""/>
             </div>
           </div>
         )}
