@@ -5,13 +5,12 @@ import "../Root.css";
 import { db, doc, getDoc, setDoc, updateDoc } from '../../firebaseConfig';
 import { wait } from "@testing-library/user-event/dist/utils";
 import ReactGA from 'react-ga';
-
+import UAuth from '@uauth/js'
 // Initialize Google Analytics
 ReactGA.initialize('G-83NKPT3B9E');
 
 function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
   const [showMore, setShowMore] = useState(false);
-  const [wallets, setWallets] = useState({ hasEthereum: false, hasSolana: false });
   const [walletAvailable, setWalletAvailable] = useState(true);
   const [phantomInitiated, setPhantomInitiated] = useState(false);
   const [customErrorMessage, setCustomErrorMessage] = useState("");
@@ -30,8 +29,8 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     });
   };
 
-  const saveLoginEvent = async (walletId, walletType) => {
-    const userRef = doc(db, 'wallets', walletId);
+  const saveLoginEvent = async (userId, walletType) => {
+    const userRef = doc(db, 'wallets', userId);
     const userDoc = await getDoc(userRef);
 
     if (userDoc.exists()) {
@@ -42,7 +41,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
       });
     } else {
       await setDoc(userRef, {
-        walletId,
+        userId,
         walletType,
         firstLogin: new Date().toISOString(),
         lastLogin: new Date().toISOString(),
@@ -50,7 +49,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
       });
     }
 
-    console.log("Login event saved to Firestore:", walletId);
+    console.log("Login event saved to Firestore:", userId);
   };
 
   const authenticateWithEthereum = async (walletId) => {
@@ -74,15 +73,33 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     } catch (error) {
       console.error("Error during Solana authentication:", error);
     }
+    
   };
 
-  const processLogin = (walletId, walletType) => {
+  const authenticateWithUnstoppable = async (authorization) => {
+    try {
+      console.log("Authorization object:", authorization);
+      const userId = authorization.idToken.sub;
+
+      if (!userId) {
+        throw new Error("Username is undefined in the authorization object");
+      }
+
+      console.log("Authenticated username:", userId);
+      processLogin(userId, 'Unstoppable');
+    } catch (error) {
+      console.error("Error during Unstoppable authentication:", error);
+      setCustomErrorMessage('Unstoppable authentication failed. Please try again.');
+    }
+  };
+
+  const processLogin = (userId, walletType) => {
     if (typeof onUserLogin === "function") {
-      onUserLogin(walletId);
+      onUserLogin(userId);
       sessionStorage.setItem("isLoggedIn", "true");
-      sessionStorage.setItem("userAccount", walletId);
-      checkWalletData(walletId);
-      saveLoginEvent(walletId, walletType);
+      sessionStorage.setItem("userAccount", userId);
+      checkWalletData(userId);
+      saveLoginEvent(userId, walletType);
     } else {
       console.error("onUserLogin is not a function");
     }
@@ -108,6 +125,8 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
         authenticateWithEthereum(account);
       } catch (error) {
         console.error("Error with MetaMask login:", error);
+        setCustomErrorMessage('MetaMask authentication failed. Please try again.');
+
       }
     } else {
       console.log("MetaMask is not installed");
@@ -133,7 +152,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
         authenticateWithSolana(publicKey);
       } catch (error) {
         console.error("Error connecting to Phantom:", error);
-        setCustomErrorMessage('Something went wrong, check if your wallet is correctly installed. If its the case try refreshing the page');
+        setCustomErrorMessage('Phantom authentication failed. Please try again.');
       }
     } else {
       if (phantomInitiated) {
@@ -144,6 +163,23 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
         console.log("Phantom wallet is not installed. Please install and retry.");
         setPhantomInitiated(true);
       }
+    }
+  };
+
+  const handleLoginWithUnstoppable = async () => {
+    logEvent('Click', 'Unstoppable Login Attempt');
+    const uauth = new UAuth({
+      clientID: "65f44ad3-b7ad-4e87-b782-9654d7257a4c",
+      redirectUri: "http://localhost:3000",
+      scope: "openid wallet"
+    });
+
+    try {
+      const authorization = await uauth.loginWithPopup();
+      authenticateWithUnstoppable(authorization);
+    } catch (error) {
+      console.error("Error with Unstoppable login:", error);
+      setCustomErrorMessage('Unstoppable login failed. Please try again.');
     }
   };
 
@@ -225,6 +261,15 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
           >
             <img src="/images/metamask-logo.png" alt="" />
             Continue with Metamask
+          </button>
+          {/* Unstoppable */}
+          <button
+            id="unstoppable"
+            className="wallet-btn"
+            onClick={handleLoginWithUnstoppable}
+          >
+            <img src="/images/unstoppable-logo.png" alt="" />
+            Continue with Unstoppable
           </button>
           {/* Coming Soon */}
           <button className="wallet-btn wallet-btn-comingsoon">
