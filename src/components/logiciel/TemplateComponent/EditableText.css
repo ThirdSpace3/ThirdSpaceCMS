@@ -13,13 +13,13 @@
 
 .editable-text-input:focus, .editable-text-input.active, .editable-text-input:hover {
   background-color: red;  /* light blue background to indicate focus or hover */
-  border: 2px solid #217bf4;   /* blue border to indicate focus or selection */
+  outline: 2px solid #217bf4;   /* blue border to indicate focus or selection */
   cursor: text;                /* cursor changes to indicate editable */
 }
 
 .editable-text-span:hover, .editable-text-span.active {
   /* background-color: aliceblue;  light blue background for hover */
-  border: 2px solid #217bf4;   /* blue border for hover */
+  outline: 2px solid #217bf4;   /* blue border for hover */
   cursor: pointer;             /* cursor changes to indicate it's clickable */
 }
 

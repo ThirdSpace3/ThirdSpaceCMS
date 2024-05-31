@@ -120,11 +120,9 @@
   
 
 .image-component:hover {
-  border: 2px solid #217bf4;
   cursor: pointer;
 }
 .image-component:focus-within {
-  border: 2px solid #217bf4;
   cursor: pointer;
 
 }

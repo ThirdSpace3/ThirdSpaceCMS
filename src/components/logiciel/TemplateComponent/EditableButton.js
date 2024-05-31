@@ -13,7 +13,6 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
   const modalRef = useRef(null);
 
   useEffect(() => {
-    // Retrieve data from local storage when the component mounts
     const savedText = localStorage.getItem(`editableButtonText-${id}`);
     const savedLink = localStorage.getItem(`editableButtonLink-${id}`);
     const savedOpenInNewTab = localStorage.getItem(`editableButtonOpenInNewTab-${id}`);
@@ -123,7 +122,13 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
               <label className='link-settings-target-chooser'>
                 <input
                   type="checkbox"
-                  onChange={() => setOpenInNewTab(!openInNewTab)}
+                  onChange={() => {
+                    setOpenInNewTab(prev => {
+                      const newValue = !prev;
+                      console.log("Checkbox clicked, openInNewTab:", newValue); // Debug log
+                      return newValue;
+                    });
+                  }}
                   checked={openInNewTab}
                 />
                 Open in new tab

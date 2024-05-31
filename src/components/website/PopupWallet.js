@@ -128,6 +128,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
       }
     } else {
       console.log("MetaMask is not installed");
+      setCustomErrorMessage('MetaMask is not installed. Install it and try again.');
     }
   };
 
