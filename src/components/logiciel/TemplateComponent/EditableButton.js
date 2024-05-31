@@ -9,14 +9,31 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
   const [error, setError] = useState(false);
   const [isLinkEditing, setIsLinkEditing] = useState(false);
   const buttonRef = useRef(null);
-  const textAreaRef = useRef(null);
-  const textWidthRef = useRef(null);
+  const textRef = useRef(null);
   const modalRef = useRef(null);
 
+  useEffect(() => {
+    // Retrieve data from local storage when the component mounts
+    const savedText = localStorage.getItem(`editableButtonText-${id}`);
+    const savedLink = localStorage.getItem(`editableButtonLink-${id}`);
+    const savedOpenInNewTab = localStorage.getItem(`editableButtonOpenInNewTab-${id}`);
+
+    if (savedText) {
+      setCurrentText(savedText);
+    }
+    if (savedLink) {
+      setCurrentLink(savedLink);
+    }
+    if (savedOpenInNewTab !== null) {
+      setOpenInNewTab(JSON.parse(savedOpenInNewTab));
+    }
+  }, [id]);
+
   const handleInputChange = (event) => {
-    const inputText = event.target.value;
+    const inputText = event.target.innerText;
     setError(inputText.length >= 250);
     setCurrentText(inputText);
+    localStorage.setItem(`editableButtonText-${id}`, inputText);
   };
 
   const handleBlur = (event) => {
@@ -50,6 +67,8 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
     onLinkChange({ url: currentLink, openInNewTab });
     setIsEditing(false);
     setIsLinkEditing(false);
+    localStorage.setItem(`editableButtonLink-${id}`, currentLink);
+    localStorage.setItem(`editableButtonOpenInNewTab-${id}`, openInNewTab);
   };
 
   useEffect(() => {
@@ -58,7 +77,6 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
       if (modalRef.current && !modalRef.current.contains(event.target) && event.target !== editLinkButton) {
         setIsLinkEditing(false);
         setIsEditing(false);
-        event.preventDefault();  // <-- This might be causing issues
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -69,53 +87,47 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
 
   useEffect(() => {
     if (isEditing) {
-      textAreaRef.current.focus();
+      textRef.current.focus();
     }
   }, [isEditing]);
 
-  useEffect(() => {
-    console.log("Component rendered with openInNewTab:", openInNewTab);
-  }, [openInNewTab]);
   return (
     <>
       {isEditing ? (
         <>
-          <textarea
-            ref={textAreaRef}
-            value={currentText}
-            onChange={handleInputChange}
+          <div
+            ref={textRef}
+            contentEditable
+            suppressContentEditableWarning
             onBlur={handleBlur}
+            onInput={handleInputChange}
             className={`${className} editable-button-textarea ${error ? 'error' : ''}`}
-            style={{ ...style, resize: 'none' }}
-            maxLength={250}
-          />
+            style={{ ...style }}
+          >
+            {currentText}
+          </div>
           {!isLinkEditing && (
-            <button onClick={toggleLinkEdit} className="edit-link-button">Edit Link <i class="bi bi-pencil-square"></i></button>
+            <button onClick={toggleLinkEdit} className="edit-link-button">Edit Link <i className="bi bi-pencil-square"></i></button>
           )}
           {isLinkEditing && (
             <div ref={modalRef} className="link-settings-modal">
               <div className='link-title'>
-              <h4>Link Settings</h4>
-              <button className="link-close-button" onClick={toggleLinkEdit}><i class="bi bi-x"></i></button>
+                <h4>Link Settings</h4>
+                <button className="link-close-button" onClick={toggleLinkEdit}><i className="bi bi-x"></i></button>
               </div>
               <hr />
               <div className='link-settings-content'>
                 <p>URL</p>
                 <input type="text" value={currentLink} onChange={e => setCurrentLink(e.target.value)} />
               </div>
-              <label className='link-settings-target-chooser' onClick={(e) => setOpenInNewTab(!openInNewTab)}>
-              <input
+              <label className='link-settings-target-chooser'>
+                <input
                   type="checkbox"
-                  onChange={(e) => {
-                    console.log("Checkbox clicked, current state:", openInNewTab);
-                    setOpenInNewTab(!openInNewTab);
-                  }}
+                  onChange={() => setOpenInNewTab(!openInNewTab)}
                   checked={openInNewTab}
                 />
                 Open in new tab
               </label>
-
-
             </div>
           )}
         </>
@@ -126,7 +138,7 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
           className={`${className} editable-button ${error ? 'error' : ''}`}
           style={style}
         >
-          {text}
+          {currentText}
         </button>
       )}
     </>

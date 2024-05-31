@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { db, doc, getDoc, collection, query, where, getDocs } from "../../firebaseConfig";
 import _ from 'lodash';
 import PopupWallet from "../website/PopupWallet";
+
 export default function ProjectsDashboard({
   projects,
   setSelectedProject,
@@ -15,38 +16,31 @@ export default function ProjectsDashboard({
   isLoading,
   fetchProjects,
 }) {
-  // Options pour le Dropdown
   const dropdownOptions = [
     { value: "option1", text: "Creation Date", icon: "bi-arrow-down" },
     { value: "option2", text: "Creation Date", icon: "bi-arrow-up" },
     { value: "option3", text: "Alphabetic", icon: "bi-sort-alpha-down" },
     { value: "option4", text: "Alphabetic", icon: "bi-sort-alpha-up-alt" },
   ];
+
   const navigate = useNavigate();
   const isEmpty = _.isEmpty;
 
   const [isOpen, setIsOpen] = useState(false);
-  // Initialise selectedOption avec la première option
   const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
   const [displaErrorMessage, setDisplayErrorMessage] = useState(false);
-  // Add a new state for the filtered projects
   const [filteredProjects, setFilteredProjects] = useState([]);
+  const [originalProjects, setOriginalProjects] = useState([]); // Store the original projects
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
-
-  // Add a new state for the search input value
   const [searchValue, setSearchValue] = useState("");
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-
-
-  // Modify the handleSelect function to filter the projects
   const handleSelect = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
 
-    // Filter the projects based on the selected option
     let filteredProjects = [...userData];
     if (option.value === "option1") {
       filteredProjects.sort(
@@ -65,21 +59,18 @@ export default function ProjectsDashboard({
     setFilteredProjects(filteredProjects);
   };
 
-
-  // Add an event handler for the search input field
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
     setSearchValue(value);
     if (value === "") {
-      fetchProjects(sessionStorage.getItem("userAccount"));
+      setFilteredProjects(originalProjects); // Reset to the original projects
     } else {
-      const filteredData = userData.filter(project =>
+      const filteredData = originalProjects.filter(project =>
         project.name.toLowerCase().includes(value)
       );
-      setUserData(filteredData);
+      setFilteredProjects(filteredData);
     }
   };
-
 
   const handleProjectClick = (templateSelected) => {
     navigate(`/builder/${templateSelected}`);
@@ -95,71 +86,28 @@ export default function ProjectsDashboard({
   const handleNewProjectClick = async () => {
     try {
       if (userData.length >= 3) {
-        setDisplayErrorMessage(true); // Set error display here
-        // alert("You can't create more than 3 projects.");
+        setDisplayErrorMessage(true);
         return;
       }
-      setDisplayErrorMessage(false); // Ensure error message is hidden if condition is not met
-
+      setDisplayErrorMessage(false);
       sessionStorage.removeItem("selectedTemplateId");
       sessionStorage.removeItem("projectName");
-
       sessionStorage.setItem("currentStep", "4");
       sessionStorage.setItem("isTemplateCompleted", "false");
-
-
       navigate("/templatestep");
     } catch (error) {
       console.error("Failed to create new project:", error);
     }
   };
 
-
-
-
-
-  // useEffect(() => {
-  //   // Check if there's any project with a name of null or undefined
-  //   const hasInvalidProjectName = projects.some(project => project.name === null || project.name === undefined);
-
-  //   // If found, navigate to the templatestep page
-  //   if (hasInvalidProjectName) {
-  //     navigate('/templatestep');
-  //   }
-  // }, [projects, navigate]); // 
-
-
-
-  // New state for the most recently updated project
-
-
-  // useEffect(() => {
-  //   const storedProjects = JSON.parse(localStorage.getItem("projects"));
-  //   if (storedProjects) {
-  //     setProjects(storedProjects);
-  //   }
-  // }, []);
-
-  // // Update the state of the projects in localStorage whenever it changes
-  // useEffect(() => {
-  //   localStorage.setItem("projects", JSON.stringify(projects));
-  // }, [projects]);
-  // useEffect(() => {
-  //   const selectedTemplateId = sessionStorage.getItem("selectedTemplateId");
-  //   if (selectedTemplateId) {
-  //     const foundTemplate = projects.find(project => project.id === selectedTemplateId);
-  //     setSelectedTemplate(foundTemplate);
-  //   }
-  // }, [projects]);
-  console.log(userData);
   useEffect(() => {
     const walletID = sessionStorage.getItem("userAccount");
     fetchProjects(walletID);
   }, []);
+
   useEffect(() => {
     setFilteredProjects(userData);
-
-    // Determine the most recently updated project
+    setOriginalProjects(userData); // Store the original projects
     const mostRecentProject = userData.reduce((acc, project) => {
       const currentProjectDate = new Date(
         project.lastUpdated || project.createdAt
@@ -178,55 +126,49 @@ export default function ProjectsDashboard({
   if (isLoading) {
     return <p>Loading...</p>;
   }
+
   return (
-    <>
-
-      <div className="projects-container">
-        <div className="projects-header-sticky">
-          <div className="projects-header">
-            <h1>Projects</h1>
-            <div className="projects-navbar">
-              <div className="projects-navbar-input">
-                <i className="bi bi-search"></i>
-                <input
-                  placeholder="Search..."
-                  value={searchValue}
-                  onChange={handleSearch}
-                ></input>
-              </div>
-              <div className="project-navbar-dropdown">
-                <div className="project-navbar-dropdown-header" onClick={toggleDropdown}>
-                  <i className={`bi ${selectedOption.icon} project-navbar-dropdown-icon`}></i>
-                  <p className="project-navbar-dropdown-option">{selectedOption.text}</p>
-                  <i className={`bi bi-caret-down-fill ${isOpen ? "open" : ""} project-navbar-dropdown-icon`}></i>
-                </div>
-
-                {isOpen && (
-                  <div className="project-navbar-dropdown-list">
-                    {dropdownOptions.map((option) => (
-                      <div
-                        key={option.value}
-                        className={`project-navbar-dropdown-item ${selectedOption.value === option.value ? 'selected-filter' : ''}`}
-                        onClick={() => handleSelect(option)}
-                      >
-                        <i className={`bi ${option.icon} project-navbar-dropdown-icon`}></i>
-                        <p className="project-navbar-dropdown-option">{option.text}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-
-              </div>
-              <button
-                className="projects-navbar-btn"
-                onClick={handleNewProjectClick}
-                disabled={projects.length == 3}
-              >
-                <i className="bi bi-plus-circle"></i> New Project
-              </button>
+    <div className="projects-container">
+      <div className="projects-header-sticky">
+        <div className="projects-header">
+          <h1>Projects</h1>
+          <div className="projects-navbar">
+            <div className="projects-navbar-input">
+              <i className="bi bi-search"></i>
+              <input
+                placeholder="Search..."
+                value={searchValue}
+                onChange={handleSearch}
+              ></input>
             </div>
-
+            <div className="project-navbar-dropdown">
+              <div className="project-navbar-dropdown-header" onClick={toggleDropdown}>
+                <i className={`bi ${selectedOption.icon} project-navbar-dropdown-icon`}></i>
+                <p className="project-navbar-dropdown-option">{selectedOption.text}</p>
+                <i className={`bi bi-caret-down-fill ${isOpen ? "open" : ""} project-navbar-dropdown-icon`}></i>
+              </div>
+              {isOpen && (
+                <div className="project-navbar-dropdown-list">
+                  {dropdownOptions.map((option) => (
+                    <div
+                      key={option.value}
+                      className={`project-navbar-dropdown-item ${selectedOption.value === option.value ? 'selected-filter' : ''}`}
+                      onClick={() => handleSelect(option)}
+                    >
+                      <i className={`bi ${option.icon} project-navbar-dropdown-icon`}></i>
+                      <p className="project-navbar-dropdown-option">{option.text}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <button
+              className="projects-navbar-btn"
+              onClick={handleNewProjectClick}
+              disabled={projects.length == 3}
+            >
+              <i className="bi bi-plus-circle"></i> New Project
+            </button>
           </div>
           {displaErrorMessage && (
             <p className="dashboard-billing-header-warning">
@@ -235,61 +177,56 @@ export default function ProjectsDashboard({
             </p>
           )}
         </div>
+      </div>
 
-        <div className="projects-content">
-          <div className="projects-content-box">
-            <div className="projects-content-title">
-              <i class="bi bi-clock-history"></i>
-              <h2>Recently viewed</h2>
+      <div className="projects-content">
+        <div className="projects-content-box">
+          <div className="projects-content-title">
+            <i class="bi bi-clock-history"></i>
+            <h2>Recently viewed</h2>
+          </div>
+          {recentlyUpdatedProject && (
+            <div className="projects-content-item">
+              <img
+                src={recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateName}screenshot.png`}
+                alt={recentlyUpdatedProject.name}
+                onClick={() => handleProjectClick(recentlyUpdatedProject.templateName)}
+              />
+              <div className="projects-content-item-info">
+                <p>{recentlyUpdatedProject.name}</p>
+                <p>Last updated: {new Date(recentlyUpdatedProject.lastUpdated).toLocaleString()}</p>
+                <div onClick={() => handleProjectSettings(recentlyUpdatedProject)}>
+                  <i className="bi bi-three-dots"></i>
+                </div>
+              </div>
             </div>
-            {recentlyUpdatedProject && (
-              <div className="projects-content-item">
+          )}
+        </div>
+
+        <div className="projects-content-box">
+          <div className="projects-content-title">
+            <i className="bi bi-folder2"></i>
+            <h2>All Projects</h2>
+          </div>
+          <div className="projects-content-listing">
+            {filteredProjects.map((project, index) => (
+              <div key={index} className="projects-content-item">
                 <img
-                  src={recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateName}screenshot.png`}
-                  alt={recentlyUpdatedProject.name}
-                  onClick={() => handleProjectClick(recentlyUpdatedProject.templateName)}
+                  src={`./images/${project.templateName}screenshot.png` || "default-image.png"}
+                  alt={project.name}
+                  onClick={() => handleProjectClick(project.templateName)}
                 />
                 <div className="projects-content-item-info">
-                  <p>{recentlyUpdatedProject.name}</p>
-                  <p>Last updated: {new Date(recentlyUpdatedProject.lastUpdated).toLocaleString()}</p>
-                  <div onClick={() => handleProjectSettings(recentlyUpdatedProject)}>
+                  <p>{project.name}</p>
+                  <div onClick={() => handleProjectSettings(project)}>
                     <i className="bi bi-three-dots"></i>
                   </div>
                 </div>
               </div>
-            )}
-          </div>
-
-
-          <div className="projects-content-box">
-            <div className="projects-content-title">
-              <i className="bi bi-folder2"></i>
-              <h2>All Projects</h2>
-            </div>
-            <div className="projects-content-listing">
-              {filteredProjects.map((project, index) => (
-                <div key={index} className="projects-content-item">
-                  <img
-                    src={`./images/${project.templateName}screenshot.png` || "default-image.png"}
-                    alt={project.name}
-                    onClick={() => handleProjectClick(project.templateName)}
-                  />
-                  <div className="projects-content-item-info">
-                    <p>{project.name}</p>
-                    <div onClick={() => handleProjectSettings(project)}>
-                      <i className="bi bi-three-dots"></i>
-                    </div>
-                  </div>
-
-                </div>
-              ))}
-            </div>
-
-
-
+            ))}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -20,7 +20,6 @@
     "firebase-functions": "^5.0.1",
     "firebase-tools": "^13.8.0",
     "html2canvas": "^1.4.1",
-    "ipfs": "^0.66.1",
     "lodash": "^4.17.21",
     "mongodb": "^6.5.0",
     "process": "^0.11.10",
@@ -41,7 +40,9 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy-test": "deploy-test.bat",
+    "deploy": "firebase deploy"
   },
   "eslintConfig": {
     "extends": [

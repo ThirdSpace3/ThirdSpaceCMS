@@ -13,8 +13,8 @@ const SSSPortfolioHeader = ({ setSelectedElement, onContentChange, openImagePane
   const [headerContent, setHeaderContent] = useState({
     heroTitle: localStorage.getItem('portfolio-heroTitle-text') || 'Hello! I Am Pauline Milo-Alonso',
     heroDescription: localStorage.getItem('portfolio-heroDescription-text') || 'A Designer who Judges a book by its cover... Because if the cover does not impress you what else can?',
-    arrowImage: localStorage.getItem('portfolio-arrowImage') || './images/templates-img/3sPortfolio/Arrow.png',
-    meImage: localStorage.getItem('portfolio-meImage') || './images/templates-img/3sPortfolio/Me.png',
+    arrowImage: localStorage.getItem('portfolio-arrowImage') || 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2Fportfolio%2FArrow.png?alt=media&token=0842b36d-d8f5-4064-8517-aad7f386386a',
+    meImage: localStorage.getItem('portfolio-meImage') || 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2Fportfolio%2FMe.png?alt=media&token=24818c94-0d3e-4bbc-915d-acd97b38bbdc',
     navItems: JSON.parse(localStorage.getItem('portfolio-navItems')) || [
       { text: 'About', link: '#about' },
       { text: 'Experiences', link: '#experiences' },
@@ -76,7 +76,7 @@ const SSSPortfolioHeader = ({ setSelectedElement, onContentChange, openImagePane
     <>
       <nav className='PortfolioNavbar' style={getComponentStyle('PortfolioNavbar')} id='PortfolioNavbar' onClick={(event) => handleComponentClick(event, 'PortfolioNavbar')}>
         <ReusableImage
-          src='./images/templates-img/3sPortfolio/3sPortfolio-logo.png'
+          src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2Fportfolio%2F3s-portfolio-logo.png?alt=media&token=c60b905d-c2d3-426d-b86d-b959598750fe'
           alt="3S Product Logo"
           identifier="portfolioLogo"
           openImagePanel={openImagePanel}

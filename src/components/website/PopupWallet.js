@@ -5,7 +5,7 @@ import "../Root.css";
 import { db, doc, getDoc, setDoc, updateDoc } from '../../firebaseConfig';
 import { wait } from "@testing-library/user-event/dist/utils";
 import ReactGA from 'react-ga';
-import UAuth from '@uauth/js'
+import UAuth from '@uauth/js';
 // Initialize Google Analytics
 ReactGA.initialize('G-83NKPT3B9E');
 
@@ -73,7 +73,6 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     } catch (error) {
       console.error("Error during Solana authentication:", error);
     }
-    
   };
 
   const authenticateWithUnstoppable = async (authorization) => {
@@ -126,10 +125,18 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
       } catch (error) {
         console.error("Error with MetaMask login:", error);
         setCustomErrorMessage('MetaMask authentication failed. Please try again.');
-
       }
     } else {
       console.log("MetaMask is not installed");
+    }
+  };
+
+  const checkForWallet = () => {
+    const hasWallet = !!window.ethereum || ("solana" in window && window.solana.isPhantom);
+    setWalletAvailable(hasWallet);
+    console.log(hasWallet);
+    if (!hasWallet) {
+      setCustomErrorMessage('To use Third Space, you need to connect via a wallet. We haven’t found one on your browser. Finish the entire profile creation in order to be able to log in!');
     }
   };
 
@@ -141,14 +148,14 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
         const publicKey = response.publicKey.toString();
         const walletRef = doc(db, 'wallets', publicKey);
         const walletSnap = await getDoc(walletRef);
-
+  
         if (!walletSnap.exists()) {
           await setDoc(walletRef, { walletId: publicKey });
           console.log("Wallet ID saved to Firestore:", publicKey);
         } else {
           console.log("Wallet data retrieved:", walletSnap.data());
         }
-
+  
         authenticateWithSolana(publicKey);
       } catch (error) {
         console.error("Error connecting to Phantom:", error);
@@ -156,11 +163,16 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
       }
     } else {
       if (phantomInitiated) {
-        console.log("Phantom wallet still not installed. Refreshing the page.");
-        localStorage.setItem('openWalletPopup', 'true');
-        window.location.reload();
+        // Re-check wallet availability instead of reloading the page
+        checkForWallet();
+        if (walletAvailable) {
+          setCustomErrorMessage("Phantom wallet is now available. Please try connecting again.");
+        } else {
+          setCustomErrorMessage('Phantom wallet is not installed. Please install and retry.');
+        }
       } else {
         console.log("Phantom wallet is not installed. Please install and retry.");
+        setCustomErrorMessage('Phantom wallet is not installed. Please install and retry.');
         setPhantomInitiated(true);
       }
     }
@@ -189,15 +201,6 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
 
   useEffect(() => {
     setIsMobile(isMobileDevice());
-    const checkForWallet = () => {
-      const hasWallet = !!window.ethereum || ("solana" in window && window.solana.isPhantom);
-      setWalletAvailable(hasWallet);
-      console.log(hasWallet);
-      if (!hasWallet) {
-        setCustomErrorMessage('To use Third Space, you need to connect via a wallet. We haven’t found one on your browser. Finish the entire profile creation in order to be able to log in!');
-      }
-    };
-
     checkForWallet();
     const handleOutsideClick = (e) => {
       if (e.target.id === "popup") {

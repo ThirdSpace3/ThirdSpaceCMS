@@ -512,6 +512,9 @@ body {
   justify-content: center;
   gap: 10px;
 }
+.progressbar:hover{
+  cursor: pointer;
+}
 .progressbar-number {
   color: #64748b;
   font-family: Montserrat;
