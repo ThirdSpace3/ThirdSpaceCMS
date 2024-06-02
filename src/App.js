@@ -51,10 +51,6 @@ localStorage.clear();
               <Route path="/3s-agency" element={<Agency />} />
               <Route path="/3s-builder" element={<Builder />} />
               <Route path="/3s-academy" element={<Academy />} />
-
-
-
-
               <Route
                 path="/builder/:templateName"
                 element={<Display />}

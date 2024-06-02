@@ -146,3 +146,8 @@ body {
 .bold {
   font-weight: 800;
 }
+
+/* In your CSS file */
+.hover-cancel * {
+  pointer-events: none;
+}

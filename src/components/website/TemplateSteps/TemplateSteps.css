@@ -467,6 +467,7 @@ body {
   line-height: normal;
   padding: 5px 10px;
   min-width: 130px;
+  cursor: pointer;
 }
 
 .templates-infos {

@@ -48,6 +48,14 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
     });
   }, [navbarContent, headerContent, partnersContent, aboutSection, featureSection, joinUsSection, footerSection, setTemplateContent]);
 
+  const handleComponentClick = (event, identifier) => {
+    if (!isPreviewMode) {
+      event.preventDefault();
+      event.stopPropagation();
+      setSelectedElement(identifier);
+    }
+  };
+
   return (
     <div className="sss-product-container">
       <Navbar
@@ -89,6 +97,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setHeaderContent}
+        isPreviewMode={isPreviewMode}
       />
 
       <PartnersSection
@@ -104,6 +113,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setPartnersContent}
+        isPreviewMode={isPreviewMode}
       />
       <AboutSection
         ref={aboutRef}
@@ -118,6 +128,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setAboutSection}
+        isPreviewMode={isPreviewMode}
       />
       <FeaturesSection
         ref={featuresRef}
@@ -132,6 +143,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setFeatureSection}
+        isPreviewMode={isPreviewMode}
       />
       <JoinUsSection
         ref={joinUsRef}
@@ -146,6 +158,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setJoinUsSection}
+        isPreviewMode={isPreviewMode}
       />
       <Footer
         ref={footerRef}
@@ -160,6 +173,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setFooterSection}
+        isPreviewMode={isPreviewMode}
       />
     </div>
   );

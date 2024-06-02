@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactGA from 'react-ga';
-import { db, doc, getDoc, setDoc, updateDoc } from '../firebaseConfig';
+import { db, doc, setDoc } from '../firebaseConfig';
 
-// Import your template steps and other components
 import TemplateStep1 from "../components/website/TemplateSteps/TemplateStep1";
 import TemplateStep2 from "../components/website/TemplateSteps/TemplateStep2";
 import TemplateStep3 from "../components/website/TemplateSteps/TemplateStep3";
@@ -42,7 +41,6 @@ export default function TemplateStep() {
       ...additionalData,
     };
 
-    // Log to Google Analytics
     ReactGA.event({
       category: 'Template Steps',
       action: eventType,
@@ -50,7 +48,6 @@ export default function TemplateStep() {
       ...additionalData,
     });
 
-    // Log to Firestore
     if (walletId) {
       const eventRef = doc(db, 'events', `${walletId}-${eventType}-${Date.now()}`);
       await setDoc(eventRef, eventData);
@@ -61,10 +58,8 @@ export default function TemplateStep() {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
 
-    // Log entering the template steps
     logEvent('Enter Template Steps');
 
-    // Cleanup listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
       logEvent('Quit Template Steps');
@@ -239,4 +234,3 @@ export default function TemplateStep() {
     </>
   );
 }
-

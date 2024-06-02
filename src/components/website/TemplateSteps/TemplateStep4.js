@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import NavbarSteps from "./TemplateNavbar";
-// Import your template components
 import SSSProduct from "../../../templates/3s-Product";
 import SSSPortfolio from "../../../templates/3s-Portfolio";
-// Assuming html2canvas is used elsewhere in your component or project
 
 const initialTemplates = [
   {
@@ -13,37 +11,12 @@ const initialTemplates = [
     component: SSSProduct,
     screenshot: "./images/SSSProductscreenshot.png",
   },
-
   {
     id: "SSSPortfolio",
     name: "SSSPortfolio",
     component: SSSPortfolio,
     screenshot: "./images/SSSPortfolioscreenshot.png",
   },
-  // {
-  //   id: "TemplateFullText",
-  //   name: "Full Text",
-  //   component: TemplateFullText,
-  //   screenshot: "./images/TemplateFullTextscreenshot.png",
-  // },
-  // {
-  //   id: "TemplateImg_txt",
-  //   name: "Image and Text",
-  //   component: TemplateImg_txt,
-  //   screenshot: "./images/TemplateImg_txtscreenshot.png",
-  // },
-  // {
-  //   id: "TemplateTest1",
-  //   name: "Test Template 1",
-  //   component: TemplateTest1,
-  //   screenshot: "./images/TemplateTest1screenshot.png",
-  // },
-  // {
-  //   id: "Template2",
-  //   name: "Template 2",
-  //   component: Template2,
-  //   screenshot: "./images/Template2screenshot.png",
-  // }
 ];
 
 const TemplateStep4 = ({
@@ -54,28 +27,31 @@ const TemplateStep4 = ({
   setCurrentStep,
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [templates, setTemplates] = useState(initialTemplates);
   const [isHovered, setIsHovered] = useState(Array(templates.length).fill(false));
   const [selectedId, setSelectedId] = useState(location.state?.selectedTemplateId || "");
-
-
 
   const handleTemplateSelect = (templateId) => {
     sessionStorage.setItem('selectedTemplateId', templateId);
     setSelectedButtons(prev => ({
       ...prev,
-      templateselected: [templateId] // Ensures only the latest selection is kept
+      templateselected: [templateId]
     }));
     updateNextButtonState(true);
     advanceToNextStep(currentStep, setCurrentStep);
   };
 
-
   const handleHover = (index, state) => {
     setIsHovered(isHovered.map((hoverState, i) => (i === index ? state : hoverState)));
   };
 
-  // After selecting a template, ensure the data is saved before moving to the next step.
+  const handlePreview = (templateId) => {
+    navigate(`/template-preview/${templateId}`, {
+      state: { selectedTemplateId: templateId }
+    });
+  };
+
   const advanceToNextStep = (currentStep, setCurrentStep, additionalData = {}) => {
     const sessionData = JSON.parse(sessionStorage.getItem('stepData')) || {};
     sessionData[currentStep] = { ...sessionData[currentStep], ...additionalData };
@@ -87,6 +63,7 @@ const TemplateStep4 = ({
   useEffect(() => {
     sessionStorage.setItem('stepData', JSON.stringify(selectedButtons));
   }, [selectedButtons]);
+
   return (
     <div id="etape4">
       <NavbarSteps />
@@ -125,6 +102,16 @@ const TemplateStep4 = ({
                         >
                           Start Editing
                         </Link>
+                        <a
+                          className="start-editing-link"
+
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePreview(template.id);
+                          }}
+                        >
+                          Preview
+                        </a>
                       </div>
                     </div>
                   )}
