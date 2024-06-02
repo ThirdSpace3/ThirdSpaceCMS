@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import "./LeftBar.css";
 import "../Root.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useImageHistory } from "../../hooks/ImageHistoryContext";
+import SparkMD5 from "spark-md5";
 
 export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
   const {
@@ -10,46 +11,60 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
     imageHistory,
     selectImage,
     selectedImage,
-    setSelectedImage,
     componentImageUsage,
-    clearSelectedImage,
     activeComponent,
     enterReplacementMode
   } = useImageHistory();
+  
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Assets");
-  const [filteredHistory, setFilteredHistory] = useState(imageHistory);
-  const dropdownRef = useRef(null);
-  const fileInputRef = useRef(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [draggedImage, setDraggedImage] = useState(null);
-  const [isDragging, setIsDragging] = useState(false); // New state variable
-  const options = ["All Assets", "Photo", "Document", "Video"];
+  const [isDragging, setIsDragging] = useState(false);
 
-  const toggleSidebarCollapse = () => {
-    setIsSidebarCollapsed(!isSidebarCollapsed);
+  const dropdownRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  const options = useMemo(() => ["All Assets", "Photo", "Document", "Video"], []);
+
+  const toggleSidebarCollapse = useCallback(() => {
+    setIsSidebarCollapsed(prev => !prev);
     setVisiblePanel(visiblePanel === null);
-  };
+  }, [setVisiblePanel, visiblePanel]);
 
-  useEffect(() => {
-    if (selectedOption === "All Assets") {
-      setFilteredHistory(imageHistory);
-    } else {
-      setFilteredHistory(
-        imageHistory.filter((item) => item.category === selectedOption)
-      );
-    }
+  const filteredHistory = useMemo(() => {
+    return selectedOption === "All Assets"
+      ? imageHistory
+      : imageHistory.filter((item) => item.category === selectedOption);
   }, [selectedOption, imageHistory]);
 
-  const handleFileChange = (event) => {
+  const readFileAsArrayBuffer = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(file);
+    });
+  };
+
+  const getFileHash = async (file) => {
+    const arrayBuffer = await readFileAsArrayBuffer(file);
+    return SparkMD5.ArrayBuffer.hash(arrayBuffer);
+  };
+  const handleImageSelect = useCallback((image) => {
+    enterReplacementMode(activeComponent);
+    selectImage(image.url);
+  }, [activeComponent, enterReplacementMode, selectImage]);
+
+  const handleFileChange = useCallback(async (event) => {
     const files = Array.from(event.target.files);
-    files.forEach((file) => {
+    for (const file of files) {
       const mimeType = file.type;
       let category = "Unknown";
 
       if (file.size >= 1e6) {
         alert(`File "${file.name}" is too large. Please select an image smaller than 1 MB.`);
-        return;
+        continue;
       }
 
       if (mimeType.startsWith("image/")) {
@@ -64,33 +79,27 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
         category = "Document";
       }
 
+      const fileHash = await getFileHash(file);
+      const isDuplicate = imageHistory.some(image => image.hash === fileHash);
+
+      if (isDuplicate) {
+        const existingImage = imageHistory.find(image => image.hash === fileHash);
+        alert(`This file has already been uploaded. Redirecting to the existing image.`);
+        handleImageSelect(existingImage);
+        continue;
+      }
+
       const newImageUrl = URL.createObjectURL(file);
-      addImageToHistory({ url: newImageUrl, category });
-    });
+      addImageToHistory({ url: newImageUrl, category, hash: fileHash });
+    }
 
-    // Hide .asset-dragdrop and show .ImagePreview after file upload
     setIsDragging(false);
-  };
+  }, [addImageToHistory, imageHistory, handleImageSelect]);
 
-  const handleUploadClick = () => {
+  const handleUploadClick = useCallback(() => {
     fileInputRef.current.click();
-  };
+  }, []);
 
-  const handleImageSelect = (image) => {
-    enterReplacementMode(activeComponent); // Engage replacement mode.
-    selectImage(image.url); // Set the image as selected for editing.
-  };
-
-  useEffect(() => {
-    console.log(`Active Component: ${activeComponent}, Selected Image: ${selectedImage}`);
-  }, [activeComponent, selectedImage]);
-
-  const toggleDropdown = () => setIsOpen(!isOpen);
-
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -105,40 +114,26 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
     };
   }, []);
 
-  const handleDragStart = (e, image) => {
+  const handleDragStart = useCallback((e, image) => {
     setDraggedImage(image);
-  };
+  }, []);
 
-  const handleDragOver = (e) => {
+  const handleDragOver = useCallback((e) => {
     e.preventDefault();
-    setIsDragging(true); // Show .asset-dragdrop while dragging
-  };
+    setIsDragging(true);
+  }, []);
 
-  const handleDrop = (e) => {
+  const handleDrop = useCallback((e) => {
     e.preventDefault();
-    if (draggedImage) {
-      handleImageSelect(draggedImage);
-    }
-    setDraggedImage(null);
-    setIsDragging(false); // Hide .asset-dragdrop after drop
-  };
-
-  const handleEmptySlotDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true); // Show .asset-dragdrop while dragging
-  };
-
-  const handleEmptySlotDrop = (e) => {
-    e.preventDefault();
-  
     const files = Array.from(e.dataTransfer.files);
     handleFileChange({ target: { files } });
-    setIsDragging(false); // Hide .asset-dragdrop after drop
-  };
+    setDraggedImage(null);
+    setIsDragging(false);
+  }, [handleFileChange]);
 
-  const handleDragLeave = () => {
-    setIsDragging(false); // Hide .asset-dragdrop when dragging leaves
-  };
+  const handleDragLeave = useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
   useEffect(() => {
     const handleWindowDragOver = (e) => {
@@ -148,6 +143,10 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
 
     const handleWindowDrop = (e) => {
       e.preventDefault();
+      const files = Array.from(e.dataTransfer.files);
+      if (files.length > 0) {
+        handleFileChange({ target: { files } });
+      }
       setIsDragging(false);
     };
 
@@ -164,15 +163,15 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
       window.removeEventListener("drop", handleWindowDrop);
       window.removeEventListener("dragleave", handleWindowDragLeave);
     };
-  }, []);
+  }, [handleFileChange]);
 
-  const renderPreview = (image) => {
+  const renderPreview = useCallback((image) => {
     const isUsed = Object.values(componentImageUsage).includes(image.url);
     const previewClass = isUsed ? "image-used" : "image-preview";
     switch (image.category) {
       case "Photo":
         return <img src={image.url} alt="Preview" className={previewClass} />;
-      case "Background": // Handle background images
+      case "Background":
         return <img src={image.url} alt="Preview" className={previewClass} />;
       case "Video":
         return (
@@ -190,10 +189,10 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
           <i className={`bi bi-file-earmark ${previewClass}`} style={{ fontSize: "48px" }}></i>
         );
     }
-  };
+  }, [componentImageUsage]);
 
   return (
-    <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`} onDragOver={handleEmptySlotDragOver} onDrop={handleEmptySlotDrop} onDragLeave={handleDragLeave}>
+    <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`} onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave}>
       <input
         type="file"
         ref={fileInputRef}
@@ -209,14 +208,14 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
         <div className="dropdown" ref={dropdownRef}>
           <button
             className={`dropdown-button ${isOpen ? "open" : ""}`}
-            onClick={toggleDropdown}
+            onClick={() => setIsOpen(!isOpen)}
           >
             {selectedOption} <i className={`bi bi-caret-down-fill ${isOpen ? "rotate" : ""}`}></i>
           </button>
           {isOpen && (
             <ul className="dropdown-options open">
               {options.filter(option => option !== selectedOption).map(option => (
-                <li key={option} className="dropdown-option" onClick={() => handleOptionClick(option)}>
+                <li key={option} className="dropdown-option" onClick={() => setSelectedOption(option)}>
                   {option}
                 </li>
               ))}
@@ -225,9 +224,8 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
         </div>
       </div>
 
-      {/* Conditionally render .ImagePreview and .assets-dragdrop */}
       {!isDragging ? (
-        <div className="ImagePreview" onDragOver={handleDragOver} onDrop={handleDrop}>
+        <div className="ImagePreview">
           {filteredHistory.map((image, index) => (
             <div key={index} className={`image-preview ${image.url === selectedImage ? "selected" : ""}`} onClick={() => handleImageSelect(image)} onDragStart={(e) => handleDragStart(e, image)} draggable>
               {renderPreview(image)}
