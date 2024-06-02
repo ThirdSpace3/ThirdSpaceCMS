@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { db, doc, setDoc } from '../../../firebaseConfig'; // Ensure the path to your Firebase config is correct
+import { db, doc, setDoc } from '../../../firebaseConfig';
 
 const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, walletId, currentStep, onBack }) => {
   const [redirectToRoot, setRedirectToRoot] = useState(false);
@@ -10,10 +10,8 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
       try {
         const currentTimestamp = new Date().toISOString();
         if (currentStep === 5) {
-          // Assuming the first element is the relevant data as per your structure
           const projectName = selectedButtons.name[0];
           const templateName = selectedButtons.templateselected[0];
-          // Create a new project object
           const newProject = {
             id: Date.now(),
             name: projectName,
@@ -24,15 +22,9 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
             favicon: "",
           };
 
-          const collectionPath = 'projects'; // Adjust based on your actual requirements
-          const docPath = `${walletId}/projectData/${newProject.id}`; // Ensure an even number of segments
-          console.log("Collection Path:", collectionPath);
-          console.log("Document Path:", docPath);
-          console.log("Full Path:", `${collectionPath}/${docPath}`);
-          console.log("Wallet ID:", walletId);
-          console.log("Project ID:", newProject.id);
+          const collectionPath = 'projects';
+          const docPath = `${walletId}/projectData/${newProject.id}`;
 
-          // Save to Firestore in the correct collection
           try {
             await setDoc(doc(db, `${collectionPath}/${docPath}`), {
               ...newProject,
@@ -41,7 +33,6 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
           } catch (error) {
             console.error("Failed to write document:", error);
           }
-
 
           await setDoc(doc(db, 'wallets', walletId), { selectedButtons });
 
@@ -58,24 +49,18 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
   };
 
   return (
-    <div className="btn-box">      
-    {/* {currentStep > 1 && currentStep !== 5 && (
-        <button className="purple-light-btn" onClick={onBack}>
-          Back
-        </button>
-      )} */}
+    <div className="btn-box">
       {currentStep !== 3 && currentStep !== 4 && currentStep !== 5 && (
         <button className="ignore-btn" onClick={onIgnore}>
           Skip
         </button>
       )}
 
-      <button className={`purple-light-btn ${!isNextEnabled ? 'disabled' : ''}`} onClick={handleNextClick}>
+      <button className={`purple-light-btn ${!isNextEnabled ? 'disabled' : ''}`} onClick={handleNextClick} disabled={!isNextEnabled}>
         Next
       </button>
       {redirectToRoot && <Navigate to="/dashboard" replace />}
     </div>
-
   );
 };
 

@@ -59,6 +59,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
         method: "personal_sign",
         params: [message, walletId],
       });
+      // Verify the signature on the backend to ensure authenticity
       processLogin(walletId, 'Ethereum');
     } catch (error) {
       console.error("Error during Ethereum authentication:", error);
@@ -69,6 +70,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     try {
       const message = new TextEncoder().encode("Please sign this message to confirm your identity.");
       const signedMessage = await window.solana.signMessage(message, "utf8");
+      // Verify the signature on the backend to ensure authenticity
       processLogin(publicKey, 'Solana');
     } catch (error) {
       console.error("Error during Solana authentication:", error);

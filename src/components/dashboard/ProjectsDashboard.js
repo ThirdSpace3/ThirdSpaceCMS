@@ -127,6 +127,16 @@ export default function ProjectsDashboard({
     return <p>Loading...</p>;
   }
 
+  const Placeholder = () => (
+    <div className="placeholder" onClick={handleNewProjectClick}>
+      <div className="placeholder-icon">
+        <i className="bi bi-folder-plus"></i>
+      </div>
+      <p >New Project</p>
+      
+    </div>
+  );
+
   return (
     <div className="projects-container">
       <div className="projects-header-sticky">
@@ -170,22 +180,23 @@ export default function ProjectsDashboard({
               <i className="bi bi-plus-circle"></i> New Project
             </button>
           </div>
-          {displaErrorMessage && (
+          
+        </div>
+        {displaErrorMessage && (
             <p className="dashboard-billing-header-warning">
               <i className="bi bi-exclamation-triangle"></i>
               You can't create more than 3 projects.
             </p>
           )}
-        </div>
       </div>
 
       <div className="projects-content">
         <div className="projects-content-box">
           <div className="projects-content-title">
-            <i class="bi bi-clock-history"></i>
+            <i className="bi bi-clock-history"></i>
             <h2>Recently viewed</h2>
           </div>
-          {recentlyUpdatedProject && (
+          {recentlyUpdatedProject ? (
             <div className="projects-content-item">
               <img
                 src={recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateName}screenshot.png`}
@@ -200,6 +211,8 @@ export default function ProjectsDashboard({
                 </div>
               </div>
             </div>
+          ) : (
+            <Placeholder />
           )}
         </div>
 
@@ -209,21 +222,25 @@ export default function ProjectsDashboard({
             <h2>All Projects</h2>
           </div>
           <div className="projects-content-listing">
-            {filteredProjects.map((project, index) => (
-              <div key={index} className="projects-content-item">
-                <img
-                  src={`./images/${project.templateName}screenshot.png` || "default-image.png"}
-                  alt={project.name}
-                  onClick={() => handleProjectClick(project.templateName)}
-                />
-                <div className="projects-content-item-info">
-                  <p>{project.name}</p>
-                  <div onClick={() => handleProjectSettings(project)}>
-                    <i className="bi bi-three-dots"></i>
+            {filteredProjects.length > 0 ? (
+              filteredProjects.map((project, index) => (
+                <div key={index} className="projects-content-item">
+                  <img
+                    src={`./images/${project.templateName}screenshot.png` || "default-image.png"}
+                    alt={project.name}
+                    onClick={() => handleProjectClick(project.templateName)}
+                  />
+                  <div className="projects-content-item-info">
+                    <p>{project.name}</p>
+                    <div onClick={() => handleProjectSettings(project)}>
+                      <i className="bi bi-three-dots"></i>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <Placeholder />
+            )}
           </div>
         </div>
       </div>

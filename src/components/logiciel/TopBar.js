@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./TopBar.css";
 import "../Root.css";
 import PropulsePopup from "./PropulsePopup";
@@ -21,8 +21,6 @@ const TopBar = ({
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [focusedDevice, setFocusedDevice] = useState(deviceSizes.tv); // New state for focused device
 
-
-
   const handleEyeIconClick = () => {
     if (eyeIcon === "bi bi-eye") {
       setEyeIcon("bi bi-eye-slash");
@@ -33,17 +31,16 @@ const TopBar = ({
   };
 
   const handlePropulseClick = () => {
-    setShowPopup(!showPopup);
-    onSaveClick();
+    setShowPopup(true);
   };
 
   const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);  // Toggle l'état de repli
+    setIsCollapsed(!isCollapsed);
   };
 
   const handleDeviceClick = (size) => {
     onDeviceChange(size);
-    setFocusedDevice(size); // Set the focused device
+    setFocusedDevice(size);
   };
 
   const topBarStyle = isCollapsed ? { top: "-14px", transition: "top 0.3s ease-in-out" } : { top: "35px", transition: "top 0.3s ease-in-out" };
@@ -65,7 +62,6 @@ const TopBar = ({
             </a>
           </div>
           <div className="topbar-mid">
-            {/* Change onClick handlers to call handleDeviceClick with the device size */}
             <a onClick={() => handleDeviceClick(deviceSizes.tv)} className={`topbar-device-btn ${focusedDevice === deviceSizes.tv ? 'selected' : ''}`}>
               <i className="bi bi-tv"></i>
             </a>
@@ -85,7 +81,7 @@ const TopBar = ({
           <i className={isCollapsed ? "bi bi-chevron-down" : "bi bi-chevron-up"} onClick={toggleCollapse}></i>
         </div>
       </div>
-      {showPopup && <PropulsePopup setShowPopup={setShowPopup} />}
+      {showPopup && <PropulsePopup setShowPopup={setShowPopup} onSaveClick={onSaveClick} />}
     </>
   );
 };

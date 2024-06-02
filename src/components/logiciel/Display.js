@@ -9,6 +9,7 @@ import { StyleProvider } from '../../hooks/StyleContext';
 import { ImageHistoryProvider, useImageHistory } from '../../hooks/ImageHistoryContext';
 import Canva from './Canva';
 import ReportBugBTN from '../website/ReportBugBTN';
+
 export default function Display() {
   const [settings, setSettings] = useState({});
   const [settingsHistory, setSettingsHistory] = useState([settings]);
@@ -22,29 +23,22 @@ export default function Display() {
   const { templateName } = useParams();
   const [activePanel, setActivePanel] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const { clearFocus } = useImageHistory(); // Use the clearFocus method from context
-  const [selectedColor, setSelectedColor] = useState(""); // State to hold the confirmed color
+  const { clearFocus } = useImageHistory();
+  const [selectedColor, setSelectedColor] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [TemplateContent, setTemplateContent] = useState({});
 
   const walletId = sessionStorage.getItem('userAccount');
   console.log(walletId);
 
-  // const walletId = sessionStorage.getItem("userAccount");
-  // console.log(walletId);
-
-  
   const checkAndSetLogin = () => {
-    // Assuming you have a function to check if user is logged in
-    const isLoggedIn = true; // This should be your actual login check
+    const isLoggedIn = true;
     const walletId = sessionStorage.getItem("userAccount");
     console.log(walletId);
     if (walletId) {
       localStorage.setItem('userAccount', walletId);
     }
   };
-
-
 
   const handleSettingsChange = (elementId, newSettings) => {
     console.log("Updating settings for:", elementId, "new settings received:", newSettings);
@@ -57,28 +51,9 @@ export default function Display() {
         }
       };
       console.log("Updated settings:", updatedSettings);
-      localStorage.setItem('settings', JSON.stringify(updatedSettings)); // Store settings in local storage
+      localStorage.setItem('settings', JSON.stringify(updatedSettings));
       return updatedSettings;
     });
-  };
-
-  // const loadSettingsFromLocalStorage = () => {
-  //   const settingsFromLocalStorage = localStorage.getItem('settings');
-  //   if (settingsFromLocalStorage) {
-  //     const parsedSettings = JSON.parse(settingsFromLocalStorage);
-  //     setSettings(parsedSettings);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   loadSettingsFromLocalStorage();
-  // }, []);
-
-  
-  const selectElement = (elementId) => {
-    console.log('selectElement elementId:', elementId);
-
-    setSelectedElement(elementId);
   };
 
   const undo = () => {
@@ -121,40 +96,36 @@ export default function Display() {
   const handlePreview = () => {
     setIsPreviewMode(!isPreviewMode);
   };
+
   const openImagePanel = () => {
     setActivePanel("images");
   };
 
-  
   useEffect(() => {
     checkAndSetLogin();
     setActiveEditor(templateName);
     console.log('Active template:', templateName);
   }, [templateName]);
 
-
-  // In Display.js
   useEffect(() => {
     const handleGlobalClick = (event) => {
       if (event.target.closest('.image-container')) {
-        // Don't clear focus if the click is inside an image container
         return;
       }
-      clearFocus();  // This will now work properly
+      clearFocus();
     };
 
     document.addEventListener('click', handleGlobalClick);
     return () => {
       document.removeEventListener('click', handleGlobalClick);
     };
-  }, [clearFocus]);  // Including clearFocus to handle changes correctly
+  }, [clearFocus]);
 
   const logChange = (elementId, newStyles) => {
     const timestamp = new Date().toISOString();
     const logEntry = { timestamp, elementId, newStyles };
-    console.log(logEntry);  // Log to console for debugging
+    console.log(logEntry);
 
-    // Store in sessionStorage for persistence
     const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
     logs.push(logEntry);
     sessionStorage.setItem('editLogs', JSON.stringify(logs));
@@ -176,25 +147,24 @@ export default function Display() {
 
     setSettings(newSettings);
   }, []);
-  
+
   useEffect(() => {
     applyStylesFromLogs();
   }, [applyStylesFromLogs]);
+
   const handleSelectedElementChange = useCallback((elementId) => {
     setSelectedElement(elementId);
   }, []);
+
   return (
     <>
-
       <div className="displayWrapper">
         {!isPreviewMode && (
           <LeftBar
             handleEditorChange={(editor) => setActiveEditor(editor)}
             visiblePanel={activePanel}
             setVisiblePanel={setActivePanel}
-
           />
-
         )}
         <div className="displayColumnWrapper">
           <TopBar
@@ -203,10 +173,9 @@ export default function Display() {
             onRedoClick={redo}
             onDeviceChange={(size) => setSelectedDeviceSize(size)}
             onPreview={handlePreview}
-            showPopup={showPopup} // Add this line
+            showPopup={showPopup}
             setShowPopup={setShowPopup}
           />
-
           <Canva
             TemplateContent={TemplateContent}
             setTemplateContent={setTemplateContent}
@@ -216,26 +185,26 @@ export default function Display() {
             handleSettingsChange={handleSettingsChange}
             selectedElement={selectedElement}
             setSelectedElement={setSelectedElement}
-            selectElement={handleSelectedElementChange} // Pass the callback function here
+            selectElement={handleSelectedElementChange}
             isPreviewMode={isPreviewMode}
             openImagePanel={openImagePanel}
             setSelectedImage={setSelectedImage}
             logChange={logChange}
-            selectedColor={selectedColor} setSelectedColor={setSelectedColor}
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
           />
-
         </div>
         {!isPreviewMode && (
           <RightBar
             handleSettingsChange={handleSettingsChange}
             selectedElement={selectedElement}
-            handleSelectedElementChange={handleSelectedElementChange} // Pass the callback function here
+            handleSelectedElementChange={handleSelectedElementChange}
             logChange={logChange}
             selectedColor={selectedColor}
-            setSelectedColor={setSelectedColor} />
+            setSelectedColor={setSelectedColor}
+          />
         )}
-              <ReportBugBTN />
-
+        <ReportBugBTN />
       </div>
     </>
   );

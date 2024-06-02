@@ -18,6 +18,7 @@ export default function TemplateStep() {
   const [currentStep, setCurrentStep] = useState(initialStep);
   const [isNextEnabled, setIsNextEnabled] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [showError, setShowError] = useState(false);
   const walletId = sessionStorage.getItem("userAccount");
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const [selectedButtons, setSelectedButtons] = useState({
@@ -104,6 +105,9 @@ export default function TemplateStep() {
   };
 
   const handleNext = () => {
+    if (!isNextEnabled) {
+      return; // Prevent navigation if the next button is not enabled
+    }
     const sessionData = sessionStorage.getItem("stepData")
       ? JSON.parse(sessionStorage.getItem("stepData"))
       : {};
@@ -209,6 +213,7 @@ export default function TemplateStep() {
               currentStep={currentStep}
               projects={projects}
               setProjects={setProjects}
+              showError={showError}
             />
           )}
 
@@ -225,6 +230,7 @@ export default function TemplateStep() {
               projects={projects}
               setProjects={setProjects}
               setProjectName={setProjectName}
+              setShowError={setShowError}
             />
           )}
         </>

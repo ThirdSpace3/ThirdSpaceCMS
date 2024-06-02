@@ -23,8 +23,6 @@ import Builder from "./pages/Builder";
 import Academy from "./pages/Academy";
 
 export default function App() {
-sessionStorage.clear();
-localStorage.clear();
   const TRACKING_ID = "G-83NKPT3B9E"; // Replace with your Google Analytics tracking ID
   ReactGA.initialize(TRACKING_ID);
   

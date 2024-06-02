@@ -580,3 +580,8 @@ body {
     display: none;
   }
 }
+
+.template-input-box p {
+  font-family: outfit;
+  font-size: 14px;
+}

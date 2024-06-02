@@ -61,14 +61,18 @@ const HeaderSection = ({
 
   return (
     <div className="sss-product-hero" style={headerStyle} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
-      <h1 className="sss-product-hero-title" id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')} style={heroTitleStyles}>
+      <h1 className="sss-product-hero-title" onClick={(event) => handleComponentClick(event, 'heroTitle')}>
         <EditableText
+         id='heroTitle'
+         style={heroTitleStyles}
           text={headerContent.heroTitle}
           onChange={(newText) => handleTextChange(newText, 'heroTitle')}
         />
       </h1>
-      <p className="sss-product-hero-text" id='heroDescription' onClick={(event) => handleComponentClick(event, 'heroDescription')} style={heroDescriptionStyles}>
+      <p className="sss-product-hero-text"onClick={(event) => handleComponentClick(event, 'heroDescription')}>
         <EditableText
+         id='heroDescription' 
+         style={heroDescriptionStyles}
           text={headerContent.heroDescription}
           onChange={(newText) => handleTextChange(newText, 'heroDescription')}
         />
