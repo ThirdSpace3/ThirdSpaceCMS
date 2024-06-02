@@ -1,10 +1,10 @@
-import NavBar from "../components/website/NavBar";
-import Footer from "../components/website/Footer";
-import "../components/website/agency.css";
-import React, { useState, useRef } from "react";
-import { db, collection, getDocs } from "../firebaseConfig"; // Assuming Firestore is correctly imported and configured
-import { Link } from "react-router-dom";
-import ContactForm from "../components/website/ContactForm";
+import React, { useState, useRef } from 'react';
+import { db, collection, getDocs } from '../firebaseConfig'; // Assuming Firestore is correctly imported and configured
+import { Link } from 'react-router-dom';
+import NavBar from '../components/website/NavBar';
+import Footer from '../components/website/Footer';
+import ContactForm from '../components/website/ContactForm';
+import '../components/website/agency.css';
 
 export default function Agency() {
   const [hasWalletData, setHasWalletData] = useState(false);
@@ -13,9 +13,9 @@ export default function Agency() {
   const ctaRef = useRef(null); // Create a ref for the CTA div
 
   const checkWalletData = async () => {
-    const userAccount = sessionStorage.getItem("userAccount");
+    const userAccount = sessionStorage.getItem('userAccount');
     if (userAccount) {
-      const docRef = collection(db, "projects", userAccount, "projectData");
+      const docRef = collection(db, 'projects', userAccount, 'projectData');
       const docSnap = await getDocs(docRef);
       if (!docSnap.empty) {
         // Check if the snapshot is not empty
@@ -38,14 +38,12 @@ export default function Agency() {
   };
 
   const scrollToCTA = () => {
-    ctaRef.current.scrollIntoView({ behavior: "smooth" });
+    ctaRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <>
-
       <div className="agency-content">
-
         <div className="agency-header">
           <NavBar
             checkWalletData={checkWalletData}
@@ -53,19 +51,18 @@ export default function Agency() {
             accounts={accounts}
             setAccounts={setAccounts}
           />
-          <div className="wrapper"> 
-          <div className="agency-header-content">
-            <p>Welcome to 3S Agency</p>
-            <h1 className="agency-header-title">We Create Unique Websites</h1>
-            <p className="agency-header-text">
-              Looking to upscale your digital presence? Look no further. At 3S Agency, we specialize in crafting unique websites tailored to your vision.
-            </p>
-            <Link to="#" onClick={scrollToCTA} className="agency-header-cta">Be Contacted</Link>
-          </div>
-          <div className="agency-header-images">
-            <img src="../..\images\group220.png"></img>
-            <img src=""></img>
-          </div>
+          <div className="wrapper">
+            <div className="agency-header-content">
+              <p className="agency-header-text">Welcome to 3S Agency</p>
+              <h1 className="agency-header-title">We Create Unique <br />Websites</h1>
+              <p className="agency-header-text">
+                Looking to upscale your digital presence? Look no further. At 3S Agency, we specialize <br /> in crafting unique websites tailored to your vision.
+              </p>
+              <Link to="#" onClick={scrollToCTA} className="agency-header-cta">Be Contacted</Link>
+            </div>
+            <div className="agency-header-images">
+              <img src="../../images/group220.png" alt="header" />
+            </div>
           </div>
         </div>
         <div className="agency-services">
@@ -79,35 +76,35 @@ export default function Agency() {
               </p>
             </div>
             <div className="agency-services-item">
-              <i className="bi bi-palette-fill"></i>
+              <i className="bi bi-pencil"></i>
               <h3 className="agency-services-item-title">Unique Branding</h3>
               <p className="agency-services-item-text">
                 Building a strong and recognizable brand identity that resonates with your target market and drives loyalty.
               </p>
             </div>
             <div className="agency-services-item">
-              <i className="bi bi-palette-fill"></i>
+              <i className="bi bi-code-slash"></i>
               <h3 className="agency-services-item-title">Robust Development</h3>
               <p className="agency-services-item-text">
                 Crafting high-quality and scalable websites and applications tailored to your business needs and user expectations.
               </p>
             </div>
             <div className="agency-services-item">
-              <i className="bi bi-palette-fill"></i>
+              <i className="bi bi-arrow-repeat"></i>
               <h3 className="agency-services-item-title">Continuous Updates</h3>
               <p className="agency-services-item-text">
                 Keeping your digital presence current and secure with regular updates, ensuring optimal performance and relevance.
               </p>
             </div>
             <div className="agency-services-item">
-              <i className="bi bi-palette-fill"></i>
+              <i className="bi bi-aspect-ratio"></i>
               <h3 className="agency-services-item-title">Modern Redesign</h3>
               <p className="agency-services-item-text">
                 Transforming existing websites with a fresh, contemporary look and improved functionality to enhance user experience.
               </p>
             </div>
             <div className="agency-services-item">
-              <i className="bi bi-palette-fill"></i>
+              <i className="bi bi-arrows-move"></i>
               <h3 className="agency-services-item-title">Seamless Transition</h3>
               <p className="agency-services-item-text">
                 Ensuring a smooth migration and integration process when moving to new platforms or updating technologies, minimizing downtime and disruption.
@@ -124,6 +121,8 @@ export default function Agency() {
               <a className="agency-portfolio-card-link" href="#">Go to website <i className="bi bi-arrow-right"></i></a>
             </div>
             <div className="agency-portfolio-card">
+             
+            <img src="../../images/group220.png" alt="" />
               <h3 className="agency-portfolio-card-title">Portfolio Victor Bisch</h3>
               <p className="agency-portfolio-card-text">Lorem ipsum dolor sit amet, Ut opertamise sit rartione offici sit aliquam omnis aut optio datore sit ratione quis</p>
               <a className="agency-portfolio-card-link" href="#">Go to website <i className="bi bi-arrow-right"></i></a>

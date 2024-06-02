@@ -1,261 +1,285 @@
-/* agency.css */
-
 body {
     margin: 0;
     background-color: #111;
     color: #fff;
-  }
-  
-  a {
+}
+
+a {
     color: #4e9af1;
     text-decoration: none;
-  }
-  
-  .agency-content {
+}
+
+.agency-content {
     padding: 20px;
     font-family: Outfit, sans-serif;
-  }
-  
-  .agency-header {
+}
+
+.agency-header {
     position: relative;
     background: linear-gradient(-60deg, rgba(90, 222, 231, 0.3), rgba(150, 0, 250, 0.3));
     border-radius: 20px;
-  }
-  
-  .agency-header::before {
+}
+
+.agency-header::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.2);
-  }
-  
-  .wrapper {
+}
+
+.wrapper {
     display: flex;
     text-align: center;
     align-items: center;
     justify-content: space-between;
-
-
     gap: 30px;
     padding: 50px 20px;
     padding-right: 0;
     position: relative;
     z-index: 1;
-  }
-  
-.agency-header-content{
-   text-align: left;
-   margin-left: 20px;
-
 }
 
-  .agency-header-title {
-    font-size: 48px;
-    font-weight: bold;
+.agency-header-content {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.agency-header-title {
+    font-size: 70px;
+    font-weight: 800;
     margin: 0;
-  }
-  
-  .agency-header-text {
-    font-size: 20px;
+}
+
+.agency-header-text {
+    font-size: 17px;
     margin: 20px 0;
-  }
-  
-  .agency-header-cta {
+}
+
+.agency-header img {
+    width: 717.36px;
+}
+
+.agency-header-cta {
     display: inline-block;
     padding: 10px 20px;
     background-color: #4e9af1;
     color: #fff;
     border-radius: 5px;
     font-size: 16px;
-  }
-  
-  .agency-services {
+}
+
+.agency-services {
     text-align: center;
     padding: 50px 20px;
+    align-self: center;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-  }
-  
-  .agency-services-title {
+}
+
+.agency-services-title {
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 20px;
-  }
-  
-  .agency-services-box {
+}
+
+.agency-services-box {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    width: 60%;
-  }
-  
-  .agency-services-item {
-    width: 300px;
+    width: 80%;
+}
+
+.agency-services-item {
+    width: 369px;
+    height: 200px;
     margin: 20px;
     padding: 20px;
-    background-color: #222;
     border-radius: 10px;
     text-align: left;
-  }
-  
-  .agency-services-item-title {
+    box-sizing: border-box;
+}
+
+.agency-services-item i {
+    font-size: 37.13px;
+    background: linear-gradient(-60deg, rgba(90, 222, 231, 1), rgba(150, 0, 250, 1));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.agency-services-item-title {
     font-size: 24px;
     font-weight: bold;
-  }
-  
-  .agency-services-item-text {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.agency-services-item-text {
     font-size: 16px;
     margin: 10px 0;
-  }
-  
-  .agency-portfolio {
+}
+
+.agency-portfolio {
     text-align: center;
     padding: 50px 20px;
-  }
-  
-  .agency-portfolio-title {
+}
+
+.agency-portfolio-title {
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 20px;
-  }
-  
-  .agency-portfolio-box {
-    display: flex;
-    flex-wrap: wrap;
+}
+
+.agency-services-box {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
     justify-content: center;
-  }
-  
-  .agency-portfolio-card {
-    width: 300px;
+    justify-items: center;
+}
+
+
+
+.agency-portfolio-card {
+    width: 380px;
     margin: 20px;
     padding: 20px;
     background-color: #222;
-    border-radius: 10px;
+    border-radius: 20px;
     text-align: left;
-  }
-  
-  .agency-portfolio-card-title {
+    
+}
+.agency-portfolio-card img{
+    max-height: 160px;
+    background-color: linear-gradient(-60deg, rgba(90, 222, 231, 1), rgba(150, 0, 250, 1));
+}
+
+.agency-portfolio-card-title {
     font-size: 24px;
     font-weight: bold;
-  }
-  
-  .agency-portfolio-card-text {
+}
+
+.agency-portfolio-card-text {
     font-size: 16px;
     margin: 10px 0;
-  }
-  
-  .agency-portfolio-card-link {
+}
+
+.agency-portfolio-card-link {
     font-size: 16px;
     color: #4e9af1;
-  }
-  
-  .agency-quality {
+}
+
+.agency-portfolio-box{
+    display: flex;
+    justify-content: center;
+}
+
+.agency-quality {
     text-align: center;
     padding: 50px 20px;
-  }
-  
-  .agency-quality-title {
+}
+
+.agency-quality-title {
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 20px;
-  }
-  
-  .agency-quality-box {
+}
+
+.agency-quality-box {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-  }
-  
-  .agency-quality-item {
+}
+
+.agency-quality-item {
     width: 300px;
     margin: 20px;
     padding: 20px;
     background-color: #222;
     border-radius: 10px;
     text-align: left;
-  }
-  
-  .agency-quality-item-title {
+}
+
+.agency-quality-item-title {
     font-size: 24px;
     font-weight: bold;
-  }
-  
-  .agency-expert {
+}
+
+.agency-expert {
     text-align: center;
     padding: 50px 20px;
-  }
-  
-  .agency-expert-title {
+}
+
+.agency-expert-title {
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 20px;
-  }
-  
-  .agency-expert-content {
+}
+
+.agency-expert-content {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-  }
-  
-  .agency-expert-item {
+}
+
+.agency-expert-item {
     width: 600px;
     margin: 20px;
     padding: 20px;
     background-color: #222;
     border-radius: 10px;
     text-align: left;
-  }
-  
-  .agency-expert-item-title {
+}
+
+.agency-expert-item-title {
     font-size: 24px;
     font-weight: bold;
-  }
-  
-  .agency-expert-item-text {
+}
+
+.agency-expert-item-text {
     font-size: 16px;
     margin: 10px 0;
-  }
-  
-  .agency-expert-stats {
+}
+
+.agency-expert-stats {
     display: flex;
     justify-content: space-around;
     width: 100%;
-  }
-  
-  .agency-expert-stat {
+}
+
+.agency-expert-stat {
     width: 100px;
     margin: 10px;
     padding: 10px;
     background-color: #222;
     border-radius: 10px;
     text-align: center;
-  }
-  
-  .agency-expert-stat h4 {
+}
+
+.agency-expert-stat h4 {
     font-size: 24px;
     font-weight: bold;
-  }
-  
-  .agency-expert-stat p {
+}
+
+.agency-expert-stat p {
     font-size: 16px;
-  }
-  
-  .agency-contact {
+}
+
+.agency-contact {
     text-align: center;
     padding: 50px 20px;
     background: linear-gradient(145deg, #200042, #3b007e);
-  }
-  
-  .agency-contact-title {
+}
+
+.agency-contact-title {
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 20px;
-  }
-  
-  .agency-contact-text {
+}
+
+.agency-contact-text {
     font-size: 16px;
     margin: 10px 0;
-  }
-  
+}
