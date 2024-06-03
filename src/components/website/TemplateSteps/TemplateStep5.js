@@ -81,7 +81,7 @@ const TemplateStep5 = ({ updateNextButtonState, currentStep, setSelectedButtons,
             onBlur={handleInputBlur}
             style={{ borderColor: inputError && touched ? 'red' : '' }}
           />
-          {inputError && touched && <p style={{ color: 'red' }}>Before proceding please enter a valid name for your project.</p>}
+          {inputError && touched && <p style={{ color: 'red', textAlign:'center' }}>Before proceding please enter a valid name for your project.</p>}
         </div>
       </div>
     </div>

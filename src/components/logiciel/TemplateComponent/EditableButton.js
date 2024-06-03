@@ -11,6 +11,7 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
   const buttonRef = useRef(null);
   const textRef = useRef(null);
   const modalRef = useRef(null);
+  const hiddenTextMeasureRef = useRef(null);
 
   useEffect(() => {
     const savedText = localStorage.getItem(`editableButtonText-${id}`);
@@ -28,13 +29,24 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
     }
   }, [id]);
 
+  useEffect(() => {
+    updateButtonWidth();
+  }, [currentText]);
+
   const handleInputChange = (event) => {
     const inputText = event.target.innerText;
-    setError(inputText.length >= 250);
+
+    if (inputText.length > 100) {
+      setError(true);
+      
+      return;
+    } else {
+      setError(false);
+    }
+
     setCurrentText(inputText);
     localStorage.setItem(`editableButtonText-${id}`, inputText);
   };
-
   const handleBlur = (event) => {
     const editLinkButton = document.querySelector('.edit-link-button');
     if (event.target === editLinkButton || event.relatedTarget === editLinkButton) {
@@ -48,6 +60,7 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
       handleLinkChange();
       onChange(currentText);
     }
+    updateButtonWidth();
   };
 
   const handleButtonClick = () => {
@@ -90,8 +103,16 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
     }
   }, [isEditing]);
 
+  const updateButtonWidth = () => {
+    if (hiddenTextMeasureRef.current && buttonRef.current) {
+      const width = hiddenTextMeasureRef.current.offsetWidth + 20; // Adding some padding
+      buttonRef.current.style.width = `${width}px`;
+    }
+  };
+
   return (
     <>
+
       {isEditing ? (
         <>
           <div
@@ -123,11 +144,7 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
                 <input
                   type="checkbox"
                   onChange={() => {
-                    setOpenInNewTab(prev => {
-                      const newValue = !prev;
-                      console.log("Checkbox clicked, openInNewTab:", newValue); // Debug log
-                      return newValue;
-                    });
+                    setOpenInNewTab(prev => !prev);
                   }}
                   checked={openInNewTab}
                 />
@@ -135,7 +152,11 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
               </label>
             </div>
           )}
+          <div ref={hiddenTextMeasureRef} className="hidden-text-measure">
+            {currentText}
+          </div>
         </>
+
       ) : (
         <button
           ref={buttonRef}

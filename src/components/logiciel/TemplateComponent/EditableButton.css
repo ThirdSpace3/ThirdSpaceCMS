@@ -3,52 +3,52 @@
     display: inline-block;
     background-color: inherit;
     color: inherit;
-    padding: 10px; /* Define specific padding */
+    padding: 10px;
     cursor: pointer;
-    width: 150px; /* Define fixed width */
-    height: 40px; /* Define fixed height */
+    height: 40px;
     text-align: center;
     border: none;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping */
 }
 
 .editable-button:hover {
-    outline: 2px solid #217bf4;   /* blue border to indicate focus or selection */
+    outline: 2px solid #217bf4;
     cursor: pointer;
 }
-
-
 
 .position-relative {
     position: relative;
 }
 
 .editable-button-textarea {
-    width: 150px; /* Match the button's width */
-    max-height: 40px; /* Match the button's height */
-    padding: 4px; /* Match the button's padding */
-    resize: none; /* Disables resizing */
-    scrollbar-width: none; /* Hide scrollbar */
+    min-width: 150px;
+    max-height: 40px;
+    padding: 4px;
+    resize: none;
+    scrollbar-width: none;
     display: flex;
     align-items: center;
-    background-color: inherit; /* Ensure background matches */
-    color: inherit; /* Ensure text color matches */
-    align-content: center;
-    z-index: 1; /* Add this to make sure the textarea is above the button */
+    background-color: inherit;
+    color: inherit;
+    z-index: 1;
     text-align: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .editable-button.error, .editable-button-textarea.error {
-    border-color: red; /* Consistent error indication */
-    background-color: #ffe6e6; /* Light red background for error state */
+    border-color: red;
 }
-
 
 .hidden-text-measure {
     font-family: inherit; 
     font-size: inherit;
-    padding: inherit;
+    padding: 10px;
     border: none;
+    display: inline-block;
+    visibility: hidden; /* Hide the element */
+    white-space: nowrap;
 }
 
 .link-settings-modal {
@@ -57,7 +57,7 @@
     background-color: #292929;
     padding: 10px;
     padding-top: 5px;
-    width: 300px; /* Adjust width as necessary */
+    width: 300px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     z-index: 1000;
@@ -66,11 +66,9 @@
     position: absolute;
     left: -45%;
     top: 50px;
-
-    
 }
 
-.link-settings-content{
+.link-settings-content {
     margin-top: 10px;
     display: flex;
     align-items: center;
@@ -91,11 +89,11 @@
     color: white;
     background-color: #7214ff;
     font-family: Inter;
-    padding: 3px 10px 3px 10px ;
+    padding: 3px 10px;
     border-radius: 8px;
     position: absolute;
     top: 40px;
-    z-index: 2; /* Add this to make sure the button is above the textarea */
+    z-index: 2;
     border: none;
     cursor: pointer;
     left: 50%;
@@ -106,25 +104,19 @@
     justify-content: center;
     gap: 5px;
     width: 100px;
-  }
-  
+}
 
-
-
-/* Additional styles for checkbox and inputs within modal */
 input[type="checkbox"] {
-margin-right: 10px;
-margin-left: 30px;
-
+    margin-right: 10px;
+    margin-left: 30px;
 }
 
-.link-settings-target-chooser{
-display: flex;
-justify-content: center;
-
+.link-settings-target-chooser {
+    display: flex;
+    justify-content: center;
 }
 
-.link-title{
+.link-title {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

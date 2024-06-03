@@ -40,36 +40,41 @@ export default function ProjectsDashboard({
   const handleSelect = (option) => {
     setSelectedOption(option);
     setIsOpen(false);
-
-    let filteredProjects = [...userData];
-    if (option.value === "option1") {
-      filteredProjects.sort(
-        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      );
-    } else if (option.value === "option2") {
-      filteredProjects.sort(
-        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-      );
-    } else if (option.value === "option3") {
-      filteredProjects.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (option.value === "option4") {
-      filteredProjects.sort((a, b) => b.name.localeCompare(a.name));
-    }
-
-    setFilteredProjects(filteredProjects);
+    applyFilters(option, searchValue);
   };
 
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
     setSearchValue(value);
-    if (value === "") {
-      setFilteredProjects(originalProjects); // Reset to the original projects
-    } else {
-      const filteredData = originalProjects.filter(project =>
-        project.name.toLowerCase().includes(value)
+    applyFilters(selectedOption, value);
+  };
+
+  const applyFilters = (option, searchValue) => {
+    let filtered = [...userData];
+    
+    // Filter by search value
+    if (searchValue) {
+      filtered = filtered.filter(project =>
+        project.name.toLowerCase().includes(searchValue)
       );
-      setFilteredProjects(filteredData);
     }
+
+    // Sort by selected option
+    if (option.value === "option1") {
+      filtered.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+    } else if (option.value === "option2") {
+      filtered.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      );
+    } else if (option.value === "option3") {
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (option.value === "option4") {
+      filtered.sort((a, b) => b.name.localeCompare(a.name));
+    }
+
+    setFilteredProjects(filtered);
   };
 
   const handleProjectClick = (templateSelected) => {
