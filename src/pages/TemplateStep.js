@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactGA from 'react-ga';
 import { db, doc, setDoc } from '../firebaseConfig';
-
 import TemplateStep1 from "../components/website/TemplateSteps/TemplateStep1";
 import TemplateStep2 from "../components/website/TemplateSteps/TemplateStep2";
 import TemplateStep3 from "../components/website/TemplateSteps/TemplateStep3";

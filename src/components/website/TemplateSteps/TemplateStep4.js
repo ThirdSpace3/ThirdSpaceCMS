@@ -9,13 +9,13 @@ const initialTemplates = [
     id: "SSSProduct",
     name: "SSSProduct",
     component: SSSProduct,
-    screenshot: "./images/SSSProductscreenshot.png",
+    screenshot: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FTemplateScreenshot%2FSSSProductscreenshot.png?alt=media&token=521c4bc7-28d0-4e2c-aa88-fe3c0b525101",
   },
   {
     id: "SSSPortfolio",
     name: "SSSPortfolio",
     component: SSSPortfolio,
-    screenshot: "./images/SSSPortfolioscreenshot.png",
+    screenshot: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FTemplateScreenshot%2FSSSPortfolioscreenshot.png?alt=media&token=59869598-73e0-4bd4-958c-f725e6afb1ff",
   },
 ];
 

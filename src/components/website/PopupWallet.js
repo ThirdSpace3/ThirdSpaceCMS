@@ -274,7 +274,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
             className="wallet-btn"
             onClick={handleLoginWithUnstoppable}
           >
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Funstoppable-logo.png?alt=media&token=0f717b17-649d-4265-a93e-574fe086de32" alt="" />
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Funstoppablelogo.png?alt=media&token=60b8c7c0-d644-4954-be2d-7afe3065b876" alt="" />
             Continue with Unstoppable
           </button>
           {/* Coming Soon */}

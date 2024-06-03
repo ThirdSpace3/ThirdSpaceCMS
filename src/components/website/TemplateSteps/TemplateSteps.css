@@ -116,7 +116,7 @@ body {
   cursor: pointer;
   background: rgba(255, 255, 255, 0.6);
 }
-.selectable-button.selected {
+.selectable-button.template-selected {
   background: rgba(255, 255, 255, 0.6) !important;
 }
 .template-input-box {
@@ -219,7 +219,7 @@ body {
     justify-content: space-around;
   }
 }
-.selectable-button-2.selected {
+.selectable-button-2.template-selected {
   background: rgba(255, 255, 255, 0.6) !important;
 }
 
@@ -267,7 +267,7 @@ body {
   display: block;
 }
 
-.selected {
+.template-selected {
   border: 2px solid var(--text-editor);
 }
 .template-mobile {
@@ -420,7 +420,7 @@ body {
   overflow: hidden;
 }
 
-.templates-box.selected {
+.templates-box.template-selected {
   border: 2px solid var(--text-editor);
 }
 .templates-hover {

@@ -52,7 +52,7 @@ export default function PropulsePopup({ setShowPopup, onSaveClick }) {
             <p className="propulse-popup-txt">netbook.thirdspace.x</p>
             <label className="switch">
               <input type="checkbox" />
-              <span className="slider"></span>
+              <span className="slider-propulse"></span>
             </label>
           </div>
         </div>

@@ -80,7 +80,7 @@ a.propulse-popup-txt {
 }
 
 /* Le slider */
-.slider {
+.slider-propulse {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -92,7 +92,7 @@ a.propulse-popup-txt {
   transition: 0.4s;
 }
 
-.slider:before {
+.slider-propulse:before {
   position: absolute;
   content: "";
   height: 10px;
@@ -104,26 +104,26 @@ a.propulse-popup-txt {
   transition: 0.4s;
 }
 
-input:checked + .slider {
+input:checked + .slider-propulse {
   background-color: var(--main-color);
 }
 
-input:focus + .slider {
+input:focus + .slider-propulse {
   box-shadow: 0 0 1px #2196f3;
 }
 
-input:checked + .slider:before {
+input:checked + .slider-propulse:before {
   -webkit-transform: translateX(12px);
   -ms-transform: translateX(12px);
   transform: translateX(12px);
 }
 
 /* Arrondir les coins du bouton */
-.slider {
+.slider-propulse {
   border-radius: 34px;
 }
 
-.slider:before {
+.slider-propulse:before {
   border-radius: 50%;
 }
 

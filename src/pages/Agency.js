@@ -5,13 +5,48 @@ import NavBar from '../components/website/NavBar';
 import Footer from '../components/website/Footer';
 import ContactForm from '../components/website/ContactForm';
 import '../components/website/agency.css';
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
 
 export default function Agency() {
   const [hasWalletData, setHasWalletData] = useState(false);
   const [accounts, setAccounts] = useState([]);
   const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
   const ctaRef = useRef(null); // Create a ref for the CTA div
+  const carouselRef = useRef(null);
 
+  const projects = [
+    {
+      title: "Project One",
+      description: "Description for project one.",
+      imageUrl: "../../images/Group220.png",
+      link: "#"
+    },
+    {
+      title: "Project Two",
+      description: "Description for project two.",
+      imageUrl: "../../images/Group220.png",
+      link: "#"
+    },
+    {
+      title: "Project Three",
+      description: "Description for project three.",
+      imageUrl: "../../images/Group220.png",
+      link: "#"
+    },
+    {
+      title: "Project Four",
+      description: "Description for project four.",
+      imageUrl: "../../images/Group220.png",
+      link: "#"
+    },
+    {
+      title: "Project Five",
+      description: "Description for project five.",
+      imageUrl: "../../images/Group220.png",
+      link: "#"
+    }
+  ];
   const checkWalletData = async () => {
     const userAccount = sessionStorage.getItem('userAccount');
     if (userAccount) {
@@ -39,6 +74,18 @@ export default function Agency() {
 
   const scrollToCTA = () => {
     ctaRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handlePrev = () => {
+    if (carouselRef.current) {
+      carouselRef.current.decrement();
+    }
+  };
+
+  const handleNext = () => {
+    if (carouselRef.current) {
+      carouselRef.current.increment();
+    }
   };
 
   return (
@@ -113,49 +160,67 @@ export default function Agency() {
           </div>
         </div>
         <div className="agency-portfolio">
-          <h2 className="agency-portfolio-title">Explore our latest projects</h2>
-          <div className="agency-portfolio-box">
-            <div className="agency-portfolio-card">
-              <h3 className="agency-portfolio-card-title">Nom du projet</h3>
-              <p className="agency-portfolio-card-text">Lorem ipsum dolor sit amet, Ut opertamise sit rartione offici sit aliquam omnis aut optio datore sit ratione quis</p>
-              <a className="agency-portfolio-card-link" href="#">Go to website <i className="bi bi-arrow-right"></i></a>
-            </div>
-            <div className="agency-portfolio-card">
-             
-            <img src="../../images/group220.png" alt="" />
-              <h3 className="agency-portfolio-card-title">Portfolio Victor Bisch</h3>
-              <p className="agency-portfolio-card-text">Lorem ipsum dolor sit amet, Ut opertamise sit rartione offici sit aliquam omnis aut optio datore sit ratione quis</p>
-              <a className="agency-portfolio-card-link" href="#">Go to website <i className="bi bi-arrow-right"></i></a>
-            </div>
-            <div className="agency-portfolio-card">
-              <h3 className="agency-portfolio-card-title">Nom du projet</h3>
-              <p className="agency-portfolio-card-text">Lorem ipsum dolor sit amet, Ut opertamise sit rartione offici sit aliquam omnis aut optio datore sit ratione quis</p>
-              <a className="agency-portfolio-card-link" href="#">Go to website <i className="bi bi-arrow-right"></i></a>
+          <div className='agency-portfolio-carrousel-title'>
+            <h2 className="agency-portfolio-title">Explore our latest projects</h2>
+            <div className='carrousel-handlers'>
+              <i className='bi bi-arrow-left' onClick={handlePrev}></i>
+              <i className='bi bi-arrow-right' onClick={handleNext}></i>
             </div>
           </div>
+          <Carousel
+            ref={carouselRef}
+            showArrows={false}
+            infiniteLoop={true}
+            showThumbs={false}
+            showStatus={false}
+            centerMode={true}
+            centerSlidePercentage={33.33}
+          >
+            {projects.map((project, index) => (
+              <div key={index} className="agency-portfolio-card">
+                <img src={project.imageUrl} alt={project.title} />
+                <h3 className="agency-portfolio-card-title">{project.title}</h3>
+                <p className="agency-portfolio-card-text">{project.description}</p>
+                <a className="agency-portfolio-card-link" href={project.link}>Go to website <i className="bi bi-arrow-right"></i></a>
+              </div>
+            ))}
+          </Carousel>
         </div>
+
         <div className="agency-quality">
-          <h2 className="agency-quality-title">Why Choose Us?</h2>
-          <div className="agency-quality-box">
-            <div className="agency-quality-item">
-              <h3 className="agency-quality-item-title">We design stunning, functional websites tailored to your brand.</h3>
-            </div>
-            <div className="agency-quality-item">
-              <h3 className="agency-quality-item-title">Our responsive development ensures perfect performance on all devices.</h3>
-            </div>
-            <div className="agency-quality-item">
-              <h3 className="agency-quality-item-title">We deliver fast, reliable hosting solutions for optimal site performance.</h3>
-            </div>
-            <div className="agency-quality-item">
-              <h3 className="agency-quality-item-title">We ensure your website has a user-friendly interface for easy navigation.</h3>
-            </div>
-            <div className="agency-quality-item">
-              <h3 className="agency-quality-item-title">We provide ongoing support to keep your website updated and secure.</h3>
+          <img src='../../images/groupequality.png'></img>
+          <div className='agency-quality-content'>
+            <p>Quality</p>
+            <h2 className="agency-quality-title">Why Choose Us?</h2>
+            <div className="agency-quality-box">
+              <div className="agency-quality-item">
+                <h3 className="agency-quality-item-title">                <i className='bi bi-check-circle'></i>
+                  We design stunning, functional websites tailored to your brand.</h3>
+              </div>
+              <div className="agency-quality-item">
+                <h3 className="agency-quality-item-title">
+                  <i className='bi bi-check-circle'></i>
+                  Our responsive development ensures perfect performance on all devices.
+                </h3>
+              </div>
+              <div className="agency-quality-item">
+                <h3 className="agency-quality-item-title">                <i className='bi bi-check-circle'></i>
+                  We deliver fast, reliable hosting solutions for optimal site performance.</h3>
+              </div>
+              <div className="agency-quality-item">
+                <h3 className="agency-quality-item-title">                <i className='bi bi-check-circle'></i>
+                  We ensure your website has a user-friendly interface for easy navigation.</h3>
+              </div>
+              <div className="agency-quality-item">
+                <h3 className="agency-quality-item-title">                <i className='bi bi-check-circle'></i>
+                  We provide ongoing support to keep your website updated and secure.</h3>
+              </div>
             </div>
           </div>
         </div>
         <div className="agency-expert">
-          <h2 className="agency-expert-title">Meet Your Digital Solutions Expert</h2>
+        <h2 className="agency-expert-title">Meet Your Digital Solutions Expert</h2>
+
           <div className="agency-expert-content">
             <div className="agency-expert-item">
               <h3 className="agency-expert-item-title">Empowering Businesses with Tailored Solutions</h3>
@@ -178,6 +243,7 @@ export default function Agency() {
               </div>
             </div>
           </div>
+          <img src='./images/Group330.png'></img>
         </div>
         <div className="agency-contact" ref={ctaRef}>
           <h2 className="agency-contact-title">Join Our Newsletter</h2>
