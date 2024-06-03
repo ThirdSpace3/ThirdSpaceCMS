@@ -1,48 +1,48 @@
-.contactform-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
-  
-  .contactform-row {
-    margin-bottom: 15px;
-  }
-  
-  .contactform-row label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .contactform-row input[type="text"],
-  .contactform-row input[type="email"],
-  .contactform-row input[type="url"],
-  .contactform-row textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .contactform-row input[type="checkbox"] {
-    margin-right: 5px;
-  }
-  
-  .contactform-row button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .contactform-row button:hover {
-    background-color: #45a049;
-  }
-  
+.contact-form {
+  width: 100%;  
+  display: flex;
+  padding: 10px;
+  border-radius: 5px;
+  flex-direction: column;
+}
+
+.contact-input {
+  flex: 1;
+  padding: 12.56px;
+  border-radius: 17.59px;
+  margin-right: -30px;
+  font-size: 12.56px;
+  width: 70%;
+  font-family: Outfit, sans-serif;
+  max-width: 400px;
+
+}
+
+.contact-button {
+  padding: 12.56px 20px;
+  background-color: #64748B;
+  color: #fff;
+  border: none;
+  border-radius: 17.59px;
+  cursor: pointer;
+  font-family: Outfit, sans-serif;
+
+}
+
+.contact-toggle {
+  display: block;
+  color: #64748B;
+  cursor: pointer;
+  text-align: left;
+  font-size: 10.97px;
+  font-family: Outfit, sans-serif;
+  margin-left: 5%;
+}
+
+.contact-toggle i {
+  margin-left: 10px;
+}
+
+.contact-toggle:hover {
+  text-decoration: underline;
+}

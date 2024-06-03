@@ -105,7 +105,7 @@ export default function Agency() {
               <p className="agency-header-text">
                 Looking to upscale your digital presence? Look no further. At 3S Agency, we specialize <br /> in crafting unique websites tailored to your vision.
               </p>
-              <Link to="#" onClick={scrollToCTA} className="agency-header-cta">Be Contacted</Link>
+              <ContactForm />            
             </div>
             <div className="agency-header-images">
               <img src="../../images/group220.png" alt="header" />
@@ -174,7 +174,7 @@ export default function Agency() {
             showThumbs={false}
             showStatus={false}
             centerMode={true}
-            centerSlidePercentage={33.33}
+            centerSlidePercentage={25} // Adjust to show parts of the side slides
           >
             {projects.map((project, index) => (
               <div key={index} className="agency-portfolio-card">
@@ -185,6 +185,7 @@ export default function Agency() {
               </div>
             ))}
           </Carousel>
+
         </div>
 
         <div className="agency-quality">
@@ -219,7 +220,8 @@ export default function Agency() {
           </div>
         </div>
         <div className="agency-expert">
-        <h2 className="agency-expert-title">Meet Your Digital Solutions Expert</h2>
+          <p className="agency-expert-item-text">Who are we?</p>
+          <h2 className="agency-expert-title">Meet Your Digital Solutions Expert</h2>
 
           <div className="agency-expert-content">
             <div className="agency-expert-item">
@@ -227,30 +229,39 @@ export default function Agency() {
               <p className="agency-expert-item-text">
                 Our youthful spirit drives us to empower businesses of all sizes, recognizing that a website is essential, especially for small companies. With our commitment to reasonable pricing and collaborative creation process, we work hand in hand with you to bring your vision to life, ensuring that your digital presence stands out in today's competitive market.
               </p>
+              <ContactForm />            
+
+              <div className="agency-expert-stats">
+                <div className="agency-expert-stat">
+                  <h4>15+</h4>
+                  <p>Projects</p>
+                </div>
+                <div className="agency-expert-stat">
+                  <h4>100%</h4>
+                  <p>Satisfaction</p>
+                </div>
+                <div className="agency-expert-stat">
+                  <h4>3 Years</h4>
+                  <p>Experience</p>
+                </div>
+
+              </div>
             </div>
-            <div className="agency-expert-stats">
-              <div className="agency-expert-stat">
-                <h4>15+</h4>
-                <p>Projects</p>
-              </div>
-              <div className="agency-expert-stat">
-                <h4>100%</h4>
-                <p>Satisfaction</p>
-              </div>
-              <div className="agency-expert-stat">
-                <h4>3 Years</h4>
-                <p>Experience</p>
-              </div>
-            </div>
+            <img src='./images/Group330.png'></img>
           </div>
-          <img src='./images/Group330.png'></img>
         </div>
         <div className="agency-contact" ref={ctaRef}>
-          <h2 className="agency-contact-title">Join Our Newsletter</h2>
-          <p className="agency-contact-text">
-            Join our newsletter for exclusive updates and insights! Rest assured, you can unsubscribe at any time, and we will never sell or share your email with third parties. Read our Privacy Policy for more information.
-          </p>
-          <ContactForm />
+          <div className='agency-contact-content'>
+            <h2 className="agency-contact-title">Join Our Newsletter</h2>
+
+            <p className="agency-contact-text">
+              Join our newsletter for exclusive updates and insights! Rest assured, you can unsubscribe at any time, and we will never sell or share your email with third parties. Read our Privacy Policy for more information.
+            </p>
+            <ContactForm />            
+
+          </div>
+          <img src='./images/Groupe44.png'></img>
+
         </div>
       </div>
       <Footer />
