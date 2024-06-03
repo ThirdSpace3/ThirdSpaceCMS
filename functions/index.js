@@ -204,3 +204,68 @@ exports.sendEmailsOnContactFormSubmit = functions.firestore
       console.error('There was an error while sending the emails or applying the label:', error);
     }
   });
+
+
+  exports.sendEmailsOnSubscription = functions.firestore
+  .document('NewsletterSubscriptions/{subscriptionId}')
+  .onCreate(async (snap, context) => {
+    const newSubscription = snap.data();
+
+    const userMailOptions = {
+      from: gmailEmail,
+      to: newSubscription.email, // User's email
+      subject: 'Subscription Confirmation',
+      html: `
+        <p>Dear Subscriber,</p>
+        <p>Thank you for subscribing to our newsletter. We have received your subscription and you will start receiving our newsletters soon.</p>
+        <p>Best regards,<br/>Your Team</p>
+      `
+    };
+
+    const adminMailOptions = {
+      from: gmailEmail,
+      to: gmailEmail, // Admin email
+      subject: 'New Newsletter Subscription',
+      html: `
+        <p>You have a new newsletter subscription:</p>
+        <p><strong>Email:</strong> ${newSubscription.email}</p>
+        <br/><br/>
+        Check the Firebase console for more information.
+      `
+    };
+
+    try {
+      // Send email to user
+      await mailTransport.sendMail(userMailOptions);
+      console.log('Confirmation email sent to user');
+
+      // Send email to admin
+      await mailTransport.sendMail(adminMailOptions);
+      console.log('Notification email sent to admin');
+
+      // Search for the recently sent email to get its message ID
+      const searchResponse = await gmail.users.messages.list({
+        userId: 'me',
+        q: 'subject:"New Newsletter Subscription"',
+        maxResults: 1
+      });
+
+      if (searchResponse.data.messages && searchResponse.data.messages.length > 0) {
+        const messageId = searchResponse.data.messages[0].id;
+
+        // Apply the Gmail label
+        await gmail.users.messages.modify({
+          userId: 'me',
+          id: messageId,
+          requestBody: {
+            addLabelIds: ['LabelId'] // Replace 'LabelId' with the actual ID of the label
+          }
+        });
+        console.log('Label applied successfully');
+      } else {
+        console.log('No message found to label');
+      }
+    } catch (error) {
+      console.error('There was an error while sending the emails or applying the label:', error);
+    }
+  });

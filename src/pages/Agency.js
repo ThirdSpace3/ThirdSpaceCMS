@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import NavBar from '../components/website/NavBar';
 import Footer from '../components/website/Footer';
 import ContactForm from '../components/website/ContactForm';
+import NewsletterForm from '../components/website/NewsletterForm'
 import '../components/website/agency.css';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
@@ -257,7 +258,7 @@ export default function Agency() {
             <p className="agency-contact-text">
               Join our newsletter for exclusive updates and insights! Rest assured, you can unsubscribe at any time, and we will never sell or share your email with third parties. Read our Privacy Policy for more information.
             </p>
-            <ContactForm />            
+            <NewsletterForm />            
 
           </div>
           <img src='./images/Groupe44.png'></img>
