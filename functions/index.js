@@ -135,3 +135,72 @@ exports.sendEmailsOnContactFormSubmit = functions.firestore
       console.error('There was an error while sending the emails or applying the label:', error);
     }
   });
+
+
+  exports.sendEmailsOnContactFormSubmit = functions.firestore
+  .document('Agency/{contactId}')
+  .onCreate(async (snap, context) => {
+    const newContact = snap.data();
+    const isEmail = newContact.method === 'email';
+
+    const adminMailOptions = {
+      from: gmailEmail,
+      to: gmailEmail, // Admin email
+      subject: 'New Contact Form Submission',
+      html: `
+        <p>You have a new contact form submission:</p>
+        <p><strong>Contact Method:</strong> ${newContact.method}</p>
+        <p><strong>Contact Value:</strong> ${newContact.value}</p>
+        <br/><br/>
+        Check the Firebase console for more information.
+      `
+    };
+
+    try {
+      // Send email to admin
+      await mailTransport.sendMail(adminMailOptions);
+      console.log('Notification email sent to admin');
+
+      if (isEmail) {
+        const userMailOptions = {
+          from: gmailEmail,
+          to: newContact.value, // User's email
+          subject: 'Thank you for contacting us',
+          html: `
+            <p>Dear ${newContact.value},</p>
+            <p>Thank you for reaching out to us. We have received your message and will get back to you shortly.</p>
+            <p>Best regards,<br/>Your Team</p>
+          `
+        };
+
+        // Send email to user
+        await mailTransport.sendMail(userMailOptions);
+        console.log('Confirmation email sent to user');
+      }
+
+      // Search for the recently sent email to get its message ID
+      const searchResponse = await gmail.users.messages.list({
+        userId: 'me',
+        q: 'subject:"New Contact Form Submission"',
+        maxResults: 1
+      });
+
+      if (searchResponse.data.messages && searchResponse.data.messages.length > 0) {
+        const messageId = searchResponse.data.messages[0].id;
+
+        // Apply the Gmail label
+        await gmail.users.messages.modify({
+          userId: 'me',
+          id: messageId,
+          requestBody: {
+            addLabelIds: ['Contact'] // Replace 'YOUR_LABEL_ID' with the actual ID of the label
+          }
+        });
+        console.log('Label applied successfully');
+      } else {
+        console.log('No message found to label');
+      }
+    } catch (error) {
+      console.error('There was an error while sending the emails or applying the label:', error);
+    }
+  });

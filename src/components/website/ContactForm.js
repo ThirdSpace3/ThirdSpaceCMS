@@ -13,7 +13,7 @@ const ContactForm = () => {
       return;
     }
     try {
-      await addDoc(collection(db, 'agency'), {
+      await addDoc(collection(db, 'Agency'), {
         method: contactMethod,
         value: contactValue,
         timestamp: serverTimestamp()
@@ -25,9 +25,9 @@ const ContactForm = () => {
       alert('Failed to save contact information.');
     }
   };
+
   return (
     <form className="contact-form" onSubmit={handleSubmit}>
-      <div className='contact-form-input'>
       {contactMethod === 'email' ? (
         <input
           type="email"
@@ -46,9 +46,8 @@ const ContactForm = () => {
         />
       )}
       <button type="submit" className="contact-button">Be Contacted</button>
-      </div>
       <div className="contact-toggle" onClick={() => setContactMethod(contactMethod === 'email' ? 'phone' : 'email')}>
-        {contactMethod === 'email' ? 'I prefer to be contacted by phone' : 'I prefer to be contacted by email'}<i className='bi bi-arrow-right'></i>
+        {contactMethod === 'email' ? 'I prefer to be contacted by phone' : 'I prefer to be contacted by email'}
       </div>
     </form>
   );
