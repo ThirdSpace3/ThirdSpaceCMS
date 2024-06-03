@@ -34,4 +34,13 @@
   .contact-button:hover {
     background-color: #0056b3;
   }
+
+  @media only screen and (max-width: 767px) {
+    .contact-form {
+      width: 100%;
+      min-width: none;
+      max-width: 350px;
+    }
+  }
+  
   

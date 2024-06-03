@@ -97,7 +97,7 @@ body {
   gap: 20px;
 }
 .navbar__padding {
-  padding: 18px 8%;
+  padding: 18px 5.5%;
 }
 .nav__logo a {
   padding-right: 50px;
@@ -172,7 +172,7 @@ ul.nav__links li.nav__logo {
 /*====mobile====*/
 
 /* Medium devices (landscape tablets, 768px and down) */
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 768px) {
   .navbar__mobile {
     position: sticky;
     top: 0;
@@ -223,7 +223,7 @@ ul.nav__links li.nav__logo {
     max-width: 35px;
   }
   .navbar__mobile-menuIcon {
-    width: 20px;
+    max-width: 25px;
     transition: transform 0.3s ease;
   }
   .navbar__mobile-menuIcon:hover {
@@ -281,7 +281,7 @@ ul.nav__links li.nav__logo {
   }
 }
 
-@media screen and (min-width: 851px) {
+@media screen and (min-width: 769px) {
   .navbar__mobile {
     display: none;
   }

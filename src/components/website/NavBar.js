@@ -1,4 +1,3 @@
-// NavBar.js
 import React, { useState, useEffect } from 'react';
 import './NavBar.css';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +10,6 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
   const navigate = useNavigate();
 
   const togglePopup = () => {
-    // Log the event in Google Analytics
     ReactGA.event({
       category: 'Button',
       action: 'Click',
@@ -32,8 +30,8 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
   useEffect(() => {
     const shouldOpenWalletPopup = localStorage.getItem('openWalletPopup');
     if (shouldOpenWalletPopup === 'true') {
-      setShowPopup(true); // Assuming setShowPopup controls the visibility of your wallet popup
-      localStorage.removeItem('openWalletPopup'); // Remove the flag to avoid repeated popups
+      setShowPopup(true);
+      localStorage.removeItem('openWalletPopup');
     }
 
     ReactGA.pageview(window.location.pathname + window.location.search);
@@ -44,6 +42,15 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
       checkWalletData(userAccount);
     }
   }, []);
+
+  useEffect(() => {
+    const navbarPadding = document.querySelector('.navbar__padding');
+    if (isMenuOpen) {
+      navbarPadding.style.backgroundColor = 'var(--menu-bg)';
+    } else {
+      navbarPadding.style.backgroundColor = '';
+    }
+  }, [isMenuOpen]);
 
   return (
     <nav className="navbar__padding">

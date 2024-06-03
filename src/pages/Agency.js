@@ -8,6 +8,7 @@ import NewsletterForm from '../components/website/NewsletterForm'
 import '../components/website/agency.css';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
+import CarouselPortfolio from '../components/website/CarouselPortfolio';
 
 export default function Agency() {
   const [hasWalletData, setHasWalletData] = useState(false);
@@ -104,16 +105,17 @@ export default function Agency() {
               <p className="agency-header-text">Welcome to 3S Agency</p>
               <h1 className="agency-header-title">We Create Unique <br />Websites</h1>
               <p className="agency-header-text">
-                Looking to upscale your digital presence? Look no further. At 3S Agency, we specialize <br /> in crafting unique websites tailored to your vision.
+                Looking to upscale your digital presence? Look no further. At 3S Agency, we specialize in crafting unique websites tailored to your vision.
               </p>
               <ContactForm />            
             </div>
             <div className="agency-header-images">
-              <img src="../../images/group220.png" alt="header" />
+              <img className='agency-header-img' src="../../images/group220.png" alt="header" />
             </div>
           </div>
         </div>
         <div className="agency-services">
+        <p className="agency-header-text">Services</p>
           <h2 className="agency-services-title">Comprehensive Digital Services for Your Business</h2>
           <div className="agency-services-box">
             <div className="agency-services-item">
@@ -160,37 +162,11 @@ export default function Agency() {
             </div>
           </div>
         </div>
-        <div className="agency-portfolio">
-          <div className='agency-portfolio-carrousel-title'>
-            <h2 className="agency-portfolio-title">Explore our latest projects</h2>
-            <div className='carrousel-handlers'>
-              <i className='bi bi-arrow-left' onClick={handlePrev}></i>
-              <i className='bi bi-arrow-right' onClick={handleNext}></i>
-            </div>
-          </div>
-          <Carousel
-            ref={carouselRef}
-            showArrows={false}
-            infiniteLoop={true}
-            showThumbs={false}
-            showStatus={false}
-            centerMode={true}
-            centerSlidePercentage={25} // Adjust to show parts of the side slides
-          >
-            {projects.map((project, index) => (
-              <div key={index} className="agency-portfolio-card">
-                <img src={project.imageUrl} alt={project.title} />
-                <h3 className="agency-portfolio-card-title">{project.title}</h3>
-                <p className="agency-portfolio-card-text">{project.description}</p>
-                <a className="agency-portfolio-card-link" href={project.link}>Go to website <i className="bi bi-arrow-right"></i></a>
-              </div>
-            ))}
-          </Carousel>
+        <CarouselPortfolio />
 
-        </div>
 
         <div className="agency-quality">
-          <img src='../../images/groupequality.png'></img>
+          <img className="agency-quality-img" src='../../images/groupequality.png'></img>
           <div className='agency-quality-content'>
             <p>Quality</p>
             <h2 className="agency-quality-title">Why Choose Us?</h2>
@@ -248,7 +224,7 @@ export default function Agency() {
 
               </div>
             </div>
-            <img src='./images/Group330.png'></img>
+            <img className="agency-expert-item-img" src='./images/Group330.png'></img>
           </div>
         </div>
         <div className="agency-contact" ref={ctaRef}>
@@ -256,12 +232,12 @@ export default function Agency() {
             <h2 className="agency-contact-title">Join Our Newsletter</h2>
 
             <p className="agency-contact-text">
-              Join our newsletter for exclusive updates and insights! Rest assured, you can unsubscribe at any time, and we will never sell or share your email with third parties. Read our Privacy Policy for more information.
+              Join our newsletter for exclusive updates and insights! Rest assured, you can unsubscribe at any time, and we will never sell or share your email with third parties. Read our <span><a className='agency-contact-text-link' href='/privacy'>Privacy Policy</a></span> for more information.
             </p>
             <NewsletterForm />            
-
           </div>
-          <img src='./images/Groupe44.png'></img>
+          <img className="agency-contact-img" src='./images/Groupe44.png'></img>
+
 
         </div>
       </div>

@@ -27,6 +27,7 @@ const ContactForm = () => {
   };
 
   return (
+    <div className='contact-form-wrapper'>
     <form className="contact-form" onSubmit={handleSubmit}>
       {contactMethod === 'email' ? (
         <input
@@ -46,10 +47,12 @@ const ContactForm = () => {
         />
       )}
       <button type="submit" className="contact-button">Be Contacted</button>
-      <div className="contact-toggle" onClick={() => setContactMethod(contactMethod === 'email' ? 'phone' : 'email')}>
+      
+    </form>
+    <div className="contact-toggle" onClick={() => setContactMethod(contactMethod === 'email' ? 'phone' : 'email')}>
         {contactMethod === 'email' ? 'I prefer to be contacted by phone' : 'I prefer to be contacted by email'}
       </div>
-    </form>
+    </div>
   );
 };
 

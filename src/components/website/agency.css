@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: #111;
+    background-color: var(--menu-bg);
     color: #fff;
 }
 
@@ -8,16 +8,19 @@ a {
     color: #4e9af1;
     text-decoration: none;
 }
-
 .agency-content {
-    padding: 20px;
+    padding: 20px 0;
     font-family: Outfit, sans-serif;
 }
+
+/*==== Header ====*/
 
 .agency-header {
     position: relative;
     background: linear-gradient(-60deg, rgba(90, 222, 231, 0.3), rgba(150, 0, 250, 0.3));
     border-radius: 20px;
+    margin: 0 20px;
+
 }
 
 .agency-header::before {
@@ -34,30 +37,35 @@ a {
     align-items: center;
     justify-content: space-between;
     gap: 30px;
-    padding: 50px 20px;
-    padding-right: 0;
     position: relative;
     z-index: 1;
+    padding-bottom: 50px;
 }
 
 .agency-header-content {
-    text-align: left;
-    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 50px 2%;
+    padding-bottom: 0;
 }
 
 .agency-header-title {
-    font-size: 70px;
+    font-size: 65px;
     font-weight: 800;
     margin: 0;
+    text-align: left;
 }
 
 .agency-header-text {
     font-size: 17px;
-    margin: 20px 0;
+    text-align: left;
 }
 
-.agency-header img {
+.agency-header-img {
     width: 717.36px;
+    padding-left: 4%;
 }
 
 .agency-header-cta {
@@ -69,38 +77,104 @@ a {
     font-size: 16px;
 }
 
+
+@media only screen and (max-width: 1000px) and (min-width: 768px) {
+    .agency-header-title {
+        font-size: 40px;
+    }
+
+}
+@media only screen and (max-width: 1000px){
+    .agency-header-title {
+        font-size: 45px;
+    }
+}
+@media only screen and (max-width: 767px) {
+    .wrapper {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0;
+    }
+    .agency-header-title {
+        font-size: 35px;
+        text-align: center;
+    }
+    .agency-header-text {
+        text-align: center;
+    }
+    .agency-header-content {
+        align-items: center;
+    }
+}
+
+/*==== Services ====*/
+
+
 .agency-services {
     text-align: center;
-    padding: 50px 20px;
+    padding: 50px 1.5%;
     align-self: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 45px;
+    margin: 0 20px;
+
 }
 
 .agency-services-title {
     font-size: 32px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-top: -25px;
 }
 
 .agency-services-box {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    gap: 1rem;
     width: 80%;
-}
-
-.agency-services-item {
-    width: 369px;
-    height: 200px;
+    margin: 0 auto;
+  }
+  
+  .agency-services-item {
+    width: 100%;
+    max-width: 500px;
     margin: 20px;
     padding: 20px;
     border-radius: 10px;
     text-align: left;
     box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin: auto;
+    padding-top: 0;
 }
+  
+  @media (min-width: 1024px) {
+    .agency-services-box {
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+  }
+  
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .agency-services-box {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .agency-services-box {
+      grid-template-columns: 1fr;
+      width: 100%;
+
+    }
+    .agency-services-item  {
+        padding: 0;
+
+    }
+
+  }
 
 .agency-services-item i {
     font-size: 37.13px;
@@ -121,80 +195,22 @@ a {
     margin: 10px 0;
 }
 
-.agency-portfolio {
-    text-align: center;
-    padding: 50px 20px;
-}
 
-.agency-portfolio-title {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    display: flex;
-}
+/*==== Quality ====*/
 
-.agency-portfolio-carrousel-title {
-    position: relative;
-}
-
-
-.carrousel-handlers {
-    position: absolute;
-    right: 0;
-    top: 15px;
-    color: black;
-}
-
-.carrousel-handlers i {
-    padding: 5px 7px;
-    background-color: white;
-    border-radius: 25px;
-    margin: 5px;
-    padding: 5px 7px;
-
-}
-
-.agency-portfolio-card {
-    width: 380px;
-    margin: 20px;
-    padding: 20px;
-    background-color: #FFFFFF;
-    border-radius: 20px;
-    text-align: left;
-    color: #111;
-}
-
-.agency-portfolio-card img {
-    max-height: 160px;
-    background-color: linear-gradient(-60deg, rgba(90, 222, 231, 1), rgba(150, 0, 250, 1));
-}
-
-.agency-portfolio-card-title {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.agency-portfolio-card-text {
-    font-size: 16px;
-    margin: 10px 0;
-}
-
-.agency-portfolio-card-link {
-    font-size: 16px;
-    color: #4e9af1;
-}
-
-.agency-portfolio-box {
-    display: flex;
-    justify-content: center;
-}
 
 .agency-quality {
     display: flex;
     text-align: center;
-    padding: 50px 20px;
+    padding: 70px 20px;
     align-items: center;
-    justify-content: center
+    justify-content: space-around;
+    margin: 0 20px;
+    gap: 25px;
+
+}
+.agency-quality-img {
+    max-width: 40%;
 }
 
 .agency-quality-title {
@@ -225,26 +241,49 @@ a {
 
 .agency-quality-box h3 {
     font-weight: 400;
+    font-size: 16px;
 }
 
 .agency-quality-box i {
     margin-right: 10px;
 }
 
+@media only screen and (max-width: 767px) {
+    .agency-quality {
+        flex-direction: column-reverse;
+    }
+    .agency-quality-img {
+        width: 100%;
+        max-width: 450px;
+    }
+}
 
 
+/*==== Expert ====*/
 
 .agency-expert {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
+    margin: 0 20px;
+    padding: 70px 20px;
+    gap: 15px;
+
+   
+}
+.agency-expert-item {
+    max-width: 650px;
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .agency-expert-title{
     font-size: 35px;
     font-weight: 800;
     margin-bottom: 30px;
+    text-align: center;
 }
 
 .agency-expert-item-title{
@@ -256,6 +295,8 @@ a {
 .agency-expert-stats {
     margin-top: 20px;
     display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 }
 
 .agency-expert-stats h4{
@@ -269,43 +310,129 @@ a {
 
 .agency-expert-content{
     display: flex;
-    width: 80%;
     justify-content: space-around; 
+    align-items: center;
+    gap: 25px;
+
+
 }
 
-.agency-expert-item {
-    width: 500px;
+.agency-expert-item-img {
+    max-width: 40%;
+    height: auto;
 }
 
+@media only screen and (max-width: 850px) {
+    .agency-expert-content {
+        flex-direction: column;
+    }
+    .agency-expert-item-img {
+        max-width: 450px;
+        width: 100%;
+    }
+    .agency-expert-item {
+        width: 100%;
+        max-width: 550px;
+    }
+    .agency-expert-stats {
+        justify-content: space-evenly;
+    }
+    .agency-expert-content .contact-toggle {
+        text-align: center;
+    }
+}
+
+/*==== Contact ====*/
 
 
 .agency-contact {
     text-align: center;
     background: linear-gradient(-60deg, rgba(90, 222, 231, 0.3), rgba(150, 0, 250, 0.3));
-    margin-right: 15%;
-    margin-left: 15%;
+    margin: auto;
     display: flex;
-    gap: 198px;
     align-items: center;
     border-radius: 16.68px;
     margin-top: 20px;
-    justify-content: space-between
+    justify-content: space-between;
+    width: 80%;
+    gap: 20px;
 }
-
+.agency-contact-content {
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
 .agency-contact-title {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 20px;
+    color: #FFF;
+    font-family: Outfit;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    text-align: left;
 }
 
 .agency-contact-text {
-    font-size: 16px;
+    color: #FFF;
+font-family: Outfit;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+text-align: left;
+
+}
+.agency-contact-text-link {
+    text-decoration: underline;
+    color: #FFF;
+    cursor: pointer;
+
+}
+.agency-contact-img {
+width: auto;
+max-width: 40%;
+margin-top: auto;
 }
 
-.agency-contact-content{
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    max-width: 600px;
+
+
+@media only screen and (max-width: 1000px) {
+    .agency-contact {
+        width: 96%;
+    }
+    .agency-contact-title {
+        font-size: 35px;
+    }
+    
+    .agency-contact-text {
+    font-size: 15px;
+    
+    }
 }
+@media only screen and (max-width: 830px) {
+    .agency-contact {
+        flex-direction: column;
+        align-items: center;
+    }
+    .agency-contact-img {
+        display: none;
+    }
+    .agency-contact-content {
+        align-items: center;
+    }
+    .agency-contact-title,
+    .agency-contact-text {
+    text-align: center;
+    
+    }
+    .agency-contact-content .contact-form {
+        justify-content: center
+
+
+    }
+}
+
+
+
+
