@@ -66,26 +66,26 @@
 }
 
 .star-icon {
-  background: url('../../../../../public/images/templates-img/templatePortfolio/star-icons.png') no-repeat center center;
+  background: url('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2Fportfolio%2Fstar-icons.png?alt=media&token=5717e32f-552d-43bc-b6d0-22a97077a52a') no-repeat center center;
   background-size: contain;
 }
 
 .message-icon {
-  background: url('../../../../../public/images/templates-img/templatePortfolio/message-icon.png') no-repeat center center;
+  background: url('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2Fportfolio%2Fmessage-icon.png?alt=media&token=63e41699-ddc9-4aab-abfb-2dd36c137fab') no-repeat center center;
   background-size: contain;
 }
 
 .hat-icon {
-  background: url('../../../../../public/images/templates-img/templatePortfolio/hat-icon.png') no-repeat center center;
+  background: url('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2Fportfolio%2Fhat-icon.png?alt=media&token=3e054aa9-3766-4f03-8f30-a592cd351129') no-repeat center center;
   background-size: contain;
 }
 
 .magic-icon {
-  background: url('../../../../../public/images/templates-img/templatePortfolio/magic-icon.png') no-repeat center center;
+  background: url('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2Fportfolio%2Fmagic-icon.png?alt=media&token=81a73e34-2f9b-4c2d-b1d4-9f955ca4b378') no-repeat center center;
   background-size: contain;
 }
 
-/* button {
+.portfolio-experience button {
   margin-top: 20px;
   padding: 10px 20px;
   border: none;
@@ -97,9 +97,9 @@
   font-size: 14px;
 }
 
-button:hover {
+.portfolio-experience button:hover {
   background-color: var(--button-bg-hover-color);
-} */
+}
 
 @media (max-width: 768px) {
   .experience-card {

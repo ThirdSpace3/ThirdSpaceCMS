@@ -5,28 +5,28 @@ import './CarouselPortfolio.css';
 const cards = [
   {
     id: 1,
-    image: 'images/portfolio-victor.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FAgencyPage%2Fportfolio-victor.png?alt=media&token=74cfc8da-dde1-4046-b0a3-d9bdf13ae123',
     title: 'Portfolio Victor Bisch',
     description: 'Explore the Minecraft-inspired, responsive portfolio of a talented UX/UI/dev student, showcasing their innovative projects.',
     link: 'https://portfoliovictor.com/eng/index.html',
   },
   {
     id: 2,
-    image: 'images/portfolio-idem.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FAgencyPage%2Fportfolio-idem.png?alt=media&token=7bdbb902-1547-431b-a278-eda654c97585',
     title: 'Idem Automatisme',
     description: 'Experience the expertise of an industrial automation and electricity company through their informative website, highlighting their completed projects and services.',
     link: 'https://www.idem-automatisme.fr/',
   },
   {
     id: 3,
-    image: 'images/portfolio-nolann.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FAgencyPage%2Fportfolio-nolann.png?alt=media&token=db701faa-fb5f-4c53-8325-3ff8f8261e41',
     title: 'Portfolio Nolann Gerbault',
     description: "Discover the professional journey of a communication student through a Clash Royale-themed portfolio, creatively adapted for PC format.",
     link: 'https://nolanncorp.com/',
   },
   {
     id: 4,
-    image: 'images/portfolio-smm.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FAgencyPage%2Fportfolio-smm.png?alt=media&token=45df2c56-e51e-4bdf-8d3f-b19d40935572',
     title: 'Self Mad Man',
     description: "Dive into the world of a student-developed casual mobile game with a visually engaging website, offering insights and captivating visuals.",
     link: 'https://selfmadman.fr/',
