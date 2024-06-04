@@ -3,7 +3,8 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    gap: 5px;
+    gap: 15px;
+    padding: 40px 0;
   }
   
   .carousel {
@@ -13,6 +14,7 @@
   
   .carousel-inner {
     display: flex;
+    flex-wrap: nowrap;
     transition: transform 0.5s ease-in-out;
   }
 
@@ -117,6 +119,7 @@ line-height: normal;
     justify-content: center;
     margin-top: 10px;
     align-items: center;
+    gap: 5px;
   }
   
   .arrow {

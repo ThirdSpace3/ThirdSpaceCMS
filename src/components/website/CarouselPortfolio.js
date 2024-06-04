@@ -7,38 +7,39 @@ const cards = [
     id: 1,
     image: 'images/portfolio-victor.png',
     title: 'Portfolio Victor Bisch',
-    description: 'Lorem ipsum dolor sit amet. Ut aperiam iste et ratione officiis et aliquam omnis aut optio dolore sit ratione quis',
+    description: 'Explore the Minecraft-inspired, responsive portfolio of a talented UX/UI/dev student, showcasing their innovative projects.',
     link: 'https://portfoliovictor.com/eng/index.html',
   },
   {
     id: 2,
     image: 'images/portfolio-idem.png',
     title: 'Idem Automatisme',
-    description: 'Lorem ipsum dolor sit amet. Ut aperiam iste et ratione officiis et aliquam omnis aut optio dolore sit ratione quis',
+    description: 'Experience the expertise of an industrial automation and electricity company through their informative website, highlighting their completed projects and services.',
     link: 'https://www.idem-automatisme.fr/',
   },
   {
     id: 3,
     image: 'images/portfolio-nolann.png',
     title: 'Portfolio Nolann Gerbault',
-    description: 'Lorem ipsum dolor sit amet. Ut aperiam iste et ratione officiis et aliquam omnis aut optio dolore sit ratione quis',
+    description: "Discover the professional journey of a communication student through a Clash Royale-themed portfolio, creatively adapted for PC format.",
     link: 'https://nolanncorp.com/',
   },
   {
     id: 4,
     image: 'images/portfolio-smm.png',
     title: 'Self Mad Man',
-    description: 'Lorem ipsum dolor sit amet. Ut aperiam iste et ratione officiis et aliquam omnis aut optio dolore sit ratione quis',
+    description: "Dive into the world of a student-developed casual mobile game with a visually engaging website, offering insights and captivating visuals.",
     link: 'https://selfmadman.fr/',
   },
 ];
 
 const CarouselPortfolio = () => {
-  const [index, setIndex] = useState(cards.length);
-  const [isTransitioning, setIsTransitioning] = useState(true);
+  const [index, setIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [touchStartX, setTouchStartX] = useState(null);
   const [touchEndX, setTouchEndX] = useState(null);
   const ref = useRef();
+  const [isHovering, setIsHovering] = useState(false);
 
   const handleTouchStart = (e) => {
     setTouchStartX(e.touches[0].clientX);
@@ -59,28 +60,30 @@ const CarouselPortfolio = () => {
   };
 
   const nextSlide = () => {
-    setIndex((prevIndex) => prevIndex + 1);
+    setIsTransitioning(true);
+    setIndex((prevIndex) => (prevIndex + 1) % cards.length);
   };
 
   const prevSlide = () => {
-    setIndex((prevIndex) => prevIndex - 1);
+    setIsTransitioning(true);
+    setIndex((prevIndex) => (prevIndex - 1 + cards.length) % cards.length);
   };
 
   useEffect(() => {
-    if (index === cards.length * 2) {
-      setTimeout(() => {
-        setIsTransitioning(false);
-        setIndex(cards.length);
-      }, 500);
-    } else if (index === 0) {
-      setTimeout(() => {
-        setIsTransitioning(false);
-        setIndex(cards.length);
-      }, 500);
-    } else {
-      setIsTransitioning(true);
-    }
+    setIsTransitioning(false);
   }, [index]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      ref.current.style.width = `${cards.length * 410}px`;
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  
 
   return (
     <div
@@ -99,18 +102,19 @@ const CarouselPortfolio = () => {
       </div>
 
       <div className="carousel">
-        <div
-          className="carousel-inner"
-          style={{
-            transform: `translateX(-${index * 410}px)`,
-            transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none',
-          }}
-          ref={ref}
+      <div
+  className="carousel-inner"
+  style={{
+    transform: `translateX(-${index * 410}px)`,
+    transition: isTransitioning ? `transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)` : 'none',
+  }}
+  ref={ref}
+          
         >
-          {[...cards, ...cards, ...cards].map((card, i) => (
-            <div key={card.id} className="carousel-item">
+{[...Array(15).fill(cards).flat()].map((card, i) => (
+              <div key={i} className="carousel-item">
               <div className='carousel-item-img-box'>
-                <img className='carousel-item-img' src={card.image} alt={`Image ${card.id}`} />
+                <img className='carousel-item-img' src={card.image} alt="Third Space 3S Agency Web Agency Affordable Latest Trends" />
               </div>
               <div className='carousel-item-box'>
                 <h3 className='carousel-item-title'>{card.title}</h3>
@@ -121,7 +125,6 @@ const CarouselPortfolio = () => {
           ))}
         </div>
       </div>
-
     </div>
   );
 };

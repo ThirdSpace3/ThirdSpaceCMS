@@ -105,12 +105,11 @@ export default function Agency() {
               <p className="agency-header-text">Welcome to 3S Agency</p>
               <h1 className="agency-header-title">We Create Unique <br />Websites</h1>
               <p className="agency-header-text">
-                Looking to upscale your digital presence? Look no further. At 3S Agency, we specialize in crafting unique websites tailored to your vision.
-              </p>
+              Looking to upscale your digital presence? Look no further. Our web agency is specialized in crafting unique websites tailored to your vision.              </p>
               <ContactForm />            
             </div>
             <div className="agency-header-images">
-              <img className='agency-header-img' src="../../images/group220.png" alt="header" />
+              <img className='agency-header-img' src="../../images/group220.png" alt="Third Space 3S Agency Web Agency Affordable Latest Trends" />
             </div>
           </div>
         </div>
@@ -122,43 +121,37 @@ export default function Agency() {
               <i className="bi bi-palette-fill"></i>
               <h3 className="agency-services-item-title">Creative Design Solutions</h3>
               <p className="agency-services-item-text">
-                Delivering innovative and visually compelling designs that capture your brand's essence and captivate your audience.
-              </p>
+              Delivering innovative and visually compelling designs that capture your brand's essence and captivate your audience with the latest web design trends.              </p>
             </div>
             <div className="agency-services-item">
               <i className="bi bi-pencil"></i>
               <h3 className="agency-services-item-title">Unique Branding</h3>
               <p className="agency-services-item-text">
-                Building a strong and recognizable brand identity that resonates with your target market and drives loyalty.
-              </p>
+              Building a strong and recognizable brand identity that resonates with your target market and drives loyalty.              </p>
             </div>
             <div className="agency-services-item">
               <i className="bi bi-code-slash"></i>
               <h3 className="agency-services-item-title">Robust Development</h3>
               <p className="agency-services-item-text">
-                Crafting high-quality and scalable websites and applications tailored to your business needs and user expectations.
-              </p>
+              Crafting high-quality and scalable websites and applications tailored to your business needs and user expectations.              </p>
             </div>
             <div className="agency-services-item">
               <i className="bi bi-arrow-repeat"></i>
               <h3 className="agency-services-item-title">Continuous Updates</h3>
               <p className="agency-services-item-text">
-                Keeping your digital presence current and secure with regular updates, ensuring optimal performance and relevance.
-              </p>
+              Keeping your digital presence current and secure with regular updates, ensuring the best practices for web design in 2024.              </p>
             </div>
             <div className="agency-services-item">
               <i className="bi bi-aspect-ratio"></i>
               <h3 className="agency-services-item-title">Modern Redesign</h3>
               <p className="agency-services-item-text">
-                Transforming existing websites with a fresh, contemporary look and improved functionality to enhance user experience.
-              </p>
+              Transforming existing websites with a fresh, contemporary look and improved functionality to enhance user experience with also a responsive web design.               </p>
             </div>
             <div className="agency-services-item">
               <i className="bi bi-arrows-move"></i>
               <h3 className="agency-services-item-title">Seamless Transition</h3>
               <p className="agency-services-item-text">
-                Ensuring a smooth migration and integration process when moving to new platforms or updating technologies, minimizing downtime and disruption.
-              </p>
+              Ensuring a smooth migration and integration process when moving to new platforms or updating technologies, minimizing downtime and disruption.              </p>
             </div>
           </div>
         </div>
@@ -166,32 +159,31 @@ export default function Agency() {
 
 
         <div className="agency-quality">
-          <img className="agency-quality-img" src='../../images/groupequality.png'></img>
+          <img className="agency-quality-img" src='../../images/groupequality.png' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
           <div className='agency-quality-content'>
             <p>Quality</p>
-            <h2 className="agency-quality-title">Why Choose Us?</h2>
+            <h2 className="agency-quality-title">Why Choose 3S Web Agency?</h2>
             <div className="agency-quality-box">
               <div className="agency-quality-item">
                 <h3 className="agency-quality-item-title">                <i className='bi bi-check-circle'></i>
-                  We design stunning, functional websites tailored to your brand.</h3>
+                We design stunning, functional websites tailored to your brand.</h3>
               </div>
               <div className="agency-quality-item">
                 <h3 className="agency-quality-item-title">
                   <i className='bi bi-check-circle'></i>
-                  Our responsive development ensures perfect performance on all devices.
-                </h3>
+                  Our responsive web design development ensures perfect performance on all devices.                </h3>
               </div>
               <div className="agency-quality-item">
                 <h3 className="agency-quality-item-title">                <i className='bi bi-check-circle'></i>
-                  We deliver fast, reliable hosting solutions for optimal site performance.</h3>
+                We deliver fast, reliable hosting solutions for optimal site performance.</h3>
               </div>
               <div className="agency-quality-item">
                 <h3 className="agency-quality-item-title">                <i className='bi bi-check-circle'></i>
-                  We ensure your website has a user-friendly interface for easy navigation.</h3>
+                We ensure your website has a user-friendly interface for easy navigation.</h3>
               </div>
               <div className="agency-quality-item">
                 <h3 className="agency-quality-item-title">                <i className='bi bi-check-circle'></i>
-                  We provide ongoing support to keep your website updated and secure.</h3>
+                We provide ongoing support to keep your website updated and secure.</h3>
               </div>
             </div>
           </div>
@@ -204,8 +196,7 @@ export default function Agency() {
             <div className="agency-expert-item">
               <h3 className="agency-expert-item-title">Empowering Businesses with Tailored Solutions</h3>
               <p className="agency-expert-item-text">
-                Our youthful spirit drives us to empower businesses of all sizes, recognizing that a website is essential, especially for small companies. With our commitment to reasonable pricing and collaborative creation process, we work hand in hand with you to bring your vision to life, ensuring that your digital presence stands out in today's competitive market.
-              </p>
+              We are a young web agency who provides an affordable web design for small businesses. We work hand in hand with you to bring you the best practices for web design in 2024 and the latest web design trends. With your cooperation, we ensure your digital presence with benefits of professional web design.              </p>
               <ContactForm />            
 
               <div className="agency-expert-stats">
@@ -224,7 +215,7 @@ export default function Agency() {
 
               </div>
             </div>
-            <img className="agency-expert-item-img" src='./images/Group330.png'></img>
+            <img className="agency-expert-item-img" src='./images/Group330.png' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
           </div>
         </div>
         <div className="agency-contact" ref={ctaRef}>
@@ -236,7 +227,7 @@ export default function Agency() {
             </p>
             <NewsletterForm />            
           </div>
-          <img className="agency-contact-img" src='./images/Groupe44.png'></img>
+          <img className="agency-contact-img" src='./images/Groupe44.png' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
 
 
         </div>
