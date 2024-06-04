@@ -14,6 +14,9 @@
     --border-radius: 10px;
     --box-shadow: 0 4px 16px rgba(0,0,0,0.3);
     --transition: all 0.3s ease;
+    --button-bg-color: #53354a;
+    --button-text-color: #ffffff;
+    --button-bg-hover-color: #6d597a;
   }
   .portfolio-container{
     background-color: var(--headerContent-background-color);

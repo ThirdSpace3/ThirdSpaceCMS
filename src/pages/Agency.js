@@ -17,38 +17,6 @@ export default function Agency() {
   const ctaRef = useRef(null); // Create a ref for the CTA div
   const carouselRef = useRef(null);
 
-  const projects = [
-    {
-      title: "Project One",
-      description: "Description for project one.",
-      imageUrl: "../../images/Group220.png",
-      link: "#"
-    },
-    {
-      title: "Project Two",
-      description: "Description for project two.",
-      imageUrl: "../../images/Group220.png",
-      link: "#"
-    },
-    {
-      title: "Project Three",
-      description: "Description for project three.",
-      imageUrl: "../../images/Group220.png",
-      link: "#"
-    },
-    {
-      title: "Project Four",
-      description: "Description for project four.",
-      imageUrl: "../../images/Group220.png",
-      link: "#"
-    },
-    {
-      title: "Project Five",
-      description: "Description for project five.",
-      imageUrl: "../../images/Group220.png",
-      link: "#"
-    }
-  ];
   const checkWalletData = async () => {
     const userAccount = sessionStorage.getItem('userAccount');
     if (userAccount) {
@@ -109,7 +77,7 @@ export default function Agency() {
               <ContactForm />            
             </div>
             <div className="agency-header-images">
-              <img className='agency-header-img' src="../../images/group220.png" alt="Third Space 3S Agency Web Agency Affordable Latest Trends" />
+              <img className='agency-header-img' src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FAgencyPage%2FGroup220.png?alt=media&token=767b882a-4b4e-4cb7-9ce9-01bd83580127" alt="Third Space 3S Agency Web Agency Affordable Latest Trends" />
             </div>
           </div>
         </div>
@@ -159,7 +127,7 @@ export default function Agency() {
 
 
         <div className="agency-quality">
-          <img className="agency-quality-img" src='../../images/groupequality.png' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
+          <img className="agency-quality-img" src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FAgencyPage%2Fgroup330.png?alt=media&token=bade74b5-02c3-4c02-96c1-32601080babd' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
           <div className='agency-quality-content'>
             <p>Quality</p>
             <h2 className="agency-quality-title">Why Choose 3S Web Agency?</h2>
@@ -215,7 +183,7 @@ export default function Agency() {
 
               </div>
             </div>
-            <img className="agency-expert-item-img" src='./images/Group330.png' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
+            <img className="agency-expert-item-img" src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FAgencyPage%2Fgroup330.png?alt=media&token=bade74b5-02c3-4c02-96c1-32601080babd' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
           </div>
         </div>
         <div className="agency-contact" ref={ctaRef}>
@@ -227,7 +195,7 @@ export default function Agency() {
             </p>
             <NewsletterForm />            
           </div>
-          <img className="agency-contact-img" src='./images/Groupe44.png' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
+          <img className="agency-contact-img" src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FAgencyPage%2Fgroupe44.png?alt=media&token=5e5cc6f3-9bcc-44d1-8506-58971e13cd8d' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
 
 
         </div>

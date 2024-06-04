@@ -4,10 +4,28 @@
     background-color: var(--bg-color-primary);
     color: var(--text-color-primary);
     padding: var(--base-padding);
-    text-align: center;
-    font-family: var(--font-family);
+    text-align: left;
     border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
     margin: 20px auto;
     max-width: 800px;
   }
+
+  .portfolio-about h2 {
+    font-size: 50px;
+    font-family: Outfit, sans-serif;
+    font-weight: 200;
+  }
+
+  .portfolio-about span{
+    color: #7127BA;
+  }
+
+  .portfolio-about p {
+    font-family: Inter, 'sans-serif';
+    font-size: 22px;
+  }
+
+
+.portfolio-about-text{
+  margin-top: 50px;
+}
