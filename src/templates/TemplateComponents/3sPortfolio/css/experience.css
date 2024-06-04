@@ -85,7 +85,7 @@
   background-size: contain;
 }
 
-button {
+/* button {
   margin-top: 20px;
   padding: 10px 20px;
   border: none;
@@ -99,7 +99,7 @@ button {
 
 button:hover {
   background-color: var(--button-bg-hover-color);
-}
+} */
 
 @media (max-width: 768px) {
   .experience-card {
