@@ -6,9 +6,26 @@ import AboutSection from "./TemplateComponents/3sProduct/components/3sProductAbo
 import FeaturesSection from "./TemplateComponents/3sProduct/components/3sProductFeature";
 import JoinUsSection from "./TemplateComponents/3sProduct/components/3sProductJoinUs";
 import Footer from "./TemplateComponents/3sProduct/components/3sProductFooter";
-import fetchProjects from "../hooks/Fetchprojects";
+import { fetchProjects, fetchComponentData } from "../hooks/Fetchprojects";
 
-const SSSProduct = ({ saveSettings, setTemplateContent, selectedColor, setSelectedColor, logChange, selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement, selectedProjectId }) => {
+const SSSProduct = ({
+  TemplateContent,
+  saveSettings,
+  setTemplateContent,
+  selectedColor,
+  setSelectedColor,
+  logChange,
+  selectElement,
+  isPreviewMode,
+  settings,
+  handleSettingsChange,
+  openImagePanel,
+  imageHistory,
+  selectedImage,
+  setSelectedImage,
+  setSelectedElement,
+  selectedProjectId
+}) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
   const [navbarContent, setNavbarContent] = useState({});
@@ -42,21 +59,26 @@ const SSSProduct = ({ saveSettings, setTemplateContent, selectedColor, setSelect
       const fetchData = async () => {
         const walletId = sessionStorage.getItem("userAccount");
         if (walletId) {
-          const navbarData = await fetchProjects(walletId, selectedProjectId, 'navbar');
-          const headerData = await fetchProjects(walletId, selectedProjectId, 'header');
-          const partnersData = await fetchProjects(walletId, selectedProjectId, 'partners');
-          const aboutData = await fetchProjects(walletId, selectedProjectId, 'aboutSection');
-          const featuresData = await fetchProjects(walletId, selectedProjectId, 'featureSection');
-          const joinUsData = await fetchProjects(walletId, selectedProjectId, 'joinUsSection');
-          const footerData = await fetchProjects(walletId, selectedProjectId, 'footerSection');
+          try {
+            console.log('Fetching component data for project:', selectedProjectId);
+            const navbarData = await fetchComponentData(walletId, selectedProjectId, 'navbar');
+            const headerData = await fetchComponentData(walletId, selectedProjectId, 'header');
+            const partnersData = await fetchComponentData(walletId, selectedProjectId, 'partners');
+            const aboutData = await fetchComponentData(walletId, selectedProjectId, 'aboutSection');
+            const featuresData = await fetchComponentData(walletId, selectedProjectId, 'featureSection');
+            const joinUsData = await fetchComponentData(walletId, selectedProjectId, 'joinUsSection');
+            const footerData = await fetchComponentData(walletId, selectedProjectId, 'footerSection');
 
-          setNavbarContent(navbarData || {});
-          setHeaderContent(headerData || {});
-          setPartnersContent(partnersData || {});
-          setAboutSection(aboutData || {});
-          setFeatureSection(featuresData || {});
-          setJoinUsSection(joinUsData || {});
-          setFooterSection(footerData || {});
+            setNavbarContent(navbarData || {});
+            setHeaderContent(headerData || {});
+            setPartnersContent(partnersData || {});
+            setAboutSection(aboutData || {});
+            setFeatureSection(featuresData || {});
+            setJoinUsSection(joinUsData || {});
+            setFooterSection(footerData || {});
+          } catch (error) {
+            console.error('Error fetching component data:', error);
+          }
         }
       };
 
@@ -83,7 +105,7 @@ const SSSProduct = ({ saveSettings, setTemplateContent, selectedColor, setSelect
       setSelectedElement(identifier);
     }
   };
-
+console.log("product:"+selectedProjectId);
   return (
     <div className="sss-product-container">
       <Navbar
@@ -112,23 +134,24 @@ const SSSProduct = ({ saveSettings, setTemplateContent, selectedColor, setSelect
         }}
       />
 
-      <HeaderSection
-        saveSettings={saveSettings}
-        ref={headerRef}
-        style={settings}
-        settings={settings}
-        handleSettingsChange={handleSettingsChange}
-        openImagePanel={openImagePanel}
-        selectedImage={selectedImage}
-        setSelectedImage={setSelectedImage}
-        selectElement={selectElement}
-        setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor}
-        setSelectedColor={setSelectedColor}
-        onContentChange={setHeaderContent}
-        isPreviewMode={isPreviewMode}
-      />
-
+      {headerContent && (
+        <HeaderSection
+          saveSettings={saveSettings}
+          style={settings}
+          settings={settings}
+          handleSettingsChange={handleSettingsChange}
+          openImagePanel={openImagePanel}
+          selectedImage={selectedImage}
+          setSelectedImage={setSelectedImage}
+          selectElement={selectElement}
+          setSelectedElement={setSelectedElement}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+          onContentChange={setHeaderContent}
+          isPreviewMode={isPreviewMode}
+          selectedProjectId={selectedProjectId}
+        />
+      )}
       <PartnersSection
         saveSettings={saveSettings}
         ref={partnersRef}

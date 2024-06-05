@@ -5,6 +5,7 @@ import ReusableImage from '../../../../components/logiciel/TemplateComponent/Reu
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
 import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
+import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
 const HeaderSection = ({
   settings,
@@ -13,11 +14,13 @@ const HeaderSection = ({
   setSelectedElement,
   setSelectedColor,
   onContentChange,
+  selectedProjectId,
+  isPreviewMode
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { style, getComponentStyle, updateStyle } = useStyle();
+  console.log("header:"+selectedProjectId);
 
-  // State for managing header content
   const [headerContent, setHeaderContent] = useState({
     heroTitle: 'The first user-friendly website builder',
     heroDescription: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -25,6 +28,40 @@ const HeaderSection = ({
     herojoinUsLink: { url: '#', openInNewTab: false },
     image: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-hero.png?alt=media&token=44a64698-ecd8-4bca-8dea-b522c6505eed"
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedProjectId) {
+        const walletId = sessionStorage.getItem("userAccount");
+        if (walletId) {
+          try {
+            console.log('Fetching data for project:', selectedProjectId);
+            const data = await fetchComponentData(walletId, selectedProjectId, 'header');
+            if (data) {
+              console.log('Fetched data:', data);
+              setHeaderContent(data);
+            } else {
+              console.log('No data found for header');
+            }
+          } catch (error) {
+            console.error('Error fetching header data:', error);
+          }
+        } else {
+          console.log('No walletId found in sessionStorage');
+        }
+      } else {
+        console.log('No selectedProjectId provided');
+      }
+    };
+
+    fetchData();
+  }, [selectedProjectId]);
+
+  useEffect(() => {
+    if (onContentChange) {
+      onContentChange(headerContent);
+    }
+  }, [headerContent, onContentChange]);
 
   const headerStyle = getComponentStyle('header');
   const heroTitleStyles = getComponentStyle('heroTitle');
@@ -39,9 +76,12 @@ const HeaderSection = ({
     };
     setHeaderContent(updatedContent);
     updateStyle(textType, { text: newText });
-    onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      await saveComponentData(walletId, selectedProjectId, 'header', updatedContent);
+      console.log(`Saved new text for ${textType}:`, newText);
+    }
   };
 
   const handleLinkChange = async (newLink) => {
@@ -52,7 +92,11 @@ const HeaderSection = ({
     setHeaderContent(updatedContent);
     updateStyle('herojoinUs', { link: newLink });
 
-    // Save the specific changes to Firebase
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      await saveComponentData(walletId, selectedProjectId, 'header', updatedContent);
+      console.log('Saved new join us link:', newLink);
+    }
   };
 
   const handleComponentClick = (event, identifier) => {
@@ -83,9 +127,9 @@ const HeaderSection = ({
         <EditableButton
           id='herojoinUs'
           text={headerContent.herojoinUs}
-          link={headerContent.herojoinUsLink.url} // Ensure correct data structure
+          link={headerContent.herojoinUsLink.url}
           onChange={(newText) => handleTextChange(newText, 'herojoinUs')}
-          onLinkChange={(newLink) => handleLinkChange(newLink.url)} // Adjust to pass only the URL
+          onLinkChange={(newLink) => handleLinkChange(newLink.url)}
           style={herojoinUsStyles}
           className="sss-product-hero-cta"
         />

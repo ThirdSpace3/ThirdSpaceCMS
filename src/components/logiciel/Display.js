@@ -8,7 +8,7 @@ import { useImageHistory } from '../../hooks/ImageHistoryContext';
 import Canva from './Canva';
 import ReportBugBTN from '../website/ReportBugBTN';
 import { db, doc, setDoc } from '../../firebaseConfig';
-import fetchProjects from '../../hooks/Fetchprojects';
+import { fetchProjects } from '../../hooks/Fetchprojects';
 
 export default function Display() {
   const [settings, setSettings] = useState({});
@@ -78,18 +78,23 @@ export default function Display() {
       alert("No project selected. Please select a project.");
       return;
     }
-
+  
     try {
-      const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/Text`;
-      const settingsDoc = doc(db, settingsDocPath);
-      await setDoc(settingsDoc, { content }, { merge: true });
-      console.log("Saved", settingsDocPath);
-
+      const sections = Object.keys(content);
+      for (const section of sections) {
+        const sectionContent = content[section];
+        const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/Text/content/${section}`;
+        const settingsDoc = doc(db, settingsDocPath);
+        await setDoc(settingsDoc, sectionContent, { merge: true });
+        console.log("Saved", settingsDocPath);
+      }
+  
     } catch (error) {
       console.error("Error saving settings:", error);
       alert("Failed to save settings. See console for more details.");
     }
   };
+  
 
   const handlePreview = () => {
     setIsPreviewMode(!isPreviewMode);
@@ -158,6 +163,7 @@ export default function Display() {
           setProjects(projectsList);
           if (projectsList.length > 0) {
             setSelectedProjectId(projectsList[0].id); 
+            console.log('Selected project ID:', projectsList[0].id);
           }
         } catch (error) {
           console.error('Failed to fetch projects:', error);
@@ -167,7 +173,7 @@ export default function Display() {
 
     fetchAndSetProjects();
   }, [walletId]);
-
+console.log("display:"+selectedProjectId);
   return (
     <div className="displayWrapper">
       {!isPreviewMode && (
@@ -204,6 +210,7 @@ export default function Display() {
           selectedColor={selectedColor}
           setSelectedColor={setSelectedColor}
           saveSettings={saveSettings}
+          selectedProjectId={selectedProjectId}
         />
       </div>
       {!isPreviewMode && (
