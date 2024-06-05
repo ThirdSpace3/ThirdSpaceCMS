@@ -34,8 +34,8 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
 
   const filteredHistory = useMemo(() => {
     return selectedOption === "All Assets"
-      ? imageHistory
-      : imageHistory.filter((item) => item.category === selectedOption);
+      ? imageHistory || []
+      : (imageHistory || []).filter((item) => item.category === selectedOption);
   }, [selectedOption, imageHistory]);
 
   const readFileAsArrayBuffer = (file) => {
@@ -51,6 +51,7 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
     const arrayBuffer = await readFileAsArrayBuffer(file);
     return SparkMD5.ArrayBuffer.hash(arrayBuffer);
   };
+  
   const handleImageSelect = useCallback((image) => {
     enterReplacementMode(activeComponent);
     selectImage(image.url);

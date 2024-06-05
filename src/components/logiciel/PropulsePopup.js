@@ -37,7 +37,7 @@ export default function PropulsePopup({ setShowPopup, onSaveClick }) {
     <>
       <div className="propulse-popup-container">
         <h2 className="propulse-popup-title">
-          Where will you propulse your project ?
+          Where will you propulse your project?
         </h2>
         <hr className="propulse-popup-hr" /> 
         {/*===Test deploy===*/}

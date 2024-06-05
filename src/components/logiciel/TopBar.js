@@ -1,4 +1,3 @@
-// TopBar.js
 import React, { useState } from "react";
 import "./TopBar.css";
 import "../Root.css";
@@ -16,18 +15,15 @@ const TopBar = ({
   onRedoClick,
   onDeviceChange,
   onPreview,
+  showPopup,
+  setShowPopup
 }) => {
   const [eyeIcon, setEyeIcon] = useState("bi bi-eye");
-  const [showPopup, setShowPopup] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [focusedDevice, setFocusedDevice] = useState(deviceSizes.tv);
 
   const handleEyeIconClick = () => {
-    if (eyeIcon === "bi bi-eye") {
-      setEyeIcon("bi bi-eye-slash");
-    } else {
-      setEyeIcon("bi bi-eye");
-    }
+    setEyeIcon(eyeIcon === "bi bi-eye" ? "bi bi-eye-slash" : "bi bi-eye");
     onPreview();
   };
 

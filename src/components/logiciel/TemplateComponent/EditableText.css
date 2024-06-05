@@ -4,6 +4,8 @@
 .editable-text-span {
   /* border: 2px solid transparent; Change the border color to transparent */
   /* padding: 2px 4px; */
+  transition: all 0.3s ease;
+
   border-radius: 3px;
   background-color: inherit;
   color: inherit;

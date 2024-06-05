@@ -47,11 +47,6 @@ export default function TemplateStep() {
       label: `Step ${currentStep}`,
       ...additionalData,
     });
-
-    if (walletId) {
-      const eventRef = doc(db, 'events', `${walletId}-${eventType}-${Date.now()}`);
-      await setDoc(eventRef, eventData);
-    }
   };
 
   useEffect(() => {

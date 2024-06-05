@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import LeftBar from './LeftBar';
 import TopBar from './TopBar';
 import RightBar from './RightBar';
 import './Display.css';
-import { StyleProvider } from '../../hooks/StyleContext';
-import { ImageHistoryProvider, useImageHistory } from '../../hooks/ImageHistoryContext';
+import { useImageHistory } from '../../hooks/ImageHistoryContext';
 import Canva from './Canva';
 import ReportBugBTN from '../website/ReportBugBTN';
 import { db, doc, setDoc } from '../../firebaseConfig';
+import fetchProjects from '../../hooks/Fetchprojects';
 
 export default function Display() {
   const [settings, setSettings] = useState({});
@@ -21,6 +20,8 @@ export default function Display() {
   const [selectedDeviceSize, setSelectedDeviceSize] = useState("100%");
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [imageHistory, setImageHistory] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [selectedProjectId, setSelectedProjectId] = useState(null);
   const { templateName } = useParams();
   const [activePanel, setActivePanel] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -33,16 +34,13 @@ export default function Display() {
   console.log(walletId);
 
   const checkAndSetLogin = () => {
-    const isLoggedIn = true;
     const walletId = sessionStorage.getItem("userAccount");
-    console.log(walletId);
     if (walletId) {
       localStorage.setItem('userAccount', walletId);
     }
   };
 
   const handleSettingsChange = (elementId, newSettings) => {
-    console.log("Updating settings for:", elementId, "new settings received:", newSettings);
     setSettings(prevSettings => {
       const updatedSettings = {
         ...prevSettings,
@@ -51,7 +49,6 @@ export default function Display() {
           ...newSettings
         }
       };
-      console.log("Updated settings:", updatedSettings);
       localStorage.setItem('settings', JSON.stringify(updatedSettings));
       return updatedSettings;
     });
@@ -71,26 +68,26 @@ export default function Display() {
     }
   };
 
-   const saveSettings = async (elementId, newSettings) => {
+  const saveSettings = async (content) => {
     const walletId = sessionStorage.getItem("userAccount");
-    console.log(walletId);
     if (!walletId) {
       alert("No wallet ID found. Please log in.");
       return;
     }
-  
+    if (!selectedProjectId) {
+      alert("No project selected. Please select a project.");
+      return;
+    }
+
     try {
-      console.log("Sending settings to Firestore:", newSettings);
-      const settingsDoc = doc(db, "settings", walletId);
-      await setDoc(settingsDoc, { [elementId]: newSettings }, { merge: true });
-      alert("Settings saved successfully");
+      const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/Text`;
+      const settingsDoc = doc(db, settingsDocPath);
+      await setDoc(settingsDoc, { headerContent: content }, { merge: true });
     } catch (error) {
       console.error("Error saving settings:", error);
-      alert("Failed to save settings. See console for more details.");
     }
   };
 
-  
   const handlePreview = () => {
     setIsPreviewMode(!isPreviewMode);
   };
@@ -102,7 +99,6 @@ export default function Display() {
   useEffect(() => {
     checkAndSetLogin();
     setActiveEditor(templateName);
-    console.log('Active template:', templateName);
   }, [templateName]);
 
   useEffect(() => {
@@ -122,13 +118,10 @@ export default function Display() {
   const logChange = (elementId, newStyles) => {
     const timestamp = new Date().toISOString();
     const logEntry = { timestamp, elementId, newStyles };
-    console.log(logEntry);
-
     const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
     logs.push(logEntry);
     sessionStorage.setItem('editLogs', JSON.stringify(logs));
     sessionStorage.clear('editLogs');
-    console.log(sessionStorage.getItem('editLogs'));
   };
 
   const applyStylesFromLogs = useCallback(() => {
@@ -154,57 +147,73 @@ export default function Display() {
     setSelectedElement(elementId);
   }, []);
 
+  useEffect(() => {
+    const fetchAndSetProjects = async () => {
+      if (walletId) {
+        try {
+          const projectsList = await fetchProjects(walletId);
+          setProjects(projectsList);
+          if (projectsList.length > 0) {
+            setSelectedProjectId(projectsList[0].id); 
+          }
+        } catch (error) {
+          console.error('Failed to fetch projects:', error);
+        }
+      }
+    };
+
+    fetchAndSetProjects();
+  }, [walletId]);
+
   return (
-    <>
-      <div className="displayWrapper">
-        {!isPreviewMode && (
-          <LeftBar
-            handleEditorChange={(editor) => setActiveEditor(editor)}
-            visiblePanel={activePanel}
-            setVisiblePanel={setActivePanel}
-          />
-        )}
-        <div className="displayColumnWrapper">
-          <TopBar
-            onSaveClick={saveSettings}
-            onUndoClick={undo}
-            onRedoClick={redo}
-            onDeviceChange={(size) => setSelectedDeviceSize(size)}
-            onPreview={handlePreview}
-            showPopup={showPopup}
-            setShowPopup={setShowPopup}
-          />
-          <Canva
-            TemplateContent={TemplateContent}
-            setTemplateContent={setTemplateContent}
-            templateName={templateName}
-            deviceSize={selectedDeviceSize}
-            settings={settings}
-            handleSettingsChange={handleSettingsChange}
-            selectedElement={selectedElement}
-            setSelectedElement={setSelectedElement}
-            selectElement={handleSelectedElementChange}
-            isPreviewMode={isPreviewMode}
-            openImagePanel={openImagePanel}
-            setSelectedImage={setSelectedImage}
-            logChange={logChange}
-            selectedColor={selectedColor}
-            setSelectedColor={setSelectedColor}
-            saveSettings={saveSettings}
-          />
-        </div>
-        {!isPreviewMode && (
-          <RightBar
-            handleSettingsChange={handleSettingsChange}
-            selectedElement={selectedElement}
-            handleSelectedElementChange={handleSelectedElementChange}
-            logChange={logChange}
-            selectedColor={selectedColor}
-            setSelectedColor={setSelectedColor}
-          />
-        )}
-        <ReportBugBTN />
+    <div className="displayWrapper">
+      {!isPreviewMode && (
+        <LeftBar
+          handleEditorChange={(editor) => setActiveEditor(editor)}
+          visiblePanel={activePanel}
+          setVisiblePanel={setActivePanel}
+        />
+      )}
+      <div className="displayColumnWrapper">
+        <TopBar
+          onSaveClick={() => saveSettings(TemplateContent.header)} 
+          onUndoClick={undo}
+          onRedoClick={redo}
+          onDeviceChange={(size) => setSelectedDeviceSize(size)}
+          onPreview={handlePreview}
+          showPopup={showPopup}
+          setShowPopup={setShowPopup}
+        />
+        <Canva
+          TemplateContent={TemplateContent}
+          setTemplateContent={setTemplateContent}
+          templateName={templateName}
+          deviceSize={selectedDeviceSize}
+          settings={settings}
+          handleSettingsChange={handleSettingsChange}
+          selectedElement={selectedElement}
+          setSelectedElement={setSelectedElement}
+          selectElement={handleSelectedElementChange}
+          isPreviewMode={isPreviewMode}
+          openImagePanel={openImagePanel}
+          setSelectedImage={setSelectedImage}
+          logChange={logChange}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+          saveSettings={saveSettings}
+        />
       </div>
-    </>
+      {!isPreviewMode && (
+        <RightBar
+          handleSettingsChange={handleSettingsChange}
+          selectedElement={selectedElement}
+          handleSelectedElementChange={handleSelectedElementChange}
+          logChange={logChange}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+        />
+      )}
+      <ReportBugBTN />
+    </div>
   );
 }

@@ -204,7 +204,7 @@ export default function ProjectsDashboard({
           {recentlyUpdatedProject ? (
             <div className="projects-content-item">
               <img
-                src={recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateName}screenshot.png`}
+                src={recentlyUpdatedProject.favicon || recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateName}screenshot.png`}
                 alt={recentlyUpdatedProject.name}
                 onClick={() => handleProjectClick(recentlyUpdatedProject.templateName)}
               />
@@ -231,7 +231,7 @@ export default function ProjectsDashboard({
               filteredProjects.map((project, index) => (
                 <div key={index} className="projects-content-item">
                   <img
-                    src={`./images/${project.templateName}screenshot.png` || "default-image.png"}
+                    src={project.favicon || `./images/${project.templateName}screenshot.png`}
                     alt={project.name}
                     onClick={() => handleProjectClick(project.templateName)}
                   />

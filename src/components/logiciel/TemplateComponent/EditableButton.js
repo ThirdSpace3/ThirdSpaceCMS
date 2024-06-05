@@ -12,6 +12,7 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
   const textRef = useRef(null);
   const modalRef = useRef(null);
   const hiddenTextMeasureRef = useRef(null);
+  const cursorPositionRef = useRef(0);
 
   useEffect(() => {
     const savedText = localStorage.getItem(`editableButtonText-${id}`);
@@ -35,10 +36,10 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
 
   const handleInputChange = (event) => {
     const inputText = event.target.innerText;
+    cursorPositionRef.current = window.getSelection().getRangeAt(0).startOffset;
 
     if (inputText.length > 100) {
       setError(true);
-      
       return;
     } else {
       setError(false);
@@ -47,6 +48,7 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
     setCurrentText(inputText);
     localStorage.setItem(`editableButtonText-${id}`, inputText);
   };
+
   const handleBlur = (event) => {
     const editLinkButton = document.querySelector('.edit-link-button');
     if (event.target === editLinkButton || event.relatedTarget === editLinkButton) {
@@ -100,8 +102,14 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
   useEffect(() => {
     if (isEditing) {
       textRef.current.focus();
+      const range = document.createRange();
+      const sel = window.getSelection();
+      range.setStart(textRef.current.childNodes[0], cursorPositionRef.current);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
     }
-  }, [isEditing]);
+  }, [isEditing, currentText]);
 
   const updateButtonWidth = () => {
     if (hiddenTextMeasureRef.current && buttonRef.current) {
@@ -112,7 +120,6 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
 
   return (
     <>
-
       {isEditing ? (
         <>
           <div
@@ -156,7 +163,6 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
             {currentText}
           </div>
         </>
-
       ) : (
         <button
           ref={buttonRef}

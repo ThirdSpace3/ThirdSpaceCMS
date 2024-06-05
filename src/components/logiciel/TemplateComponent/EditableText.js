@@ -4,7 +4,7 @@ import { useStyle } from '../../../hooks/StyleContext';
 
 const EditableText = ({ text, onChange, style, textType, selectElement, isPreviewMode }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [currentText, setCurrentText] = useState(text);
+  const [currentText, setCurrentText] = useState(text || '');
   const [error, setError] = useState(false);
   const spanRef = useRef(null);
   const textAreaRef = useRef(null);
@@ -81,7 +81,7 @@ const EditableText = ({ text, onChange, style, textType, selectElement, isPrevie
           className={`editable-text-span ${error ? 'error' : ''}`}
           id={selectElement}
         >
-          {text}
+          {currentText}
         </div>
       )}
     </>

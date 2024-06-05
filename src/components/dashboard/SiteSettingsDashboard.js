@@ -73,14 +73,14 @@ export default function SiteSettingsDashboard({
 
 
   const handleSave = async () => {
-    const projectRef = doc(db, "projects", walletID, "projectData", selectedProject.id.toString());
+    const projectRef = doc(db, "projects", walletID, "projectData", selectedProject.name);
     try {
       let faviconUrl = faviconPreview; // Use existing favicon URL by default
   
       // Check if a new file has been loaded for the favicon
       if (fileInputRef.current.files[0]) {
         const storage = getStorage();
-        const storageRef = ref(storage, `ImageProjects/${selectedProject.name}/favicon`);
+        const storageRef = ref(storage, `ImageProjects/${walletID}/${selectedProject.name}/favicon`);
         await uploadBytes(storageRef, fileInputRef.current.files[0]);
         faviconUrl = await getDownloadURL(storageRef);
       }
@@ -103,6 +103,7 @@ export default function SiteSettingsDashboard({
   
 
   const handleDeleteProject = async (projectId) => {
+    console.log(projectId);
       try {
         // Delete the project document from Firestore
         await deleteDoc(doc(db, "projects", walletID, "projectData", projectId.toString()));
