@@ -7,7 +7,6 @@ import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 
 const HeaderSection = ({
-  saveSettings,
   settings,
   handleSettingsChange,
   openImagePanel,
@@ -43,7 +42,6 @@ const HeaderSection = ({
     onContentChange(updatedContent);
 
     // Save the specific changes to Firebase
-    await saveSettings('header', updatedContent);
   };
 
   const handleLinkChange = async (newLink) => {
@@ -55,7 +53,6 @@ const HeaderSection = ({
     updateStyle('herojoinUs', { link: newLink });
 
     // Save the specific changes to Firebase
-    await saveSettings('header', updatedContent);
   };
 
   const handleComponentClick = (event, identifier) => {

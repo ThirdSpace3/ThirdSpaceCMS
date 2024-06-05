@@ -6,7 +6,6 @@ import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 
 const PartnersSection = ({
-  saveSettings,
   settings,
   handleSettingsChange,
   openImagePanel,
@@ -44,7 +43,6 @@ const PartnersSection = ({
     onContentChange(updatedContent);
 
     // Save the specific changes to Firebase
-    await saveSettings('partners', updatedContent);
   };
 
   const handleComponentClick = (event, identifier) => {
@@ -65,7 +63,6 @@ const PartnersSection = ({
     onContentChange(updatedContent);
 
     // Save the specific changes to Firebase
-    await saveSettings('partners', updatedContent);
   };
 
   return (
