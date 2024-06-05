@@ -6,8 +6,9 @@ import AboutSection from "./TemplateComponents/3sProduct/components/3sProductAbo
 import FeaturesSection from "./TemplateComponents/3sProduct/components/3sProductFeature";
 import JoinUsSection from "./TemplateComponents/3sProduct/components/3sProductJoinUs";
 import Footer from "./TemplateComponents/3sProduct/components/3sProductFooter";
+import fetchProjects from "../hooks/Fetchprojects";
 
-const SSSProduct = ({ saveSettings,setTemplateContent, selectedColor, setSelectedColor, logChange, selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement }) => {
+const SSSProduct = ({ saveSettings, setTemplateContent, selectedColor, setSelectedColor, logChange, selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement, selectedProjectId }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
   const [navbarContent, setNavbarContent] = useState({});
@@ -15,8 +16,8 @@ const SSSProduct = ({ saveSettings,setTemplateContent, selectedColor, setSelecte
   const [partnersContent, setPartnersContent] = useState({});
   const [aboutSection, setAboutSection] = useState({});
   const [featureSection, setFeatureSection] = useState({});
-  const [joinUsSection , setJoinUsSection ] = useState({});
-  const [footerSection , setFooterSection ] = useState({});
+  const [joinUsSection, setJoinUsSection] = useState({});
+  const [footerSection, setFooterSection] = useState({});
 
   const headerRef = useRef(null);
   const partnersRef = useRef(null);
@@ -37,14 +38,41 @@ const SSSProduct = ({ saveSettings,setTemplateContent, selectedColor, setSelecte
   };
 
   useEffect(() => {
+    if (selectedProjectId) {
+      const fetchData = async () => {
+        const walletId = sessionStorage.getItem("userAccount");
+        if (walletId) {
+          const navbarData = await fetchProjects(walletId, selectedProjectId, 'navbar');
+          const headerData = await fetchProjects(walletId, selectedProjectId, 'header');
+          const partnersData = await fetchProjects(walletId, selectedProjectId, 'partners');
+          const aboutData = await fetchProjects(walletId, selectedProjectId, 'aboutSection');
+          const featuresData = await fetchProjects(walletId, selectedProjectId, 'featureSection');
+          const joinUsData = await fetchProjects(walletId, selectedProjectId, 'joinUsSection');
+          const footerData = await fetchProjects(walletId, selectedProjectId, 'footerSection');
+
+          setNavbarContent(navbarData || {});
+          setHeaderContent(headerData || {});
+          setPartnersContent(partnersData || {});
+          setAboutSection(aboutData || {});
+          setFeatureSection(featuresData || {});
+          setJoinUsSection(joinUsData || {});
+          setFooterSection(footerData || {});
+        }
+      };
+
+      fetchData();
+    }
+  }, [selectedProjectId]);
+
+  useEffect(() => {
     setTemplateContent({
       navbar: navbarContent,
       header: headerContent,
       partners: partnersContent,
-      aboutSection:aboutSection,
-      featureSection:featureSection,
-      joinUsSection:joinUsSection,
-      footerSection:footerSection,
+      aboutSection: aboutSection,
+      featureSection: featureSection,
+      joinUsSection: joinUsSection,
+      footerSection: footerSection,
     });
   }, [navbarContent, headerContent, partnersContent, aboutSection, featureSection, joinUsSection, footerSection, setTemplateContent]);
 
@@ -83,9 +111,9 @@ const SSSProduct = ({ saveSettings,setTemplateContent, selectedColor, setSelecte
           footer: footerRef
         }}
       />
-      
+
       <HeaderSection
-      saveSettings={saveSettings}
+        saveSettings={saveSettings}
         ref={headerRef}
         style={settings}
         settings={settings}
@@ -102,6 +130,7 @@ const SSSProduct = ({ saveSettings,setTemplateContent, selectedColor, setSelecte
       />
 
       <PartnersSection
+        saveSettings={saveSettings}
         ref={partnersRef}
         style={settings}
         settings={settings}
@@ -116,7 +145,9 @@ const SSSProduct = ({ saveSettings,setTemplateContent, selectedColor, setSelecte
         onContentChange={setPartnersContent}
         isPreviewMode={isPreviewMode}
       />
+
       <AboutSection
+        saveSettings={saveSettings}
         ref={aboutRef}
         style={settings}
         settings={settings}
@@ -131,7 +162,9 @@ const SSSProduct = ({ saveSettings,setTemplateContent, selectedColor, setSelecte
         onContentChange={setAboutSection}
         isPreviewMode={isPreviewMode}
       />
+
       <FeaturesSection
+        saveSettings={saveSettings}
         ref={featuresRef}
         style={settings}
         settings={settings}
@@ -146,7 +179,9 @@ const SSSProduct = ({ saveSettings,setTemplateContent, selectedColor, setSelecte
         onContentChange={setFeatureSection}
         isPreviewMode={isPreviewMode}
       />
+
       <JoinUsSection
+        saveSettings={saveSettings}
         ref={joinUsRef}
         style={settings}
         settings={settings}
@@ -161,7 +196,9 @@ const SSSProduct = ({ saveSettings,setTemplateContent, selectedColor, setSelecte
         onContentChange={setJoinUsSection}
         isPreviewMode={isPreviewMode}
       />
+
       <Footer
+        saveSettings={saveSettings}
         ref={footerRef}
         style={settings}
         settings={settings}

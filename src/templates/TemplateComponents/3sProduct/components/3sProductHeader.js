@@ -5,7 +5,6 @@ import ReusableImage from '../../../../components/logiciel/TemplateComponent/Reu
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
 import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
-import { db, doc, getDoc } from '../../../../firebaseConfig'; // Adjust the path accordingly
 
 const HeaderSection = ({
   saveSettings,
@@ -19,6 +18,7 @@ const HeaderSection = ({
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { style, getComponentStyle, updateStyle } = useStyle();
 
+  // State for managing header content
   const [headerContent, setHeaderContent] = useState({
     heroTitle: 'The first user-friendly website builder',
     heroDescription: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -26,38 +26,6 @@ const HeaderSection = ({
     herojoinUsLink: { url: '#', openInNewTab: false },
     image: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-hero.png?alt=media&token=44a64698-ecd8-4bca-8dea-b522c6505eed"
   });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const walletId = sessionStorage.getItem("userAccount");
-      if (!walletId) {
-        console.log("No wallet ID found. Please log in.");
-        return;
-      }
-
-      try {
-        const docRef = doc(db, "settings", walletId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setHeaderContent(prevContent => ({
-            ...prevContent,
-            heroTitle: data.heroTitle || prevContent.heroTitle,
-            heroDescription: data.heroDescription || prevContent.heroDescription,
-            herojoinUs: data.herojoinUs || prevContent.herojoinUs,
-            herojoinUsLink: data.herojoinUsLink || prevContent.herojoinUsLink,
-            image: data.image || prevContent.image,
-          }));
-        } else {
-          console.log("No such document!");
-        }
-      } catch (error) {
-        console.error("Error fetching document:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const headerStyle = getComponentStyle('header');
   const heroTitleStyles = getComponentStyle('heroTitle');
@@ -75,7 +43,7 @@ const HeaderSection = ({
     onContentChange(updatedContent);
 
     // Save the specific changes to Firebase
-    await saveSettings(textType, { text: newText });
+    await saveSettings('header', updatedContent);
   };
 
   const handleLinkChange = async (newLink) => {
@@ -87,7 +55,7 @@ const HeaderSection = ({
     updateStyle('herojoinUs', { link: newLink });
 
     // Save the specific changes to Firebase
-    await saveSettings('herojoinUs', { link: newLink });
+    await saveSettings('header', updatedContent);
   };
 
   const handleComponentClick = (event, identifier) => {

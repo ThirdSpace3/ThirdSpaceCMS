@@ -82,9 +82,12 @@ export default function Display() {
     try {
       const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/Text`;
       const settingsDoc = doc(db, settingsDocPath);
-      await setDoc(settingsDoc, { headerContent: content }, { merge: true });
+      await setDoc(settingsDoc, { content }, { merge: true });
+      console.log("Saved", settingsDocPath);
+
     } catch (error) {
       console.error("Error saving settings:", error);
+      alert("Failed to save settings. See console for more details.");
     }
   };
 
@@ -176,7 +179,7 @@ export default function Display() {
       )}
       <div className="displayColumnWrapper">
         <TopBar
-          onSaveClick={() => saveSettings(TemplateContent.header)} 
+          onSaveClick={() => saveSettings(TemplateContent)} 
           onUndoClick={undo}
           onRedoClick={redo}
           onDeviceChange={(size) => setSelectedDeviceSize(size)}
