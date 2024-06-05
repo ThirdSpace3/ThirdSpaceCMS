@@ -1,3 +1,4 @@
+// TopBar.js
 import React, { useState } from "react";
 import "./TopBar.css";
 import "../Root.css";
@@ -19,7 +20,7 @@ const TopBar = ({
   const [eyeIcon, setEyeIcon] = useState("bi bi-eye");
   const [showPopup, setShowPopup] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [focusedDevice, setFocusedDevice] = useState(deviceSizes.tv); // New state for focused device
+  const [focusedDevice, setFocusedDevice] = useState(deviceSizes.tv);
 
   const handleEyeIconClick = () => {
     if (eyeIcon === "bi bi-eye") {

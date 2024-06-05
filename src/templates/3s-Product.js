@@ -7,7 +7,7 @@ import FeaturesSection from "./TemplateComponents/3sProduct/components/3sProduct
 import JoinUsSection from "./TemplateComponents/3sProduct/components/3sProductJoinUs";
 import Footer from "./TemplateComponents/3sProduct/components/3sProductFooter";
 
-const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logChange, selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement }) => {
+const SSSProduct = ({ saveSettings,setTemplateContent, selectedColor, setSelectedColor, logChange, selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
   const [navbarContent, setNavbarContent] = useState({});
@@ -85,6 +85,7 @@ const SSSProduct = ({ setTemplateContent, selectedColor, setSelectedColor, logCh
       />
       
       <HeaderSection
+      saveSettings={saveSettings}
         ref={headerRef}
         style={settings}
         settings={settings}

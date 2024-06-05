@@ -9,6 +9,7 @@ import { StyleProvider } from '../../hooks/StyleContext';
 import { ImageHistoryProvider, useImageHistory } from '../../hooks/ImageHistoryContext';
 import Canva from './Canva';
 import ReportBugBTN from '../website/ReportBugBTN';
+import { db, doc, setDoc } from '../../firebaseConfig';
 
 export default function Display() {
   const [settings, setSettings] = useState({});
@@ -70,29 +71,26 @@ export default function Display() {
     }
   };
 
-  const saveSettings = async () => {
+   const saveSettings = async (elementId, newSettings) => {
     const walletId = sessionStorage.getItem("userAccount");
     console.log(walletId);
     if (!walletId) {
       alert("No wallet ID found. Please log in.");
       return;
     }
-
+  
     try {
-      console.log("Sending settings to backend:", settings);
-      await axios.post(
-        "http://localhost:5000/api/settings",
-        { userId: walletId, settings: settings },
-        { headers: { "Content-Type": "application/json" } }
-      );
+      console.log("Sending settings to Firestore:", newSettings);
+      const settingsDoc = doc(db, "settings", walletId);
+      await setDoc(settingsDoc, { [elementId]: newSettings }, { merge: true });
       alert("Settings saved successfully");
-      setHasUnsavedChanges(false);
     } catch (error) {
       console.error("Error saving settings:", error);
       alert("Failed to save settings. See console for more details.");
     }
   };
 
+  
   const handlePreview = () => {
     setIsPreviewMode(!isPreviewMode);
   };
@@ -192,6 +190,7 @@ export default function Display() {
             logChange={logChange}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
+            saveSettings={saveSettings}
           />
         </div>
         {!isPreviewMode && (

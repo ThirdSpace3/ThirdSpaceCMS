@@ -4,7 +4,7 @@ import '../Root.css';
 import SSSProduct from '../../templates/3s-Product';
 import SSSPortfolio from '../../templates/3s-Portfolio';
 
-export default function Canva({TemplateContent, setTemplateContent, selectedColor, setSelectedColor, logChange, templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
+export default function Canva({saveSettings,TemplateContent, setTemplateContent, selectedColor, setSelectedColor, logChange, templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
   const templateComponents = {
     SSSProduct,
     SSSPortfolio
@@ -22,6 +22,7 @@ export default function Canva({TemplateContent, setTemplateContent, selectedColo
   return (
     <div className='canva-wrapper' style={{ width: canvasSize.width, height: canvasSize.height, overflowY: 'auto' }}>
       <SelectedTemplate
+      saveSettings={saveSettings}
         deviceSize={deviceSize}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
