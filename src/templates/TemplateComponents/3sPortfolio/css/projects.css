@@ -1,25 +1,103 @@
 @import './PortfolioVariables.css';
 
 .portfolio-projects {
-    background-color: var(--bg-color-primary);
-    color: var(--text-color-secondary);
-    padding: var(--base-padding);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    margin: 20px auto;
-    max-width: 800px;
-  }
-  
-  .project-card {
-    background-color: var(--bg-color-secondary);
-    color: var(--text-color-primary);
-    padding: 15px;
-    margin-top: 10px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: var(--transition);
-  }
-  
-  .project-card:hover {
-    transform: translateY(-5px);
-  }
+  background-color: var(--bg-color-primary);
+  color: var(--text-color-secondary);
+  padding: var(--base-padding);
+  border-radius: var(--border-radius);
+  margin: 20px auto;
+  max-width: 1200px;
+  font-family: Poppins, sans-serif;
+}
+
+.project-card {
+  background-color: var(--bg-color-secondary);
+  color: var(--text-color-primary);
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: var(--transition);
+  position: relative;
+}
+
+.project-card.right {
+  flex-direction: row-reverse;
+}
+
+
+
+.project-image {
+  width: 50%;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.project-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background-color: #2B0B3A;
+}
+
+.project-details {
+  width: 50%;
+  z-index: 100;
+  margin-right: -100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.project-details h2 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  color: #9370DB; /* Matching the highlighted text color */
+}
+
+.project-details h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.project-details p {
+  font-size: 1em;
+  line-height: 1.5;
+  padding: 20px;
+  border-radius: 14px;
+  background: url('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2Fportfolio%2FRectangle%201.png?alt=media&token=335c47fc-0258-46eb-b1f8-b31d5b066223') lightgray 0% 0% / 154.22531366348267px 154.22531366348267px repeat, radial-gradient(151.92% 127.02% at 15.32% 21.04%, rgba(105, 59, 147, 0.20) 0%, rgba(110, 191, 244, 0.04) 77.08%, rgba(70, 144, 212, 0.00) 100%);
+  background-blend-mode: overlay, normal;
+  backdrop-filter: blur(40px);
+  font-family: Inter, sans-serif;
+}
+
+.project-icon {
+  margin-top: 10px;
+  background-color: var(--bg-color-secondary);
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.project-icon img {
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+}
+
+
+
+.project-details.details-left{
+  align-items: flex-end;
+  margin-right: 5%;
+}
+
+.project-card.left p{
+  background: 
+  url('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2Fportfolio%2FRectangle%201.png?alt=media&token=335c47fc-0258-46eb-b1f8-b31d5b066223') lightgray 100% 100% / 154.22531366348267px 154.22531366348267px repeat, 
+  radial-gradient(151.92% 127.02% at 84.68% 78.96%, rgba(105, 59, 147, 0.20) 0%, rgba(110, 191, 244, 0.04) 77.08%, rgba(70, 144, 212, 0.00) 100%);
+  background-blend-mode: overlay, normal;
+  backdrop-filter: blur(40px);
+  margin-left: -100px;
+}

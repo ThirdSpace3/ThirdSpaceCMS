@@ -1,7 +1,7 @@
 :root {
     --font-primary: 'Poppins', sans-serif; /* Primary font for headings and bold text */
     --font-secondary: 'Inter', sans-serif; /* Secondary font for body text and details */
-    --headerContent-background-color: #0A0A23;
+    --headerContent-background-color: '';
     --PortfolioNavbar-background-color:'';
     --PortfolioAbout-background-color:'';
     --PortfolioContact-background-color:'';
@@ -16,8 +16,9 @@
     --transition: all 0.3s ease;
     --button-bg-color: #53354a;
     --button-text-color: #ffffff;
+    --bg-color-primary:#11071F;
     --button-bg-hover-color: #6d597a;
   }
   .portfolio-container{
-    background-color: var(--headerContent-background-color);
+    background-color: var( --bg-color-primary);
   }

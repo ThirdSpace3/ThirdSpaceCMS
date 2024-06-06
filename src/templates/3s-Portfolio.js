@@ -4,7 +4,7 @@ import SSSPortfolioAbout from './TemplateComponents/3sPortfolio/component/3sPort
 import SSSPortfolioContact from './TemplateComponents/3sPortfolio/component/3sPortfolioContact';
 import SSSPortfolioExperience from './TemplateComponents/3sPortfolio/component/3sPortfolioExperience';
 import SSSPortfolioProjects from './TemplateComponents/3sPortfolio/component/3sPortfolioProjects';
-
+import SSSPortfolioSkills from './TemplateComponents/3sPortfolio/component/3sPortfolioSkills';
 const SSSPortfolio = ({ setTemplateContent, selectedColor, setSelectedColor, logChange, selectElement, isPreviewMode, settings, handleSettingsChange, openImagePanel, imageHistory, selectedImage, setSelectedImage, setSelectedElement }) => {
   const [headerContent, setHeaderContent] = useState({});
   
@@ -21,6 +21,8 @@ const SSSPortfolio = ({ setTemplateContent, selectedColor, setSelectedColor, log
       />
       <SSSPortfolioAbout />
       <SSSPortfolioExperience />
+      <SSSPortfolioSkills /> {/* Include the skills component */}
+
       <SSSPortfolioProjects />
       <SSSPortfolioContact />
     </div>

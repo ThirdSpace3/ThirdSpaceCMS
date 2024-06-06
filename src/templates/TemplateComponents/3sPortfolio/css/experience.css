@@ -8,7 +8,7 @@
   margin: 20px auto;
   max-width: 1200px;
   text-align: center;
-  font-family: Outfit, sans-serif;
+  font-family: Poppins, sans-serif;
 }
 
 .portfolio-experience p {
@@ -95,6 +95,7 @@
   cursor: pointer;
   transition: var(--transition);
   font-size: 14px;
+  font-family: Poppins, sans-serif;
 }
 
 .portfolio-experience button:hover {

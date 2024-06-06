@@ -134,7 +134,6 @@ console.log("product:"+selectedProjectId);
         }}
       />
 
-      {headerContent && (
         <HeaderSection
           saveSettings={saveSettings}
           style={settings}
@@ -151,7 +150,6 @@ console.log("product:"+selectedProjectId);
           isPreviewMode={isPreviewMode}
           selectedProjectId={selectedProjectId}
         />
-      )}
       <PartnersSection
         saveSettings={saveSettings}
         ref={partnersRef}

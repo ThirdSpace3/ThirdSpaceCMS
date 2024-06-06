@@ -33,6 +33,7 @@
     cursor: pointer;
     display: inline-block;
     padding: 10px; /* Define padding */
+    font-family: Plus Jakarta Sans, sans-serif;
 }
 
 .nav-item-button:hover {
