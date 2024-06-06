@@ -247,7 +247,7 @@ ul.nav__links li.nav__logo {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    gap: 70px;
   }
 
   .navbar__mobile-content ul li a.nav__menu-mobile-links {
@@ -301,7 +301,7 @@ ul.nav__links li.nav__logo {
   }
   ul.nav__links li a,
   .nav__cta {
-    font-size: 12px;
+    font-size: 18px;
   }
   .nav__cta .material-symbols-outlined {
     font-size: 19px;
