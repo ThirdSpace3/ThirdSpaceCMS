@@ -8,12 +8,13 @@ const ReusableImage = ({
   identifier,
   openImagePanel,
   imageHeight,
+  handleImageUpload
 }) => {
   const [showReplaceButton, setShowReplaceButton] = useState(false);
-  const [isEdited, setIsEdited] = useState(false);
   const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
   const [currentSrc, setCurrentSrc] = useState(src);
   const imageContainerRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const savedSrc = localStorage.getItem(`imageSrc-${identifier}`);
@@ -29,24 +30,23 @@ const ReusableImage = ({
   useEffect(() => {
     if (activeComponent === identifier && selectedImage && currentSrc !== selectedImage) {
       setCurrentSrc(selectedImage);
-      setIsEdited(true);
-    }
-    if (activeComponent !== identifier) {
       setShowReplaceButton(false);
     }
   }, [selectedImage, activeComponent, identifier, currentSrc]);
 
   const handleImageClick = () => {
-    if (!isEdited) {
-      enterReplacementMode(identifier);
-      setShowReplaceButton(true);
-    }
+    enterReplacementMode(identifier);
+    setShowReplaceButton(true);
   };
 
   const handleClickOutside = (event) => {
     if (imageContainerRef.current && !imageContainerRef.current.contains(event.target)) {
       setShowReplaceButton(false);
     }
+  };
+
+  const onFileChange = (e) => {
+    handleImageUpload(e.target.files[0], identifier);
   };
 
   useEffect(() => {
@@ -65,11 +65,18 @@ const ReusableImage = ({
         className={`image-component ${showReplaceButton ? 'selected' : ''}`}
         style={{ height: imageHeight }}
       />
-      {showReplaceButton && !isEdited && (
-        <button className="popup-button" onClick={openImagePanel}>
+      {showReplaceButton && (
+        <button className="popup-button" onClick={() => fileInputRef.current.click()}>
           Replace Image <i className="bi bi-arrow-repeat"></i>
         </button>
       )}
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={onFileChange}
+      />
     </div>
   );
 };

@@ -42,14 +42,19 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
+      reader.onerror = (error) => reject(error);
       reader.readAsArrayBuffer(file);
     });
   };
 
   const getFileHash = async (file) => {
-    const arrayBuffer = await readFileAsArrayBuffer(file);
-    return SparkMD5.ArrayBuffer.hash(arrayBuffer);
+    try {
+      const arrayBuffer = await readFileAsArrayBuffer(file);
+      return SparkMD5.ArrayBuffer.hash(arrayBuffer);
+    } catch (error) {
+      console.error("Error reading file:", error);
+      throw new Error("Failed to read the file.");
+    }
   };
   
   const handleImageSelect = useCallback((image) => {
@@ -80,18 +85,23 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
         category = "Document";
       }
 
-      const fileHash = await getFileHash(file);
-      const isDuplicate = imageHistory.some(image => image.hash === fileHash);
+      try {
+        const fileHash = await getFileHash(file);
+        const isDuplicate = imageHistory.some(image => image.hash === fileHash);
 
-      if (isDuplicate) {
-        const existingImage = imageHistory.find(image => image.hash === fileHash);
-        alert(`This file has already been uploaded. Redirecting to the existing image.`);
-        handleImageSelect(existingImage);
-        continue;
+        if (isDuplicate) {
+          const existingImage = imageHistory.find(image => image.hash === fileHash);
+          alert(`This file has already been uploaded. Redirecting to the existing image.`);
+          handleImageSelect(existingImage);
+          continue;
+        }
+
+        const newImageUrl = URL.createObjectURL(file);
+        addImageToHistory({ url: newImageUrl, category, hash: fileHash });
+      } catch (error) {
+        console.error("Error processing file:", error);
+        alert(`Failed to process the file "${file.name}". Please try again.`);
       }
-
-      const newImageUrl = URL.createObjectURL(file);
-      addImageToHistory({ url: newImageUrl, category, hash: fileHash });
     }
 
     setIsDragging(false);
@@ -100,7 +110,6 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
   const handleUploadClick = useCallback(() => {
     fileInputRef.current.click();
   }, []);
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {

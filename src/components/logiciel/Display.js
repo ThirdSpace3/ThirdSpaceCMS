@@ -7,7 +7,7 @@ import './Display.css';
 import { useImageHistory } from '../../hooks/ImageHistoryContext';
 import Canva from './Canva';
 import ReportBugBTN from '../website/ReportBugBTN';
-import { db, doc, setDoc } from '../../firebaseConfig';
+import { db, doc, setDoc, getDownloadURL, uploadBytes, ref, storage } from '../../firebaseConfig';
 import { fetchProjects } from '../../hooks/Fetchprojects';
 
 export default function Display() {
@@ -69,6 +69,7 @@ export default function Display() {
   };
 
   const saveSettings = async (content) => {
+    console.log("Saving settings with content:", content);  // Log the content being saved
     const walletId = sessionStorage.getItem("userAccount");
     if (!walletId) {
       alert("No wallet ID found. Please log in.");
@@ -78,23 +79,35 @@ export default function Display() {
       alert("No project selected. Please select a project.");
       return;
     }
-  
+
     try {
       const sections = Object.keys(content);
       for (const section of sections) {
         const sectionContent = content[section];
         const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/Text/content/${section}`;
         const settingsDoc = doc(db, settingsDocPath);
+
+        // Handle image uploads
+        if (sectionContent.imageFile) {
+          const file = sectionContent.imageFile;
+          console.log("Uploading file:", file);
+          const storageRef = ref(storage, `images/${file.name}`);
+          await uploadBytes(storageRef, file);
+          const downloadURL = await getDownloadURL(storageRef);
+          console.log("Uploaded file URL:", downloadURL);
+          sectionContent.image = downloadURL;
+          delete sectionContent.imageFile;
+        }
+
         await setDoc(settingsDoc, sectionContent, { merge: true });
         console.log("Saved", settingsDocPath);
       }
-  
+
     } catch (error) {
       console.error("Error saving settings:", error);
       alert("Failed to save settings. See console for more details.");
     }
   };
-  
 
   const handlePreview = () => {
     setIsPreviewMode(!isPreviewMode);
@@ -173,7 +186,39 @@ export default function Display() {
 
     fetchAndSetProjects();
   }, [walletId]);
-console.log("display:"+selectedProjectId);
+
+  useEffect(() => {
+    const handleDragEnter = (event) => {
+      event.preventDefault();
+      setActivePanel('images');
+    };
+
+    const handleDragOver = (event) => {
+      event.preventDefault();
+    };
+
+    const handleDragLeave = (event) => {
+      event.preventDefault();
+    };
+
+    const handleDrop = (event) => {
+      event.preventDefault();
+    };
+
+    const displayWrapper = document.querySelector('.displayWrapper');
+    displayWrapper.addEventListener('dragenter', handleDragEnter);
+    displayWrapper.addEventListener('dragover', handleDragOver);
+    displayWrapper.addEventListener('dragleave', handleDragLeave);
+    displayWrapper.addEventListener('drop', handleDrop);
+
+    return () => {
+      displayWrapper.removeEventListener('dragenter', handleDragEnter);
+      displayWrapper.removeEventListener('dragover', handleDragOver);
+      displayWrapper.removeEventListener('dragleave', handleDragLeave);
+      displayWrapper.removeEventListener('drop', handleDrop);
+    };
+  }, []);
+
   return (
     <div className="displayWrapper">
       {!isPreviewMode && (

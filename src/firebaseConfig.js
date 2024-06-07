@@ -1,10 +1,8 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore, serverTimestamp, updateDoc , doc, setDoc, where, getDocs,getDoc, collection, query, deleteDoc, addDoc } from 'firebase/firestore';
+import { getFirestore, serverTimestamp, updateDoc , doc, setDoc, where, getDocs, getDoc, collection, query, deleteDoc, addDoc } from 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBHVhd30FIhlOPKoQSP6vZ2slkwtcLsRKU",
   authDomain: "third--space.firebaseapp.com",
@@ -16,7 +14,6 @@ const firebaseConfig = {
   measurementId: "G-83NKPT3B9E"
 };
 
-// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const analytics = getAnalytics(firebaseApp);

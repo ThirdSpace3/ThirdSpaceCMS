@@ -105,7 +105,7 @@ const SSSProduct = ({
       setSelectedElement(identifier);
     }
   };
-console.log("product:"+selectedProjectId);
+  console.log("product:" + selectedProjectId);
   return (
     <div className="sss-product-container">
       <Navbar
@@ -134,22 +134,22 @@ console.log("product:"+selectedProjectId);
         }}
       />
 
-        <HeaderSection
-          saveSettings={saveSettings}
-          style={settings}
-          settings={settings}
-          handleSettingsChange={handleSettingsChange}
-          openImagePanel={openImagePanel}
-          selectedImage={selectedImage}
-          setSelectedImage={setSelectedImage}
-          selectElement={selectElement}
-          setSelectedElement={setSelectedElement}
-          selectedColor={selectedColor}
-          setSelectedColor={setSelectedColor}
-          onContentChange={setHeaderContent}
-          isPreviewMode={isPreviewMode}
-          selectedProjectId={selectedProjectId}
-        />
+      <HeaderSection
+        saveSettings={saveSettings}
+        style={settings}
+        settings={settings}
+        handleSettingsChange={handleSettingsChange}
+        openImagePanel={openImagePanel}
+        selectedImage={selectedImage}
+        setSelectedImage={setSelectedImage}
+        selectElement={selectElement}
+        setSelectedElement={setSelectedElement}
+        selectedColor={selectedColor}
+        setSelectedColor={setSelectedColor}
+        onContentChange={setHeaderContent}
+        isPreviewMode={isPreviewMode}
+        selectedProjectId={selectedProjectId}
+      />
       <PartnersSection
         saveSettings={saveSettings}
         ref={partnersRef}

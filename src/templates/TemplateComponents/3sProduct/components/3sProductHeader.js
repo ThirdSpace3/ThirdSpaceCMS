@@ -15,7 +15,8 @@ const HeaderSection = ({
   setSelectedColor,
   onContentChange,
   selectedProjectId,
-  isPreviewMode
+  isPreviewMode,
+  saveSettings
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { style, getComponentStyle, updateStyle } = useStyle();
@@ -66,6 +67,15 @@ const HeaderSection = ({
   const heroDescriptionStyles = getComponentStyle('heroDescription');
   const herojoinUsStyles = getComponentStyle('herojoinUs');
   const [imageHeight, setImageHeight] = useState(null);
+
+  const handleImageUpload = (file, identifier) => {
+    const updatedContent = {
+      ...headerContent,
+      imageFile: file
+    };
+    setHeaderContent(updatedContent);
+    console.log('Image file added to headerContent:', file);
+  };
 
   const handleTextChange = async (newText, textType) => {
     const updatedContent = {
@@ -140,6 +150,7 @@ const HeaderSection = ({
         identifier="HeaderSection"
         imageHeight={imageHeight}
         selectImage={selectImage}
+        handleImageUpload={handleImageUpload}  // Pass the image upload handler
       />
     </div>
   );
