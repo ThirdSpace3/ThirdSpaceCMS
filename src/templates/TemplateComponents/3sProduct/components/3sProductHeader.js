@@ -19,8 +19,6 @@ const HeaderSection = ({
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { style, getComponentStyle, updateStyle } = useStyle();
-  console.log("header:"+selectedProjectId);
-
   const [headerContent, setHeaderContent] = useState({
     heroTitle: 'The first user-friendly website builder',
     heroDescription: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
@@ -127,7 +125,7 @@ const HeaderSection = ({
         <EditableButton
           id='herojoinUs'
           text={headerContent.herojoinUs}
-          link={headerContent.herojoinUsLink.url}
+          link={headerContent.herojoinUsLink}
           onChange={(newText) => handleTextChange(newText, 'herojoinUs')}
           onLinkChange={(newLink) => handleLinkChange(newLink.url)}
           style={herojoinUsStyles}

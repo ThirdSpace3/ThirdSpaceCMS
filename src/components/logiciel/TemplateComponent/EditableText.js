@@ -12,6 +12,10 @@ const EditableText = ({ text, onChange, style, textType, selectElement, isPrevie
 
   const computedStyle = useRef({});
 
+  useEffect(() => {
+    setCurrentText(text);
+  }, [text]);
+
   const handleInputChange = (event) => {
     setCurrentText(event.target.value);
     setError(false);

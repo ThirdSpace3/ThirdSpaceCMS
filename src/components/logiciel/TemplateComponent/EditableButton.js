@@ -15,20 +15,10 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
   const cursorPositionRef = useRef(0);
 
   useEffect(() => {
-    const savedText = localStorage.getItem(`editableButtonText-${id}`);
-    const savedLink = localStorage.getItem(`editableButtonLink-${id}`);
-    const savedOpenInNewTab = localStorage.getItem(`editableButtonOpenInNewTab-${id}`);
-
-    if (savedText) {
-      setCurrentText(savedText);
-    }
-    if (savedLink) {
-      setCurrentLink(savedLink);
-    }
-    if (savedOpenInNewTab !== null) {
-      setOpenInNewTab(JSON.parse(savedOpenInNewTab));
-    }
-  }, [id]);
+    setCurrentText(text);
+    setCurrentLink(link.url);
+    setOpenInNewTab(link.openInNewTab);
+  }, [text, link]);
 
   useEffect(() => {
     updateButtonWidth();
