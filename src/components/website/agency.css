@@ -252,6 +252,7 @@ a {
 @media only screen and (max-width: 767px) {
     .agency-quality {
         flex-direction: column-reverse;
+        padding: 50px 1.5%;
     }
     .agency-quality-img {
         width: 100%;
@@ -269,8 +270,7 @@ a {
     margin: auto;
     padding: 70px 20px;
     gap: 35px;
-    width: 80%;
-
+margin: 0 20px;
    
 }
 .agency-expert-item {
@@ -343,6 +343,15 @@ a {
     .agency-expert-content .contact-toggle {
         text-align: center;
     }
+    .agency-expert-stats h4{
+        font-weight: 800;
+        font-size: 25px;
+    }
+    .agency-expert {
+        padding: 50px 1.5%;
+    }
+    
+
 }
 
 /*==== Contact ====*/
