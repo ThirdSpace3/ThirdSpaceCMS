@@ -9,7 +9,8 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
-  const togglePopup = () => {
+  const togglePopup = (e) => {
+    e.preventDefault(); // Prevent default anchor behavior
     ReactGA.event({
       category: 'Button',
       action: 'Click',
@@ -99,8 +100,8 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
 
       <div className="navbar__mobile">
         <div className="navbar__mobile-head">
-          <a href="index.html" className="nav__logo">
-          <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
+          <a href="/#/home" className="nav__logo">
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
           </a>
           <img
             className="navbar__mobile-menuIcon"
@@ -130,8 +131,8 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/ressources" className="nav__links-btn">
-                Ressources
+              <a href="/#/resources" className="nav__links-btn">
+                Resources
               </a>
             </li>
             <li className="coming-soon">

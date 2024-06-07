@@ -56,7 +56,7 @@ export default function Products() {
 
 
             </div>
-              <p className="product-card-text">Lorem ipsum ispum boebn oejfn iebrfbeo bekfib eifbeon.</p>
+              <p className="product-card-text">Looking to upscale your digital presence? Look no further.</p>
             </div>
           </Link>
           <Link to="/3s-builder">
@@ -67,7 +67,7 @@ export default function Products() {
 
 
             </div>
-              <p className="product-card-text">Lorem ipsum ispum boebn oejfn iebrfbeo bekfib eifbeon.</p>
+              <p className="product-card-text">In Coming soon stay tunes to find out !</p>
             </div>
           </Link>
           <Link to="/3s-academy">
@@ -77,7 +77,7 @@ export default function Products() {
             <hr className="product-card-hr"/>
 
 
-            </div>              <p className="product-card-text">Lorem ipsum ispum boebn oejfn iebrfbeo bekfib eifbeon.</p>
+            </div>              <p className="product-card-text">In Coming soon stay tunes to find out !</p>
             </div>
           </Link>
         </div>
