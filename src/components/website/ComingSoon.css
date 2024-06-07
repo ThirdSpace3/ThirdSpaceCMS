@@ -16,6 +16,7 @@ h1 {
   justify-content: center;
   height: 80vh;
   gap: 25px;
+  padding: 5%;
 }
 .comingsoon-bg {
   position: absolute;

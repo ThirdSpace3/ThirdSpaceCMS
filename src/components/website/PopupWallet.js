@@ -6,6 +6,8 @@ import { db, doc, getDoc, setDoc, updateDoc } from '../../firebaseConfig';
 import { wait } from "@testing-library/user-event/dist/utils";
 import ReactGA from 'react-ga';
 import UAuth from '@uauth/js';
+import { useNavigate } from 'react-router-dom';
+
 // Initialize Google Analytics
 ReactGA.initialize('G-83NKPT3B9E');
 
@@ -15,6 +17,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
   const [phantomInitiated, setPhantomInitiated] = useState(false);
   const [customErrorMessage, setCustomErrorMessage] = useState("");
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
 
   const toggleShowMore = (e) => {
     e.preventDefault();
@@ -204,6 +207,9 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
 
   useEffect(() => {
     setIsMobile(isMobileDevice());
+    if (isMobileDevice()) {
+      navigate('../get-started-mobile');
+    }
     checkForWallet();
     const handleOutsideClick = (e) => {
       if (e.target.id === "popup") {
@@ -215,12 +221,11 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [onClose]);
+  }, [onClose, navigate]);
 
   if (isMobile) {
     return null; // Do not render the popup on mobile devices
   }
-
   return (
     <div className="popup" id="popup" style={{ display: "flex" }}>
       <div className="popup-content">

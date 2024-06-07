@@ -42,6 +42,7 @@
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  color: #131313;
 }
 
 .dashboard-settings-item {
@@ -422,4 +423,5 @@ cursor: pointer;
   font-family: var(--inter);
   padding-bottom: 2px;
   border-bottom: 1px solid red;
+  cursor: pointer;
 }

@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./ProjectsDashboard.css";
 import "./DashboardMain.css";
 import { useNavigate } from "react-router-dom";
-import { db, doc, getDoc, collection, query, where, getDocs } from "../../firebaseConfig";
 import _ from 'lodash';
-import PopupWallet from "../website/PopupWallet";
 
 export default function ProjectsDashboard({
   projects,
@@ -135,12 +133,14 @@ export default function ProjectsDashboard({
   const Placeholder = () => (
     <div className="placeholder" onClick={handleNewProjectClick}>
       <div className="placeholder-icon">
-        <i className="bi bi-folder-plus"></i>
+        <i className="bi bi-search"></i>
+        <p>New Project</p>  
       </div>
-      <p >New Project</p>
-      
+      <button className="placeholder-button">See all projects</button>
     </div>
   );
+
+  const isProjectsEmpty = !recentlyUpdatedProject && filteredProjects.length === 0;
 
   return (
     <div className="projects-container">
@@ -180,7 +180,7 @@ export default function ProjectsDashboard({
             <button
               className="projects-navbar-btn"
               onClick={handleNewProjectClick}
-              disabled={projects.length == 3}
+              disabled={projects.length === 3}
             >
               <i className="bi bi-plus-circle"></i> New Project
             </button>
@@ -188,47 +188,47 @@ export default function ProjectsDashboard({
           
         </div>
         {displaErrorMessage && (
-            <p className="dashboard-billing-header-warning">
-              <i className="bi bi-exclamation-triangle"></i>
-              You can't create more than 3 projects.
-            </p>
-          )}
+          <p className="dashboard-billing-header-warning">
+            <i className="bi bi-exclamation-triangle"></i>
+            You can't create more than 3 projects.
+          </p>
+        )}
       </div>
 
-      <div className="projects-content">
-        <div className="projects-content-box">
-          <div className="projects-content-title">
-            <i className="bi bi-clock-history"></i>
-            <h2>Recently viewed</h2>
-          </div>
-          {recentlyUpdatedProject ? (
-            <div className="projects-content-item">
-              <img
-                src={recentlyUpdatedProject.favicon || recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateName}screenshot.png`}
-                alt={recentlyUpdatedProject.name}
-                onClick={() => handleProjectClick(recentlyUpdatedProject.templateName)}
-              />
-              <div className="projects-content-item-info">
-                <p>{recentlyUpdatedProject.name}</p>
-                <p>Last updated: {new Date(recentlyUpdatedProject.lastUpdated).toLocaleString()}</p>
-                <div onClick={() => handleProjectSettings(recentlyUpdatedProject)}>
-                  <i className="bi bi-three-dots"></i>
+      {isProjectsEmpty ? (
+        <Placeholder />
+      ) : (
+        <div className="projects-content">
+          <div className="projects-content-box">
+            <div className="projects-content-title">
+              <i className="bi bi-clock-history"></i>
+              <h2>Recently viewed</h2>
+            </div>
+            {recentlyUpdatedProject && (
+              <div className="projects-content-item">
+                <img
+                  src={recentlyUpdatedProject.favicon || recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateName}screenshot.png`}
+                  alt={recentlyUpdatedProject.name}
+                  onClick={() => handleProjectClick(recentlyUpdatedProject.templateName)}
+                />
+                <div className="projects-content-item-info">
+                  <p>{recentlyUpdatedProject.name}</p>
+                  <p>Last updated: {new Date(recentlyUpdatedProject.lastUpdated).toLocaleString()}</p>
+                  <div onClick={() => handleProjectSettings(recentlyUpdatedProject)}>
+                    <i className="bi bi-three-dots"></i>
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <Placeholder />
-          )}
-        </div>
-
-        <div className="projects-content-box">
-          <div className="projects-content-title">
-            <i className="bi bi-folder2"></i>
-            <h2>All Projects</h2>
+            )}
           </div>
-          <div className="projects-content-listing">
-            {filteredProjects.length > 0 ? (
-              filteredProjects.map((project, index) => (
+
+          <div className="projects-content-box">
+            <div className="projects-content-title">
+              <i className="bi bi-folder2"></i>
+              <h2>All Projects</h2>
+            </div>
+            <div className="projects-content-listing">
+              {filteredProjects.map((project, index) => (
                 <div key={index} className="projects-content-item">
                   <img
                     src={project.favicon || `./images/${project.templateName}screenshot.png`}
@@ -242,13 +242,11 @@ export default function ProjectsDashboard({
                     </div>
                   </div>
                 </div>
-              ))
-            ) : (
-              <Placeholder />
-            )}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
