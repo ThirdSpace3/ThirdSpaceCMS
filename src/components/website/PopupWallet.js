@@ -144,6 +144,9 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     if (!hasWallet) {
       setCustomErrorMessage('To use Third Space, you need to connect via a wallet. We haven’t found one on your browser. Finish the entire profile creation in order to be able to log in!');
     }
+    else  {
+      return;
+    }
   };
 
   const handleLoginWithPhantom = async () => {
@@ -174,11 +177,10 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
         if (walletAvailable) {
           setCustomErrorMessage("Phantom wallet is now available. Please try connecting again.");
         } else {
-          setCustomErrorMessage('Phantom wallet is not installed. Please install and retry.');
+          setCustomErrorMessage('Phantom wallet is not available. Please refresh the page and try again.');
         }
       } else {
-        console.log("Phantom wallet is not installed. Please install and retry.");
-        setCustomErrorMessage('Phantom wallet is not installed. Please install and retry.');
+        setCustomErrorMessage('Phantom wallet installation isnt completed or not initiated. Please finish or install the Phatom wallet to continue.');
         setPhantomInitiated(true);
       }
     }
