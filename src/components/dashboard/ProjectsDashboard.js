@@ -26,12 +26,10 @@ export default function ProjectsDashboard({
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(dropdownOptions[0]);
-  const [displaErrorMessage, setDisplayErrorMessage] = useState(false);
-  const [filteredProjects, setFilteredProjects] = useState([]);
-  const [originalProjects, setOriginalProjects] = useState([]); // Store the original projects
-  const [selectedTemplate, setSelectedTemplate] = useState(null);
-  const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
+  const [displayErrorMessage, setDisplayErrorMessage] = useState(false);
+  const [filteredProjects, setFilteredProjects] = useState(userData || []);
   const [searchValue, setSearchValue] = useState("");
+  const [recentlyUpdatedProject, setRecentlyUpdatedProject] = useState(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -49,7 +47,7 @@ export default function ProjectsDashboard({
 
   const applyFilters = (option, searchValue) => {
     let filtered = [...userData];
-    
+
     // Filter by search value
     if (searchValue) {
       filtered = filtered.filter(project =>
@@ -73,6 +71,21 @@ export default function ProjectsDashboard({
     }
 
     setFilteredProjects(filtered);
+
+    // Update recentlyUpdatedProject based on the most recent project from the filtered list
+    if (filtered.length > 0) {
+      const mostRecentProject = filtered.reduce((acc, project) => {
+        const currentProjectDate = new Date(
+          project.lastUpdated || project.createdAt
+        );
+        const accDate = new Date(acc.lastUpdated || acc.createdAt);
+        return currentProjectDate > accDate ? project : acc;
+      }, filtered[0]);
+
+      setRecentlyUpdatedProject(mostRecentProject);
+    } else {
+      setRecentlyUpdatedProject(null);
+    }
   };
 
   const handleProjectClick = (templateSelected) => {
@@ -103,6 +116,18 @@ export default function ProjectsDashboard({
     }
   };
 
+  const resetSearch = () => {
+    setSearchValue("");
+    setFilteredProjects(userData);
+    setRecentlyUpdatedProject(userData.reduce((acc, project) => {
+      const currentProjectDate = new Date(
+        project.lastUpdated || project.createdAt
+      );
+      const accDate = new Date(acc.lastUpdated || acc.createdAt);
+      return currentProjectDate > accDate ? project : acc;
+    }, userData[0]));
+  };
+
   useEffect(() => {
     const walletID = sessionStorage.getItem("userAccount");
     fetchProjects(walletID);
@@ -110,16 +135,7 @@ export default function ProjectsDashboard({
 
   useEffect(() => {
     setFilteredProjects(userData);
-    setOriginalProjects(userData); // Store the original projects
-    const mostRecentProject = userData.reduce((acc, project) => {
-      const currentProjectDate = new Date(
-        project.lastUpdated || project.createdAt
-      );
-      const accDate = new Date(acc.lastUpdated || acc.createdAt);
-      return currentProjectDate > accDate ? project : acc;
-    }, userData[0]);
-
-    setRecentlyUpdatedProject(mostRecentProject);
+    applyFilters(selectedOption, searchValue);
     if (isEmpty(userData) && !isLoading) {
       // navigate("../templatestep");
       // sessionStorage.setItem("currentStep", "1");
@@ -131,12 +147,22 @@ export default function ProjectsDashboard({
   }
 
   const Placeholder = () => (
-    <div className="placeholder" onClick={handleNewProjectClick}>
+    <div className="placeholder">
       <div className="placeholder-icon">
         <i className="bi bi-search"></i>
-        <p>New Project</p>  
+        <p>No projects found</p>  
       </div>
-      <button className="placeholder-button">See all projects</button>
+      <button className="placeholder-button" onClick={resetSearch}>See all projects</button>
+    </div>
+  );
+
+  const NoProjectsPlaceholder = () => (
+    <div className="placeholder">
+      <div className="placeholder-icon">
+        <i className="bi bi-folder"></i>
+        <p>New project</p>
+      </div>
+      <button className="placeholder-button" onClick={handleNewProjectClick}>Create your first project</button>
     </div>
   );
 
@@ -187,7 +213,7 @@ export default function ProjectsDashboard({
           </div>
           
         </div>
-        {displaErrorMessage && (
+        {displayErrorMessage && (
           <p className="dashboard-billing-header-warning">
             <i className="bi bi-exclamation-triangle"></i>
             You can't create more than 3 projects.
@@ -196,7 +222,11 @@ export default function ProjectsDashboard({
       </div>
 
       {isProjectsEmpty ? (
-        <Placeholder />
+        isEmpty(userData) ? (
+          <NoProjectsPlaceholder />
+        ) : (
+         <Placeholder/>
+        )
       ) : (
         <div className="projects-content">
           <div className="projects-content-box">
