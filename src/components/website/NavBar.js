@@ -84,7 +84,7 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
           </ul>
 
           {accounts.length === 0 ? (
-            <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
+            <a href="#" className="purple-btn" onClick={togglePopup}>
               Get Started
             </a>
           ) : (

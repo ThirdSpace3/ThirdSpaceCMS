@@ -8,6 +8,7 @@ import Footer from "../components/website/Footer";
 import ReportBugBTN from "../components/website/ReportBugBTN";
 import React, { useState, useEffect } from "react";
 import { db, collection, getDocs, doc, getDoc } from '../firebaseConfig'; // Assuming Firestore is correctly imported and configured
+import PartnersHP from "../components/website/home/Partners";
 
 export default function Home() {
   const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
@@ -64,6 +65,7 @@ export default function Home() {
         checkWalletData={checkWalletData}
 
       />
+      <PartnersHP />
       <Solutions />
       <HowItWork
         checkWalletData={checkWalletData}
