@@ -6,7 +6,7 @@ import "./LeftBar.css";
 import "../Root.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-export default function PanelAsset({selectedProjectId, walletId, setVisiblePanel, visiblePanel }) {
+export default function PanelAsset({setTemplateContent, selectedElement, selectedProjectId, walletId, setVisiblePanel, visiblePanel }) {
   const {
     addImageToHistory,
     imageHistory,
@@ -58,7 +58,20 @@ export default function PanelAsset({selectedProjectId, walletId, setVisiblePanel
   const handleImageSelect = useCallback((image) => {
     enterReplacementMode(activeComponent);
     selectImage(image.url);
-  }, [activeComponent, enterReplacementMode, selectImage]);
+    // Update the TemplateContent state with the selected image URL
+    setTemplateContent(prevContent => {
+      const newContent = { ...prevContent };
+      if (selectedElement) {
+        newContent[selectedElement] = {
+          ...newContent[selectedElement],
+          image: image.url
+        };
+      }
+      return newContent;
+    });
+  }, [activeComponent, enterReplacementMode, selectImage, selectedElement, setTemplateContent]);
+  
+  
 
   const handleFileChange = useCallback(async (event) => {
     const files = Array.from(event.target.files);

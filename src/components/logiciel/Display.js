@@ -175,7 +175,7 @@ export default function Display() {
           const projectsList = await fetchProjects(walletId);
           setProjects(projectsList);
           if (projectsList.length > 0) {
-            setSelectedProjectId(projectsList[0].id); 
+            setSelectedProjectId(projectsList[0].id);
             console.log('Selected project ID:', projectsList[0].id);
           }
         } catch (error) {
@@ -228,11 +228,14 @@ export default function Display() {
           setVisiblePanel={setActivePanel}
           walletId={walletId}
           selectedProjectId={selectedProjectId}
-          />
+          setTemplateContent={setTemplateContent} // Add this line
+          selectedElement={selectedElement} // Add this line
+        />
+
       )}
       <div className="displayColumnWrapper">
         <TopBar
-          onSaveClick={() => saveSettings(TemplateContent)} 
+          onSaveClick={() => saveSettings(TemplateContent)}
           onUndoClick={undo}
           onRedoClick={redo}
           onDeviceChange={(size) => setSelectedDeviceSize(size)}

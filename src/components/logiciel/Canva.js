@@ -4,7 +4,7 @@ import '../Root.css';
 import SSSProduct from '../../templates/3s-Product';
 import SSSPortfolio from '../../templates/3s-Portfolio';
 
-export default function Canva({selectedProjectId,saveSettings,TemplateContent, setTemplateContent, selectedColor, setSelectedColor, logChange, templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
+export default function Canva({ selectedProjectId, saveSettings, TemplateContent, setTemplateContent, selectedColor, setSelectedColor, logChange, templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
   const templateComponents = {
     SSSProduct,
     SSSPortfolio
@@ -18,13 +18,13 @@ export default function Canva({selectedProjectId,saveSettings,TemplateContent, s
   useEffect(() => {
     setCanvasSize({ width: deviceSize, height: '100vh' });
   }, [deviceSize]);
-  console.log("canva:"+selectedProjectId);
+  console.log("canva:" + selectedProjectId);
 
   return (
     <div className='canva-wrapper' style={{ width: canvasSize.width, height: canvasSize.height, overflowY: 'auto' }}>
       <SelectedTemplate
-      TemplateContent={TemplateContent}
-      saveSettings={saveSettings}
+        TemplateContent={TemplateContent}
+        saveSettings={saveSettings}
         deviceSize={deviceSize}
         settings={settings}
         handleSettingsChange={handleSettingsChange}
@@ -39,7 +39,7 @@ export default function Canva({selectedProjectId,saveSettings,TemplateContent, s
         logChange={logChange}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        setTemplateContent={setTemplateContent}
+        setTemplateContent={setTemplateContent} // Ensure this line is here
         selectedProjectId={selectedProjectId}
       />
     </div>
