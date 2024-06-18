@@ -173,3 +173,30 @@ line-height: 20px; /* 142.857% */
 .hover-cancel * {
   pointer-events: none;
 }
+
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #c7c7c7;
+  border-radius: 11.058px;
+
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 11.058px;
+  background: linear-gradient(180deg, rgba(28, 4, 59, 0) 0%, rgba(60, 8, 126, 0.52) 100%), rgba(33, 14, 75, 0.52);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgb(118 79 167 / 52%) 100%), rgba(113, 47, 255, 0.52);
+  transition: 0.3s ease;
+  cursor: pointer;}

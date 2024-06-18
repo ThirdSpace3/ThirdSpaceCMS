@@ -29,7 +29,7 @@ ul.nav__links {
   
 }
 .nav-bg {
-  padding: 15px 30px;
+  padding: 10px 30px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.02);
@@ -38,14 +38,19 @@ ul.nav__links li.nav__logo {
   font-size: 24px;
   font-weight: 200;
 }
-.nav__links-btn {
+.nav__links-btn,
+.nav__links-cta {
   color: rgba(255, 255, 255, 0.8);
   text-align: center;
   font-family: var(--inter);
   font-size: 14px;
   font-weight: 500;
 }
-.nav__links-btn:hover {
+.nav__links-cta {
+  font-size: 20px;
+}
+.nav__links-btn:hover,
+.nav__links-cta:hover {
 cursor: pointer;
 color: #fff;
 transition: 0.3s ease;
@@ -73,10 +78,7 @@ transition: 0.3s ease;
   transition: 0.3s ease;
   padding: 10px 8%;
 }
-.sticky-navbar .nav__cta,
-.sticky-navbar .nav__links {
-  scale: 0.85;
-}
+
 .menu__mobile {
   display: none;
 }
@@ -148,8 +150,8 @@ transition: 0.3s ease;
     transition: left 0.3s ease;
     background: var(--body-purple);
     position: absolute;
-    width: 100vw;
-    height: 100vh;
+    width: 105vw;
+        height: 100vh;
     padding-top: 30%;
     z-index: 1000;
     transition: left 0.3s ease-in-out;

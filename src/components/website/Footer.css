@@ -7,7 +7,7 @@ footer {
   .footer-top {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 40px 10%;
   }
   .footer-column {
@@ -42,7 +42,7 @@ footer {
   .footer-bottom {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     padding: 20px 10%;
   }

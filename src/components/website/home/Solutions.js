@@ -37,7 +37,7 @@ function Solutions() {
         <h3 className='solutions-row-card-title'>Seamless Wallet Integration</h3>
         <p className='solutions-row-card-subtitle'>Integrate popular Web 3 wallets for secure and easy user transactions.</p>  
         </div>
-        <img className='solutions-row-card-img solutions-row-card-img-3' 
+        <img className='solutions-row-card-img' 
         src='./images/solutions-row-card-3.png'></img>
             </div>
         <div class="solutions-row-card solutions-row-card-left">

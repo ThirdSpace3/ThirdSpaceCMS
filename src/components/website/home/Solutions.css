@@ -30,10 +30,14 @@
       border: 4.8px solid rgba(40, 34, 63, 0.43);
       background: linear-gradient(357deg, rgba(3, 0, 20, 0.35) 61.62%, rgba(32, 30, 39, 0.35) 126.43%);
       backdrop-filter: blur(19.201183319091797px);
-      padding: 41px 23px;
+      padding: 41px 0 0 0;
       position: relative;
-      min-height: 470px;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    justify-content: space-between;
+    gap: 15px;
     }
     .solutions-row-card-left {
       width: 60%;
@@ -48,11 +52,12 @@ flex-direction: column;
 justify-content: center;
 align-items: flex-start;
 gap: 9.49px;
+padding-left: 23px;
     }
     .solutions-row-card-title {
       color: var(--white, #FFF);
 font-family: Inter;
-font-size: 24px;
+font-size: 22px;
 font-style: normal;
 font-weight: 700;
 line-height: 28.8px; /* 120% */
@@ -69,51 +74,20 @@ letter-spacing: -0.5px;
       max-width: 390px;
     }
     .solutions-row-card-img {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-    transform: translateX(-50%);
-    width: 95%;
+      margin-left: auto;
+      margin-right: auto;
+      width: 95%;
     }
     .solutions-row-card-img-2 {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-    transform: translateX(-50%);
+      width: 100%;
     }
     .solutions-row-card-img-4 {
-      position: absolute;
-      bottom: 0;
-      left: -5%;
+      margin-right: auto;
+      width: 95%;
     }
+
   
-    @media screen and (min-width: 822px) and (max-width: 1279px) {
-      .solutions-row-card {
-        min-height: 400px;
 
-      }
-    }
-    @media screen and (min-width: 768px) and (max-width: 821px) {
-      .solutions-row-card {
-        min-height: 360px;
-
-      }
-    }
-    @media screen and (min-width: 608px) and (max-width: 767px) {
-      .solutions-row-card {
-        min-height: 360px;
-        height: 470px;
-
-
-      }
-    }
-    @media screen and (max-width: 599px) {
-      .solutions-row-card {
-        min-height: 360px;
-        height: 400px;
-  
-      }
-    }
     
   @media screen and (max-width: 767px) {
     .solutions-row {
@@ -128,12 +102,5 @@ letter-spacing: -0.5px;
     .solutions-row-card-right {
       width: 100%;
     }
-    .solutions-row-card-img-2 {
-      width: 100%;
-      bottom: -80px;
-    }
-
-    .solutions-row-card-img-3 {
-      bottom: -80px;
-    }
+    
   }

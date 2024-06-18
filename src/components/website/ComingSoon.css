@@ -8,6 +8,7 @@ h1 {
   font-family: var(--montserrat);
   color: var(--white);
   font-size: 20px;
+  text-align: center;
 }
 .comingsoon-container {
   display: flex;

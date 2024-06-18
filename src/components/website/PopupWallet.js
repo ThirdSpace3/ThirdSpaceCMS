@@ -142,7 +142,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     setWalletAvailable(hasWallet);
     console.log(hasWallet);
     if (!hasWallet) {
-      setCustomErrorMessage('To use Third Space, you need to connect via a wallet. We haven’t found one on your browser. Finish the entire profile creation in order to be able to log in!');
+      setCustomErrorMessage('To use Third Space, you need to connect a wallet. Please create one with Phantom and then reload your page.');
     }
     else  {
       return;
@@ -238,25 +238,27 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
           onClick={onClose}
         />
         <div className="popup-wallet-header">
+        <h2>Connect to</h2>
+
           <img
-            src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2F3s-logo-picto.png?alt=media&token=eccaecaa-e624-4bb4-a1ad-54f181d09510"
+            src="./images/logo-typo-white.png"
             className="popup-wallet-main-img"
           />
-          <h2>Connect to Third Space</h2>
         </div>
         {customErrorMessage && (
           <div className="popup-wallet-warning">
             <p>
              {customErrorMessage}
             </p>
-            <a href="https://phantom.app/" target="_blank">
+            <a className="wallet-btn" href="https://phantom.app/" target="_blank">
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fphantom-logo.png?alt=media&token=5ffe611b-3ccd-4663-81e4-59feeb1dbba7" alt="" />
+
               Create a wallet with Phantom{" "}
-              <i className="bi bi-arrow-right-short"></i>
             </a>
           </div>
         )}
 
-        <div className="wallet-list">
+        <div className={`wallet-list ${customErrorMessage ? 'wallet-hide' : ''}`}>
           {/* Phantom */}
           <button
             id="phantom"
@@ -284,11 +286,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Funstoppablelogo.png?alt=media&token=60b8c7c0-d644-4954-be2d-7afe3065b876" alt="" />
             Continue with Unstoppable
           </button>
-          {/* Coming Soon */}
-          <button className="wallet-btn wallet-btn-comingsoon">
-            <i className="bi bi-lock-fill"></i>
-            Coming Soon
-          </button>
+          
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import ReactGA from 'react-ga';
 function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
   const navigate = useNavigate();
 
   const togglePopup = (e) => {
@@ -53,8 +54,11 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
     }
   }, [isMenuOpen]);
 
+
+
+
   return (
-    <nav className="navbar__padding">
+    <nav className={`navbar__padding ${isSticky ? 'sticky-navbar' : ''}`}>
       <div className="navbar__pc">
         <a href="/#/home" className="nav__logo">
           <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
@@ -90,9 +94,9 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
           ) : (
             <a
               href={hasWalletData ? "#/dashboard" : "#/templatestep"}
-              className="nav__cta nav-bg"
+              className="nav__links nav-bg"
             >
-              <span className="material-symbols-outlined">account_circle</span>
+              <i className="bi bi-person-circle nav__links-cta"></i>
             </a>
           )}
         </div>
@@ -139,6 +143,20 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
               <a href="/#/pricing" className="nav__links-btn">
                 Pricing
               </a>
+            </li>
+            <li>
+              {accounts.length === 0 ? (
+                <a href="#" className="purple-btn" onClick={togglePopup}>
+                  Get Started
+                </a>
+              ) : (
+                <a
+                  href={hasWalletData ? "#/dashboard" : "#/templatestep"}
+                  className="nav__links nav-bg"
+                >
+                  <i className="bi bi-person-circle nav__links-cta"></i>
+                </a>
+              )}
             </li>
           </ul>
         </div>
