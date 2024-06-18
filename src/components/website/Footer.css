@@ -1,0 +1,110 @@
+/*==================== FOOTER ====================*/
+footer {
+    background: url('https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fheader-deco.png?alt=media&token=45950dca-a838-4d9f-875e-c3b08d228e44');
+    background-position: center;
+    background-size: cover;
+  }
+  .footer-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 40px 10%;
+  }
+  .footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .footer-column-title {
+    color: #D0D3D7;
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.72px;
+  }
+  .footer-column-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .footer-column-content li {
+    list-style: none;
+  }
+  .footer-column-content li a {
+    color: #858F98;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -0.64px;
+    text-decoration: none;
+    
+  }
+  .footer-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10%;
+  }
+  .footer-credits {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-credits img {
+    width: 100%;
+    max-width: 150px;
+  }
+  .footer-credits p {
+    color: #858F98;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.64px;
+  }
+  .footer-socials {
+    display: flex;
+    gap: 15px;
+  }
+  .footer-deco {
+    position: absolute;
+    width: 100vw;
+    z-index: -1;
+    bottom: -180px;
+  }
+  
+  
+  @media screen and (max-width: 850px) {
+    .footer-bottom {
+      padding: 20px 5%;
+    }
+  }
+  @media screen and (max-width: 650px) {
+  
+    .footer-bottom {
+      flex-direction: column-reverse;
+      gap: 25px;
+    }
+    .footer-credits {
+      justify-content: center;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .footer-column,
+    .footer-column-content {
+      align-items: center;
+    }
+    .footer-top {
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+    .footer-credits {
+      flex-direction: column;
+      align-items: center;
+    }
+    .footer-credits img {
+      width: 60%;
+    }
+  }

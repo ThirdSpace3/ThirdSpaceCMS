@@ -1,0 +1,587 @@
+/*==================== NAVBAR ====================*/
+nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 8%;
+}
+nav a img {
+  width: 10vw;
+}
+
+.template-deco-bot {
+  position: absolute;
+  bottom: -100px;
+  left: -90px;
+  z-index: -1;
+  max-width: 300px;
+}
+.template-deco-top {
+  position: absolute;
+  top: 45px;
+  right: -50px;
+  z-index: -1;
+  max-width: 150px;
+}
+/*==================== BASE ====================*/
+
+body {
+  overflow-y: hidden;
+}
+#etape5,
+#etape4,
+#etape3,
+#etape2,
+#etape1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  height: 80vh;
+  position: relative;
+  padding: 25px;
+  overflow: hidden;
+}
+#etape4 {
+  justify-content: flex-start;
+}
+
+#etape5 p {
+  max-width: 750px;
+}
+
+.template-content {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10%;
+}
+.template-title {
+  color: #fff;
+  font-family: Montserrat;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 800;
+  text-align: center;
+}
+.template-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+}
+.step-box {
+  max-width: 900px;
+  height: 65vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+#etape4 .step-box {
+  max-width: 900px;
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+.template-label-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.selectable-button {
+  border-radius: 22px;
+  border: 1.189px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-align: center;
+  font-family: var(--inter);
+  font-size: 16.257px;
+  font-style: normal;
+  font-weight: 400;
+  padding: 15px 20px;
+  flex: 0 0 auto;
+}
+.selectable-button:hover {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.6);
+}
+.selectable-button.template-selected {
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+.template-input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.template-input-box input {
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+  width: 100%;
+  padding: 15px 20px;
+  color: var(--white);
+}
+.btn-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+}
+
+.ignore-btn {
+  display: flex;
+  padding: 15px 30px;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border-radius: 28px;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.ignore-btn:hover {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.disabled,
+.disabled * {
+  cursor: not-allowed;
+}
+
+.purple-light-btn:not(.disabled):hover {
+  background: rgba(150, 0, 250, 1); /* Example hover background */
+  cursor: pointer;
+  /* other hover styles here */
+}
+
+/*==================== ETAPE 2 ====================*/
+
+.template-label-box-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.template-label-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+.selectable-button-2 {
+  border-radius: 22px;
+  border: 1.189px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  text-align: center;
+  font-family: var(--inter);
+  font-size: 16.257px;
+  font-style: normal;
+  font-weight: 400;
+  padding: 15px 20px;
+  width: 250px;
+}
+.selectable-button-2:hover {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.6);
+}
+@media only screen and (max-height: 800px) {
+  .selectable-button,
+  .selectable-button-2,
+  .template-input-box input {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  .btn-box button {
+    padding: 10px 20px;
+  }
+  .template-content {
+    justify-content: space-around;
+  }
+}
+.selectable-button-2.template-selected {
+  background: rgba(255, 255, 255, 0.6) !important;
+}
+
+/*==================== ETAPE 3 ====================*/
+
+.solutions-card:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.card-selected {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.solutions-card {
+  position: relative;
+}
+
+/* Styles pour centrer la div "Coming Soon" */
+.solution-comingsoon {
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  border-radius: 15px;
+  color: #fff;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.solution-comingsoon:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.final-btn-box {
+  display: block;
+}
+
+.template-selected {
+  border: 2px solid var(--text-editor);
+}
+.template-mobile {
+  display: none;
+}
+
+/*==================== MOBILE ====================*/
+@media only screen and (max-width: 767px) {
+  .template-mobile {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5%;
+    overflow-x: hidden;
+  }
+  .template-content {
+    display: none;
+  }
+  .template-deco-bot {
+    max-width: 350px;
+    bottom: -150px;
+    left: -190px;
+  }
+  .template-deco-top {
+    max-width: 100px;
+    top: 45px;
+    right: 10px;
+  }
+}
+
+.feedback-submit {
+  font-size: 16px;
+}
+.feedback-input-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/*==================== ETAPE 4 ====================*/
+.templates-section {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+
+.listing-container {
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.listing-container h3 {
+  color: var(--white);
+  font-family: Montserrat;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.listing-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.listing-dot {
+  width: 14px;
+  height: 14px;
+  background-color: #d9d9d9;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.listing-dot-selected {
+  background-color: var(--item-selected);
+}
+.listing-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.listing-item-name {
+  color: #fff;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.templates-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  min-width: 70%;
+  overflow: auto;
+  max-height: 60vh;
+  padding-right: 5px;
+}
+/* Track */
+.templates-container::-webkit-scrollbar-track {
+  background-color: #f5f5f585;
+  border-radius: 20px;
+}
+
+/* Handle */
+.templates-container::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 20px;
+  margin-left: 5px;
+}
+
+/* Handle on hover */
+.templates-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--not-selected);
+}
+
+/* The scrollbar itself */
+.templates-container::-webkit-scrollbar {
+  width: 10px; /* Adjust the width of the scrollbar */
+}
+.templates-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+.templates-img {
+  position: relative;
+  min-height: 300px;
+  max-height: 300px;
+  max-width: 220px;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.templates-box img {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.templates-box.template-selected {
+  border: 2px solid var(--text-editor);
+}
+.templates-hover {
+  display: none; /* Cacher la div par défaut */
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 20px;
+  background: linear-gradient(
+    0deg,
+    rgba(89, 86, 232, 0.8) 0%,
+    rgba(89, 86, 232, 0.8) 100%
+  );
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.templates-box:hover .templates-hover {
+  display: block; /* Afficher la div au survol de templates-box */
+}
+
+.templates-hover-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  gap: 10px;
+}
+
+.templates-hover-content a {
+  border-radius: 28px;
+  background: var(--white, #fff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: var(--Main-color---diteur, #5956e8);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding: 5px 10px;
+  min-width: 130px;
+  cursor: pointer;
+}
+
+.templates-infos {
+  color: #fff;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.templates-infos i {
+  font-size: 25px;
+}
+
+/*==================== PROGRESS BAR ====================*/
+.progressbar-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 20px;
+}
+.progressbar-container {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px 40px;
+}
+.progressbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.progressbar:hover{
+  cursor: pointer;
+}
+.progressbar-number {
+  color: #64748b;
+  font-family: Montserrat;
+  font-size: 16.667px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border-radius: 41.667px;
+  border: 1.667px solid #64748b;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.progressbar-text {
+  color: #64748b;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.progressbar-dot-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+.progressbar-dot {
+  background-color: #64748b;
+  width: 5px;
+  height: 5px;
+  border-radius: 50px;
+}
+/*== active ==*/
+.progressbar-number p.actual-step {
+  color: #fff;
+  border: 1.667px solid #fff;
+  border-radius: 41.667px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.progressbar .actual-step {
+  color: #fff;
+}
+.progressbar-dot-box .actual-step {
+  background-color: #fff;
+}
+
+@media only screen and (max-height: 800px) {
+  .progressbar-container {
+    scale: 0.8;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .progressbar-container {
+    display: none;
+  }
+}
+
+.template-input-box p {
+  font-family: outfit;
+  font-size: 14px;
+}

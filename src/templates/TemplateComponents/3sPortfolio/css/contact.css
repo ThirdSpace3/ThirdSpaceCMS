@@ -1,0 +1,43 @@
+@import './PortfolioVariables.css';
+
+.portfolio-contact {
+  background-color: var(--bg-color-primary);
+  color: var(--text-color-primary);
+  padding: var(--base-padding);
+  text-align: center;
+  font-family: var(--font-family);
+  border-radius: var(--border-radius);
+  margin: 20px auto;
+  max-width: 800px;
+  font-family: Inter, sans-serif;
+}
+
+.portfolio-contact h2{
+font-family: Poppins, sans-serif;
+}
+
+.portfolio-contact-content{
+  text-align: left;
+}
+
+.portfolio-contact a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.social-links {
+  margin-top: 20px;
+}
+
+.social-links a {
+  margin: 0 10px;
+  color: var(--accent-color);
+  font-size: 20px;
+}
+
+.portfolio-footer {
+  margin-top: 40px;
+  font-size: 14px;
+  color: var(--text-color-secondary);
+}

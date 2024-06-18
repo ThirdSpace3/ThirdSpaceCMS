@@ -1,0 +1,28 @@
+.btn-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: left;
+    height: 45px;
+    align-items: center;
+}
+.btn-bow {
+    display: flex;
+    width: 209px;
+    padding: 8px 33px;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    border-radius: 20px;
+    background: var(--menu-bg);
+    color: var(--white, #FFF);
+    text-align: center;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    height: fit-content;
+    position: fixed;
+    top: 6px;
+    left: 65px;
+}

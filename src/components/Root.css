@@ -1,0 +1,153 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
+
+:root {
+  /*========== Color ==========*/
+  --menu-bg: #131313;
+  --not-selected: #64748b;
+  --main-color: #9600fa;
+  --purple: #9600fa;
+  --purple-hover: #6f02b8;
+  --text-editor: #cbd5e1;
+  --item-selected: #217bf4;
+  --dark-grey: #334155;
+  --white: #f9f9f9;
+  --deep-purple: #421660;
+  --body-purple: #131313;
+  --green: #10843A;
+
+  /*========== Font family ==========*/
+  --inter: "Inter", sans-serif;
+  --montserrat: "Montserrat", sans-serif;
+}
+
+/*==================== BASE ====================*/
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+input:focus {
+  outline: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+body {
+  background-color: var(--body-purple);
+  overflow-x: hidden;
+}
+
+.no-scroll {
+  overflow-y: hidden;
+}
+
+.section {
+  padding: 80px 10%;
+}
+.section-title {
+  color: var(--white);
+  font-family: Montserrat;
+  font-size: 2vw;
+  font-weight: 800;
+  text-align: center;
+}
+.section__text {
+  color: #797979;
+  font-family: var(--inter);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+}
+.section-label {
+  display: inline-flex;
+  padding: 5px;
+  color: var(--white);
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 800;
+  border-bottom: 1px solid var(--purple);
+}
+.purple-btn {
+  display: flex;
+  padding: 15px 30px;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border-radius: 28px;
+  background: var(--purple);
+  border: none;
+}
+.purple-light-btn {
+  display: flex;
+  padding: 15px 30px;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  border-radius: 28px;
+  background: rgba(150, 0, 250, 0.4);
+  gap: 10px;
+  border: none;
+}
+.purple-light-btn:hover {
+  cursor: pointer;
+}
+.cta-icon {
+  width: 27px;
+}
+
+@media only screen and (max-width: 850px) {
+  .section {
+    padding: 40px 5%;
+  }
+  .section__text {
+    text-align: center;
+    font-size: 16px;
+  }
+  .section-label,
+  .purple-btn,
+  .purple-light-btn {
+    font-size: 16px;
+  }
+  .section-title {
+    font-size: 5vw;
+  }
+}
+
+/*==================== REUSABLE ====================*/
+.bold {
+  font-weight: 800;
+}
+
+/* In your CSS file */
+.hover-cancel * {
+  pointer-events: none;
+}
