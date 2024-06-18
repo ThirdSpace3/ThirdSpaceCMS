@@ -1,3 +1,4 @@
+// ReusableImage.js
 import React, { useState, useRef, useEffect } from "react";
 import { useImageHistory } from "../../../hooks/ImageHistoryContext";
 import "./ReusableImage.css";

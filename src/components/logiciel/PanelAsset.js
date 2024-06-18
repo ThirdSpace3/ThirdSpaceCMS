@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useImageHistory } from "../../hooks/ImageHistoryContext";
+import SparkMD5 from "spark-md5";
+import { storage, getStorage, ref, uploadBytes, getDownloadURL  } from "../../firebaseConfig";  // import the Firebase storage configuration
 import "./LeftBar.css";
 import "../Root.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useImageHistory } from "../../hooks/ImageHistoryContext";
-import SparkMD5 from "spark-md5";
 
-export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
+export default function PanelAsset({selectedProjectId, walletId, setVisiblePanel, visiblePanel }) {
   const {
     addImageToHistory,
     imageHistory,
@@ -21,7 +22,6 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [draggedImage, setDraggedImage] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-
   const dropdownRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -33,10 +33,8 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
   }, [setVisiblePanel, visiblePanel]);
 
   const filteredHistory = useMemo(() => {
-    return selectedOption === "All Assets"
-      ? imageHistory || []
-      : (imageHistory || []).filter((item) => item.category === selectedOption);
-  }, [selectedOption, imageHistory]);
+    return (imageHistory || []).filter((item) => item.category === "Photo" || item.category === "Background");
+  }, [imageHistory]);
 
   const readFileAsArrayBuffer = (file) => {
     return new Promise((resolve, reject) => {
@@ -96,7 +94,10 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
           continue;
         }
 
-        const newImageUrl = URL.createObjectURL(file);
+        const storageRef = ref(storage, `ImageProjects/${walletId}/${selectedProjectId}/images/${file.name}`);
+        await uploadBytes(storageRef, file);
+        const newImageUrl = await getDownloadURL(storageRef);
+
         addImageToHistory({ url: newImageUrl, category, hash: fileHash });
       } catch (error) {
         console.error("Error processing file:", error);
@@ -178,27 +179,7 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
   const renderPreview = useCallback((image) => {
     const isUsed = Object.values(componentImageUsage).includes(image.url);
     const previewClass = isUsed ? "image-used" : "image-preview";
-    switch (image.category) {
-      case "Photo":
-        return <img src={image.url} alt="Preview" className={previewClass} />;
-      case "Background":
-        return <img src={image.url} alt="Preview" className={previewClass} />;
-      case "Video":
-        return (
-          <video className={previewClass} width="120" height="90" controls>
-            <source src={image.url} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        );
-      case "Document":
-        return (
-          <i className={`bi bi-file-earmark-text-fill ${previewClass}`} style={{ fontSize: "48px" }}></i>
-        );
-      default:
-        return (
-          <i className={`bi bi-file-earmark ${previewClass}`} style={{ fontSize: "48px" }}></i>
-        );
-    }
+    return <img src={image.url} alt="Preview" className={previewClass} />;
   }, [componentImageUsage]);
 
   return (

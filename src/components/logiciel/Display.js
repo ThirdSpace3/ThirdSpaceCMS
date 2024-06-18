@@ -226,7 +226,9 @@ export default function Display() {
           handleEditorChange={(editor) => setActiveEditor(editor)}
           visiblePanel={activePanel}
           setVisiblePanel={setActivePanel}
-        />
+          walletId={walletId}
+          selectedProjectId={selectedProjectId}
+          />
       )}
       <div className="displayColumnWrapper">
         <TopBar

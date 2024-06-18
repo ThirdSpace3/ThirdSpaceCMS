@@ -8,7 +8,7 @@ import PanelLayers from "./PanelLayers";
 import PanelPlus from "./PanelPlus";
 import { useImageHistory } from "../../hooks/ImageHistoryContext";
 
-export default function LeftBar({ handleEditorChange, visiblePanel, setVisiblePanel, setSelectedImage }) {
+export default function LeftBar({selectedProjectId,walletId, handleEditorChange, visiblePanel, setVisiblePanel, setSelectedImage }) {
   const { imageHistory} = useImageHistory();
   const { addImageToHistory } = useImageHistory();
 
@@ -66,7 +66,7 @@ export default function LeftBar({ handleEditorChange, visiblePanel, setVisiblePa
         {visiblePanel === "file" && <PanelFile handleSwitch={handleSwitch} />}
         {visiblePanel === "layers" && <PanelLayers />}
         {visiblePanel === "images" && (
-          <PanelAsset imageHistory={imageHistory} setSelectedImage={setSelectedImage} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
+          <PanelAsset selectedProjectId={selectedProjectId} walletId={walletId} imageHistory={imageHistory} setSelectedImage={setSelectedImage} setVisiblePanel={setVisiblePanel} visiblePanel={visiblePanel} />
         )}
       </div>
     </>

@@ -73,14 +73,14 @@ export default function SiteSettingsDashboard({
 
 
   const handleSave = async () => {
-    const projectRef = doc(db, "projects", walletID, "projectData", selectedProject.name);
+    const projectRef = doc(db, "projects", walletID, "projectData", selectedProject.id);
     try {
       let faviconUrl = faviconPreview; // Use existing favicon URL by default
   
       // Check if a new file has been loaded for the favicon
       if (fileInputRef.current.files[0]) {
         const storage = getStorage();
-        const storageRef = ref(storage, `ImageProjects/${walletID}/${selectedProject.name}/favicon`);
+        const storageRef = ref(storage, `ImageProjects/${walletID}/${selectedProject.id}/favicon`);
         await uploadBytes(storageRef, fileInputRef.current.files[0]);
         faviconUrl = await getDownloadURL(storageRef);
       }
