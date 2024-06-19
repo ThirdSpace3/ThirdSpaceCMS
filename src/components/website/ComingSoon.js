@@ -6,7 +6,7 @@ export default function ComingSoon() {
   return (
     <>
       <div className="comingsoon-container">
-        <h1>Coming Soon</h1>
+        <h1 className="coming-soon-h1">Coming Soon</h1>
         <p>
           We're currently working on creating something fantastic. We'll be here
           soon!
