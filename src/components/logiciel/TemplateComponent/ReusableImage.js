@@ -45,8 +45,10 @@ const ReusableImage = ({
     }
   };
 
-  const onFileChange = (e) => {
-    handleImageUpload(e.target.files[0], identifier);
+  const onFileChange = async (e) => {
+    const file = e.target.files[0];
+    const newSrc = await handleImageUpload(file, identifier);
+    setCurrentSrc(newSrc);
   };
 
   useEffect(() => {

@@ -33,6 +33,19 @@ export const ImageHistoryProvider = ({ children }) => {
         setImageHistory(prevHistory => [...prevHistory, image]);
     };
 
+    const removeImageFromHistory = (hash) => {
+        setImageHistory(prevHistory => prevHistory.filter(image => image.hash !== hash));
+        setComponentImageUsage(prevUsage => {
+            const updatedUsage = { ...prevUsage };
+            Object.keys(updatedUsage).forEach(key => {
+                if (updatedUsage[key].hash === hash) {
+                    delete updatedUsage[key];
+                }
+            });
+            return updatedUsage;
+        });
+    };
+
     const enterReplacementMode = (componentName) => {
         setActiveComponent(componentName);
         setIsReplacementMode(true);
@@ -64,6 +77,7 @@ export const ImageHistoryProvider = ({ children }) => {
         <ImageHistoryContext.Provider value={{
             imageHistory,
             addImageToHistory,
+            removeImageFromHistory,
             selectedImage,
             selectImage,
             enterReplacementMode,

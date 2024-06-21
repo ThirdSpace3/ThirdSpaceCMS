@@ -4,10 +4,14 @@ import "../Root.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useImageHistory } from "../../hooks/ImageHistoryContext";
 import SparkMD5 from "spark-md5";
+import { storage, db } from "../../firebaseConfig";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
 
-export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
+export default function PanelAsset({selectedProjectId, setVisiblePanel, visiblePanel }) {
   const {
     addImageToHistory,
+    removeImageFromHistory,
     imageHistory,
     selectImage,
     selectedImage,
@@ -15,13 +19,13 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
     activeComponent,
     enterReplacementMode
   } = useImageHistory();
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Assets");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [draggedImage, setDraggedImage] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
-
+  const walletId = sessionStorage.getItem("userAccount");
   const dropdownRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -56,7 +60,7 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
       throw new Error("Failed to read the file.");
     }
   };
-  
+
   const handleImageSelect = useCallback((image) => {
     enterReplacementMode(activeComponent);
     selectImage(image.url);
@@ -96,8 +100,14 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
           continue;
         }
 
-        const newImageUrl = URL.createObjectURL(file);
-        addImageToHistory({ url: newImageUrl, category, hash: fileHash });
+        const storageReference = storageRef(storage, `ImagesUsers/${walletId}/${selectedProjectId}/${file.name}`);
+        await uploadBytes(storageReference, file);
+        const newImageUrl = await getDownloadURL(storageReference);
+
+        const newImage = { url: newImageUrl, category, hash: fileHash };
+        addImageToHistory(newImage);
+
+        await addDoc(collection(db, "images"), newImage);
       } catch (error) {
         console.error("Error processing file:", error);
         alert(`Failed to process the file "${file.name}". Please try again.`);
@@ -175,14 +185,19 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
     };
   }, [handleFileChange]);
 
+  const handleImageError = useCallback((hash) => {
+    removeImageFromHistory(hash);
+  }, [removeImageFromHistory]);
+
   const renderPreview = useCallback((image) => {
     const isUsed = Object.values(componentImageUsage).includes(image.url);
     const previewClass = isUsed ? "image-used" : "image-preview";
+
     switch (image.category) {
       case "Photo":
-        return <img src={image.url} alt="Preview" className={previewClass} />;
+        return <img src={image.url} alt="Preview" className={previewClass} onError={() => handleImageError(image.hash)} />;
       case "Background":
-        return <img src={image.url} alt="Preview" className={previewClass} />;
+        return <img src={image.url} alt="Preview" className={previewClass} onError={() => handleImageError(image.hash)} />;
       case "Video":
         return (
           <video className={previewClass} width="120" height="90" controls>
@@ -199,7 +214,7 @@ export default function PanelAsset({ setVisiblePanel, visiblePanel }) {
           <i className={`bi bi-file-earmark ${previewClass}`} style={{ fontSize: "48px" }}></i>
         );
     }
-  }, [componentImageUsage]);
+  }, [componentImageUsage, handleImageError]);
 
   return (
     <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`} onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave}>

@@ -25,12 +25,12 @@ export default function Display() {
   const { templateName } = useParams();
   const [activePanel, setActivePanel] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const { clearFocus } = useImageHistory();
+  const { clearFocus, addImageToHistory } = useImageHistory();
   const [selectedColor, setSelectedColor] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [TemplateContent, setTemplateContent] = useState({});
 
-  const walletId = sessionStorage.getItem('userAccount');
+  const walletId = sessionStorage.getItem('userAccount') || localStorage.getItem('userAccount');
   console.log(walletId);
 
   const checkAndSetLogin = () => {
@@ -69,8 +69,7 @@ export default function Display() {
   };
 
   const saveSettings = async (content) => {
-    console.log("Saving settings with content:", content);  // Log the content being saved
-    const walletId = sessionStorage.getItem("userAccount");
+    const walletId = sessionStorage.getItem("userAccount") || localStorage.getItem("userAccount");
     if (!walletId) {
       alert("No wallet ID found. Please log in.");
       return;
@@ -90,24 +89,42 @@ export default function Display() {
         // Handle image uploads
         if (sectionContent.imageFile) {
           const file = sectionContent.imageFile;
-          console.log("Uploading file:", file);
           const storageRef = ref(storage, `images/${file.name}`);
           await uploadBytes(storageRef, file);
           const downloadURL = await getDownloadURL(storageRef);
-          console.log("Uploaded file URL:", downloadURL);
           sectionContent.image = downloadURL;
           delete sectionContent.imageFile;
         }
 
         await setDoc(settingsDoc, sectionContent, { merge: true });
-        console.log("Saved", settingsDocPath);
       }
-
     } catch (error) {
       console.error("Error saving settings:", error);
       alert("Failed to save settings. See console for more details.");
     }
   };
+
+  const handleImageUpload = async (file, identifier) => {
+    try {
+      const storageRef = ref(storage, `ImagesUsers/${walletId}/${selectedProjectId}/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+  
+      // Update the image history
+      const newImage = { url: downloadURL, category: "Photo", hash: identifier };
+      addImageToHistory(newImage);
+  
+      // Update the ReusableImage local storage
+      localStorage.setItem(`imageSrc-${identifier}`, downloadURL);
+  
+      return downloadURL;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Failed to upload image. See console for more details.");
+      return null;
+    }
+  };
+  
 
   const handlePreview = () => {
     setIsPreviewMode(!isPreviewMode);
@@ -226,6 +243,7 @@ export default function Display() {
           handleEditorChange={(editor) => setActiveEditor(editor)}
           visiblePanel={activePanel}
           setVisiblePanel={setActivePanel}
+          setSelectedProjectId={selectedProjectId}
         />
       )}
       <div className="displayColumnWrapper">
@@ -256,6 +274,8 @@ export default function Display() {
           setSelectedColor={setSelectedColor}
           saveSettings={saveSettings}
           selectedProjectId={selectedProjectId}
+          handleImageUpload={handleImageUpload}  // Pass the image upload handler
+
         />
       </div>
       {!isPreviewMode && (
@@ -266,6 +286,7 @@ export default function Display() {
           logChange={logChange}
           selectedColor={selectedColor}
           setSelectedColor={setSelectedColor}
+          walletId={walletId}
         />
       )}
       <ReportBugBTN />

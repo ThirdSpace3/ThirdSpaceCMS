@@ -24,7 +24,8 @@ const SSSProduct = ({
   selectedImage,
   setSelectedImage,
   setSelectedElement,
-  selectedProjectId
+  selectedProjectId,
+  handleImageUpload,
 }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
@@ -124,6 +125,7 @@ const SSSProduct = ({
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={setNavbarContent}
+        handleImageUpload={handleImageUpload}
         sections={{
           header: headerRef,
           partners: partnersRef,
@@ -149,6 +151,8 @@ const SSSProduct = ({
         onContentChange={setHeaderContent}
         isPreviewMode={isPreviewMode}
         selectedProjectId={selectedProjectId}
+        handleImageUpload={handleImageUpload}
+
       />
       <PartnersSection
         saveSettings={saveSettings}

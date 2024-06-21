@@ -16,7 +16,8 @@ const HeaderSection = ({
   onContentChange,
   selectedProjectId,
   isPreviewMode,
-  saveSettings
+  saveSettings,
+  handleImageUpload
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { style, getComponentStyle, updateStyle } = useStyle();
@@ -68,15 +69,6 @@ const HeaderSection = ({
   const herojoinUsStyles = getComponentStyle('herojoinUs');
   const [imageHeight, setImageHeight] = useState(null);
 
-  const handleImageUpload = (file, identifier) => {
-    const updatedContent = {
-      ...headerContent,
-      imageFile: file
-    };
-    setHeaderContent(updatedContent);
-    console.log('Image file added to headerContent:', file);
-  };
-
   const handleTextChange = async (newText, textType) => {
     const updatedContent = {
       ...headerContent,
@@ -104,6 +96,23 @@ const HeaderSection = ({
     if (walletId && selectedProjectId) {
       await saveComponentData(walletId, selectedProjectId, 'header', updatedContent);
       console.log('Saved new join us link:', newLink);
+    }
+  };
+
+  const handleImageChange = async (file) => {
+    const downloadURL = await handleImageUpload(file, 'HeaderSection');
+    if (downloadURL) {
+      const updatedContent = {
+        ...headerContent,
+        image: downloadURL
+      };
+      setHeaderContent(updatedContent);
+
+      const walletId = sessionStorage.getItem("userAccount");
+      if (walletId && selectedProjectId) {
+        await saveComponentData(walletId, selectedProjectId, 'header', updatedContent);
+        console.log('Saved new image URL:', downloadURL);
+      }
     }
   };
 
@@ -150,7 +159,7 @@ const HeaderSection = ({
         identifier="HeaderSection"
         imageHeight={imageHeight}
         selectImage={selectImage}
-        handleImageUpload={handleImageUpload}  // Pass the image upload handler
+        handleImageUpload={handleImageChange}  // Use the new image change handler
       />
     </div>
   );
