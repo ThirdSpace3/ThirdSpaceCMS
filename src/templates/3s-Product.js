@@ -6,7 +6,7 @@ import AboutSection from "./TemplateComponents/3sProduct/components/3sProductAbo
 import FeaturesSection from "./TemplateComponents/3sProduct/components/3sProductFeature";
 import JoinUsSection from "./TemplateComponents/3sProduct/components/3sProductJoinUs";
 import Footer from "./TemplateComponents/3sProduct/components/3sProductFooter";
-import { fetchProjects, fetchComponentData } from "../hooks/Fetchprojects";
+import { fetchComponentData } from "../hooks/Fetchprojects";
 
 const SSSProduct = ({
   TemplateContent,
@@ -20,7 +20,6 @@ const SSSProduct = ({
   settings,
   handleSettingsChange,
   openImagePanel,
-  imageHistory,
   selectedImage,
   setSelectedImage,
   setSelectedElement,
@@ -46,8 +45,8 @@ const SSSProduct = ({
 
   const toggleMenu = (event) => {
     event.preventDefault();
-    setMenuOpen(prevState => !prevState);
-    setMenuToggleImg(prevState =>
+    setMenuOpen((prevState) => !prevState);
+    setMenuToggleImg((prevState) =>
       prevState === "./images/templates-img/3sproduct/3sproduct-menu-open.png"
         ? "./images/templates-img/3sproduct/3sproduct-menu-close.png"
         : "./images/templates-img/3sproduct/3sproduct-menu-open.png"
@@ -59,16 +58,17 @@ const SSSProduct = ({
     if (selectedProjectId) {
       const fetchData = async () => {
         const walletId = sessionStorage.getItem("userAccount");
+        const navbarData = await fetchComponentData(walletId, selectedProjectId, 'navbar');
+        const headerData = await fetchComponentData(walletId, selectedProjectId, 'header');
+        const partnersData = await fetchComponentData(walletId, selectedProjectId, 'partners');
+        const aboutData = await fetchComponentData(walletId, selectedProjectId, 'aboutSection');
+        const featuresData = await fetchComponentData(walletId, selectedProjectId, 'featureSection');
+        const joinUsData = await fetchComponentData(walletId, selectedProjectId, 'joinUsSection');
+        const footerData = await fetchComponentData(walletId, selectedProjectId, 'footerSection');
+
         if (walletId) {
           try {
             console.log('Fetching component data for project:', selectedProjectId);
-            const navbarData = await fetchComponentData(walletId, selectedProjectId, 'navbar');
-            const headerData = await fetchComponentData(walletId, selectedProjectId, 'header');
-            const partnersData = await fetchComponentData(walletId, selectedProjectId, 'partners');
-            const aboutData = await fetchComponentData(walletId, selectedProjectId, 'aboutSection');
-            const featuresData = await fetchComponentData(walletId, selectedProjectId, 'featureSection');
-            const joinUsData = await fetchComponentData(walletId, selectedProjectId, 'joinUsSection');
-            const footerData = await fetchComponentData(walletId, selectedProjectId, 'footerSection');
 
             setNavbarContent(navbarData || {});
             setHeaderContent(headerData || {});
@@ -79,6 +79,13 @@ const SSSProduct = ({
             setFooterSection(footerData || {});
           } catch (error) {
             console.error('Error fetching component data:', error);
+            setNavbarContent(navbarData || {});
+            setHeaderContent(headerData || {});
+            setPartnersContent(partnersData || {});
+            setAboutSection(aboutData || {});
+            setFeatureSection(featuresData || {});
+            setJoinUsSection(joinUsData || {});
+            setFooterSection(footerData || {});
           }
         }
       };
@@ -106,7 +113,9 @@ const SSSProduct = ({
       setSelectedElement(identifier);
     }
   };
+
   console.log("product:" + selectedProjectId);
+
   return (
     <div className="sss-product-container">
       <Navbar
@@ -132,7 +141,7 @@ const SSSProduct = ({
           about: aboutRef,
           features: featuresRef,
           joinUs: joinUsRef,
-          footer: footerRef
+          footer: footerRef,
         }}
       />
 
@@ -152,8 +161,8 @@ const SSSProduct = ({
         isPreviewMode={isPreviewMode}
         selectedProjectId={selectedProjectId}
         handleImageUpload={handleImageUpload}
-
       />
+
       <PartnersSection
         saveSettings={saveSettings}
         ref={partnersRef}

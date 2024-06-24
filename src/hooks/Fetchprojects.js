@@ -29,15 +29,15 @@ const fetchComponentData = async (walletId, projectId, component) => {
   }
 };
 
-const saveComponentData = async (walletId, projectId, component, data) => {
+const saveComponentData = async (walletId, projectId, componentName, data) => {
   try {
-    const docRef = doc(db, `projects/${walletId}/projectData/${projectId}/Content/Text/content/${component}`);
+    const docRef = doc(db, `projects/${walletId}/projectData/${projectId}/components`, componentName);
     await setDoc(docRef, data, { merge: true });
-    console.log(`Document ${component} updated successfully with data:`, data);
+    console.log(`Saved ${componentName} data for project ${projectId}`);
   } catch (error) {
-    console.error("Error saving component data:", error);
-    throw error;
+    console.error(`Error saving ${componentName} data:`, error);
   }
 };
+
 
 export { fetchComponentData, fetchProjects, saveComponentData };

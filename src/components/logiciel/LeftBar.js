@@ -30,7 +30,7 @@ export default function LeftBar({selectedProjectId, handleEditorChange, visibleP
   const handleSwitch = (editor) => {
     handleEditorChange(editor);
   };
-
+console.log(selectedProjectId);
   return (
     <>
       <div className="navbar-wrapper">

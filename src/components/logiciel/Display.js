@@ -78,13 +78,16 @@ export default function Display() {
       alert("No project selected. Please select a project.");
       return;
     }
-
+  
     try {
       const sections = Object.keys(content);
       for (const section of sections) {
         const sectionContent = content[section];
+        if (Object.keys(sectionContent).length === 0) continue; // Skip empty content
+  
         const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/Text/content/${section}`;
         const settingsDoc = doc(db, settingsDocPath);
+        console.log(sectionContent);
 
         // Handle image uploads
         if (sectionContent.imageFile) {
@@ -95,7 +98,8 @@ export default function Display() {
           sectionContent.image = downloadURL;
           delete sectionContent.imageFile;
         }
-
+  
+        // Ensure the image URL is being updated
         await setDoc(settingsDoc, sectionContent, { merge: true });
       }
     } catch (error) {
@@ -117,6 +121,16 @@ export default function Display() {
       // Update the ReusableImage local storage
       localStorage.setItem(`imageSrc-${identifier}`, downloadURL);
   
+      // Update the TemplateContent state
+      setTemplateContent(prevContent => {
+        const updatedContent = { ...prevContent };
+        if (!updatedContent.header) {
+          updatedContent.header = {};
+        }
+        updatedContent.header.image = downloadURL;
+        return updatedContent;
+      });
+  
       return downloadURL;
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -124,7 +138,6 @@ export default function Display() {
       return null;
     }
   };
-  
 
   const handlePreview = () => {
     setIsPreviewMode(!isPreviewMode);
@@ -235,6 +248,7 @@ export default function Display() {
       displayWrapper.removeEventListener('drop', handleDrop);
     };
   }, []);
+  console.log("display:"+selectedProjectId);
 
   return (
     <div className="displayWrapper">
@@ -243,7 +257,7 @@ export default function Display() {
           handleEditorChange={(editor) => setActiveEditor(editor)}
           visiblePanel={activePanel}
           setVisiblePanel={setActivePanel}
-          setSelectedProjectId={selectedProjectId}
+          selectedProjectId={selectedProjectId}
         />
       )}
       <div className="displayColumnWrapper">
@@ -275,7 +289,6 @@ export default function Display() {
           saveSettings={saveSettings}
           selectedProjectId={selectedProjectId}
           handleImageUpload={handleImageUpload}  // Pass the image upload handler
-
         />
       </div>
       {!isPreviewMode && (

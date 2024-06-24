@@ -19,7 +19,7 @@ export default function PanelAsset({selectedProjectId, setVisiblePanel, visibleP
     activeComponent,
     enterReplacementMode
   } = useImageHistory();
-
+console.log(selectedProjectId);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Assets");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -107,7 +107,7 @@ export default function PanelAsset({selectedProjectId, setVisiblePanel, visibleP
         const newImage = { url: newImageUrl, category, hash: fileHash };
         addImageToHistory(newImage);
 
-        await addDoc(collection(db, "images"), newImage);
+        await addDoc(collection(db,`projects/${walletId}/projectData/${selectedProjectId}/Content/Images/${file.name}`), newImage);
       } catch (error) {
         console.error("Error processing file:", error);
         alert(`Failed to process the file "${file.name}". Please try again.`);
