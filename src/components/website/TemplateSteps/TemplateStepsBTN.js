@@ -51,12 +51,12 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
   return (
     <div className="btn-box">
       {currentStep !== 3 && currentStep !== 4 && currentStep !== 5 && (
-        <button className="ignore-btn" onClick={onIgnore}>
+        <button className="grey-btn" onClick={onIgnore}>
           Skip
         </button>
       )}
 
-      <button className={`purple-light-btn ${!isNextEnabled ? 'disabled' : ''}`} onClick={handleNextClick} disabled={!isNextEnabled}>
+      <button className={`purple-btn ${!isNextEnabled ? 'disabled' : ''}`} onClick={handleNextClick} disabled={!isNextEnabled}>
         Next
       </button>
       {redirectToRoot && <Navigate to="/dashboard" replace />}

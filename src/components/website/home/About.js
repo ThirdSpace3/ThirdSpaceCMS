@@ -12,12 +12,12 @@ function About() {
           A passionate team revolutionizing Web 3 with no-code tools for all
           your projects
         </p>
-        <button className="purple-btn">See our values</button>
+        {/* <a href="/#/about" className="purple-btn">See our values</a> */}
       </div>
 
       <div className="about-content">
         <img className="about-content-img" src="./images/about-img.png"></img>
-        <a href="#/3s-agency" className="about-content-link-container">
+        <a href="/#/3s-agency" className="about-content-link-container">
           <div className="about-content-link-box">
             <div className="about-content-link-top">
               <p className="about-content-link-top-text">Need help on a project?</p>
