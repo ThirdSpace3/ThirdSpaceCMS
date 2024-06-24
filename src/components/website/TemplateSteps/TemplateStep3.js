@@ -3,42 +3,31 @@ import './TemplateSteps.css';
 import '../../Root.css';
 import NavbarSteps from './TemplateNavbar';
 
-const TemplateStep3 = ({ updateNextButtonState, currentStep, setSelectedButtons }) => {
+const TemplateStep3 = ({ updateNextButtonState, currentStep, setSelectedButtons, onNext }) => {
     const [selectedItem, setSelectedItem] = useState('');
 
-    const handleCardClick = (itemId) => {
-        if (itemId !== 'Templates') {
-            // Prevent selection and click actions on "Coming Soon" items
-            return;
-        }
+    const handleGetStartedClick = () => {
+        const itemId = 'Templates';
         setSelectedItem(itemId);
         setSelectedButtons(prevSelectedButtons => ({
             ...prevSelectedButtons,
             [currentStep]: [itemId]
         }));
+
+        // Perform actions equivalent to clicking the "Next" button
+        const currentStepData = JSON.parse(sessionStorage.getItem('stepData')) || {};
+        currentStepData[currentStep] = [itemId];
+        sessionStorage.setItem('stepData', JSON.stringify(currentStepData));
+        updateNextButtonState(true); // Assuming this triggers the next step in your flow
+
+        onNext(); // Move to the next step directly
     };
 
-    const handleGetStartedClick = () => {
+    useEffect(() => {
         if (selectedItem === 'Templates') {
-            // Perform actions equivalent to clicking the "Next" button
-            const currentStepData = JSON.parse(sessionStorage.getItem('stepData')) || {};
-            currentStepData[currentStep] = [selectedItem];
-            sessionStorage.setItem('stepData', JSON.stringify(currentStepData));
-            updateNextButtonState(true); // Assuming this triggers the next step in your flow
+            onNext();
         }
-    };
-
-    useEffect(() => {
-        updateNextButtonState(selectedItem !== '');
-    }, [selectedItem, updateNextButtonState]);
-
-    useEffect(() => {
-        if (selectedItem) {
-            const currentStepData = JSON.parse(sessionStorage.getItem('stepData')) || {};
-            currentStepData[currentStep] = [selectedItem];
-            sessionStorage.setItem('stepData', JSON.stringify(currentStepData));
-        }
-    }, [selectedItem, currentStep]);
+    }, [selectedItem, onNext]);
 
     return (
         <div id="etape3">
@@ -52,13 +41,13 @@ const TemplateStep3 = ({ updateNextButtonState, currentStep, setSelectedButtons 
                             key={index} 
                             className={`template-solutions-card ${selectedItem === item ? 'selected' : ''}`} 
                             id={item}
-                            onClick={() => handleCardClick(item)}
+                            onClick={item === 'Templates' ? handleGetStartedClick : null}
                         >
                             <h3 className="template-solutions-card-title">
                                 {item === 'Templates' ? 'Intuitive Templates' : item === 'Sections' ? 'Sections & Blocks' : 'Starts from Scratch'}
                             </h3>
                             {item === 'Templates' ? (
-                                <button className="template-purple-btn" onClick={handleGetStartedClick}>Get Started</button>
+                                <button className="template-purple-btn">Get Started</button>
                             ) : (
                                 <button className="template-grey-btn">
                                     <i className="bi bi-lock-fill"></i> Coming Soon

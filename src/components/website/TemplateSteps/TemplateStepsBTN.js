@@ -21,7 +21,6 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
             description: "",
             favicon: "",
           };
-
           const collectionPath = 'projects';
           const docPath = `${walletId}/projectData/${newProject.id}`;
 
@@ -39,6 +38,8 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
           setRedirectToRoot(true);
           sessionStorage.setItem('isLoggedIn', true);
           sessionStorage.setItem('isTemplateCompleted', 'true');
+          console.log(selectedButtons);
+
         } else {
           onNext();
         }
