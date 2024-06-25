@@ -12,11 +12,10 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
 
   const togglePopup = (e) => {
     e.preventDefault(); // Prevent default anchor behavior
-    ReactGA.event({
-      category: 'Button',
-      action: 'Click',
-      label: 'Get Started from Navbar',
-    });
+    window.gtag('event', 'click', {
+  'event_category': 'Bouton',
+  'event_label': 'Get_Started_Navbar'
+});
 
     if (accounts.length > 0 && !hasWalletData) {
       navigate("/templatestep");
