@@ -241,7 +241,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
         <h2>Connect to</h2>
 
           <img
-            src="./images/logo-typo-white.png"
+            src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904"
             className="popup-wallet-main-img"
           />
         </div>

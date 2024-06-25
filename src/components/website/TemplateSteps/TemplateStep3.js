@@ -57,10 +57,10 @@ const TemplateStep3 = ({ updateNextButtonState, currentStep, setSelectedButtons,
                                 <img 
                                     src={
                                         item === 'Templates' ? 
-                                        "./images/template-solution-card-img.png" : 
+                                        "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Ftemplate-solution-card-img.png?alt=media&token=dbbbf1e5-5105-42f5-b3ca-cdd357f65126" : 
                                         item === 'Sections' ? 
-                                      "./images/template-solution-card-img.png" : 
-                                       "./images/template-solution-card-img.png"
+                                      "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Ftemplate-solution-card-img.png?alt=media&token=dbbbf1e5-5105-42f5-b3ca-cdd357f65126" : 
+                                       "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Ftemplate-solution-card-img.png?alt=media&token=dbbbf1e5-5105-42f5-b3ca-cdd357f65126"
                                     } 
                                     alt="" 
                                     className="template-solutions-img"

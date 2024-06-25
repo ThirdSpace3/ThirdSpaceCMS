@@ -16,7 +16,7 @@ function About() {
       </div>
 
       <div className="about-content">
-        <img className="about-content-img" src="./images/about-img.png"></img>
+        <img className="about-content-img" src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fabout-img.png?alt=media&token=16000a0e-668f-4ef0-bb35-43334d74a827"></img>
         <a href="/#/3s-agency" className="about-content-link-container">
           <div className="about-content-link-box">
             <div className="about-content-link-top">
@@ -24,7 +24,7 @@ function About() {
               <div className="about-content-link-top-row">
                 <img
                   className="about-content-link-top-row-img"
-                  src="./images/section-label-sparkle.png"
+                  src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fsection-label-sparkle.png?alt=media&token=31fc9546-13f5-41a3-bc87-783242a39d4e"
                 ></img>
                 <p className="about-content-link-top-row-text">Go to 3S Agency</p>
               </div>

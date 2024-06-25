@@ -19,7 +19,7 @@ function Solutions() {
         <p className='solutions-row-card-subtitle'>Customize layouts with easy drag-and-drop tools, no coding required.</p>  
         </div>
         <img className='solutions-row-card-img'      
-        src='./images/solutions-row-card-1.png'></img>
+        src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fsolutions-row-card-1.png?alt=media&token=90c7be2f-3f67-42ea-9ebf-c92283200a72'></img>
             
             </div>
             <div class="solutions-row-card solutions-row-card-right">
@@ -28,7 +28,7 @@ function Solutions() {
         <p className='solutions-row-card-subtitle'>Choose from numerous professional templates for quick and easy customization.</p>  
         </div>
         <img className='solutions-row-card-img-2' 
-        src='./images/solutions-row-card-2.png'></img>
+        src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fsolutions-row-card-2.png?alt=media&token=46237433-7c49-4491-a164-b3fec30ace8c'></img>
             </div>
         </div>
         <div class="solutions-row">
@@ -38,7 +38,7 @@ function Solutions() {
         <p className='solutions-row-card-subtitle'>Integrate popular Web 3 wallets for secure and easy user transactions.</p>  
         </div>
         <img className='solutions-row-card-img' 
-        src='./images/solutions-row-card-3.png'></img>
+        src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fsolutions-row-card-3.png?alt=media&token=fb2d30e6-d6e4-455b-acee-e75fef30439b'></img>
             </div>
         <div class="solutions-row-card solutions-row-card-left">
         <div className='solutions-row-card-header'>
@@ -46,7 +46,7 @@ function Solutions() {
         <p className='solutions-row-card-subtitle'>Manage and customize your domains effortlessly from our platform.</p>  
         </div>
         <img className='solutions-row-card-img-4'      
-        src='./images/solutions-row-card-4.png'></img>
+        src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fsolutions-row-card-4.png?alt=media&token=3e39e9f7-bb63-4ace-a52d-60f46f40e2b6'></img>
             
             </div>
             
