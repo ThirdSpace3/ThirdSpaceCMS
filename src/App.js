@@ -24,8 +24,8 @@ import Academy from "./pages/Academy";
 import About from "./pages/About";
 
 export default function App() {
-  const TRACKING_ID = "G-83NKPT3B9E"; // Replace with your Google Analytics tracking ID
-  ReactGA.initialize(TRACKING_ID);
+  // const TRACKING_ID = "G-83NKPT3B9E"; 
+  // ReactGA.initialize(TRACKING_ID);
   
   return (
     <div>
