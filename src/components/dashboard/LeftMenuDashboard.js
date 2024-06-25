@@ -97,7 +97,6 @@ export default function LeftMenuDashboard({
 
           <div className="left-menu-links">
             <a
-              href=""
               className="left-menu-item"
               onClick={(event) => handleMenuItemClick("projects", event)}
             >
