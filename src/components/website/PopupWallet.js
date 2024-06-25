@@ -250,7 +250,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
             <p>
              {customErrorMessage}
             </p>
-            <a className="wallet-btn" href="https://phantom.app/" target="_blank">
+            <a className="wallet-btn" id="create-wallet-btn-phantom" href="https://phantom.app/" target="_blank">
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fphantom-logo.png?alt=media&token=5ffe611b-3ccd-4663-81e4-59feeb1dbba7" alt="" />
 
               Create a wallet with Phantom{" "}
@@ -262,7 +262,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
           {/* Phantom */}
           <button
             id="phantom"
-            className="wallet-btn"
+            className="wallet-btn ga-wallet-btn-phantom"
             onClick={handleLoginWithPhantom}
           >
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fphantom-logo.png?alt=media&token=5ffe611b-3ccd-4663-81e4-59feeb1dbba7" alt="" />
@@ -271,7 +271,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
           {/* Metamask */}
           <button
             id="metamask"
-            className="wallet-btn"
+            className="wallet-btn ga-wallet-btn-metamask"
             onClick={handleLoginWithMetamask}
           >
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmetamask-logo.png?alt=media&token=507097be-0cc4-4d93-a87b-99c67d82cfe5" alt="" />
@@ -280,7 +280,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
           {/* Unstoppable */}
           <button
             id="unstoppable"
-            className="wallet-btn"
+            className="wallet-btn ga-wallet-btn-ud"
             onClick={handleLoginWithUnstoppable}
           >
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Funstoppablelogo.png?alt=media&token=60b8c7c0-d644-4954-be2d-7afe3065b876" alt="" />

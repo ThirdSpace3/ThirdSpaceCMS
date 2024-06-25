@@ -16,13 +16,6 @@ function Header({ checkWalletData }) {
   };
 
   const toggleWalletPopup = () => {
-    // Log the "Get Started" button click event to Google Analytics
-    ReactGA.event({
-      category: 'Button',
-      action: 'Click',
-      label: 'Get Started',
-    });
-
     console.log(userIsLoggedIn);
     if (!userIsLoggedIn()) { // If user is not logged in
       setShowWalletPopup(!showWalletPopup); // Toggle wallet popup
@@ -43,7 +36,7 @@ function Header({ checkWalletData }) {
         <p className='section-label'><img src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fsection-label-sparkle.png?alt=media&token=31fc9546-13f5-41a3-bc87-783242a39d4e'></img>BETA Version</p>
           <h1 className="header__title">Build Web 3 Projects Effortlessly with No-Code Tools</h1>
           <div className="">
-            <a className="purple-btn" id="getstarted-btn" onClick={toggleWalletPopup}>Get Started</a>
+            <a className="purple-btn ga-getstarted-btn-hero-hp" id='getstarted-btn' onClick={toggleWalletPopup}>Get Started</a>
           </div>
         </div>
         <div className="header__right">

@@ -25,13 +25,6 @@ function Pricing({ checkWalletData }) {
   };
 
   const toggleWalletPopup = () => {
-    // Log the "Get Started" button click event to Google Analytics
-    ReactGA.event({
-      category: "Button",
-      action: "Click",
-      label: "Get Started from How It Work",
-    });
-
     console.log(userIsLoggedIn);
     if (!userIsLoggedIn()) {
       // If user is not logged in
@@ -70,12 +63,13 @@ function Pricing({ checkWalletData }) {
             <p className="pricing-card-price-number">0</p>
             <p className="pricing-card-price-text">/month</p>
           </div>
-          <button
-            className="purple-btn plan-getstarted"
+          <a
+            className="purple-btn plan-getstarted ga-getstarted-btn-pricing-hp"
+            id="getstarted-btn"
             onClick={toggleWalletPopup}
           >
             Get Started
-          </button>
+          </a>
           <div className="pricing-card-content">
             <div className="pricing-card-row">
               <img
@@ -120,12 +114,13 @@ function Pricing({ checkWalletData }) {
             <p className="pricing-card-price-number">12.49</p>
             <p className="pricing-card-price-text">/month</p>
           </div>
-          <button
-            className="purple-btn plan-getstarted"
+          <a
+            className="purple-btn plan-getstarted ga-getstarted-btn-pricing-hp"
+            id="getstarted-btn"
             onClick={toggleWalletPopup}
           >
             Get Started
-          </button>
+          </a>
           <div className="pricing-card-content">
           <p className="pricing-card-text">Everything in freemium + </p>
             <div className="pricing-card-row">
@@ -175,12 +170,13 @@ function Pricing({ checkWalletData }) {
             <p className="pricing-card-price-number">29.99</p>
             <p className="pricing-card-price-text">/month</p>
           </div>
-          <button
-            className="purple-btn plan-getstarted"
+          <a
+            className="purple-btn plan-getstarted ga-getstarted-btn-pricing-hp"
+            id="getstarted-btn"
             onClick={toggleWalletPopup}
           >
             Get Started
-          </button>
+          </a>
           <div className="pricing-card-content">
           <p className="pricing-card-text">Everything in basic + </p>
 

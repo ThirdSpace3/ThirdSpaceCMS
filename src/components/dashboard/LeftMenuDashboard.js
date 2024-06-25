@@ -105,17 +105,17 @@ export default function LeftMenuDashboard({
               <p>Projects</p>
             </a>
             <a
-              href=""
               className="left-menu-item"
               onClick={(event) => handleMenuItemClick("billing", event)}
+              id="billing-page"
             >
               <i className="bi bi-wallet2"></i>
               <p>Billing</p>
             </a>
             <a
-              href=""
               className="left-menu-item"
               onClick={(event) => handleMenuItemClick("profile", event)}
+              id="profile-page"
             >
               <i className="bi bi-person"></i>
               <p>Profile</p>

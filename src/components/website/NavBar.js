@@ -84,7 +84,7 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
           </ul>
 
           {accounts.length === 0 ? (
-            <a href="#" className="purple-btn" onClick={togglePopup}>
+            <a className="purple-btn ga-getstarted-btn-navbar" id='getstarted-btn' onClick={togglePopup}>
               Get Started
             </a>
           ) : (
