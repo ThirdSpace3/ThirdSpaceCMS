@@ -7,6 +7,7 @@ import { wait } from "@testing-library/user-event/dist/utils";
 import ReactGA from 'react-ga';
 import UAuth from '@uauth/js';
 import { useNavigate } from 'react-router-dom';
+import Newsletter from "./Newsletter";
 
 // Initialize Google Analytics
 ReactGA.initialize('G-83NKPT3B9E');
@@ -287,6 +288,13 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
             Continue with Unstoppable
           </button>
           
+        </div>
+        <hr className="newsletter-top-separator"></hr>
+        <div className="newsletter-section">
+        <h3 className="newsletter-section-title">Stay Updated with Third Space, Join our Newsletter</h3>
+        <Newsletter />
+        <p className="newsletter-section-text">You can unsuscribe at any time. <span><a href="/#/privacy-policy">Privacy Policy</a></span></p>
+
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ function Solutions() {
         <div class="solutions-header">
             <p className="section-label">Features</p>
             <h2 class="section-title">What can you do with Third Space?</h2>
-            <p class="section-text">Build landing pages, marketplaces, and dApps effortlessly with our no-code Web 3 platform.</p>
+            <p class="section-text">Build landing pages, marketplaces, and dApps effortlessly with our no-code Web 3 tool.</p>
         </div>
                     
         <div class="solutions-content">

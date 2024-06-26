@@ -91,20 +91,24 @@ footer {
     }
   }
   @media screen and (max-width: 450px) {
-    .footer-column,
-    .footer-column-content {
-      align-items: center;
-    }
-    .footer-top {
-      flex-direction: column;
-      align-items: center;
-      gap: 25px;
-    }
+
+
     .footer-credits {
       flex-direction: column;
       align-items: center;
     }
     .footer-credits img {
       width: 60%;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .footer-top {
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+    .footer-column,
+    .footer-column-content {
+      align-items: center;
     }
   }
