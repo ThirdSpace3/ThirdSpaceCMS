@@ -186,19 +186,7 @@ export default function Agency() {
             <img className="agency-expert-item-img" src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FAgencyPage%2Fgroup330.png?alt=media&token=bade74b5-02c3-4c02-96c1-32601080babd' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
           </div>
         </div>
-        <div className="agency-contact" ref={ctaRef}>
-          <div className='agency-contact-content'>
-            <h2 className="agency-contact-title">Join Our Newsletter</h2>
-
-            <p className="agency-contact-text">
-              Join our newsletter for exclusive updates and insights! Rest assured, you can unsubscribe at any time, and we will never sell or share your email with third parties. Read our <span><a className='agency-contact-text-link' href='/privacy'>Privacy Policy</a></span> for more information.
-            </p>
-            <NewsletterForm />            
-          </div>
-          <img className="agency-contact-img" src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FAgencyPage%2Fgroupe44.png?alt=media&token=5e5cc6f3-9bcc-44d1-8506-58971e13cd8d' alt='Third Space 3S Agency Web Agency Affordable Latest Trends'></img>
-
-
-        </div>
+       
       </div>
       <Footer />
     </>

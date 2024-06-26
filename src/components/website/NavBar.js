@@ -67,8 +67,8 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/products" className="nav__links-btn">
-                Products
+              <a href="/#/3s-agency" className="nav__links-btn">
+                Agency
               </a>
             </li>
             <li className="coming-soon">
@@ -126,8 +126,8 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/products" className="nav__links-btn">
-                Products
+              <a href="/#/3s-agency" className="nav__links-btn">
+              Agency
               </a>
             </li>
             <li className="coming-soon">
