@@ -57,8 +57,13 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
         </button>
       )}
 
-      <button className={`purple-btn ${!isNextEnabled ? 'disabled' : ''}`} id='next-btn-templatestep' onClick={handleNextClick} disabled={!isNextEnabled}>
-        Next
+      <button 
+        className={`purple-btn ${!isNextEnabled ? 'disabled' : ''}`} 
+        id={currentStep === 5 ? "next-btn-last-templatestep" : "next-btn-templatestep"} 
+        onClick={handleNextClick} 
+        disabled={!isNextEnabled}
+      >
+        {currentStep === 5 ? 'Done' : 'Next'}
       </button>
       {redirectToRoot && <Navigate to="/dashboard" replace />}
     </div>
