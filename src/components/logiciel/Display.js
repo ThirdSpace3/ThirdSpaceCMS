@@ -22,7 +22,7 @@ export default function Display() {
   const [imageHistory, setImageHistory] = useState([]);
   const [projects, setProjects] = useState([]);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-  const { templateName } = useParams();
+  const { projectName, templateName } = useParams(); // Changed from `templateName` to `projectName`
   const [activePanel, setActivePanel] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const { clearFocus, addImageToHistory } = useImageHistory();
@@ -68,7 +68,7 @@ export default function Display() {
     }
   };
 
-  const saveSettings = async (content) => {
+  const saveSettings = async () => {
     const walletId = sessionStorage.getItem("userAccount") || localStorage.getItem("userAccount");
     if (!walletId) {
       alert("No wallet ID found. Please log in.");
@@ -80,9 +80,9 @@ export default function Display() {
     }
   
     try {
-      const sections = Object.keys(content);
+      const sections = Object.keys(TemplateContent);
       for (const section of sections) {
-        const sectionContent = content[section];
+        const sectionContent = TemplateContent[section];
         if (Object.keys(sectionContent).length === 0) continue; // Skip empty content
   
         const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/Text/content/${section}`;
@@ -149,8 +149,8 @@ export default function Display() {
 
   useEffect(() => {
     checkAndSetLogin();
-    setActiveEditor(templateName);
-  }, [templateName]);
+    setActiveEditor(projectName);
+  }, [projectName]);
 
   useEffect(() => {
     const handleGlobalClick = (event) => {
@@ -244,7 +244,7 @@ export default function Display() {
     return () => {
       displayWrapper.removeEventListener('dragenter', handleDragEnter);
       displayWrapper.removeEventListener('dragover', handleDragOver);
-      displayWrapper.removeEventListener('dragleave', handleDragLeave);
+      displayWrapper.removeEventListener('dragleave');
       displayWrapper.removeEventListener('drop', handleDrop);
     };
   }, []);
@@ -262,13 +262,14 @@ export default function Display() {
       )}
       <div className="displayColumnWrapper">
         <TopBar
-          onSaveClick={() => saveSettings(TemplateContent)} 
+          onSaveClick={saveSettings} 
           onUndoClick={undo}
           onRedoClick={redo}
           onDeviceChange={(size) => setSelectedDeviceSize(size)}
           onPreview={handlePreview}
           showPopup={showPopup}
           setShowPopup={setShowPopup}
+          projectName={selectedProjectId}
         />
         <Canva
           TemplateContent={TemplateContent}

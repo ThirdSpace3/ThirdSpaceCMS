@@ -2,7 +2,7 @@ import "../Root.css";
 import "./PropulsePopup.css";
 import React, { useEffect, useState } from 'react';
 
-export default function PropulsePopup({ setShowPopup, onSaveClick }) {
+export default function PropulsePopup({ generateShareableURL, projectName, setShowPopup, onSaveClick }) {
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState(null);
 
@@ -26,6 +26,7 @@ export default function PropulsePopup({ setShowPopup, onSaveClick }) {
     try {
       await onSaveClick();
       setSaveStatus('success');
+      generateShareableURL();
     } catch (error) {
       setSaveStatus('failure');
     } finally {
@@ -39,7 +40,7 @@ export default function PropulsePopup({ setShowPopup, onSaveClick }) {
         <h2 className="propulse-popup-title">
           Where will you propulse your project?
         </h2>
-        <hr className="propulse-popup-hr" /> 
+        <hr className="propulse-popup-hr" />
         {/*===Test deploy===*/}
         <div className="propulse-popup-container-box">
           <div className="propulse-popup-container-box-top">
@@ -78,7 +79,7 @@ export default function PropulsePopup({ setShowPopup, onSaveClick }) {
         <hr className="propulse-popup-hr" />
         <button className="propule-popup-btn" onClick={handleSaveClick} disabled={isSaving}>
           Propulse to selected domains
-        </button> 
+        </button>
         {isSaving && (
           <div className="propulse-popup-ongoing">
             <i className="bi bi-rocket-takeoff"></i>

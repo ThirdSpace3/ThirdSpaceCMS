@@ -39,5 +39,26 @@ const saveComponentData = async (walletId, projectId, componentName, data) => {
   }
 };
 
+const fetchAllTemplateData = async (walletId, projectId) => {
+  try {
+    const contentCollectionRef = collection(db, `projects/${walletId}/projectData/${projectId}/Content/Text/content`);
+    const querySnapshot = await getDocs(contentCollectionRef);
+    
+    const data = {};
+    querySnapshot.forEach(doc => {
+      data[doc.id] = doc.data();
+    });
 
-export { fetchComponentData, fetchProjects, saveComponentData };
+    if (Object.keys(data).length) {
+      return data;
+    } else {
+      console.log("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching all template data:", error);
+    throw error;
+  }
+};
+
+export { fetchComponentData, fetchProjects, saveComponentData, fetchAllTemplateData };

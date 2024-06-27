@@ -87,7 +87,6 @@ const HeaderSection = ({
   
       const walletId = sessionStorage.getItem("userAccount");
       if (walletId && selectedProjectId) {
-        await saveComponentData(walletId, selectedProjectId, 'header', updatedContent);
         console.log(`Saved new text for ${textType}:`, newText);
       }
     };
@@ -102,7 +101,6 @@ const HeaderSection = ({
   
       const walletId = sessionStorage.getItem("userAccount");
       if (walletId && selectedProjectId) {
-        await saveComponentData(walletId, selectedProjectId, 'header', updatedContent);
         console.log('Saved new join us link:', newLink);
       }
     };
@@ -118,7 +116,6 @@ const HeaderSection = ({
   
         const walletId = sessionStorage.getItem("userAccount");
         if (walletId && selectedProjectId) {
-          await saveComponentData(walletId, selectedProjectId, 'header', updatedContent);
           console.log('Saved new image URL:', downloadURL);
         }
       }
