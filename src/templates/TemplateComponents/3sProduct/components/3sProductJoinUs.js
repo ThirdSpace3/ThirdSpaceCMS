@@ -7,7 +7,7 @@ import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import { Link } from 'react-router-dom';
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
 
-const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setSelectedColor, onContentChange }) => {
+const JoinUsSection = ({ setSelectedElement, openImagePanel, setSelectedColor, onContentChange, handleImageUpload }) => {
   const { getComponentStyle, updateStyle } = useStyle();
   const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
 
@@ -28,9 +28,9 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
 
   const [joinUsImageUrl, setJoinUsImageUrl] = useState("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-joinus-1.png?alt=media&token=ab70cb1a-9791-4402-b8db-76c1c790ec91");
 
-  const JoinUsStyles = getComponentStyle('joinUs');
+  const joinUsStyles = getComponentStyle('joinUs');
   const joinUsTitleStyles = getComponentStyle('joinUsTitle');
-  const joinUsescriptionStyles = getComponentStyle('joinUsDescription');
+  const joinUsDescriptionStyles = getComponentStyle('joinUsDescription');
   const joinUsCtaStyles = getComponentStyle('joinUs-cta');
   const [joinUsCtaLink, setJoinUsCtaLink] = useState({
     url: '#',
@@ -38,13 +38,6 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
   });
 
   const [imageHeight, setImageHeight] = useState(null);
-  const getImageHeight = (src) => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => resolve(img.height);
-    });
-  };
 
   const handleCtaTextChange = (newText) => {
     setJoinUsCta(newText);
@@ -87,13 +80,26 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
     setSelectedElement(identifier);
   };
 
-  // Update image interaction to better manage clicks and mode switching
   const handleImageClick = () => {
     console.log("Join Us image clicked, opening replacement mode.");
-    enterReplacementMode('JoinUsSection');
+    enterReplacementMode('JoinUsImage');
     setSelectedElement('JoinUsImage');
   };
 
+  const handleImageChange = async (newSrc) => {
+    const updatedContent = {
+      ...joinUsImageUrl,
+      imageUrl: newSrc
+    };
+    setJoinUsImageUrl(newSrc);
+    onContentChange(updatedContent);
+
+    const downloadURL = await handleImageUpload(newSrc, 'joinUsImageUrl');
+    if (downloadURL) {
+      setJoinUsImageUrl(downloadURL);
+      console.log('Saved new image URL:', downloadURL);
+    }
+  };
 
   useEffect(() => {
     const cssVarName = `--joinUs-background-color`;
@@ -105,7 +111,6 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
     }
   }, [setSelectedColor]);
 
-  // Storing text changes in localStorage and updating state
   useEffect(() => {
     localStorage.setItem('joinUsTitleText', joinUsTitleText);
     localStorage.setItem('joinUsDescriptionText', joinUsDescriptionText);
@@ -120,19 +125,20 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
 
   }, [joinUsTitleText, joinUsDescriptionText, joinUsCta]);
 
-  // Update image URL in state and possibly local storage if necessary
   useEffect(() => {
     if (activeComponent === 'JoinUsImage' && selectedImage !== joinUsImageUrl) {
-      setJoinUsImageUrl(selectedImage);
-      // Optionally, save to localStorage if you plan to persist images changes
-      // localStorage.setItem('joinUsImageUrl', selectedImage);
+      handleImageChange(selectedImage);
     }
   }, [selectedImage, activeComponent]);
+
   useEffect(() => {
-    getImageHeight(joinUsImageUrl).then((height) => setImageHeight(height));
-  }, []);
+    const img = new Image();
+    img.src = joinUsImageUrl;
+    img.onload = () => setImageHeight(img.height);
+  }, [joinUsImageUrl]);
+
   return (
-    <div className='sss-product-joinus-main' style={JoinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
+    <div className='sss-product-joinus-main' style={joinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
       <div className="sss-product-joinus">
         <ReusableImage
           src={joinUsImageUrl}
@@ -140,8 +146,10 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
           onClick={handleImageClick}
           openImagePanel={openImagePanel}
           selectedImage={activeComponent === 'JoinUsImage' ? selectedImage : null}
-          identifier="JoinUs"
+          identifier="JoinUsImage"
           imageHeight={imageHeight}
+          handleImageUpload={handleImageUpload}
+          onImageChange={handleImageChange} // Added this line
         />
         <h2 className="sss-product-joinus-title" id='joinUsTitle' onClick={(event) => handleComponentClick(event, 'joinUsTitle')}>
           <EditableText
@@ -154,7 +162,7 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
           <EditableText
             text={joinUsDescriptionText}
             onChange={(newText) => handleTextChange(newText, 'joinUsDescription')}
-            style={joinUsescriptionStyles}
+            style={joinUsDescriptionStyles}
           />
         </p>
         <Link onClick={(event) => handleComponentClick(event, 'joinUs-cta')} className='position-relative'>
@@ -167,7 +175,6 @@ const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setS
             onLinkChange={handleCtaLinkChange}
             style={joinUsCtaStyles}
           />
-
         </Link>
       </div>
     </div>
