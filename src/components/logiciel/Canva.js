@@ -6,7 +6,6 @@ import SSSPortfolio from '../../templates/3s-Portfolio';
 
 export default function Canva({ handleImageUpload, selectedProjectId, saveSettings, TemplateContent, setTemplateContent, selectedColor, setSelectedColor, logChange, templateName, deviceSize, settings, handleSettingsChange, selectedElement, setSelectedElement, selectElement, isPreviewMode, openImagePanel, imageHistory, selectedImage, setSelectedImage }) {
 
-
   const templateComponents = {
     SSSProduct,
     SSSPortfolio
@@ -44,7 +43,6 @@ export default function Canva({ handleImageUpload, selectedProjectId, saveSettin
         setTemplateContent={setTemplateContent}
         selectedProjectId={selectedProjectId}
         handleImageUpload={handleImageUpload}  // Pass the image upload handler
-
       />
     </div>
   );

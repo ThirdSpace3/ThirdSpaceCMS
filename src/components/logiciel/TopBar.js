@@ -116,7 +116,7 @@ const TopBar = ({
       </div>
       {showPopup && (
         <PropulsePopup
-        generateShareableURL={generateShareableURL}
+          generateShareableURL={generateShareableURL}
           projectName={projectName}
           setShowPopup={setShowPopup}
           onSaveClick={onSaveClick}

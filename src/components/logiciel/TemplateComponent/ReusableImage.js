@@ -8,7 +8,8 @@ const ReusableImage = ({
   identifier,
   openImagePanel,
   imageHeight,
-  handleImageUpload
+  handleImageUpload,
+  onImageChange // New prop for notifying parent component of image change
 }) => {
   const [showReplaceButton, setShowReplaceButton] = useState(false);
   const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
@@ -31,8 +32,9 @@ const ReusableImage = ({
     if (activeComponent === identifier && selectedImage && currentSrc !== selectedImage) {
       setCurrentSrc(selectedImage);
       setShowReplaceButton(false);
+      onImageChange(selectedImage, identifier); // Notify parent of image change
     }
-  }, [selectedImage, activeComponent, identifier, currentSrc]);
+  }, [selectedImage, activeComponent, identifier, currentSrc, onImageChange]);
 
   const handleImageClick = () => {
     enterReplacementMode(identifier);
@@ -49,6 +51,7 @@ const ReusableImage = ({
     const file = e.target.files[0];
     const newSrc = await handleImageUpload(file, identifier);
     setCurrentSrc(newSrc);
+    onImageChange(newSrc, identifier); // Notify parent of image change
   };
 
   useEffect(() => {

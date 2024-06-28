@@ -22,7 +22,7 @@ export default function Display() {
   const [imageHistory, setImageHistory] = useState([]);
   const [projects, setProjects] = useState([]);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-  const { projectName, templateName } = useParams(); // Changed from `templateName` to `projectName`
+  const { projectName, templateName } = useParams();
   const [activePanel, setActivePanel] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const { clearFocus, addImageToHistory } = useImageHistory();
@@ -85,7 +85,7 @@ export default function Display() {
         const sectionContent = TemplateContent[section];
         if (Object.keys(sectionContent).length === 0) continue; // Skip empty content
   
-        const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/Text/content/${section}`;
+        const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/${section}`;
         const settingsDoc = doc(db, settingsDocPath);
         console.log(sectionContent);
 
@@ -244,11 +244,10 @@ export default function Display() {
     return () => {
       displayWrapper.removeEventListener('dragenter', handleDragEnter);
       displayWrapper.removeEventListener('dragover', handleDragOver);
-      displayWrapper.removeEventListener('dragleave');
-      displayWrapper.removeEventListener('drop', handleDrop);
+      displayWrapper.addEventListener('dragleave', handleDragLeave);
+      displayWrapper.addEventListener('drop', handleDrop);
     };
   }, []);
-  console.log("display:"+selectedProjectId);
 
   return (
     <div className="displayWrapper">

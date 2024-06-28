@@ -14,7 +14,7 @@ const fetchProjects = async (walletId) => {
 
 const fetchComponentData = async (walletId, projectId, component) => {
   try {
-    const docRef = doc(db, `projects/${walletId}/projectData/${projectId}/Content/Text/content/${component}`);
+    const docRef = doc(db, `projects/${walletId}/projectData/${projectId}/Content/${component}`);
     const docSnap = await getDoc(docRef);
     console.log('Fetched data:', docSnap.data());
     if (docSnap.exists()) {
@@ -41,7 +41,7 @@ const saveComponentData = async (walletId, projectId, componentName, data) => {
 
 const fetchAllTemplateData = async (walletId, projectId) => {
   try {
-    const contentCollectionRef = collection(db, `projects/${walletId}/projectData/${projectId}/Content/Text/content`);
+    const contentCollectionRef = collection(db, `projects/${walletId}/projectData/${projectId}/Content/`);
     const querySnapshot = await getDocs(contentCollectionRef);
     
     const data = {};

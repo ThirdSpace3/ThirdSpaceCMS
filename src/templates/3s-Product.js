@@ -28,13 +28,6 @@ const SSSProduct = ({
 }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [menuToggleImg, setMenuToggleImg] = useState("./images/templates-img/3sproduct/3sproduct-menu-open.png");
-  const [navbarContent, setNavbarContent] = useState({});
-  const [headerContent, setHeaderContent] = useState({});
-  const [partnersContent, setPartnersContent] = useState({});
-  const [aboutSection, setAboutSection] = useState({});
-  const [featureSection, setFeatureSection] = useState({});
-  const [joinUsSection, setJoinUsSection] = useState({});
-  const [footerSection, setFooterSection] = useState({});
 
   const headerRef = useRef(null);
   const partnersRef = useRef(null);
@@ -70,41 +63,33 @@ const SSSProduct = ({
           try {
             console.log('Fetching component data for project:', selectedProjectId);
 
-            setNavbarContent(navbarData || {});
-            setHeaderContent(headerData || {});
-            setPartnersContent(partnersData || {});
-            setAboutSection(aboutData || {});
-            setFeatureSection(featuresData || {});
-            setJoinUsSection(joinUsData || {});
-            setFooterSection(footerData || {});
+            setTemplateContent({
+              navbar: navbarData || {},
+              header: headerData || {},
+              partners: partnersData || {},
+              aboutSection: aboutData || {},
+              featureSection: featuresData || {},
+              joinUsSection: joinUsData || {},
+              footerSection: footerData || {},
+            });
           } catch (error) {
             console.error('Error fetching component data:', error);
-            setNavbarContent(navbarData || {});
-            setHeaderContent(headerData || {});
-            setPartnersContent(partnersData || {});
-            setAboutSection(aboutData || {});
-            setFeatureSection(featuresData || {});
-            setJoinUsSection(joinUsData || {});
-            setFooterSection(footerData || {});
+            setTemplateContent({
+              navbar: navbarData || {},
+              header: headerData || {},
+              partners: partnersData || {},
+              aboutSection: aboutData || {},
+              featureSection: featuresData || {},
+              joinUsSection: joinUsData || {},
+              footerSection: footerData || {},
+            });
           }
         }
       };
 
       fetchData();
     }
-  }, [selectedProjectId]);
-
-  useEffect(() => {
-    setTemplateContent({
-      navbar: navbarContent,
-      header: headerContent,
-      partners: partnersContent,
-      aboutSection: aboutSection,
-      featureSection: featureSection,
-      joinUsSection: joinUsSection,
-      footerSection: footerSection,
-    });
-  }, [navbarContent, headerContent, partnersContent, aboutSection, featureSection, joinUsSection, footerSection, setTemplateContent]);
+  }, [selectedProjectId, setTemplateContent]);
 
   const handleComponentClick = (event, identifier) => {
     if (!isPreviewMode) {
@@ -112,6 +97,13 @@ const SSSProduct = ({
       event.stopPropagation();
       setSelectedElement(identifier);
     }
+  };
+
+  const handleContentChange = (section, content) => {
+    setTemplateContent((prevContent) => ({
+      ...prevContent,
+      [section]: content,
+    }));
   };
 
   console.log("product:" + selectedProjectId);
@@ -133,7 +125,7 @@ const SSSProduct = ({
         logChange={logChange}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        onContentChange={setNavbarContent}
+        onContentChange={(content) => handleContentChange('navbar', content)}
         handleImageUpload={handleImageUpload}
         sections={{
           header: headerRef,
@@ -157,7 +149,7 @@ const SSSProduct = ({
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        onContentChange={setHeaderContent}
+        onContentChange={(content) => handleContentChange('header', content)}
         isPreviewMode={isPreviewMode}
         selectedProjectId={selectedProjectId}
         handleImageUpload={handleImageUpload}
@@ -176,7 +168,7 @@ const SSSProduct = ({
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        onContentChange={setPartnersContent}
+        onContentChange={(content) => handleContentChange('partners', content)}
         isPreviewMode={isPreviewMode}
       />
 
@@ -193,7 +185,7 @@ const SSSProduct = ({
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        onContentChange={setAboutSection}
+        onContentChange={(content) => handleContentChange('aboutSection', content)}
         isPreviewMode={isPreviewMode}
       />
 
@@ -210,7 +202,7 @@ const SSSProduct = ({
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        onContentChange={setFeatureSection}
+        onContentChange={(content) => handleContentChange('featureSection', content)}
         isPreviewMode={isPreviewMode}
       />
 
@@ -227,7 +219,7 @@ const SSSProduct = ({
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        onContentChange={setJoinUsSection}
+        onContentChange={(content) => handleContentChange('joinUsSection', content)}
         isPreviewMode={isPreviewMode}
       />
 
@@ -244,8 +236,9 @@ const SSSProduct = ({
         setSelectedElement={setSelectedElement}
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        onContentChange={setFooterSection}
+        onContentChange={(content) => handleContentChange('footerSection', content)}
         isPreviewMode={isPreviewMode}
+        handleImageUpload={handleImageUpload}
       />
     </div>
   );

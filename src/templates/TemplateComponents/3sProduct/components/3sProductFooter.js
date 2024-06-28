@@ -10,7 +10,8 @@ const Footer = ({
   setSelectedElement,
   openImagePanel,
   setSelectedColor,
-  onContentChange  // This prop will be used to update the parent component
+  onContentChange,  // This prop will be used to update the parent component
+  handleImageUpload
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
@@ -72,6 +73,15 @@ const Footer = ({
       default:
         break;
     }
+    onContentChange({ // Ensure the new source is updated in parent component
+      text: footerText,
+      home: homeText,
+      about: aboutText,
+      features: featuresText,
+      logoSrc: footerLogoSrc,
+      twitterSrc: footerTwitterSrc,
+      linkedInSrc: footerLinkedInSrc
+    });
     selectImage(newSrc);
   };
 
@@ -106,6 +116,8 @@ const Footer = ({
           openImagePanel={openImagePanel}
           identifier="FooterLogo"
           imageHeight="50px"
+          handleImageUpload={handleImageUpload}
+          onImageChange={handleImageChange} // Pass onImageChange
         />
         <ul className="sss-product-footer-top-links-box">
           <li className='sss-product-footer-top-links' id='homeText' onClick={(event) => handleComponentClick(event, 'homeText')}>
@@ -137,6 +149,8 @@ const Footer = ({
             onClick={() => enterReplacementMode('FooterTwitter')}
             identifier="FooterTwitter"
             imageHeight="30px"
+            handleImageUpload={handleImageUpload}
+            onImageChange={handleImageChange} // Pass onImageChange
           />
           <ReusableImage
             src={footerLinkedInSrc}
@@ -144,6 +158,8 @@ const Footer = ({
             onClick={() => enterReplacementMode('FooterLinkedIn')}
             identifier="FooterLinkedIn"
             imageHeight="30px"
+            handleImageUpload={handleImageUpload}
+            onImageChange={handleImageChange} // Pass onImageChange
           />
         </div>
       </div>
