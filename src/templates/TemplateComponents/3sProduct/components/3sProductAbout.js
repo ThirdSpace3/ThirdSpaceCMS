@@ -6,8 +6,7 @@ import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 
 const AboutSection = ({
-  handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor, onContentChange, handleImageUpload
-}) => {
+  handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor, onContentChange }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
@@ -151,7 +150,6 @@ const AboutSection = ({
               style={{ height: '150px', width: 'auto' }}
               identifier={`aboutImage-${index}`}
               imageHeight={imageHeight}
-              handleImageUpload={handleImageUpload}
             />
             <h3 className="sss-product-about-item-title" id={`featureTitle-${index}`} onClick={(event) => handleComponentClick(event, 'featureTitle', index)}>
               <EditableText
@@ -175,4 +173,3 @@ const AboutSection = ({
 };
 
 export default AboutSection;
-  

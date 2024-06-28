@@ -170,8 +170,6 @@ const SSSProduct = ({
         setSelectedColor={setSelectedColor}
         onContentChange={(content) => handleContentChange('partners', content)}
         isPreviewMode={isPreviewMode}
-        handleImageUpload={handleImageUpload}
-
       />
 
       <AboutSection
@@ -189,8 +187,6 @@ const SSSProduct = ({
         setSelectedColor={setSelectedColor}
         onContentChange={(content) => handleContentChange('aboutSection', content)}
         isPreviewMode={isPreviewMode}
-        handleImageUpload={handleImageUpload}
-
       />
 
       <FeaturesSection
@@ -208,8 +204,6 @@ const SSSProduct = ({
         setSelectedColor={setSelectedColor}
         onContentChange={(content) => handleContentChange('featureSection', content)}
         isPreviewMode={isPreviewMode}
-        handleImageUpload={handleImageUpload}
-
       />
 
       <JoinUsSection
@@ -227,8 +221,6 @@ const SSSProduct = ({
         setSelectedColor={setSelectedColor}
         onContentChange={(content) => handleContentChange('joinUsSection', content)}
         isPreviewMode={isPreviewMode}
-        handleImageUpload={handleImageUpload}
-
       />
 
       <Footer
