@@ -10,7 +10,8 @@ const PartnersSection = ({
   handleSettingsChange,
   openImagePanel,
   setSelectedElement,
-  onContentChange
+  onContentChange,
+  handleImageUpload
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { style, updateStyle, getComponentStyle } = useStyle();
@@ -29,7 +30,6 @@ const PartnersSection = ({
     ]
   });
 
-
   const partnerStyle = getComponentStyle('partners');
   const partnersTitleStyle = getComponentStyle('partnersTitle');
 
@@ -42,7 +42,7 @@ const PartnersSection = ({
     updateStyle('partnersTitle', { text: newText });
     onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase
+    // Save the specific changes to Firebase if needed
   };
 
   const handleComponentClick = (event, identifier) => {
@@ -62,7 +62,7 @@ const PartnersSection = ({
     setPartnersContent(updatedContent);
     onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase
+    // Save the specific changes to Firebase if needed
   };
 
   return (
@@ -80,12 +80,13 @@ const PartnersSection = ({
             key={image.id}
             src={image.src}
             alt={`Partner ${index + 1}`}
-            onClick={() => enterReplacementMode()}
-            openImagePanel={() => openImagePanel(image.id)}
+            onClick={() => enterReplacementMode(image.id)}
+            openImagePanel={openImagePanel}
             onImageChange={(newSrc) => handleImageChange(index, newSrc)}
             selectedImage={activeComponent === image.id ? selectedImage : null}
             style={{ height: '150px', width: 'auto' }} // Adjust as needed
             identifier={image.id}
+            handleImageUpload={handleImageUpload}
           />
         ))}
       </div>

@@ -110,7 +110,7 @@ console.log(selectedProjectId);
         await addDoc(collection(db,`projects/${walletId}/projectData/${selectedProjectId}/Content/Images/${file.name}`), newImage);
       } catch (error) {
         console.error("Error processing file:", error);
-        alert(`Failed to process the file "${file.name}". Please try again.`);
+        console.log(`Failed to process the file "${file.name}". Please try again.`);
       }
     }
 
