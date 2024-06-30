@@ -1,7 +1,6 @@
 import "./ComingSoon.css";
 import "../Root.css";
 import React from "react";
-import Footer from "../components/website/Footer";
 
 
 export default function ComingSoon() {
@@ -16,7 +15,6 @@ export default function ComingSoon() {
         <a href="/home" className="purple-btn">
           Go Back Home
         </a>
-        <Footer />
         </div>
     </>
   );
