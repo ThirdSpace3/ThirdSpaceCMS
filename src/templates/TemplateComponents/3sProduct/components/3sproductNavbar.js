@@ -5,6 +5,7 @@ import ReusableImage from '../../../../components/logiciel/TemplateComponent/Reu
 import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
+import { fetchComponentData } from '../../../../hooks/Fetchprojects';
 import '../css/navbar.css';
 
 const Navbar = ({
@@ -12,42 +13,71 @@ const Navbar = ({
     setSelectedElement,
     setSelectedColor,
     onContentChange,
-    sections // New prop for section refs
+    sections,
+    selectedProjectId,
+    handleImageUpload
 }) => {
-    const { selectedImage, isReplacementMode, enterReplacementMode, selectImage, activeComponent } = useImageHistory();
+    const { selectedImage, enterReplacementMode } = useImageHistory();
     const [navbarContent, setNavbarContent] = useState({
-        home: localStorage.getItem('navbar-home-text') || 'Home',
-        navabout: localStorage.getItem('navbar-about-text') || 'About',
-        navfeatures: localStorage.getItem('navbar-navfeatures-text') || 'Features',
-        joinUsNav: localStorage.getItem('navbar-navbar-cta-text') || 'Join Us',
-        joinUsNavLink: JSON.parse(localStorage.getItem('navbar-navbar-cta-link')) || { url: '#', openInNewTab: false },
-        image: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-logo.png?alt=media&token=7e46320d-7e7d-45a2-9684-6ac565f97c71"
+        home: 'Home',
+        navabout: 'About',
+        navfeatures: 'Features',
+        joinUsNav: 'Join Us',
+        joinUsNavLink: { url: '#', openInNewTab: false },
+        image: ''
     });
 
     const [imageHeight, setImageHeight] = useState(null);
 
-    const { setSelectedComponent, selectedComponent, updateStyle, getComponentStyle } = useStyle();
+    const { updateStyle, getComponentStyle } = useStyle();
     const navbarStyles = getComponentStyle('navbar');
     const homeStyles = getComponentStyle('home');
     const navaboutStyles = getComponentStyle('navabout');
     const featuresStyles = getComponentStyle('navfeatures');
     const joinUsStylesNav = getComponentStyle('navbar-cta');
 
-    const getImageHeight = (src) => {
-        return new Promise((resolve) => {
-            const img = new Image();
-            img.src = src;
-            img.onload = () => resolve(img.height);
-        });
-    };
     useEffect(() => {
+        const fetchData = async () => {
+            if (selectedProjectId) {
+                const walletId = sessionStorage.getItem("userAccount");
+                if (walletId) {
+                    try {
+                        const data = await fetchComponentData(walletId, selectedProjectId, 'navbar');
+                        console.log('Fetched navbar data:', data); // Debug log
+                        if (data) {
+                            setNavbarContent({
+                                home: data.home || 'Home',
+                                navabout: data.navabout || 'About',
+                                navfeatures: data.navfeatures || 'Features',
+                                joinUsNav: data.joinUsNav || 'Join Us',
+                                joinUsNavLink: data.joinUsNavLink || { url: '#', openInNewTab: false },
+                                image: data.image || ''
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error fetching navbar data:', error);
+                    }
+                }
+            }
+        };
+
+        fetchData();
+    }, [selectedProjectId]);
+
+    useEffect(() => {
+        const getImageHeight = (src) => {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => resolve(img.height);
+            });
+        };
         getImageHeight(navbarContent.image).then((height) => setImageHeight(height));
     }, [navbarContent.image]);
 
     const handleComponentClick = (event, identifier) => {
-        event.preventDefault(); // This will prevent the default action of the anchor tag
-        event.stopPropagation(); // Stop the event from propagating up
-        console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
+        event.preventDefault(); 
+        event.stopPropagation(); 
         setSelectedElement(identifier);
         if (sections[identifier] && sections[identifier].current) {
             sections[identifier].current.scrollIntoView({ behavior: 'smooth' });
@@ -55,14 +85,10 @@ const Navbar = ({
     };
 
     const handleTextChange = (newText, textType) => {
-        console.log(`Updating text for ${textType}: ${newText}`);
-        console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
-
         setNavbarContent(prevContent => ({
             ...prevContent,
             [textType]: newText
         }));
-        localStorage.setItem(`navbar-${textType}-text`, newText);
         updateStyle(textType, { text: newText });
         onContentChange({
             ...navbarContent,
@@ -75,13 +101,12 @@ const Navbar = ({
             ...prevContent,
             [`${linkType}Link`]: newLink
         }));
-        localStorage.setItem(`navbar-${linkType}-link`, JSON.stringify(newLink));
         updateStyle(linkType, { link: newLink });
     };
 
     const handleDoubleClick = (event) => {
-        event.preventDefault();  // Prevent the default link behavior
-        event.stopPropagation(); // Stop propagation to avoid unwanted side effects
+        event.preventDefault(); 
+        event.stopPropagation(); 
     };
 
     useEffect(() => {
@@ -92,19 +117,7 @@ const Navbar = ({
             setSelectedColor(storedColor);
             document.documentElement.style.setProperty(cssVarName, storedColor);
         }
-    }, []);
-
-    useEffect(() => {
-        const storedContent = localStorage.getItem('navbar-content');
-        if (storedContent) {
-            const parsedContent = JSON.parse(storedContent);
-            onContentChange(parsedContent);
-        }
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem('navbar-content', JSON.stringify(navbarContent));
-    }, [navbarContent]);
+    }, [setSelectedColor]);
 
     return (
         <div className="sss-product-navbar-container navbar-element" id='navbar' style={navbarStyles} onClick={(event) => handleComponentClick(event, 'navbar')}>
@@ -113,15 +126,14 @@ const Navbar = ({
                     <ReusableImage
                         src={navbarContent.image}
                         alt="Navbar Logo"
-                        handleImageClick={() => enterReplacementMode('Navbar')}
                         openImagePanel={openImagePanel}
                         imageHeight={imageHeight}
-                        selectedImage={selectedImage}
+                        identifier="NavbarImage"
+                        handleImageUpload={(file, identifier) => handleImageUpload(file, identifier)}
                         onImageChange={(newSrc) => setNavbarContent(prevContent => ({
                             ...prevContent,
                             image: newSrc
                         }))}
-                        identifier="NavbarImage"
                     />
                 </div>
                 <ul className="sss-product-navbar-links-box">

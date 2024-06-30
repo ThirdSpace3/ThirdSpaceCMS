@@ -4,6 +4,7 @@ import EditableText from '../../../../components/logiciel/TemplateComponent/Edit
 import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
+import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
 const Footer = ({
   handleSettingsChange,
@@ -11,12 +12,13 @@ const Footer = ({
   openImagePanel,
   setSelectedColor,
   onContentChange,
-  handleImageUpload
+  handleImageUpload,
+  selectedProjectId
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
-  const [footerContent, setFooterContent] = useState({
+  const defaultFooterContent = {
     footerText: 'Copyright © 3S.Product | Designed inspired by Webocean LTD - Powered by Third Space',
     homeText: 'Home',
     aboutText: 'About',
@@ -24,15 +26,57 @@ const Footer = ({
     logoSrc: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-logo.png?alt=media&token=7e46320d-7e7d-45a2-9684-6ac565f97c71",
     twitterSrc: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-footer-1.png?alt=media&token=44a94263-3fb4-4f6f-a9a0-d030033c136d",
     linkedInSrc: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-footer-4.png?alt=media&token=b8d5125f-8b20-4701-86fd-8defd1aef14e"
-  });
+  };
+
+  const [footerContent, setFooterContent] = useState(defaultFooterContent);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedProjectId) {
+        const walletId = sessionStorage.getItem("userAccount");
+        if (walletId) {
+          try {
+            const data = await fetchComponentData(walletId, selectedProjectId, 'footer');
+            if (data) {
+              setFooterContent({
+                footerText: data.footerText || defaultFooterContent.footerText,
+                homeText: data.homeText || defaultFooterContent.homeText,
+                aboutText: data.aboutText || defaultFooterContent.aboutText,
+                featuresText: data.featuresText || defaultFooterContent.featuresText,
+                logoSrc: data.logoSrc || defaultFooterContent.logoSrc,
+                twitterSrc: data.twitterSrc || defaultFooterContent.twitterSrc,
+                linkedInSrc: data.linkedInSrc || defaultFooterContent.linkedInSrc
+              });
+            }
+          } catch (error) {
+            console.error('Error fetching footer data:', error);
+          }
+        }
+      }
+    };
+
+    fetchData();
+  }, [selectedProjectId]);
 
   const handleTextChange = (newText, textType) => {
     setFooterContent(prev => ({
       ...prev,
       [textType]: newText
     }));
-    localStorage.setItem(textType, newText);
     updateStyle(textType, { text: newText });
+    onContentChange({
+      ...footerContent,
+      [textType]: newText
+    });
+
+    // Save the specific changes to Firebase if needed
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      saveComponentData(walletId, selectedProjectId, 'footer', {
+        ...footerContent,
+        [textType]: newText
+      });
+    }
   };
 
   const handleImageChange = (newSrc, identifier) => {
@@ -44,6 +88,15 @@ const Footer = ({
       ...footerContent,
       [identifier]: newSrc
     });
+
+    // Save the specific changes to Firebase if needed
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      saveComponentData(walletId, selectedProjectId, 'footer', {
+        ...footerContent,
+        [identifier]: newSrc
+      });
+    }
     selectImage(newSrc);
   };
 
@@ -59,7 +112,7 @@ const Footer = ({
   useEffect(() => {
     const cssVarName = `--footer-background-color`;
     const storedColor = localStorage.getItem(cssVarName);
-  
+
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);

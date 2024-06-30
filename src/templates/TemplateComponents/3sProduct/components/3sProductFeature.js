@@ -4,45 +4,83 @@ import { Link } from 'react-router-dom';
 
 import EditableText from '../../../../components/logiciel/TemplateComponent/EditableText';
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
-
 import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
+import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
-const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor, onContentChange, handleImageUpload }) => {
+const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor, onContentChange, handleImageUpload, selectedProjectId }) => {
   const { getComponentStyle } = useStyle();
-  const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
-  const [imageHeight1, setImage1Height] = useState(null);
-  const [imageHeight2, setImage2Height] = useState(null);
-  const [imageHeight3, setImage3Height] = useState(null);
+  const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
+
+  const defaultImages = [
+    { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-feature-1.png?alt=media&token=b7b15512-08ec-4d4a-a27f-f9dc04cbb5d5', id: 'featureImage-1' },
+    { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-feature-2.png?alt=media&token=832071f6-e477-4f93-b294-ec2b2263ab18', id: 'featureImage-2' },
+    { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-feature-3.png?alt=media&token=4b618f41-4413-463e-b04d-f785eac8c15f', id: 'featureImage-3' }
+  ];
 
   // State for text fields including descriptions
   const [featuresContent, setFeaturesContent] = useState({
-    title: localStorage.getItem('featuresTitleText') || 'Essential apps that protect your documents',
+    title: 'Essential apps that protect your documents',
     endToEnd: {
-      title: localStorage.getItem('endToEndText') || 'End-to-end encrypted inbox and messages',
-      description: localStorage.getItem('endToEndDesc') || 'Rorem ipsum dolor sit amet consectetur. Proin dignissim tortor mauris viverra sed volutpat mauris. Amet nisi amet commodo adipiscing ut imperdiet nunc.'
+      title: 'End-to-end encrypted inbox and messages',
+      description: 'Rorem ipsum dolor sit amet consectetur. Proin dignissim tortor mauris viverra sed volutpat mauris. Amet nisi amet commodo adipiscing ut imperdiet nunc.'
     },
     mobileApps: {
-      title: localStorage.getItem('mobileAppsText') || 'Mobile applications',
-      description: localStorage.getItem('mobileAppsDesc') || 'Prem ipsum dolor sit amet consectetur. Viverra sed dignissim risus aliquet condimentum. Vulputate varius feugiat egestas congue.'
+      title: 'Mobile applications',
+      description: 'Prem ipsum dolor sit amet consectetur. Viverra sed dignissim risus aliquet condimentum. Vulputate varius feugiat egestas congue.'
     },
     uploadShare: {
-      title: localStorage.getItem('uploadShareText') || 'Upload, share, and preview any file',
-      description: localStorage.getItem('uploadShareDesc') || 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.'
+      title: 'Upload, share, and preview any file',
+      description: 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.'
     },
     joinUs: {
-      text: localStorage.getItem('joinUsText') || 'Join Us',
-      link: JSON.parse(localStorage.getItem('joinUsLink')) || { url: '#', openInNewTab: false }
+      text: 'Join Us',
+      link: { url: '#', openInNewTab: false }
     },
-    images: [
-      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-feature-1.png?alt=media&token=b7b15512-08ec-4d4a-a27f-f9dc04cbb5d5', id: 'featureImage-1' },
-      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-feature-2.png?alt=media&token=832071f6-e477-4f93-b294-ec2b2263ab18', id: 'featureImage-2' },
-      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-feature-3.png?alt=media&token=4b618f41-4413-463e-b04d-f785eac8c15f', id: 'featureImage-3' }
-    ]
+    images: defaultImages
   });
 
-  // Styles
+  useEffect(() => {
+    const fetchData = async () => {
+      if (selectedProjectId) {
+        const walletId = sessionStorage.getItem("userAccount");
+        if (walletId) {
+          try {
+            const data = await fetchComponentData(walletId, selectedProjectId, 'features');
+            console.log('Fetched features data:', data); // Debug log
+            if (data) {
+              setFeaturesContent({
+                title: data.title || 'Essential apps that protect your documents',
+                endToEnd: {
+                  title: data.endToEnd?.title || 'End-to-end encrypted inbox and messages',
+                  description: data.endToEnd?.description || 'Rorem ipsum dolor sit amet consectetur. Proin dignissim tortor mauris viverra sed volutpat mauris. Amet nisi amet commodo adipiscing ut imperdiet nunc.'
+                },
+                mobileApps: {
+                  title: data.mobileApps?.title || 'Mobile applications',
+                  description: data.mobileApps?.description || 'Prem ipsum dolor sit amet consectetur. Viverra sed dignissim risus aliquet condimentum. Vulputate varius feugiat egestas congue.'
+                },
+                uploadShare: {
+                  title: data.uploadShare?.title || 'Upload, share, and preview any file',
+                  description: data.uploadShare?.description || 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.'
+                },
+                joinUs: {
+                  text: data.joinUs?.text || 'Join Us',
+                  link: data.joinUs?.link || { url: '#', openInNewTab: false }
+                },
+                images: data.images.length ? data.images : defaultImages
+              });
+            }
+          } catch (error) {
+            console.error('Error fetching features data:', error);
+          }
+        }
+      }
+    };
+
+    fetchData();
+  }, [selectedProjectId]);
+
   const featureStyles = getComponentStyle('features');
   const featureTitleStyles = getComponentStyle('featuresTitle');
   const endToEndTitleStyles = getComponentStyle('endToEndTitle');
@@ -61,15 +99,25 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
       updatedContent[identifier] = newText;
     }
     setFeaturesContent(updatedContent);
-    localStorage.setItem(identifier + (subIdentifier ? subIdentifier.charAt(0).toUpperCase() + subIdentifier.slice(1) : ''), newText);
     onContentChange(updatedContent);
+
+    // Save the specific changes to Firebase if needed
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      saveComponentData(walletId, selectedProjectId, 'features', updatedContent);
+    }
   };
 
   const handleLinkChange = (newLink) => {
     const updatedContent = { ...featuresContent, joinUs: { ...featuresContent.joinUs, link: newLink } };
     setFeaturesContent(updatedContent);
-    localStorage.setItem('joinUsLink', JSON.stringify(newLink));
     onContentChange(updatedContent);
+
+    // Save the specific changes to Firebase if needed
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      saveComponentData(walletId, selectedProjectId, 'features', updatedContent);
+    }
   };
 
   const handleImageChange = async (index, newSrc) => {
@@ -83,6 +131,10 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     onContentChange(updatedContent);
 
     // Save the specific changes to Firebase if needed
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      await saveComponentData(walletId, selectedProjectId, 'features', updatedContent);
+    }
   };
 
   const handleComponentClick = (event, identifier) => {
@@ -91,19 +143,6 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     setSelectedElement(identifier);
     console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
   };
-
-  useEffect(() => {
-    const featuresElement = document.querySelector('.sss-product-features');
-    const eventHandler = (event) => {
-      console.log("Features clicked, setting selected element to 'features'");
-      setSelectedElement('features');
-    };
-
-    featuresElement?.addEventListener('click', eventHandler);
-    return () => {
-      featuresElement?.removeEventListener('click', eventHandler);
-    };
-  }, []);
 
   useEffect(() => {
     const cssVarName = `--features-background-color`;
@@ -163,7 +202,6 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
               selectedImage={activeComponent === featuresContent.images[0].id ? selectedImage : null}
               alt="Feature 1"
               identifier={featuresContent.images[0].id}
-              imageHeight={imageHeight1}
               handleImageUpload={handleImageUpload}
             />
           </div>
@@ -179,7 +217,6 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
               selectedImage={activeComponent === featuresContent.images[1].id ? selectedImage : null}
               alt="Mobile applications"
               identifier={featuresContent.images[1].id}
-              imageHeight={imageHeight2}
               handleImageUpload={handleImageUpload}
             />
             <h3 className="sss-product-features-box-bottom-left-title" id='mobileAppTitle' onClick={(event) => handleComponentClick(event, 'mobileAppTitle')}>
@@ -220,7 +257,6 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
               selectedImage={activeComponent === featuresContent.images[2].id ? selectedImage : null}
               alt="Feature 3"
               identifier={featuresContent.images[2].id}
-              imageHeight={imageHeight3}
               handleImageUpload={handleImageUpload}
             />
           </div>
