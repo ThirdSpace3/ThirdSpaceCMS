@@ -18,14 +18,23 @@ const ReusableImage = ({
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    const savedSrc = localStorage.getItem(`imageSrc-${identifier}`);
-    if (savedSrc) {
-      setCurrentSrc(savedSrc);
+    if (src) {
+      setCurrentSrc(src);
+      console.log(`Setting currentSrc from props: ${src}`); // Add this line
+    } else {
+      const savedSrc = localStorage.getItem(`imageSrc-${identifier}`);
+      if (savedSrc) {
+        setCurrentSrc(savedSrc);
+        console.log(`Setting currentSrc from localStorage: ${savedSrc}`); // Add this line
+      }
     }
-  }, [identifier]);
+  }, [src, identifier]);
 
   useEffect(() => {
-    localStorage.setItem(`imageSrc-${identifier}`, currentSrc);
+    if (currentSrc) {
+      localStorage.setItem(`imageSrc-${identifier}`, currentSrc);
+      console.log(`Saving currentSrc to localStorage: ${currentSrc}`); // Add this line
+    }
   }, [currentSrc, identifier]);
 
   useEffect(() => {

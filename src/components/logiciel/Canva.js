@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './Canva.css';
 import '../Root.css';
 import SSSProduct from '../../templates/3s-Product';

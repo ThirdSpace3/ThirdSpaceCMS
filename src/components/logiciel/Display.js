@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import LeftBar from './LeftBar';
 import TopBar from './TopBar';
@@ -30,17 +30,17 @@ export default function Display() {
   const [showPopup, setShowPopup] = useState(false);
   const [TemplateContent, setTemplateContent] = useState({});
 
-  const walletId = sessionStorage.getItem('userAccount') || localStorage.getItem('userAccount');
+  const walletId = useMemo(() => sessionStorage.getItem('userAccount') || localStorage.getItem('userAccount'), []);
   console.log(walletId);
 
-  const checkAndSetLogin = () => {
+  const checkAndSetLogin = useCallback(() => {
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId) {
       localStorage.setItem('userAccount', walletId);
     }
-  };
+  }, []);
 
-  const handleSettingsChange = (elementId, newSettings) => {
+  const handleSettingsChange = useCallback((elementId, newSettings) => {
     setSettings(prevSettings => {
       const updatedSettings = {
         ...prevSettings,
@@ -52,23 +52,23 @@ export default function Display() {
       localStorage.setItem('settings', JSON.stringify(updatedSettings));
       return updatedSettings;
     });
-  };
+  }, []);
 
-  const undo = () => {
+  const undo = useCallback(() => {
     if (currentHistoryIndex > 0) {
       setCurrentHistoryIndex(currentHistoryIndex - 1);
       setSettings(settingsHistory[currentHistoryIndex - 1]);
     }
-  };
+  }, [currentHistoryIndex, settingsHistory]);
 
-  const redo = () => {
+  const redo = useCallback(() => {
     if (currentHistoryIndex < settingsHistory.length - 1) {
       setCurrentHistoryIndex(currentHistoryIndex + 1);
       setSettings(settingsHistory[currentHistoryIndex + 1]);
     }
-  };
+  }, [currentHistoryIndex, settingsHistory]);
 
-  const saveSettings = async () => {
+  const saveSettings = useCallback(async () => {
     const walletId = sessionStorage.getItem("userAccount") || localStorage.getItem("userAccount");
     if (!walletId) {
       alert("No wallet ID found. Please log in.");
@@ -106,9 +106,9 @@ export default function Display() {
       console.error("Error saving settings:", error);
       alert("Failed to save settings. See console for more details.");
     }
-  };
+  }, [TemplateContent, selectedProjectId]);
 
-  const handleImageUpload = async (file, identifier) => {
+  const handleImageUpload = useCallback(async (file, identifier) => {
     try {
       const storageRef = ref(storage, `ImagesUsers/${walletId}/${selectedProjectId}/${file.name}`);
       await uploadBytes(storageRef, file);
@@ -137,20 +137,20 @@ export default function Display() {
       alert("Failed to upload image. See console for more details.");
       return null;
     }
-  };
+  }, [addImageToHistory, walletId, selectedProjectId]);
 
-  const handlePreview = () => {
-    setIsPreviewMode(!isPreviewMode);
-  };
+  const handlePreview = useCallback(() => {
+    setIsPreviewMode(prev => !prev);
+  }, []);
 
-  const openImagePanel = () => {
+  const openImagePanel = useCallback(() => {
     setActivePanel("images");
-  };
+  }, []);
 
   useEffect(() => {
     checkAndSetLogin();
     setActiveEditor(projectName);
-  }, [projectName]);
+  }, [projectName, checkAndSetLogin]);
 
   useEffect(() => {
     const handleGlobalClick = (event) => {
@@ -166,14 +166,14 @@ export default function Display() {
     };
   }, [clearFocus]);
 
-  const logChange = (elementId, newStyles) => {
+  const logChange = useCallback((elementId, newStyles) => {
     const timestamp = new Date().toISOString();
     const logEntry = { timestamp, elementId, newStyles };
     const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
     logs.push(logEntry);
     sessionStorage.setItem('editLogs', JSON.stringify(logs));
     sessionStorage.clear('editLogs');
-  };
+  }, []);
 
   const applyStylesFromLogs = useCallback(() => {
     const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
@@ -244,8 +244,8 @@ export default function Display() {
     return () => {
       displayWrapper.removeEventListener('dragenter', handleDragEnter);
       displayWrapper.removeEventListener('dragover', handleDragOver);
-      displayWrapper.addEventListener('dragleave', handleDragLeave);
-      displayWrapper.addEventListener('drop', handleDrop);
+      displayWrapper.removeEventListener('dragleave', handleDragLeave);
+      displayWrapper.removeEventListener('drop', handleDrop);
     };
   }, []);
 

@@ -10,77 +10,39 @@ const Footer = ({
   setSelectedElement,
   openImagePanel,
   setSelectedColor,
-  onContentChange,  // This prop will be used to update the parent component
+  onContentChange,
   handleImageUpload
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
-  const [footerText, setFooterText] = useState(localStorage.getItem('footerText') || 'Copyright © 3S.Product | Designed inspired by Webocean LTD - Powered by Third Space');
-  const [homeText, setHomeText] = useState(localStorage.getItem('homeText') || 'Home');
-  const [aboutText, setAboutText] = useState(localStorage.getItem('aboutText') || 'About');
-  const [featuresText, setFeaturesText] = useState(localStorage.getItem('featuresText') || 'Features');
-
-  const [footerLogoSrc, setFooterLogoSrc] = useState("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-logo.png?alt=media&token=7e46320d-7e7d-45a2-9684-6ac565f97c71");
-  const [footerTwitterSrc, setFooterTwitterSrc] = useState("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-footer-1.png?alt=media&token=44a94263-3fb4-4f6f-a9a0-d030033c136d");
-  const [footerLinkedInSrc, setFooterLinkedInSrc] = useState("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-footer-4.png?alt=media&token=b8d5125f-8b20-4701-86fd-8defd1aef14e");
-
-  // Dynamically update parent component state
-  useEffect(() => {
-    onContentChange({
-      text: footerText,
-      home: homeText,
-      about: aboutText,
-      features: featuresText,
-      logoSrc: footerLogoSrc,
-      twitterSrc: footerTwitterSrc,
-      linkedInSrc: footerLinkedInSrc
-    });
-  }, [footerText, homeText, aboutText, featuresText, footerLogoSrc, footerTwitterSrc, footerLinkedInSrc, onContentChange]);
+  const [footerContent, setFooterContent] = useState({
+    footerText: 'Copyright © 3S.Product | Designed inspired by Webocean LTD - Powered by Third Space',
+    homeText: 'Home',
+    aboutText: 'About',
+    featuresText: 'Features',
+    logoSrc: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-logo.png?alt=media&token=7e46320d-7e7d-45a2-9684-6ac565f97c71",
+    twitterSrc: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-footer-1.png?alt=media&token=44a94263-3fb4-4f6f-a9a0-d030033c136d",
+    linkedInSrc: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-footer-4.png?alt=media&token=b8d5125f-8b20-4701-86fd-8defd1aef14e"
+  });
 
   const handleTextChange = (newText, textType) => {
-    switch (textType) {
-      case 'homeText':
-        setHomeText(newText);
-        break;
-      case 'aboutText':
-        setAboutText(newText);
-        break;
-      case 'featuresText':
-        setFeaturesText(newText);
-        break;
-      case 'footerText':
-        setFooterText(newText);
-        break;
-      default:
-        break;
-    }
+    setFooterContent(prev => ({
+      ...prev,
+      [textType]: newText
+    }));
     localStorage.setItem(textType, newText);
     updateStyle(textType, { text: newText });
   };
 
   const handleImageChange = (newSrc, identifier) => {
-    switch (identifier) {
-      case "FooterLogo":
-        setFooterLogoSrc(newSrc);
-        break;
-      case "FooterTwitter":
-        setFooterTwitterSrc(newSrc);
-        break;
-      case "FooterLinkedIn":
-        setFooterLinkedInSrc(newSrc);
-        break;
-      default:
-        break;
-    }
-    onContentChange({ // Ensure the new source is updated in parent component
-      text: footerText,
-      home: homeText,
-      about: aboutText,
-      features: featuresText,
-      logoSrc: footerLogoSrc,
-      twitterSrc: footerTwitterSrc,
-      linkedInSrc: footerLinkedInSrc
+    setFooterContent(prev => ({
+      ...prev,
+      [identifier]: newSrc
+    }));
+    onContentChange({
+      ...footerContent,
+      [identifier]: newSrc
     });
     selectImage(newSrc);
   };
@@ -92,8 +54,6 @@ const Footer = ({
     if (identifier.includes("Footer")) {
       enterReplacementMode(identifier);
     }
-    console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
-
   };
 
   useEffect(() => {
@@ -106,37 +66,39 @@ const Footer = ({
     }
   }, [setSelectedColor]);
 
+  const footerStyles = getComponentStyle('footer');
+
   return (
-    <div className="sss-product-footer" style={{ ...getComponentStyle('footer') }} id='footer'  onClick={(event) => handleComponentClick(event, 'footer')}>
+    <div className="sss-product-footer" style={footerStyles} id='footer' onClick={(event) => handleComponentClick(event, 'footer')}>
       <div className="sss-product-footer-top">
         <ReusableImage
-          src={footerLogoSrc}
+          src={footerContent.logoSrc}
           alt="Footer Logo"
           onClick={() => enterReplacementMode('FooterLogo')}
           openImagePanel={openImagePanel}
-          identifier="FooterLogo"
+          identifier="logoSrc"
           imageHeight="50px"
           handleImageUpload={handleImageUpload}
-          onImageChange={handleImageChange} // Pass onImageChange
+          onImageChange={(newSrc) => handleImageChange(newSrc, 'logoSrc')}
         />
         <ul className="sss-product-footer-top-links-box">
           <li className='sss-product-footer-top-links' id='homeText' onClick={(event) => handleComponentClick(event, 'homeText')}>
             <EditableText
-              text={homeText}
+              text={footerContent.homeText}
               onChange={(text) => handleTextChange(text, 'homeText')}
               style={{ ...getComponentStyle('homeText') }}
             />
           </li>
           <li className='sss-product-footer-top-links' id='aboutText' onClick={(event) => handleComponentClick(event, 'aboutText')}>
             <EditableText
-              text={aboutText}
+              text={footerContent.aboutText}
               onChange={(text) => handleTextChange(text, 'aboutText')}
               style={{ ...getComponentStyle('aboutText') }}
             />
           </li>
           <li className='sss-product-footer-top-links' id='featuresText' onClick={(event) => handleComponentClick(event, 'featuresText')}>
             <EditableText
-              text={featuresText}
+              text={footerContent.featuresText}
               onChange={(text) => handleTextChange(text, 'featuresText')}
               style={{ ...getComponentStyle('featuresText') }}
             />
@@ -144,22 +106,22 @@ const Footer = ({
         </ul>
         <div className="sss-product-footer-top-rs">
           <ReusableImage
-            src={footerTwitterSrc}
+            src={footerContent.twitterSrc}
             alt="Twitter"
             onClick={() => enterReplacementMode('FooterTwitter')}
-            identifier="FooterTwitter"
+            identifier="twitterSrc"
             imageHeight="30px"
             handleImageUpload={handleImageUpload}
-            onImageChange={handleImageChange} // Pass onImageChange
+            onImageChange={(newSrc) => handleImageChange(newSrc, 'twitterSrc')}
           />
           <ReusableImage
-            src={footerLinkedInSrc}
+            src={footerContent.linkedInSrc}
             alt="LinkedIn"
             onClick={() => enterReplacementMode('FooterLinkedIn')}
-            identifier="FooterLinkedIn"
+            identifier="linkedInSrc"
             imageHeight="30px"
             handleImageUpload={handleImageUpload}
-            onImageChange={handleImageChange} // Pass onImageChange
+            onImageChange={(newSrc) => handleImageChange(newSrc, 'linkedInSrc')}
           />
         </div>
       </div>
@@ -167,7 +129,7 @@ const Footer = ({
         <hr className="sss-product-footer-bottom-hr" />
         <p className="sss-product-footer-bottom-text" id='footerText' onClick={(event) => handleComponentClick(event, 'footerText')}>
           <EditableText
-            text={footerText}
+            text={footerContent.footerText}
             onChange={(text) => handleTextChange(text, 'footerText')}
             style={{ ...getComponentStyle('footerText') }}
           />

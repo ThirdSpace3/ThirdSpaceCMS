@@ -48,65 +48,47 @@ const SSSProduct = ({
   };
 
   useEffect(() => {
-    if (selectedProjectId) {
-      const fetchData = async () => {
+    const fetchData = async () => {
+      if (selectedProjectId) {
         const walletId = sessionStorage.getItem("userAccount");
-        const navbarData = await fetchComponentData(walletId, selectedProjectId, 'navbar');
-        const headerData = await fetchComponentData(walletId, selectedProjectId, 'header');
-        const partnersData = await fetchComponentData(walletId, selectedProjectId, 'partners');
-        const aboutData = await fetchComponentData(walletId, selectedProjectId, 'aboutSection');
-        const featuresData = await fetchComponentData(walletId, selectedProjectId, 'featureSection');
-        const joinUsData = await fetchComponentData(walletId, selectedProjectId, 'joinUsSection');
-        const footerData = await fetchComponentData(walletId, selectedProjectId, 'footerSection');
+        const [navbarData, headerData, partnersData, aboutData, featuresData, joinUsData, footerData] = await Promise.all([
+          fetchComponentData(walletId, selectedProjectId, 'navbar'),
+          fetchComponentData(walletId, selectedProjectId, 'header'),
+          fetchComponentData(walletId, selectedProjectId, 'partners'),
+          fetchComponentData(walletId, selectedProjectId, 'aboutSection'),
+          fetchComponentData(walletId, selectedProjectId, 'featureSection'),
+          fetchComponentData(walletId, selectedProjectId, 'joinUsSection'),
+          fetchComponentData(walletId, selectedProjectId, 'footerSection')
+        ]);
 
-        if (walletId) {
-          try {
-            console.log('Fetching component data for project:', selectedProjectId);
+        setTemplateContent({
+          navbar: navbarData || {},
+          header: headerData || {},
+          partners: partnersData || {},
+          aboutSection: aboutData || {},
+          featureSection: featuresData || {},
+          joinUsSection: joinUsData || {},
+          footerSection: footerData || {},
+        });
+      }
+    };
 
-            setTemplateContent({
-              navbar: navbarData || {},
-              header: headerData || {},
-              partners: partnersData || {},
-              aboutSection: aboutData || {},
-              featureSection: featuresData || {},
-              joinUsSection: joinUsData || {},
-              footerSection: footerData || {},
-            });
-          } catch (error) {
-            console.error('Error fetching component data:', error);
-            setTemplateContent({
-              navbar: navbarData || {},
-              header: headerData || {},
-              partners: partnersData || {},
-              aboutSection: aboutData || {},
-              featureSection: featuresData || {},
-              joinUsSection: joinUsData || {},
-              footerSection: footerData || {},
-            });
-          }
-        }
-      };
-
-      fetchData();
-    }
+    fetchData();
   }, [selectedProjectId, setTemplateContent]);
 
   const handleComponentClick = (event, identifier) => {
     if (!isPreviewMode) {
       event.preventDefault();
-      event.stopPropagation();
       setSelectedElement(identifier);
     }
   };
 
   const handleContentChange = (section, content) => {
-    setTemplateContent((prevContent) => ({
-      ...prevContent,
+    setTemplateContent(prev => ({
+      ...prev,
       [section]: content,
     }));
   };
-
-  console.log("product:" + selectedProjectId);
 
   return (
     <div className="sss-product-container">
@@ -171,7 +153,6 @@ const SSSProduct = ({
         onContentChange={(content) => handleContentChange('partners', content)}
         isPreviewMode={isPreviewMode}
         handleImageUpload={handleImageUpload}
-
       />
 
       <AboutSection
@@ -190,7 +171,6 @@ const SSSProduct = ({
         onContentChange={(content) => handleContentChange('aboutSection', content)}
         isPreviewMode={isPreviewMode}
         handleImageUpload={handleImageUpload}
-
       />
 
       <FeaturesSection
@@ -209,7 +189,6 @@ const SSSProduct = ({
         onContentChange={(content) => handleContentChange('featureSection', content)}
         isPreviewMode={isPreviewMode}
         handleImageUpload={handleImageUpload}
-
       />
 
       <JoinUsSection
@@ -228,7 +207,6 @@ const SSSProduct = ({
         onContentChange={(content) => handleContentChange('joinUsSection', content)}
         isPreviewMode={isPreviewMode}
         handleImageUpload={handleImageUpload}
-
       />
 
       <Footer
