@@ -41,7 +41,7 @@ const ReportBugBTN = () => {
             }
 
             if (bugDescription !== '') {
-                await setDoc(doc(collection(db, "reports")), {
+                await setDoc(doc(collection(db, "UserContactInfos", "Report", "BugButton")), {
                     description: bugDescription,
                     imageUrl: imageUrl,
                     createdAt: new Date()

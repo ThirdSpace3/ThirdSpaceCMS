@@ -1,6 +1,7 @@
 import "../Root.css";
 import "./Newsletter.css";
 import React, { useState } from "react";
+import { getDocs, query, where, db, serverTimestamp, addDoc, collection } from "../../firebaseConfig"; // Adjust the import path based on your project structure
 
 function Newsletter() {
   const [email, setEmail] = useState("");
@@ -13,19 +14,44 @@ function Newsletter() {
     setSubscribed(false); // Hide message when input changes
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission behavior
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setError(true);
-    } else {
-      setError(false);
-      setSubscribed(true); // Show subscription message
+      return;
+    }
+  
+    setError(false); // Clear any previous errors
+  
+    try {
+      const subscriptionsRef = collection(db, "UserContactInfos", "Contact", "Newsletter");
+  
+      // Check if the email already exists
+      const querySnapshot = await getDocs(query(subscriptionsRef, where("email", "==", email)));
+  
+      if (!querySnapshot.empty) {
+        // Email already exists in database
+        setSubscribed(false); // Ensure subscribed state is false
+        setError(true); // Set error to show user is already subscribed
+        return;
+      }
+  
+      // Add subscription to Firestore
+      await addDoc(subscriptionsRef, {
+        email: email,
+        timestamp: serverTimestamp()
+      });
+      
+      console.log("Subscription added to Firestore");
+      setSubscribed(true); // Show subscription success message
       setEmail(""); // Clear the input field
-      // Submit email logic here
+    } catch (error) {
+      console.error("Error adding subscription to Firestore: ", error);
+      // Handle error as needed
     }
   };
-
+  
   return (
     <div className="newsletter-component">
       <form className="newsletter-input" onSubmit={handleSubmit}>
