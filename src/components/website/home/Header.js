@@ -40,7 +40,7 @@ function Header({ checkWalletData }) {
           </div>
         </div>
         <div className="header__right">
-          <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fhero-img.png?alt=media&token=8ae2a271-c649-4d1e-9e6d-ec40c468e74d" alt=""/>
+          <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fhero-img.png?alt=media&token=8ae2a271-c649-4d1e-9e6d-ec40c468e74d" alt='third space builder web 3 no-code tools web3 platform'/>
         </div>
       </section>
       {showWalletPopup && <PopupWallet onClose={toggleWalletPopup} onUserLogin={handleUserLogin} checkWalletData={checkWalletData} />}

@@ -58,6 +58,7 @@ function Pricing({ checkWalletData }) {
           <div className="pricing-card-price">
             <img
               className="pricing-card-price-img"
+              alt='third space builder web 3 no-code tools web3 platform'
               src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"
             ></img>
             <p className="pricing-card-price-number">0</p>
@@ -74,6 +75,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">Limited CMS access</p>
@@ -81,6 +83,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">Test environments</p>
@@ -88,6 +91,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">1GB cloud storage</p>
@@ -95,6 +99,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">
@@ -109,6 +114,7 @@ function Pricing({ checkWalletData }) {
           <div className="pricing-card-price">
             <img
               className="pricing-card-price-img"
+              alt='third space builder web 3 no-code tools web3 platform'
               src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"
             ></img>
             <p className="pricing-card-price-number">12.49</p>
@@ -126,6 +132,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">1 customized domain
@@ -134,6 +141,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">Full access to Third Space
@@ -142,6 +150,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">5GB cloud storage
@@ -150,6 +159,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">
@@ -165,6 +175,7 @@ function Pricing({ checkWalletData }) {
           <div className="pricing-card-price">
             <img
               className="pricing-card-price-img"
+              alt='third space builder web 3 no-code tools web3 platform'
               src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"
             ></img>
             <p className="pricing-card-price-number">29.99</p>
@@ -183,6 +194,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">3 customized domains
@@ -191,6 +203,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">Unlimited file uploads</p>
@@ -198,6 +211,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">10GB cloud storage
@@ -206,6 +220,7 @@ function Pricing({ checkWalletData }) {
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
+                alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">

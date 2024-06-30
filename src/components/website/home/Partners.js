@@ -18,6 +18,7 @@ function PartnersHP() {
                     <img
                         key={index}
                         className="partners-img"
+                        alt='third space builder web 3 no-code tools web3 platform'
                         src={url}
                     />
                 ))}
@@ -27,6 +28,7 @@ function PartnersHP() {
                     <img
                         key={index}
                         className="partners-img"
+                        alt='third space builder web 3 no-code tools web3 platform'
                         src={url}
                     />
                 ))}

@@ -1,6 +1,7 @@
 import NavBar from "../components/website/NavBar"
 import React, { useState, useEffect } from "react";
 import { db, collection, getDocs } from '../firebaseConfig'; // Assuming Firestore is correctly imported and configured
+import Footer from "../components/website/Footer";
 
 export default function NoPage() {
     const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
@@ -41,15 +42,16 @@ export default function NoPage() {
         setAccounts={setAccounts}
 
       />                        <div className="comingsoon-container">
-        <h1>Error 404: Not found</h1>
+        <h1 className="section-title">Error 404: Not found</h1>
         <p>
           Sorry we could not find the page you were looking for!
         </p>
         <a href="/home" className="purple-btn">
           Go Back Home
         </a>
-        <img src="./images/header-deco.png" className="comingsoon-bg" />
       </div>
+
+      <Footer />
 
         </>
     )
