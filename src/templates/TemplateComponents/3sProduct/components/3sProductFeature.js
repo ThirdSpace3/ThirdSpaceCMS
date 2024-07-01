@@ -59,7 +59,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
           text: featuresData.joinUs?.text || 'Join Us',
           link: featuresData.joinUs?.link || { url: '#', openInNewTab: false }
         },
-        images: featuresData.images.length ? featuresData.images : defaultImages
+        images: featuresData.images?.length ? featuresData.images : defaultImages
       });
     }
   }, [featuresData]);
@@ -84,7 +84,6 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     setFeaturesContent(updatedContent);
     onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
       saveComponentData(walletId, selectedProjectId, 'features', updatedContent);
@@ -96,7 +95,6 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     setFeaturesContent(updatedContent);
     onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
       saveComponentData(walletId, selectedProjectId, 'features', updatedContent);
@@ -113,7 +111,6 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     setFeaturesContent(updatedContent);
     onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
       await saveComponentData(walletId, selectedProjectId, 'features', updatedContent);
@@ -147,7 +144,6 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
         />
       </h2>
       <div className="sss-product-features-box">
-        {/* Top Feature Section */}
         <div className="sss-product-features-box-top">
           <div className="sss-product-features-box-top-left">
             <h3 className="sss-product-features-box-top-left-title" id='endToEndTitle' onClick={(event) => handleComponentClick(event, 'endToEndTitle')}>
@@ -189,7 +185,6 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
             />
           </div>
         </div>
-        {/* Bottom Feature Section */}
         <div className="sss-product-features-box-bottom">
           <div className="sss-product-features-box-bottom-left">
             <ReusableImage

@@ -7,9 +7,10 @@ import FeaturesSection from "./TemplateComponents/3sProduct/components/3sProduct
 import JoinUsSection from "./TemplateComponents/3sProduct/components/3sProductJoinUs";
 import Footer from "./TemplateComponents/3sProduct/components/3sProductFooter";
 import { fetchComponentData } from "../hooks/Fetchprojects";
+import ErrorBoundary from '../hooks/ErrorBoundary';
 
 const SSSProduct = ({
-  TemplateContent,
+  TemplateContent = {},
   saveSettings,
   setTemplateContent,
   selectedColor,
@@ -117,7 +118,7 @@ const SSSProduct = ({
           joinUs: joinUsRef,
           footer: footerRef,
         }}
-        navbarData={TemplateContent.navbar} // Pass navbar data as props
+        navbarData={TemplateContent.navbar || {}}
       />
 
       <HeaderSection
@@ -136,72 +137,56 @@ const SSSProduct = ({
         isPreviewMode={isPreviewMode}
         selectedProjectId={selectedProjectId}
         handleImageUpload={handleImageUpload}
+        headerData={TemplateContent.header || {}}
       />
 
-      <PartnersSection
-        saveSettings={saveSettings}
-        ref={partnersRef}
+      <ErrorBoundary>
+        <PartnersSection
+          openImagePanel={openImagePanel}
+          setSelectedElement={setSelectedElement}
+          onContentChange={(content) => handleContentChange('partners', content)}
+          handleImageUpload={handleImageUpload}
+          selectedProjectId={selectedProjectId}
+          partnersData={TemplateContent.partners || {}}
+        />
+      </ErrorBoundary>
+
+      <ErrorBoundary>
+        <AboutSection
+          handleSettingsChange={handleSettingsChange}
+          settings={settings}
+          openImagePanel={openImagePanel}
+          setSelectedElement={setSelectedElement}
+          setSelectedColor={setSelectedColor}
+          onContentChange={(content) => handleContentChange('aboutSection', content)}
+          handleImageUpload={handleImageUpload}
+          selectedProjectId={selectedProjectId}
+          aboutData={TemplateContent.aboutSection || {}}
+        />
+      </ErrorBoundary>
+
+      <FeaturesSection
+        handleSettingsChange={handleSettingsChange}
+        setSelectedElement={setSelectedElement}
         style={settings}
         settings={settings}
-        handleSettingsChange={handleSettingsChange}
         openImagePanel={openImagePanel}
-        selectedImage={selectedImage}
-        setSelectedImage={setSelectedImage}
-        selectElement={selectElement}
-        setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
-        onContentChange={(content) => handleContentChange('partners', content)}
-        isPreviewMode={isPreviewMode}
+        onContentChange={(content) => handleContentChange('featureSection', content)}
         handleImageUpload={handleImageUpload}
-        partnersData={TemplateContent.partners} // Pass the fetched partners data as props
+        selectedProjectId={selectedProjectId}
+        featuresData={TemplateContent.featureSection || {}}
       />
 
-
-<AboutSection
-  saveSettings={saveSettings}
-  ref={aboutRef}
-  style={settings}
-  settings={settings}
-  handleSettingsChange={handleSettingsChange}
-  openImagePanel={openImagePanel}
-  selectedImage={selectedImage}
-  setSelectedImage={setSelectedImage}
-  selectElement={selectElement}
-  setSelectedElement={setSelectedElement}
-  selectedColor={selectedColor}
-  setSelectedColor={setSelectedColor}
-  onContentChange={(content) => handleContentChange('aboutSection', content)}
-  isPreviewMode={isPreviewMode}
-  handleImageUpload={handleImageUpload}
-  aboutData={TemplateContent.aboutSection} // Pass the fetched about data as props
-/>
-
-
-<FeaturesSection
-  handleSettingsChange={handleSettingsChange}
-  setSelectedElement={setSelectedElement}
-  style={settings}
-  settings={settings}
-  openImagePanel={openImagePanel}
-  setSelectedColor={setSelectedColor}
-  onContentChange={(content) => handleContentChange('featureSection', content)}
-  handleImageUpload={handleImageUpload}
-  selectedProjectId={selectedProjectId}
-  featuresData={TemplateContent.featureSection} // Pass the fetched features data as props
-/>
-
-
-<JoinUsSection
-  setSelectedElement={setSelectedElement}
-  openImagePanel={openImagePanel}
-  setSelectedColor={setSelectedColor}
-  onContentChange={(content) => handleContentChange('joinUsSection', content)}
-  handleImageUpload={handleImageUpload}
-  selectedProjectId={selectedProjectId}
-  joinUsData={TemplateContent.joinUsSection} // Pass the fetched joinUs data as props
-/>
-
+      <JoinUsSection
+        setSelectedElement={setSelectedElement}
+        openImagePanel={openImagePanel}
+        setSelectedColor={setSelectedColor}
+        onContentChange={(content) => handleContentChange('joinUsSection', content)}
+        handleImageUpload={handleImageUpload}
+        selectedProjectId={selectedProjectId}
+        joinUsData={TemplateContent.joinUsSection || {}}
+      />
 
       <Footer
         saveSettings={saveSettings}
@@ -219,7 +204,7 @@ const SSSProduct = ({
         onContentChange={(content) => handleContentChange('footerSection', content)}
         isPreviewMode={isPreviewMode}
         handleImageUpload={handleImageUpload}
-        footerData={TemplateContent.footerSection}
+        footerData={TemplateContent.footerSection || {}}
       />
     </div>
   );

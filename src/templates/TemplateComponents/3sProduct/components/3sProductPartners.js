@@ -4,7 +4,7 @@ import EditableText from '../../../../components/logiciel/TemplateComponent/Edit
 import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
-import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
+import { saveComponentData } from '../../../../hooks/Fetchprojects';
 
 const PartnersSection = ({
   openImagePanel,
@@ -12,7 +12,7 @@ const PartnersSection = ({
   onContentChange,
   handleImageUpload,
   selectedProjectId,
-  partnersData // Receive the fetched data as props
+  partnersData = { title: '', images: [] }
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
   const { updateStyle, getComponentStyle } = useStyle();
@@ -36,14 +36,10 @@ const PartnersSection = ({
     if (partnersData) {
       setPartnersContent({
         title: partnersData.title || 'Trusted by teams at over 1,000 of the world\'s leading organizations',
-        images: partnersData.images.length ? partnersData.images : defaultImages
+        images: partnersData.images && partnersData.images.length ? partnersData.images : defaultImages
       });
     }
   }, [partnersData]);
-
-  useEffect(() => {
-    console.log('Partners content updated:', partnersContent);
-  }, [partnersContent]);
 
   const partnerStyle = getComponentStyle('partners');
   const partnersTitleStyle = getComponentStyle('partnersTitle');
@@ -57,7 +53,6 @@ const PartnersSection = ({
     updateStyle('partnersTitle', { text: newText });
     onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
       await saveComponentData(walletId, selectedProjectId, 'partners', updatedContent);
@@ -81,7 +76,6 @@ const PartnersSection = ({
     setPartnersContent(updatedContent);
     onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
       await saveComponentData(walletId, selectedProjectId, 'partners', updatedContent);
@@ -106,7 +100,7 @@ const PartnersSection = ({
             openImagePanel={openImagePanel}
             onImageChange={(newSrc) => handleImageChange(index, newSrc)}
             selectedImage={activeComponent === image.id ? selectedImage : null}
-            style={{ height: '150px', width: 'auto' }} // Adjust as needed
+            style={{ height: '150px', width: 'auto' }}
             identifier={image.id}
             handleImageUpload={handleImageUpload}
           />
