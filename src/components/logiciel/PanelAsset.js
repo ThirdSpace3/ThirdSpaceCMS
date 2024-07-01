@@ -1,27 +1,32 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import { useImageHistory } from "../../hooks/ImageHistoryContext";
-import SparkMD5 from "spark-md5";
-import { storage, getStorage, ref, uploadBytes, getDownloadURL  } from "../../firebaseConfig";  // import the Firebase storage configuration
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import "./LeftBar.css";
 import "../Root.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { useImageHistory } from "../../hooks/ImageHistoryContext";
+import SparkMD5 from "spark-md5";
+import { storage, db } from "../../firebaseConfig";
+import { ref as storageRef, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
 
-export default function PanelAsset({setTemplateContent, selectedElement, selectedProjectId, walletId, setVisiblePanel, visiblePanel }) {
+export default function PanelAsset({ selectedProjectId, setVisiblePanel, visiblePanel }) {
   const {
     addImageToHistory,
+    removeImageFromHistory,
     imageHistory,
+    setImageHistory,
     selectImage,
     selectedImage,
     componentImageUsage,
     activeComponent,
     enterReplacementMode
   } = useImageHistory();
-  
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Assets");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [draggedImage, setDraggedImage] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
+  const walletId = sessionStorage.getItem("userAccount");
   const dropdownRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -54,7 +59,7 @@ export default function PanelAsset({setTemplateContent, selectedElement, selecte
       throw new Error("Failed to read the file.");
     }
   };
-  
+
   const handleImageSelect = useCallback((image) => {
     enterReplacementMode(activeComponent);
     selectImage(image.url);
@@ -107,14 +112,18 @@ export default function PanelAsset({setTemplateContent, selectedElement, selecte
           continue;
         }
 
-        const storageRef = ref(storage, `ImageProjects/${walletId}/${selectedProjectId}/images/${file.name}`);
-        await uploadBytes(storageRef, file);
-        const newImageUrl = await getDownloadURL(storageRef);
+        const storageReference = storageRef(storage, `ImagesUsers/${walletId}/${selectedProjectId}/${file.name}`);
+        await uploadBytes(storageReference, file);
+        const newImageUrl = await getDownloadURL(storageReference);
 
-        addImageToHistory({ url: newImageUrl, category, hash: fileHash });
+        const newImage = { url: newImageUrl, category, hash: fileHash };
+        addImageToHistory(newImage);
+
+        // Add image metadata to Firestore for future reference (if needed)
+        await addDoc(collection(db, `projects/${walletId}/projectData/${selectedProjectId}/Content/Images`), newImage);
       } catch (error) {
         console.error("Error processing file:", error);
-        alert(`Failed to process the file "${file.name}". Please try again.`);
+        console.log(`Failed to process the file "${file.name}". Please try again.`);
       }
     }
 
@@ -124,6 +133,28 @@ export default function PanelAsset({setTemplateContent, selectedElement, selecte
   const handleUploadClick = useCallback(() => {
     fileInputRef.current.click();
   }, []);
+
+  const fetchImagesFromStorage = useCallback(async () => {
+    try {
+      const imagesRef = storageRef(storage, `ImagesUsers/${walletId}/${selectedProjectId}`);
+      const result = await listAll(imagesRef);
+      const images = await Promise.all(
+        result.items.map(async (itemRef) => {
+          const url = await getDownloadURL(itemRef);
+          return { url, category: "Photo", hash: itemRef.name };
+        })
+      );
+      setImageHistory(images); // Make sure setImageHistory is correctly used from the context
+    } catch (error) {
+      console.error("Error fetching images from Firebase Storage:", error);
+    }
+  }, [walletId, selectedProjectId, setImageHistory]);
+
+  useEffect(() => {
+    if (walletId && selectedProjectId) {
+      fetchImagesFromStorage();
+    }
+  }, [walletId, selectedProjectId, fetchImagesFromStorage]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -189,11 +220,36 @@ export default function PanelAsset({setTemplateContent, selectedElement, selecte
     };
   }, [handleFileChange]);
 
+  const handleImageError = useCallback((hash) => {
+    removeImageFromHistory(hash);
+  }, [removeImageFromHistory]);
+
   const renderPreview = useCallback((image) => {
     const isUsed = Object.values(componentImageUsage).includes(image.url);
     const previewClass = isUsed ? "image-used" : "image-preview";
-    return <img src={image.url} alt="Preview" className={previewClass} />;
-  }, [componentImageUsage]);
+
+    switch (image.category) {
+      case "Photo":
+        return <img src={image.url} alt="Preview" className={previewClass} onError={() => handleImageError(image.hash)} />;
+      case "Background":
+        return <img src={image.url} alt="Preview" className={previewClass} onError={() => handleImageError(image.hash)} />;
+      case "Video":
+        return (
+          <video className={previewClass} width="120" height="90" controls>
+            <source src={image.url} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        );
+      case "Document":
+        return (
+          <i className={`bi bi-file-earmark-text-fill ${previewClass}`} style={{ fontSize: "48px" }}></i>
+        );
+      default:
+        return (
+          <i className={`bi bi-file-earmark ${previewClass}`} style={{ fontSize: "48px" }}></i>
+        );
+    }
+  }, [componentImageUsage, handleImageError]);
 
   return (
     <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`} onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave}>

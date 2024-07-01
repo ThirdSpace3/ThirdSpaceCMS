@@ -123,17 +123,20 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  border-radius: 10px;
-  border: 2px solid var(--purple, #9600fa);
-  background: var(--purple, #9600fa);
-  color: var(--Secondary-2, #fcfcfc);
+  border-radius: 11.058px;
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
+  border: 1.382px solid #4D2F8C;
+  color: #F4F0FF;
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   line-height: normal;
 }
 .projects-navbar-btn:hover {
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgb(118 79 167 / 32%) 100%), rgba(113, 47, 255, 0.12);
+  transition: 0.3s ease;
   cursor: pointer;
 }
 

@@ -21,7 +21,6 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
             description: "",
             favicon: "",
           };
-
           const collectionPath = 'projects';
           const docPath = `${walletId}/projectData/${newProject.id}`;
 
@@ -39,6 +38,8 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
           setRedirectToRoot(true);
           sessionStorage.setItem('isLoggedIn', true);
           sessionStorage.setItem('isTemplateCompleted', 'true');
+          console.log(selectedButtons);
+
         } else {
           onNext();
         }
@@ -51,13 +52,18 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
   return (
     <div className="btn-box">
       {currentStep !== 3 && currentStep !== 4 && currentStep !== 5 && (
-        <button className="ignore-btn" onClick={onIgnore}>
+        <button className="grey-btn" onClick={onIgnore}>
           Skip
         </button>
       )}
 
-      <button className={`purple-light-btn ${!isNextEnabled ? 'disabled' : ''}`} onClick={handleNextClick} disabled={!isNextEnabled}>
-        Next
+      <button 
+        className={`purple-btn ${!isNextEnabled ? 'disabled' : ''}`} 
+        id={currentStep === 5 ? "next-btn-last-templatestep" : "next-btn-templatestep"} 
+        onClick={handleNextClick} 
+        disabled={!isNextEnabled}
+      >
+        {currentStep === 5 ? 'Done' : 'Next'}
       </button>
       {redirectToRoot && <Navigate to="/dashboard" replace />}
     </div>

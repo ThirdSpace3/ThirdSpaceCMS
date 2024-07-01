@@ -1,9 +1,9 @@
 import NavBar from "../components/website/NavBar"
 import React, { useState, useEffect } from "react";
+import Footer from "../components/website/Footer"
 import { db, collection, getDocs } from '../firebaseConfig'; // Assuming Firestore is correctly imported and configured
-import Footer from "../components/website/Footer";
 
-export default function NoPage() {
+export default function About() {
     const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
     const [hasWalletData, setHasWalletData] = useState(false);
     const [accounts, setAccounts] = useState([]);
@@ -41,17 +41,9 @@ export default function NoPage() {
         accounts={accounts}
         setAccounts={setAccounts}
 
-      />                        <div className="comingsoon-container">
-        <h1 className="section-title">Error 404: Not found</h1>
-        <p>
-          Sorry we could not find the page you were looking for!
-        </p>
-        <a href="/home" className="purple-btn">
-          Go Back Home
-        </a>
-      </div>
+      />
 
-      <Footer />
+      <Footer />                        
 
         </>
     )

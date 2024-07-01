@@ -6,168 +6,154 @@ import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import { Link } from 'react-router-dom';
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
+import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
-const JoinUsSection = ({ setSelectedElement, selectElement, openImagePanel, setSelectedColor, onContentChange }) => {
+const JoinUsSection = ({
+  setSelectedElement,
+  openImagePanel,
+  setSelectedColor,
+  onContentChange,
+  handleImageUpload,
+  selectedProjectId,
+  joinUsData
+}) => {
   const { getComponentStyle, updateStyle } = useStyle();
-  const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
+  const { enterReplacementMode, activeComponent, selectedImage } = useImageHistory();
 
-  const [joinUsTitleText, setJoinUsTitleText] = useState(() => {
-    const storedText = localStorage.getItem('joinUsTitleText');
-    return storedText ? storedText : 'Join the community';
+  const defaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-joinus-1.png?alt=media&token=ab70cb1a-9791-4402-b8db-76c1c790ec91";
+
+  const [joinUsContent, setJoinUsContent] = useState({
+    title: 'Join the community',
+    description: 'Join our 400,000+ person community and contribute to a more private and decentralized internet. Start for free.',
+    cta: 'Join Us',
+    imageUrl: defaultImageUrl,
+    ctaLink: { url: '#', openInNewTab: false }
   });
 
-  const [joinUsDescriptionText, setJoinUsDescriptionText] = useState(() => {
-    const storedText = localStorage.getItem('joinUsDescriptionText');
-    return storedText ? storedText : 'Join our 400,000+ person community and contribute to a more private and decentralized internet. Start for free.';
-  });
-
-  const [joinUsCta, setJoinUsCta] = useState(() => {
-    const storedText = localStorage.getItem('joinUsCta');
-    return storedText ? storedText : 'Join Us';
-  });
-
-  const [joinUsImageUrl, setJoinUsImageUrl] = useState("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-joinus-1.png?alt=media&token=ab70cb1a-9791-4402-b8db-76c1c790ec91");
-
-  const JoinUsStyles = getComponentStyle('joinUs');
-  const joinUsTitleStyles = getComponentStyle('joinUsTitle');
-  const joinUsescriptionStyles = getComponentStyle('joinUsDescription');
-  const joinUsCtaStyles = getComponentStyle('joinUs-cta');
-  const [joinUsCtaLink, setJoinUsCtaLink] = useState({
-    url: '#',
-    openInNewTab: false
-  });
-
-  const [imageHeight, setImageHeight] = useState(null);
-  const getImageHeight = (src) => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => resolve(img.height);
-    });
-  };
-
-  const handleCtaTextChange = (newText) => {
-    setJoinUsCta(newText);
-    localStorage.setItem('joinUsCta', newText);
-  };
-
-  const handleCtaLinkChange = (newLink) => {
-    setJoinUsCtaLink(newLink);
-    localStorage.setItem('joinUsCtaLink', JSON.stringify(newLink));
-  };
-
-  const handleTextChange = (newText, textType) => {
-    console.log(`Updating text for ${textType}: ${newText}`);
-    console.log(`Current styles for ${textType}:`, getComponentStyle(textType));
-
-    switch (textType) {
-      case 'joinUsTitle':
-        setJoinUsTitleText(newText);
-        localStorage.setItem('joinUsTitleText', newText);
-        break;
-      case 'joinUsDescription':
-        setJoinUsDescriptionText(newText);
-        localStorage.setItem('joinUsDescriptionText', newText);
-        break;
-      case 'joinUsCta':
-        setJoinUsCta(newText);
-        localStorage.setItem('joinUsCta', newText);
-        break;
-      default:
-        break;
+  useEffect(() => {
+    if (joinUsData) {
+      setJoinUsContent({
+        title: joinUsData.title || 'Join the community',
+        description: joinUsData.description || 'Join our 400,000+ person community and contribute to a more private and decentralized internet. Start for free.',
+        cta: joinUsData.cta || 'Join Us',
+        imageUrl: joinUsData.imageUrl || defaultImageUrl,
+        ctaLink: joinUsData.ctaLink || { url: '#', openInNewTab: false }
+      });
     }
+  }, [joinUsData]);
+
+  useEffect(() => {
+    console.log('Join Us content updated:', joinUsContent);
+  }, [joinUsContent]);
+
+  const joinUsStyles = getComponentStyle('joinUs');
+  const joinUsTitleStyles = getComponentStyle('joinUsTitle');
+  const joinUsDescriptionStyles = getComponentStyle('joinUsDescription');
+  const joinUsCtaStyles = getComponentStyle('joinUs-cta');
+  const [imageHeight, setImageHeight] = useState(null);
+
+  const handleTextChange = async (newText, textType) => {
+    const updatedContent = {
+      ...joinUsContent,
+      [textType]: newText
+    };
+    setJoinUsContent(updatedContent);
     updateStyle(textType, { text: newText });
-    console.log(`Requested style update for ${textType}`);
+    onContentChange(updatedContent);
+
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      await saveComponentData(walletId, selectedProjectId, 'joinUs', updatedContent);
+    }
+  };
+
+  const handleLinkChange = async (newLink) => {
+    const updatedContent = {
+      ...joinUsContent,
+      ctaLink: newLink
+    };
+    setJoinUsContent(updatedContent);
+    onContentChange(updatedContent);
+
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      await saveComponentData(walletId, selectedProjectId, 'joinUs', updatedContent);
+    }
+  };
+
+  const handleImageChange = async (newSrc) => {
+    const updatedContent = {
+      ...joinUsContent,
+      imageUrl: newSrc
+    };
+    setJoinUsContent(updatedContent);
+    onContentChange(updatedContent);
+
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      await saveComponentData(walletId, selectedProjectId, 'joinUs', updatedContent);
+    }
   };
 
   const handleComponentClick = (event, identifier) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log(`${identifier} clicked, setting selected element to '${identifier}'`);
     setSelectedElement(identifier);
-  };
-
-  // Update image interaction to better manage clicks and mode switching
-  const handleImageClick = () => {
-    console.log("Join Us image clicked, opening replacement mode.");
-    enterReplacementMode('JoinUsSection');
-    setSelectedElement('JoinUsImage');
-  };
-
-
-  useEffect(() => {
-    const cssVarName = `--joinUs-background-color`;
-    const storedColor = localStorage.getItem(cssVarName);
-
-    if (storedColor) {
-      setSelectedColor(storedColor);
-      document.documentElement.style.setProperty(cssVarName, storedColor);
+    if (identifier === 'JoinUsImage') {
+      enterReplacementMode(identifier);
     }
-  }, [setSelectedColor]);
+  };
 
-  // Storing text changes in localStorage and updating state
   useEffect(() => {
-    localStorage.setItem('joinUsTitleText', joinUsTitleText);
-    localStorage.setItem('joinUsDescriptionText', joinUsDescriptionText);
-    localStorage.setItem('joinUsCta', joinUsCta);
-    // Inside JoinUsSection, call onContentChange with the updated state
-    onContentChange({
-      title: joinUsTitleText,
-      description: joinUsDescriptionText,
-      cta: joinUsCta,
-      imageUrl: joinUsImageUrl
-    });
-
-  }, [joinUsTitleText, joinUsDescriptionText, joinUsCta]);
-
-  // Update image URL in state and possibly local storage if necessary
-  useEffect(() => {
-    if (activeComponent === 'JoinUsImage' && selectedImage !== joinUsImageUrl) {
-      setJoinUsImageUrl(selectedImage);
-      // Optionally, save to localStorage if you plan to persist images changes
-      // localStorage.setItem('joinUsImageUrl', selectedImage);
+    if (activeComponent === 'JoinUsImage' && selectedImage && selectedImage !== joinUsContent.imageUrl) {
+      handleImageChange(selectedImage);
     }
   }, [selectedImage, activeComponent]);
+
   useEffect(() => {
-    getImageHeight(joinUsImageUrl).then((height) => setImageHeight(height));
-  }, []);
+    const img = new Image();
+    img.src = joinUsContent.imageUrl;
+    img.onload = () => setImageHeight(img.height);
+  }, [joinUsContent.imageUrl]);
+
   return (
-    <div className='sss-product-joinus-main' style={JoinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
+    <div className='sss-product-joinus-main' style={joinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
       <div className="sss-product-joinus">
         <ReusableImage
-          src={joinUsImageUrl}
+          src={joinUsContent.imageUrl}
           alt="Join Us Logo"
-          onClick={handleImageClick}
+          onClick={(event) => handleComponentClick(event, 'JoinUsImage')}
           openImagePanel={openImagePanel}
           selectedImage={activeComponent === 'JoinUsImage' ? selectedImage : null}
-          identifier="JoinUs"
+          identifier="JoinUsImage"
           imageHeight={imageHeight}
+          handleImageUpload={handleImageUpload}
+          onImageChange={handleImageChange}
         />
         <h2 className="sss-product-joinus-title" id='joinUsTitle' onClick={(event) => handleComponentClick(event, 'joinUsTitle')}>
           <EditableText
-            text={joinUsTitleText}
-            onChange={(newText) => handleTextChange(newText, 'joinUsTitle')}
+            text={joinUsContent.title}
+            onChange={(newText) => handleTextChange(newText, 'title')}
             style={joinUsTitleStyles}
           />
         </h2>
         <p className='sss-product-joinus-text' id='joinUsDescription' onClick={(event) => handleComponentClick(event, 'joinUsDescription')} >
           <EditableText
-            text={joinUsDescriptionText}
-            onChange={(newText) => handleTextChange(newText, 'joinUsDescription')}
-            style={joinUsescriptionStyles}
+            text={joinUsContent.description}
+            onChange={(newText) => handleTextChange(newText, 'description')}
+            style={joinUsDescriptionStyles}
           />
         </p>
         <Link onClick={(event) => handleComponentClick(event, 'joinUs-cta')} className='position-relative'>
           <EditableButton
             id='joinUs-cta'
             className="sss-product-joinus-cta"
-            text={joinUsCta}
-            link={joinUsCtaLink}
-            onChange={handleCtaTextChange}
-            onLinkChange={handleCtaLinkChange}
+            text={joinUsContent.cta}
+            link={joinUsContent.ctaLink}
+            onChange={(newText) => handleTextChange(newText, 'cta')}
+            onLinkChange={handleLinkChange}
             style={joinUsCtaStyles}
           />
-
         </Link>
       </div>
     </div>

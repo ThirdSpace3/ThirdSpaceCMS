@@ -9,7 +9,8 @@ const ReusableImage = ({
   identifier,
   openImagePanel,
   imageHeight,
-  handleImageUpload
+  handleImageUpload,
+  onImageChange
 }) => {
   const [showReplaceButton, setShowReplaceButton] = useState(false);
   const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
@@ -18,26 +19,21 @@ const ReusableImage = ({
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    const savedSrc = localStorage.getItem(`imageSrc-${identifier}`);
-    if (savedSrc) {
-      setCurrentSrc(savedSrc);
-    }
-  }, [identifier]);
-
-  useEffect(() => {
-    localStorage.setItem(`imageSrc-${identifier}`, currentSrc);
-  }, [currentSrc, identifier]);
+    setCurrentSrc(src);
+  }, [src]);
 
   useEffect(() => {
     if (activeComponent === identifier && selectedImage && currentSrc !== selectedImage) {
       setCurrentSrc(selectedImage);
       setShowReplaceButton(false);
+      onImageChange(selectedImage); // Notify parent of image change
     }
-  }, [selectedImage, activeComponent, identifier, currentSrc]);
+  }, [selectedImage, activeComponent, identifier, currentSrc, onImageChange]);
 
   const handleImageClick = () => {
     enterReplacementMode(identifier);
     setShowReplaceButton(true);
+    openImagePanel(identifier);
   };
 
   const handleClickOutside = (event) => {
@@ -46,8 +42,11 @@ const ReusableImage = ({
     }
   };
 
-  const onFileChange = (e) => {
-    handleImageUpload(e.target.files[0], identifier);
+  const onFileChange = async (e) => {
+    const file = e.target.files[0];
+    const newSrc = await handleImageUpload(file, identifier);
+    setCurrentSrc(newSrc);
+    onImageChange(newSrc); // Notify parent of image change
   };
 
   useEffect(() => {

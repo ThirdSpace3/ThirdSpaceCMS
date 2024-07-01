@@ -4,31 +4,46 @@ import EditableText from '../../../../components/logiciel/TemplateComponent/Edit
 import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
 import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
+import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
 const PartnersSection = ({
-  settings,
-  handleSettingsChange,
   openImagePanel,
   setSelectedElement,
-  onContentChange
+  onContentChange,
+  handleImageUpload,
+  selectedProjectId,
+  partnersData // Receive the fetched data as props
 }) => {
-  const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
-  const { style, updateStyle, getComponentStyle } = useStyle();
+  const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
+  const { updateStyle, getComponentStyle } = useStyle();
 
-  // State for managing partner title and images
+  const defaultImages = [
+    { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-1.png?alt=media&token=0652a407-10b6-40f5-8253-fbf81fab5c87', id: 'partnerImage-1' },
+    { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-2.png?alt=media&token=5a890cd1-8371-4f0b-bb8f-bf1b2ccf0730', id: 'partnerImage-2' },
+    { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-3.png?alt=media&token=18805e7f-b021-4774-80e5-debc529cfc1f', id: 'partnerImage-3' },
+    { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-4.png?alt=media&token=a2879a2f-d31c-42f7-ab72-261202ab187c', id: 'partnerImage-4' },
+    { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-5.png?alt=media&token=cde19fcb-ce54-44ac-bfda-e1eee1bafb0a', id: 'partnerImage-5' },
+    { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-6.png?alt=media&token=26b39dcb-4ae8-42be-906c-8ea1e5f0b5c9', id: 'partnerImage-6' },
+    { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-7.png?alt=media&token=a5e99cf7-feb6-4bfb-a8f0-282b95d16f20', id: 'partnerImage-7' }
+  ];
+
   const [partnersContent, setPartnersContent] = useState({
     title: 'Trusted by teams at over 1,000 of the world\'s leading organizations',
-    images: [
-      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-1.png?alt=media&token=0652a407-10b6-40f5-8253-fbf81fab5c87', id: 'partnerImage-1' },
-      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-2.png?alt=media&token=5a890cd1-8371-4f0b-bb8f-bf1b2ccf0730', id: 'partnerImage-2' },
-      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-3.png?alt=media&token=18805e7f-b021-4774-80e5-debc529cfc1f', id: 'partnerImage-3' },
-      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-4.png?alt=media&token=a2879a2f-d31c-42f7-ab72-261202ab187c', id: 'partnerImage-4' },
-      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-5.png?alt=media&token=cde19fcb-ce54-44ac-bfda-e1eee1bafb0a', id: 'partnerImage-5' },
-      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-6.png?alt=media&token=26b39dcb-4ae8-42be-906c-8ea1e5f0b5c9', id: 'partnerImage-6' },
-      { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-partners-7.png?alt=media&token=a5e99cf7-feb6-4bfb-a8f0-282b95d16f20', id: 'partnerImage-7' }
-    ]
+    images: defaultImages
   });
 
+  useEffect(() => {
+    if (partnersData) {
+      setPartnersContent({
+        title: partnersData.title || 'Trusted by teams at over 1,000 of the world\'s leading organizations',
+        images: partnersData.images.length ? partnersData.images : defaultImages
+      });
+    }
+  }, [partnersData]);
+
+  useEffect(() => {
+    console.log('Partners content updated:', partnersContent);
+  }, [partnersContent]);
 
   const partnerStyle = getComponentStyle('partners');
   const partnersTitleStyle = getComponentStyle('partnersTitle');
@@ -42,7 +57,11 @@ const PartnersSection = ({
     updateStyle('partnersTitle', { text: newText });
     onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase
+    // Save the specific changes to Firebase if needed
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      await saveComponentData(walletId, selectedProjectId, 'partners', updatedContent);
+    }
   };
 
   const handleComponentClick = (event, identifier) => {
@@ -62,7 +81,11 @@ const PartnersSection = ({
     setPartnersContent(updatedContent);
     onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase
+    // Save the specific changes to Firebase if needed
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      await saveComponentData(walletId, selectedProjectId, 'partners', updatedContent);
+    }
   };
 
   return (
@@ -80,12 +103,12 @@ const PartnersSection = ({
             key={image.id}
             src={image.src}
             alt={`Partner ${index + 1}`}
-            onClick={() => enterReplacementMode()}
-            openImagePanel={() => openImagePanel(image.id)}
+            openImagePanel={openImagePanel}
             onImageChange={(newSrc) => handleImageChange(index, newSrc)}
             selectedImage={activeComponent === image.id ? selectedImage : null}
             style={{ height: '150px', width: 'auto' }} // Adjust as needed
             identifier={image.id}
+            handleImageUpload={handleImageUpload}
           />
         ))}
       </div>

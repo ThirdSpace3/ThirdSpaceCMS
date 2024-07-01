@@ -9,8 +9,9 @@ import BorderSettings from "./RightBarComponents/BorderSettings";
 import BackgroundSettings from "./RightBarComponents/BackgroundSettings";
 import TypographySettings from "./RightBarComponents/TypographySettings";
 import { useImageHistory } from '../../hooks/ImageHistoryContext';
-export default function RightBar({ handleSettingsChange, selectedElement, logChange, selectedColor, setSelectedColor }) {
+export default function RightBar({walletId, handleSettingsChange, selectedElement, logChange, selectedColor, setSelectedColor }) {
     const { addImageToHistory } = useImageHistory();
+    console.log(walletId);
     const [isOpen, setIsOpen] = useState({
       size: true,
       background: true,

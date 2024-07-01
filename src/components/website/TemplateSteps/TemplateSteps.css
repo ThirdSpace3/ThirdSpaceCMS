@@ -62,20 +62,22 @@ body {
   padding: 0 10%;
 }
 .template-title {
-  color: #fff;
-  font-family: Montserrat;
-  font-size: 30px;
-  font-style: normal;
-  font-weight: 800;
+  color: #B6B2FF;
   text-align: center;
+  font-family: "DM Sans";
+  font-size: 45px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 .template-subtitle {
-  color: rgba(255, 255, 255, 0.8);
-  font-family: Inter;
+  color: #817EB5;
+  text-align: center;
+  font-family: "DM Sans";
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  text-align: center;
+  line-height: normal;
 }
 .step-box {
   max-width: 900px;
@@ -100,9 +102,9 @@ body {
   justify-content: center;
 }
 .selectable-button {
-  border-radius: 22px;
-  border: 1.189px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1201.1px;
+border: 1.202px solid rgba(255, 255, 255, 0.08);
+background: rgba(255, 255, 255, 0.10);
   color: #fff;
   text-align: center;
   font-family: var(--inter);
@@ -114,10 +116,14 @@ body {
 }
 .selectable-button:hover {
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50px;
+border: 1.382px solid #4D2F8C;
+background: #16073A;
 }
 .selectable-button.template-selected {
-  background: rgba(255, 255, 255, 0.6) !important;
+  border-radius: 50px;
+border: 1.382px solid #4D2F8C;
+background: #16073A;
 }
 .template-input-box {
   display: flex;
@@ -125,9 +131,9 @@ body {
   gap: 15px;
 }
 .template-input-box input {
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1201.1px;
+  border: 1.202px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.10);
   width: 100%;
   padding: 15px 20px;
   color: var(--white);
@@ -164,13 +170,20 @@ body {
 
 .disabled,
 .disabled * {
+  background: linear-gradient(180deg, rgba(115, 115, 115, 0.00) 0%, rgba(136, 133, 139, 0.32) 100%), rgba(241, 241, 241, 0.12);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;  border: 1.382px solid #4D2F8C;
+  border: 1.382px solid #676767;
   cursor: not-allowed;
+
+
 }
 
-.purple-light-btn:not(.disabled):hover {
-  background: rgba(150, 0, 250, 1); /* Example hover background */
-  cursor: pointer;
-  /* other hover styles here */
+.purple-btn.disabled:hover {
+  cursor: not-allowed;
+  background: linear-gradient(180deg, rgba(115, 115, 115, 0.00) 0%, rgba(136, 133, 139, 0.32) 100%), rgba(241, 241, 241, 0.12);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;  border: 1.382px solid #4D2F8C;
+  border: 1.382px solid #676767;
+
 }
 
 /*==================== ETAPE 2 ====================*/
@@ -189,21 +202,23 @@ body {
   justify-content: center;
 }
 .selectable-button-2 {
-  border-radius: 22px;
-  border: 1.189px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1201.1px;
+  border: 1.202px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.10);
   color: #fff;
   text-align: center;
   font-family: var(--inter);
-  font-size: 16.257px;
+  font-size: 14px;
   font-style: normal;
-  font-weight: 400;
-  padding: 15px 20px;
+  font-weight: 300;
+  padding: 9.676px 22.337px 12.44px 22.116px;
+  justify-content: center;
   width: 250px;
 }
 .selectable-button-2:hover {
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.6);
+  border: 1.382px solid #4D2F8C;
+  background: #16073A;
 }
 @media only screen and (max-height: 800px) {
   .selectable-button,
@@ -220,48 +235,117 @@ body {
   }
 }
 .selectable-button-2.template-selected {
-  background: rgba(255, 255, 255, 0.6) !important;
+  border: 1.382px solid #4D2F8C;
+  background: #16073A;
 }
+
 
 /*==================== ETAPE 3 ====================*/
-
-.solutions-card:hover {
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.2);
-}
-.card-selected {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-.solutions-card {
-  position: relative;
-}
-
-/* Styles pour centrer la div "Coming Soon" */
-.solution-comingsoon {
-  background-color: rgba(0, 0, 0, 0.8);
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
+.template-solutions-row {
   display: flex;
-  justify-content: center;
+align-items: flex-start;
+gap: 39px;
+padding: 0 25px;
+}
+@media screen and (max-width: 1050px) {
+  .template-solutions-row  {
+    scale: 0.85;
+    gap: 20px;
+  
+
+}
+}
+.template-solutions-card {
+  display: flex;
+  width: 294px;
+  height: 383px;
+  padding-top: 20px;
+  padding-bottom: 2px;
+  flex-direction: column;
   align-items: center;
-  height: 100%;
-  width: 100%;
-  border-radius: 15px;
-  color: #fff;
-  font-family: Inter;
+  gap: 20px;
+  border-radius: 10px;
+border: 1px solid var(--washed-blue-washed-blue-900, #2C3A6B);
+background: rgba(3, 0, 20, 0.40);
+backdrop-filter: blur(27.5px);
+}
+
+
+
+.template-solutions-card-title {
+  color: var(--Neutrals-neutrals-4, #F0F0F1);
+  text-align: center;
+  font-family: "DM Sans";
   font-size: 20px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   line-height: normal;
 }
 
-.solution-comingsoon:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+.template-solutions-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
+
+.template-solutions-img-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.template-solutions-img {
+  max-width: 100%;
+  border-radius: 20px;
+}
+.template-purple-btn {
+  border-radius: 11.058px;
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
+  border: 1.382px solid #4D2F8C;
+  display: flex;
+  padding: 9.676px 22.337px 12.44px 22.116px;
+  align-items: flex-start;
+  color: #F4F0FF;
+  font-family: Inter;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 27.645px; /* 142.857% */
+
+}
+.template-purple-btn:hover {
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgb(118 79 167 / 32%) 100%), rgba(113, 47, 255, 0.12);
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+.template-grey-btn {
+  border-radius: 11.058px;
+  background: linear-gradient(180deg, rgba(115, 115, 115, 0.00) 0%, rgba(136, 133, 139, 0.32) 100%), rgba(241, 241, 241, 0.12);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;  border: 1.382px solid #4D2F8C;
+  border: 1.382px solid #676767;
+  display: flex;
+  padding: 9.676px 22.337px 12.44px 22.116px;
+  align-items: flex-start;
+  color: #F4F0FF;
+  font-family: Inter;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 27.645px; /* 142.857% */
+  gap: 5px;
+
+}
+.template-grey-btn:hover {
+  background: linear-gradient(180deg, rgba(115, 115, 115, 0.00) 0%, rgba(136, 133, 139, 0.62) 100%), rgba(241, 241, 241, 0.12);
+  transition: 0.3s ease;
+  cursor: not-allowed;
+}
+
 
 .final-btn-box {
   display: block;
@@ -410,6 +494,9 @@ body {
   max-width: 220px;
   overflow: hidden;
   border-radius: 20px;
+  border-radius: 20px;
+  border: 2px solid rgba(182, 178, 255, 0.50);
+  
 }
 
 .templates-box img {
@@ -424,16 +511,13 @@ body {
   border: 2px solid var(--text-editor);
 }
 .templates-hover {
-  display: none; /* Cacher la div par défaut */
+  display: block; /* Cacher la div par défaut */
   position: absolute;
   top: 0;
   left: 0;
   border-radius: 20px;
-  background: linear-gradient(
-    0deg,
-    rgba(89, 86, 232, 0.8) 0%,
-    rgba(89, 86, 232, 0.8) 100%
-  );
+  border: 2px solid rgba(182, 178, 255, 0.50);
+  background: rgba(3, 0, 20, 0.60);
   width: 100%;
   height: 100%;
   text-align: center;
@@ -453,27 +537,17 @@ body {
 }
 
 .templates-hover-content a {
-  border-radius: 28px;
-  background: var(--white, #fff);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  color: var(--Main-color---diteur, #5956e8);
-  font-family: Montserrat;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  padding: 5px 10px;
-  min-width: 130px;
-  cursor: pointer;
+width: 80%;
+display: flex;
+justify-content: center;
+font-size: 17px;
+padding: 5px 20px;
 }
 
 .templates-infos {
   color: #fff;
-  text-align: center;
-  font-family: Montserrat;
+  text-align: start;
+  font-family: "DM Sans";
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -502,9 +576,10 @@ body {
   align-items: center;
   justify-content: center;
   gap: 5px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 15px 40px;
+  border-radius: 1201.1px;
+  border: 1.202px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 12px 30px;
 }
 .progressbar {
   display: flex;
@@ -518,10 +593,10 @@ body {
 }
 .progressbar-number {
   color: #64748b;
-  font-family: Montserrat;
-  font-size: 16.667px;
+  font-family: var(--inter);
+  font-size: 12px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   line-height: normal;
   border-radius: 41.667px;
   border: 1.667px solid #64748b;
@@ -533,8 +608,8 @@ body {
 }
 .progressbar-text {
   color: #64748b;
-  font-family: Inter;
-  font-size: 20px;
+  font-family: var(--inter);
+  font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;

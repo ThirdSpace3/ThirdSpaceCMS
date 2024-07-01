@@ -46,25 +46,7 @@
     color: var(--white);
     cursor: pointer;
   }
-  .topbar-propulse-btn {
-    font-family: var(--inter);
-    font-size: 14px;
-    color: var(--white);
-    display: flex;
-    padding: 6px 16px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    background-color: var(--main-color);
-    border-radius: 30px;
-    border: none;
-  }
-  .topbar-propulse-btn:hover {
-    color: var(--white);
-    display: flex;
-    background-color: #5b0097;
-    cursor: pointer;
-  }
+ 
   .topbar-device-btn {
     color: var(--not-selected);
     font-size: 20px;

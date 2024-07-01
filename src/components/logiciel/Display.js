@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import LeftBar from './LeftBar';
 import TopBar from './TopBar';
@@ -22,25 +22,25 @@ export default function Display() {
   const [imageHistory, setImageHistory] = useState([]);
   const [projects, setProjects] = useState([]);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-  const { templateName } = useParams();
+  const { projectName, templateName } = useParams();
   const [activePanel, setActivePanel] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const { clearFocus } = useImageHistory();
+  const { clearFocus, addImageToHistory } = useImageHistory();
   const [selectedColor, setSelectedColor] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [TemplateContent, setTemplateContent] = useState({});
 
-  const walletId = sessionStorage.getItem('userAccount');
+  const walletId = useMemo(() => sessionStorage.getItem('userAccount') || localStorage.getItem('userAccount'), []);
   console.log(walletId);
 
-  const checkAndSetLogin = () => {
+  const checkAndSetLogin = useCallback(() => {
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId) {
       localStorage.setItem('userAccount', walletId);
     }
-  };
+  }, []);
 
-  const handleSettingsChange = (elementId, newSettings) => {
+  const handleSettingsChange = useCallback((elementId, newSettings) => {
     setSettings(prevSettings => {
       const updatedSettings = {
         ...prevSettings,
@@ -52,25 +52,24 @@ export default function Display() {
       localStorage.setItem('settings', JSON.stringify(updatedSettings));
       return updatedSettings;
     });
-  };
+  }, []);
 
-  const undo = () => {
+  const undo = useCallback(() => {
     if (currentHistoryIndex > 0) {
       setCurrentHistoryIndex(currentHistoryIndex - 1);
       setSettings(settingsHistory[currentHistoryIndex - 1]);
     }
-  };
+  }, [currentHistoryIndex, settingsHistory]);
 
-  const redo = () => {
+  const redo = useCallback(() => {
     if (currentHistoryIndex < settingsHistory.length - 1) {
       setCurrentHistoryIndex(currentHistoryIndex + 1);
       setSettings(settingsHistory[currentHistoryIndex + 1]);
     }
-  };
+  }, [currentHistoryIndex, settingsHistory]);
 
-  const saveSettings = async (content) => {
-    console.log("Saving settings with content:", content);  // Log the content being saved
-    const walletId = sessionStorage.getItem("userAccount");
+  const saveSettings = useCallback(async () => {
+    const walletId = sessionStorage.getItem("userAccount") || localStorage.getItem("userAccount");
     if (!walletId) {
       alert("No wallet ID found. Please log in.");
       return;
@@ -79,48 +78,79 @@ export default function Display() {
       alert("No project selected. Please select a project.");
       return;
     }
-
+  
     try {
-      const sections = Object.keys(content);
+      const sections = Object.keys(TemplateContent);
       for (const section of sections) {
-        const sectionContent = content[section];
-        const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/Text/content/${section}`;
+        const sectionContent = TemplateContent[section];
+        if (Object.keys(sectionContent).length === 0) continue; // Skip empty content
+  
+        const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/${section}`;
         const settingsDoc = doc(db, settingsDocPath);
+        console.log(sectionContent);
 
         // Handle image uploads
         if (sectionContent.imageFile) {
           const file = sectionContent.imageFile;
-          console.log("Uploading file:", file);
           const storageRef = ref(storage, `images/${file.name}`);
           await uploadBytes(storageRef, file);
           const downloadURL = await getDownloadURL(storageRef);
-          console.log("Uploaded file URL:", downloadURL);
           sectionContent.image = downloadURL;
           delete sectionContent.imageFile;
         }
-
+  
+        // Ensure the image URL is being updated
         await setDoc(settingsDoc, sectionContent, { merge: true });
-        console.log("Saved", settingsDocPath);
       }
-
     } catch (error) {
       console.error("Error saving settings:", error);
       alert("Failed to save settings. See console for more details.");
     }
-  };
+  }, [TemplateContent, selectedProjectId]);
 
-  const handlePreview = () => {
-    setIsPreviewMode(!isPreviewMode);
-  };
+  const handleImageUpload = useCallback(async (file, identifier) => {
+    try {
+      const storageRef = ref(storage, `ImagesUsers/${walletId}/${selectedProjectId}/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+  
+      // Update the image history
+      const newImage = { url: downloadURL, category: "Photo", hash: identifier };
+      addImageToHistory(newImage);
+  
+      // Update the ReusableImage local storage
+      localStorage.setItem(`imageSrc-${identifier}`, downloadURL);
+  
+      // Update the TemplateContent state
+      setTemplateContent(prevContent => {
+        const updatedContent = { ...prevContent };
+        if (!updatedContent.header) {
+          updatedContent.header = {};
+        }
+        updatedContent.header.image = downloadURL;
+        return updatedContent;
+      });
+  
+      return downloadURL;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Failed to upload image. See console for more details.");
+      return null;
+    }
+  }, [addImageToHistory, walletId, selectedProjectId]);
 
-  const openImagePanel = () => {
+  const handlePreview = useCallback(() => {
+    setIsPreviewMode(prev => !prev);
+  }, []);
+
+  const openImagePanel = useCallback(() => {
     setActivePanel("images");
-  };
+  }, []);
 
   useEffect(() => {
     checkAndSetLogin();
-    setActiveEditor(templateName);
-  }, [templateName]);
+    setActiveEditor(projectName);
+  }, [projectName, checkAndSetLogin]);
 
   useEffect(() => {
     const handleGlobalClick = (event) => {
@@ -136,14 +166,14 @@ export default function Display() {
     };
   }, [clearFocus]);
 
-  const logChange = (elementId, newStyles) => {
+  const logChange = useCallback((elementId, newStyles) => {
     const timestamp = new Date().toISOString();
     const logEntry = { timestamp, elementId, newStyles };
     const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
     logs.push(logEntry);
     sessionStorage.setItem('editLogs', JSON.stringify(logs));
     sessionStorage.clear('editLogs');
-  };
+  }, []);
 
   const applyStylesFromLogs = useCallback(() => {
     const logs = JSON.parse(sessionStorage.getItem('editLogs')) || [];
@@ -226,22 +256,20 @@ export default function Display() {
           handleEditorChange={(editor) => setActiveEditor(editor)}
           visiblePanel={activePanel}
           setVisiblePanel={setActivePanel}
-          walletId={walletId}
           selectedProjectId={selectedProjectId}
-          setTemplateContent={setTemplateContent} // Add this line
-          selectedElement={selectedElement} // Add this line
         />
 
       )}
       <div className="displayColumnWrapper">
         <TopBar
-          onSaveClick={() => saveSettings(TemplateContent)}
+          onSaveClick={saveSettings} 
           onUndoClick={undo}
           onRedoClick={redo}
           onDeviceChange={(size) => setSelectedDeviceSize(size)}
           onPreview={handlePreview}
           showPopup={showPopup}
           setShowPopup={setShowPopup}
+          projectName={selectedProjectId}
         />
         <Canva
           TemplateContent={TemplateContent}
@@ -261,6 +289,7 @@ export default function Display() {
           setSelectedColor={setSelectedColor}
           saveSettings={saveSettings}
           selectedProjectId={selectedProjectId}
+          handleImageUpload={handleImageUpload}  // Pass the image upload handler
         />
       </div>
       {!isPreviewMode && (
@@ -271,6 +300,7 @@ export default function Display() {
           logChange={logChange}
           selectedColor={selectedColor}
           setSelectedColor={setSelectedColor}
+          walletId={walletId}
         />
       )}
       <ReportBugBTN />
