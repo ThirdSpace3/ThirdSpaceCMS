@@ -11,12 +11,12 @@ const initialTemplates = [
     component: SSSProduct,
     screenshot: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FTemplateScreenshot%2FSSSProductscreenshot.png?alt=media&token=521c4bc7-28d0-4e2c-aa88-fe3c0b525101",
   },
-  {
-    id: "SSSPortfolio",
-    name: "SSSPortfolio",
-    component: SSSPortfolio,
-    screenshot: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FTemplateScreenshot%2FSSSPortfolioscreenshot.png?alt=media&token=59869598-73e0-4bd4-958c-f725e6afb1ff",
-  },
+  // {
+  //   id: "SSSPortfolio",
+  //   name: "SSSPortfolio",
+  //   component: SSSPortfolio,
+  //   screenshot: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FTemplateScreenshot%2FSSSPortfolioscreenshot.png?alt=media&token=59869598-73e0-4bd4-958c-f725e6afb1ff",
+  // },
 ];
 
 const TemplateStep4 = ({
@@ -102,7 +102,7 @@ const TemplateStep4 = ({
                         >
                           Start Editing
                         </Link>
-                        <a
+                        {/* <a
                           className="grey-btn"
 
                           onClick={(e) => {
@@ -111,7 +111,7 @@ const TemplateStep4 = ({
                           }}
                         >
                           Preview
-                        </a>
+                        </a> */}
                       </div>
                     </div>
                   )}

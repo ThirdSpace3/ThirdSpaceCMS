@@ -15,7 +15,8 @@ const Navbar = ({
     sections,
     selectedProjectId,
     handleImageUpload,
-    navbarData // Receive navbar data as props
+    navbarData, // Receive navbar data as props
+    selectedElement
 }) => {
     const { selectedImage, enterReplacementMode } = useImageHistory();
     const [navbarContent, setNavbarContent] = useState({
@@ -24,7 +25,7 @@ const Navbar = ({
         navfeatures: 'Features',
         joinUsNav: 'Join Us',
         joinUsNavLink: { url: '#', openInNewTab: false },
-        image: ''
+        image: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-logo.png?alt=media&token=7e46320d-7e7d-45a2-9684-6ac565f97c71'
     });
 
     const [imageHeight, setImageHeight] = useState(null);
@@ -45,7 +46,7 @@ const Navbar = ({
                 navfeatures: navbarData.navfeatures || 'Features',
                 joinUsNav: navbarData.joinUsNav || 'Join Us',
                 joinUsNavLink: navbarData.joinUsNavLink || { url: '#', openInNewTab: false },
-                image: navbarData.image || ''
+                image: navbarData.image || navbarContent.image
             });
         }
     }, [navbarData]);
@@ -65,6 +66,7 @@ const Navbar = ({
         event.preventDefault(); 
         event.stopPropagation(); 
         setSelectedElement(identifier);
+        console.log(identifier);
         if (sections[identifier] && sections[identifier].current) {
             sections[identifier].current.scrollIntoView({ behavior: 'smooth' });
         }
@@ -124,12 +126,14 @@ const Navbar = ({
                 </div>
                 <ul className="sss-product-navbar-links-box">
                     <li>
-                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} onClick={(event) => handleComponentClick(event, 'header')}>
+                        <Link className="sss-product-navbar-links" id='navbar-link-header' onDoubleClick={handleDoubleClick} onClick={(event) => handleComponentClick(event, 'navbar-link-header')}>
                             <EditableText
                                 text={navbarContent.home}
                                 onChange={(newText) => handleTextChange(newText, 'home')}
                                 style={homeStyles}
                                 id='home'
+                                setSelectedColor={setSelectedColor}
+                                selectedElement={selectedElement}
                             />
                         </Link>
                     </li>
@@ -140,6 +144,8 @@ const Navbar = ({
                                 text={navbarContent.navabout}
                                 onChange={(newText) => handleTextChange(newText, 'navabout')}
                                 style={navaboutStyles}
+                                setSelectedColor={setSelectedColor}
+                                selectedElement={selectedElement}
                             />
                         </Link>
                     </li>
@@ -150,6 +156,8 @@ const Navbar = ({
                                 text={navbarContent.navfeatures}
                                 onChange={(newText) => handleTextChange(newText, 'navfeatures')}
                                 style={featuresStyles}
+                                setSelectedColor={setSelectedColor}
+                                selectedElement={selectedElement}
                             />
                         </Link>
                     </li>
