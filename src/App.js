@@ -20,12 +20,13 @@ import GetStartedMobile from "./components/website/GetStartedMobile";
 import Agency from "./pages/Agency";
 import Builder from "./pages/Builder";
 import Academy from "./pages/Academy";
-import ShareProject from "./components/logiciel/ShareProject";
 
-const TRACKING_ID = "G-83NKPT3B9E"; // Replace with your Google Analytics tracking ID
-ReactGA.initialize(TRACKING_ID);
+import About from "./pages/About";
 
 export default function App() {
+  // const TRACKING_ID = "G-83NKPT3B9E"; 
+  // ReactGA.initialize(TRACKING_ID);
+  
   return (
     <div>
       <HashRouter>
@@ -49,6 +50,7 @@ export default function App() {
               <Route path="/3s-agency" element={<Agency />} />
               <Route path="/3s-builder" element={<Builder />} />
               <Route path="/3s-academy" element={<Academy />} />
+              <Route path="/about" element={<About />} />
               <Route
                 path="/builder/:templateName"
                 element={<Display />}

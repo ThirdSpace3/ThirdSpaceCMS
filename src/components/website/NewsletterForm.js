@@ -12,7 +12,7 @@ const SubscriptionForm = () => {
       return;
     }
     try {
-      await addDoc(collection(db, 'NewsletterSubscriptions'), {
+      await addDoc(collection(db, 'UserContactInfos', "Contact", "Newsletter"), {
         email: email,
         timestamp: serverTimestamp()
       });
