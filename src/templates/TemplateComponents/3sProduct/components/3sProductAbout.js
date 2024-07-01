@@ -7,7 +7,7 @@ import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
 const AboutSection = ({
-  handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor, onContentChange, handleImageUpload, selectedProjectId
+  handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor, onContentChange, handleImageUpload, selectedProjectId, aboutData // Receive the fetched data as props
 }) => {
   const { selectedImage, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
@@ -28,75 +28,50 @@ const AboutSection = ({
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (selectedProjectId) {
-        const walletId = sessionStorage.getItem("userAccount");
-        if (walletId) {
-          try {
-            const data = await fetchComponentData(walletId, selectedProjectId, 'about');
-            console.log('Fetched about data:', data); // Debug log
-            if (data) {
-              setAboutContent({
-                title: data.title || 'The best features to help you create all your projects',
-                description: data.description || 'Apsum dolor sit amet consectetur...',
-                images: data.images.length ? data.images : defaultImages
-              });
-            }
-          } catch (error) {
-            console.error('Error fetching about data:', error);
-          }
-        }
-      }
-    };
-
-    fetchData();
-  }, [selectedProjectId]);
+    if (aboutData) {
+      setAboutContent({
+        title: aboutData.title || 'The best features to help you create all your projects',
+        description: aboutData.description || 'Apsum dolor sit amet consectetur...',
+        images: aboutData.images.length ? aboutData.images : defaultImages
+      });
+    }
+  }, [aboutData]);
 
   const aboutStyles = getComponentStyle('about');
   const aboutTitleStyle = getComponentStyle('title');
   const aboutDescriptionStyles = getComponentStyle('description');
 
   const handleTextChange = (newText, textType) => {
-    setAboutContent(prev => ({
-      ...prev,
-      [textType]: newText
-    }));
-    updateStyle(textType, { text: newText });
-    onContentChange({
+    const updatedContent = {
       ...aboutContent,
       [textType]: newText
-    });
+    };
+    setAboutContent(updatedContent);
+    updateStyle(textType, { text: newText });
+    onContentChange(updatedContent);
 
     // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
-      saveComponentData(walletId, selectedProjectId, 'about', {
-        ...aboutContent,
-        [textType]: newText
-      });
+      saveComponentData(walletId, selectedProjectId, 'about', updatedContent);
     }
   };
 
   const handleImageChange = (index, newSrc) => {
     const updatedImages = [...aboutContent.images];
     updatedImages[index].src = newSrc;
-    setAboutContent(prev => ({
-      ...prev,
-      images: updatedImages
-    }));
-    selectImage(newSrc);
-    onContentChange({
+    const updatedContent = {
       ...aboutContent,
       images: updatedImages
-    });
+    };
+    setAboutContent(updatedContent);
+    selectImage(newSrc);
+    onContentChange(updatedContent);
 
     // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
-      saveComponentData(walletId, selectedProjectId, 'about', {
-        ...aboutContent,
-        images: updatedImages
-      });
+      saveComponentData(walletId, selectedProjectId, 'about', updatedContent);
     }
   };
 
@@ -148,6 +123,11 @@ const AboutSection = ({
               identifier={`aboutImage-${index}`}
               handleImageUpload={handleImageUpload}
             />
+             <EditableText
+            text={aboutContent.description}
+            onChange={(text) => handleTextChange(text, 'description')}
+            style={{ ...aboutDescriptionStyles }}
+          />
           </div>
         ))}
       </div>

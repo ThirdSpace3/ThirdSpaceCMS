@@ -13,7 +13,8 @@ const Footer = ({
   setSelectedColor,
   onContentChange,
   handleImageUpload,
-  selectedProjectId
+  selectedProjectId,
+  footerData // Receive footer data as props
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
@@ -31,32 +32,18 @@ const Footer = ({
   const [footerContent, setFooterContent] = useState(defaultFooterContent);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (selectedProjectId) {
-        const walletId = sessionStorage.getItem("userAccount");
-        if (walletId) {
-          try {
-            const data = await fetchComponentData(walletId, selectedProjectId, 'footer');
-            if (data) {
-              setFooterContent({
-                footerText: data.footerText || defaultFooterContent.footerText,
-                homeText: data.homeText || defaultFooterContent.homeText,
-                aboutText: data.aboutText || defaultFooterContent.aboutText,
-                featuresText: data.featuresText || defaultFooterContent.featuresText,
-                logoSrc: data.logoSrc || defaultFooterContent.logoSrc,
-                twitterSrc: data.twitterSrc || defaultFooterContent.twitterSrc,
-                linkedInSrc: data.linkedInSrc || defaultFooterContent.linkedInSrc
-              });
-            }
-          } catch (error) {
-            console.error('Error fetching footer data:', error);
-          }
-        }
-      }
-    };
-
-    fetchData();
-  }, [selectedProjectId]);
+    if (footerData) {
+      setFooterContent({
+        footerText: footerData.footerText || defaultFooterContent.footerText,
+        homeText: footerData.homeText || defaultFooterContent.homeText,
+        aboutText: footerData.aboutText || defaultFooterContent.aboutText,
+        featuresText: footerData.featuresText || defaultFooterContent.featuresText,
+        logoSrc: footerData.logoSrc || defaultFooterContent.logoSrc,
+        twitterSrc: footerData.twitterSrc || defaultFooterContent.twitterSrc,
+        linkedInSrc: footerData.linkedInSrc || defaultFooterContent.linkedInSrc
+      });
+    }
+  }, [footerData]);
 
   const handleTextChange = (newText, textType) => {
     setFooterContent(prev => ({
@@ -69,7 +56,6 @@ const Footer = ({
       [textType]: newText
     });
 
-    // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
       saveComponentData(walletId, selectedProjectId, 'footer', {
@@ -89,7 +75,6 @@ const Footer = ({
       [identifier]: newSrc
     });
 
-    // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
       saveComponentData(walletId, selectedProjectId, 'footer', {
@@ -127,7 +112,7 @@ const Footer = ({
         <ReusableImage
           src={footerContent.logoSrc}
           alt="Footer Logo"
-          onClick={() => enterReplacementMode('FooterLogo')}
+          onClick={() => handleComponentClick(null, 'logoSrc')}
           openImagePanel={openImagePanel}
           identifier="logoSrc"
           imageHeight="50px"
@@ -161,7 +146,7 @@ const Footer = ({
           <ReusableImage
             src={footerContent.twitterSrc}
             alt="Twitter"
-            onClick={() => enterReplacementMode('FooterTwitter')}
+            onClick={() => handleComponentClick(null, 'twitterSrc')}
             identifier="twitterSrc"
             imageHeight="30px"
             handleImageUpload={handleImageUpload}
@@ -170,7 +155,7 @@ const Footer = ({
           <ReusableImage
             src={footerContent.linkedInSrc}
             alt="LinkedIn"
-            onClick={() => enterReplacementMode('FooterLinkedIn')}
+            onClick={() => handleComponentClick(null, 'linkedInSrc')}
             identifier="linkedInSrc"
             imageHeight="30px"
             handleImageUpload={handleImageUpload}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/feature.css';
 import { Link } from 'react-router-dom';
-
 import EditableText from '../../../../components/logiciel/TemplateComponent/EditableText';
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
 import ReusableImage from '../../../../components/logiciel/TemplateComponent/ReusableImage';
@@ -9,7 +8,7 @@ import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
-const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor, onContentChange, handleImageUpload, selectedProjectId }) => {
+const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor, onContentChange, handleImageUpload, selectedProjectId, featuresData }) => {
   const { getComponentStyle } = useStyle();
   const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
 
@@ -19,7 +18,6 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
     { src: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-feature-3.png?alt=media&token=4b618f41-4413-463e-b04d-f785eac8c15f', id: 'featureImage-3' }
   ];
 
-  // State for text fields including descriptions
   const [featuresContent, setFeaturesContent] = useState({
     title: 'Essential apps that protect your documents',
     endToEnd: {
@@ -42,44 +40,29 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (selectedProjectId) {
-        const walletId = sessionStorage.getItem("userAccount");
-        if (walletId) {
-          try {
-            const data = await fetchComponentData(walletId, selectedProjectId, 'features');
-            console.log('Fetched features data:', data); // Debug log
-            if (data) {
-              setFeaturesContent({
-                title: data.title || 'Essential apps that protect your documents',
-                endToEnd: {
-                  title: data.endToEnd?.title || 'End-to-end encrypted inbox and messages',
-                  description: data.endToEnd?.description || 'Rorem ipsum dolor sit amet consectetur. Proin dignissim tortor mauris viverra sed volutpat mauris. Amet nisi amet commodo adipiscing ut imperdiet nunc.'
-                },
-                mobileApps: {
-                  title: data.mobileApps?.title || 'Mobile applications',
-                  description: data.mobileApps?.description || 'Prem ipsum dolor sit amet consectetur. Viverra sed dignissim risus aliquet condimentum. Vulputate varius feugiat egestas congue.'
-                },
-                uploadShare: {
-                  title: data.uploadShare?.title || 'Upload, share, and preview any file',
-                  description: data.uploadShare?.description || 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.'
-                },
-                joinUs: {
-                  text: data.joinUs?.text || 'Join Us',
-                  link: data.joinUs?.link || { url: '#', openInNewTab: false }
-                },
-                images: data.images.length ? data.images : defaultImages
-              });
-            }
-          } catch (error) {
-            console.error('Error fetching features data:', error);
-          }
-        }
-      }
-    };
-
-    fetchData();
-  }, [selectedProjectId]);
+    if (featuresData) {
+      setFeaturesContent({
+        title: featuresData.title || 'Essential apps that protect your documents',
+        endToEnd: {
+          title: featuresData.endToEnd?.title || 'End-to-end encrypted inbox and messages',
+          description: featuresData.endToEnd?.description || 'Rorem ipsum dolor sit amet consectetur. Proin dignissim tortor mauris viverra sed volutpat mauris. Amet nisi amet commodo adipiscing ut imperdiet nunc.'
+        },
+        mobileApps: {
+          title: featuresData.mobileApps?.title || 'Mobile applications',
+          description: featuresData.mobileApps?.description || 'Prem ipsum dolor sit amet consectetur. Viverra sed dignissim risus aliquet condimentum. Vulputate varius feugiat egestas congue.'
+        },
+        uploadShare: {
+          title: featuresData.uploadShare?.title || 'Upload, share, and preview any file',
+          description: featuresData.uploadShare?.description || 'Tellus et adipiscing sit sit mauris pharetra bibendum. Ligula massa netus nulla ultricies purus.'
+        },
+        joinUs: {
+          text: featuresData.joinUs?.text || 'Join Us',
+          link: featuresData.joinUs?.link || { url: '#', openInNewTab: false }
+        },
+        images: featuresData.images.length ? featuresData.images : defaultImages
+      });
+    }
+  }, [featuresData]);
 
   const featureStyles = getComponentStyle('features');
   const featureTitleStyles = getComponentStyle('featuresTitle');

@@ -76,6 +76,7 @@ export const ImageHistoryProvider = ({ children }) => {
     return (
         <ImageHistoryContext.Provider value={{
             imageHistory,
+            setImageHistory, // Ensure setImageHistory is included
             addImageToHistory,
             removeImageFromHistory,
             selectedImage,

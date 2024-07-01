@@ -11,7 +11,8 @@ const PartnersSection = ({
   setSelectedElement,
   onContentChange,
   handleImageUpload,
-  selectedProjectId
+  selectedProjectId,
+  partnersData // Receive the fetched data as props
 }) => {
   const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
   const { updateStyle, getComponentStyle } = useStyle();
@@ -32,28 +33,17 @@ const PartnersSection = ({
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (selectedProjectId) {
-        const walletId = sessionStorage.getItem("userAccount");
-        if (walletId) {
-          try {
-            const data = await fetchComponentData(walletId, selectedProjectId, 'partners');
-            console.log('Fetched partners data:', data); // Debug log
-            if (data) {
-              setPartnersContent({
-                title: data.title || 'Trusted by teams at over 1,000 of the world\'s leading organizations',
-                images: data.images.length ? data.images : defaultImages
-              });
-            }
-          } catch (error) {
-            console.error('Error fetching partners data:', error);
-          }
-        }
-      }
-    };
+    if (partnersData) {
+      setPartnersContent({
+        title: partnersData.title || 'Trusted by teams at over 1,000 of the world\'s leading organizations',
+        images: partnersData.images.length ? partnersData.images : defaultImages
+      });
+    }
+  }, [partnersData]);
 
-    fetchData();
-  }, [selectedProjectId]);
+  useEffect(() => {
+    console.log('Partners content updated:', partnersContent);
+  }, [partnersContent]);
 
   const partnerStyle = getComponentStyle('partners');
   const partnersTitleStyle = getComponentStyle('partnersTitle');

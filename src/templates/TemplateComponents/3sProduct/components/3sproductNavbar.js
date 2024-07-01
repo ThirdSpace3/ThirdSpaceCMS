@@ -5,7 +5,6 @@ import ReusableImage from '../../../../components/logiciel/TemplateComponent/Reu
 import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
-import { fetchComponentData } from '../../../../hooks/Fetchprojects';
 import '../css/navbar.css';
 
 const Navbar = ({
@@ -15,7 +14,8 @@ const Navbar = ({
     onContentChange,
     sections,
     selectedProjectId,
-    handleImageUpload
+    handleImageUpload,
+    navbarData // Receive navbar data as props
 }) => {
     const { selectedImage, enterReplacementMode } = useImageHistory();
     const [navbarContent, setNavbarContent] = useState({
@@ -37,32 +37,18 @@ const Navbar = ({
     const joinUsStylesNav = getComponentStyle('navbar-cta');
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (selectedProjectId) {
-                const walletId = sessionStorage.getItem("userAccount");
-                if (walletId) {
-                    try {
-                        const data = await fetchComponentData(walletId, selectedProjectId, 'navbar');
-                        console.log('Fetched navbar data:', data); // Debug log
-                        if (data) {
-                            setNavbarContent({
-                                home: data.home || 'Home',
-                                navabout: data.navabout || 'About',
-                                navfeatures: data.navfeatures || 'Features',
-                                joinUsNav: data.joinUsNav || 'Join Us',
-                                joinUsNavLink: data.joinUsNavLink || { url: '#', openInNewTab: false },
-                                image: data.image || ''
-                            });
-                        }
-                    } catch (error) {
-                        console.error('Error fetching navbar data:', error);
-                    }
-                }
-            }
-        };
-
-        fetchData();
-    }, [selectedProjectId]);
+        if (navbarData) {
+            console.log('Fetched navbar data:', navbarData);
+            setNavbarContent({
+                home: navbarData.home || 'Home',
+                navabout: navbarData.navabout || 'About',
+                navfeatures: navbarData.navfeatures || 'Features',
+                joinUsNav: navbarData.joinUsNav || 'Join Us',
+                joinUsNavLink: navbarData.joinUsNavLink || { url: '#', openInNewTab: false },
+                image: navbarData.image || ''
+            });
+        }
+    }, [navbarData]);
 
     useEffect(() => {
         const getImageHeight = (src) => {

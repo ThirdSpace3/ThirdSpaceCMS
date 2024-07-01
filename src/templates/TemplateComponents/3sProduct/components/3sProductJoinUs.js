@@ -8,9 +8,17 @@ import { Link } from 'react-router-dom';
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
 import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
-const JoinUsSection = ({ setSelectedElement, openImagePanel, setSelectedColor, onContentChange, handleImageUpload, selectedProjectId }) => {
+const JoinUsSection = ({
+  setSelectedElement,
+  openImagePanel,
+  setSelectedColor,
+  onContentChange,
+  handleImageUpload,
+  selectedProjectId,
+  joinUsData
+}) => {
   const { getComponentStyle, updateStyle } = useStyle();
-  const { enterReplacementMode, activeComponent, selectImage, selectedImage } = useImageHistory();
+  const { enterReplacementMode, activeComponent, selectedImage } = useImageHistory();
 
   const defaultImageUrl = "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-joinus-1.png?alt=media&token=ab70cb1a-9791-4402-b8db-76c1c790ec91";
 
@@ -23,30 +31,20 @@ const JoinUsSection = ({ setSelectedElement, openImagePanel, setSelectedColor, o
   });
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (selectedProjectId) {
-        const walletId = sessionStorage.getItem("userAccount");
-        if (walletId) {
-          try {
-            const data = await fetchComponentData(walletId, selectedProjectId, 'joinUs');
-            if (data) {
-              setJoinUsContent({
-                title: data.title || 'Join the community',
-                description: data.description || 'Join our 400,000+ person community and contribute to a more private and decentralized internet. Start for free.',
-                cta: data.cta || 'Join Us',
-                imageUrl: data.imageUrl || defaultImageUrl,
-                ctaLink: data.ctaLink || { url: '#', openInNewTab: false }
-              });
-            }
-          } catch (error) {
-            console.error('Error fetching joinUs data:', error);
-          }
-        }
-      }
-    };
+    if (joinUsData) {
+      setJoinUsContent({
+        title: joinUsData.title || 'Join the community',
+        description: joinUsData.description || 'Join our 400,000+ person community and contribute to a more private and decentralized internet. Start for free.',
+        cta: joinUsData.cta || 'Join Us',
+        imageUrl: joinUsData.imageUrl || defaultImageUrl,
+        ctaLink: joinUsData.ctaLink || { url: '#', openInNewTab: false }
+      });
+    }
+  }, [joinUsData]);
 
-    fetchData();
-  }, [selectedProjectId]);
+  useEffect(() => {
+    console.log('Join Us content updated:', joinUsContent);
+  }, [joinUsContent]);
 
   const joinUsStyles = getComponentStyle('joinUs');
   const joinUsTitleStyles = getComponentStyle('joinUsTitle');
@@ -54,63 +52,46 @@ const JoinUsSection = ({ setSelectedElement, openImagePanel, setSelectedColor, o
   const joinUsCtaStyles = getComponentStyle('joinUs-cta');
   const [imageHeight, setImageHeight] = useState(null);
 
-  const handleTextChange = (newText, textType) => {
-    setJoinUsContent(prev => ({
-      ...prev,
-      [textType]: newText
-    }));
-    updateStyle(textType, { text: newText });
-    onContentChange({
+  const handleTextChange = async (newText, textType) => {
+    const updatedContent = {
       ...joinUsContent,
       [textType]: newText
-    });
+    };
+    setJoinUsContent(updatedContent);
+    updateStyle(textType, { text: newText });
+    onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
-      saveComponentData(walletId, selectedProjectId, 'joinUs', {
-        ...joinUsContent,
-        [textType]: newText
-      });
+      await saveComponentData(walletId, selectedProjectId, 'joinUs', updatedContent);
     }
   };
 
-  const handleLinkChange = (newLink) => {
-    setJoinUsContent(prev => ({
-      ...prev,
-      ctaLink: newLink
-    }));
-    onContentChange({
+  const handleLinkChange = async (newLink) => {
+    const updatedContent = {
       ...joinUsContent,
       ctaLink: newLink
-    });
+    };
+    setJoinUsContent(updatedContent);
+    onContentChange(updatedContent);
 
-    // Save the specific changes to Firebase if needed
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
-      saveComponentData(walletId, selectedProjectId, 'joinUs', {
-        ...joinUsContent,
-        ctaLink: newLink
-      });
+      await saveComponentData(walletId, selectedProjectId, 'joinUs', updatedContent);
     }
   };
 
   const handleImageChange = async (newSrc) => {
-    setJoinUsContent(prev => ({
-      ...prev,
-      imageUrl: newSrc
-    }));
-    onContentChange({
+    const updatedContent = {
       ...joinUsContent,
       imageUrl: newSrc
-    });
+    };
+    setJoinUsContent(updatedContent);
+    onContentChange(updatedContent);
 
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
-      saveComponentData(walletId, selectedProjectId, 'joinUs', {
-        ...joinUsContent,
-        imageUrl: newSrc
-      });
+      await saveComponentData(walletId, selectedProjectId, 'joinUs', updatedContent);
     }
   };
 
@@ -118,10 +99,13 @@ const JoinUsSection = ({ setSelectedElement, openImagePanel, setSelectedColor, o
     event.preventDefault();
     event.stopPropagation();
     setSelectedElement(identifier);
+    if (identifier === 'JoinUsImage') {
+      enterReplacementMode(identifier);
+    }
   };
 
   useEffect(() => {
-    if (activeComponent === 'JoinUsImage' && selectedImage !== joinUsContent.imageUrl) {
+    if (activeComponent === 'JoinUsImage' && selectedImage && selectedImage !== joinUsContent.imageUrl) {
       handleImageChange(selectedImage);
     }
   }, [selectedImage, activeComponent]);
@@ -138,7 +122,7 @@ const JoinUsSection = ({ setSelectedElement, openImagePanel, setSelectedColor, o
         <ReusableImage
           src={joinUsContent.imageUrl}
           alt="Join Us Logo"
-          onClick={() => handleComponentClick(null, 'JoinUsImage')}
+          onClick={(event) => handleComponentClick(event, 'JoinUsImage')}
           openImagePanel={openImagePanel}
           selectedImage={activeComponent === 'JoinUsImage' ? selectedImage : null}
           identifier="JoinUsImage"

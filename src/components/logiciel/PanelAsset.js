@@ -1,25 +1,26 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import "./LeftBar.css";
 import "../Root.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useImageHistory } from "../../hooks/ImageHistoryContext";
 import SparkMD5 from "spark-md5";
 import { storage, db } from "../../firebaseConfig";
-import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref as storageRef, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 
-export default function PanelAsset({selectedProjectId, setVisiblePanel, visiblePanel }) {
+export default function PanelAsset({ selectedProjectId, setVisiblePanel, visiblePanel }) {
   const {
     addImageToHistory,
     removeImageFromHistory,
     imageHistory,
+    setImageHistory,
     selectImage,
     selectedImage,
     componentImageUsage,
     activeComponent,
     enterReplacementMode
   } = useImageHistory();
-console.log(selectedProjectId);
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Assets");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -107,7 +108,8 @@ console.log(selectedProjectId);
         const newImage = { url: newImageUrl, category, hash: fileHash };
         addImageToHistory(newImage);
 
-        await addDoc(collection(db,`projects/${walletId}/projectData/${selectedProjectId}/Content/Images/${file.name}`), newImage);
+        // Add image metadata to Firestore for future reference (if needed)
+        await addDoc(collection(db, `projects/${walletId}/projectData/${selectedProjectId}/Content/Images`), newImage);
       } catch (error) {
         console.error("Error processing file:", error);
         console.log(`Failed to process the file "${file.name}". Please try again.`);
@@ -120,6 +122,28 @@ console.log(selectedProjectId);
   const handleUploadClick = useCallback(() => {
     fileInputRef.current.click();
   }, []);
+
+  const fetchImagesFromStorage = useCallback(async () => {
+    try {
+      const imagesRef = storageRef(storage, `ImagesUsers/${walletId}/${selectedProjectId}`);
+      const result = await listAll(imagesRef);
+      const images = await Promise.all(
+        result.items.map(async (itemRef) => {
+          const url = await getDownloadURL(itemRef);
+          return { url, category: "Photo", hash: itemRef.name };
+        })
+      );
+      setImageHistory(images); // Make sure setImageHistory is correctly used from the context
+    } catch (error) {
+      console.error("Error fetching images from Firebase Storage:", error);
+    }
+  }, [walletId, selectedProjectId, setImageHistory]);
+
+  useEffect(() => {
+    if (walletId && selectedProjectId) {
+      fetchImagesFromStorage();
+    }
+  }, [walletId, selectedProjectId, fetchImagesFromStorage]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

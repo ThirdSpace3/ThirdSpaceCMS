@@ -117,6 +117,7 @@ const SSSProduct = ({
           joinUs: joinUsRef,
           footer: footerRef,
         }}
+        navbarData={TemplateContent.navbar} // Pass navbar data as props
       />
 
       <HeaderSection
@@ -153,61 +154,54 @@ const SSSProduct = ({
         onContentChange={(content) => handleContentChange('partners', content)}
         isPreviewMode={isPreviewMode}
         handleImageUpload={handleImageUpload}
+        partnersData={TemplateContent.partners} // Pass the fetched partners data as props
       />
 
-      <AboutSection
-        saveSettings={saveSettings}
-        ref={aboutRef}
-        style={settings}
-        settings={settings}
-        handleSettingsChange={handleSettingsChange}
-        openImagePanel={openImagePanel}
-        selectedImage={selectedImage}
-        setSelectedImage={setSelectedImage}
-        selectElement={selectElement}
-        setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor}
-        setSelectedColor={setSelectedColor}
-        onContentChange={(content) => handleContentChange('aboutSection', content)}
-        isPreviewMode={isPreviewMode}
-        handleImageUpload={handleImageUpload}
-      />
 
-      <FeaturesSection
-        saveSettings={saveSettings}
-        ref={featuresRef}
-        style={settings}
-        settings={settings}
-        handleSettingsChange={handleSettingsChange}
-        openImagePanel={openImagePanel}
-        selectedImage={selectedImage}
-        setSelectedImage={setSelectedImage}
-        selectElement={selectElement}
-        setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor}
-        setSelectedColor={setSelectedColor}
-        onContentChange={(content) => handleContentChange('featureSection', content)}
-        isPreviewMode={isPreviewMode}
-        handleImageUpload={handleImageUpload}
-      />
+<AboutSection
+  saveSettings={saveSettings}
+  ref={aboutRef}
+  style={settings}
+  settings={settings}
+  handleSettingsChange={handleSettingsChange}
+  openImagePanel={openImagePanel}
+  selectedImage={selectedImage}
+  setSelectedImage={setSelectedImage}
+  selectElement={selectElement}
+  setSelectedElement={setSelectedElement}
+  selectedColor={selectedColor}
+  setSelectedColor={setSelectedColor}
+  onContentChange={(content) => handleContentChange('aboutSection', content)}
+  isPreviewMode={isPreviewMode}
+  handleImageUpload={handleImageUpload}
+  aboutData={TemplateContent.aboutSection} // Pass the fetched about data as props
+/>
 
-      <JoinUsSection
-        saveSettings={saveSettings}
-        ref={joinUsRef}
-        style={settings}
-        settings={settings}
-        handleSettingsChange={handleSettingsChange}
-        openImagePanel={openImagePanel}
-        selectedImage={selectedImage}
-        setSelectedImage={setSelectedImage}
-        selectElement={selectElement}
-        setSelectedElement={setSelectedElement}
-        selectedColor={selectedColor}
-        setSelectedColor={setSelectedColor}
-        onContentChange={(content) => handleContentChange('joinUsSection', content)}
-        isPreviewMode={isPreviewMode}
-        handleImageUpload={handleImageUpload}
-      />
+
+<FeaturesSection
+  handleSettingsChange={handleSettingsChange}
+  setSelectedElement={setSelectedElement}
+  style={settings}
+  settings={settings}
+  openImagePanel={openImagePanel}
+  setSelectedColor={setSelectedColor}
+  onContentChange={(content) => handleContentChange('featureSection', content)}
+  handleImageUpload={handleImageUpload}
+  selectedProjectId={selectedProjectId}
+  featuresData={TemplateContent.featureSection} // Pass the fetched features data as props
+/>
+
+
+<JoinUsSection
+  setSelectedElement={setSelectedElement}
+  openImagePanel={openImagePanel}
+  setSelectedColor={setSelectedColor}
+  onContentChange={(content) => handleContentChange('joinUsSection', content)}
+  handleImageUpload={handleImageUpload}
+  selectedProjectId={selectedProjectId}
+  joinUsData={TemplateContent.joinUsSection} // Pass the fetched joinUs data as props
+/>
+
 
       <Footer
         saveSettings={saveSettings}
@@ -225,6 +219,7 @@ const SSSProduct = ({
         onContentChange={(content) => handleContentChange('footerSection', content)}
         isPreviewMode={isPreviewMode}
         handleImageUpload={handleImageUpload}
+        footerData={TemplateContent.footerSection}
       />
     </div>
   );
