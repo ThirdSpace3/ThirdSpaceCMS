@@ -1,8 +1,9 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
+import ReactGA from 'react-ga';
 import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
 import Products from "./pages/Products";
-import Ressources from "./pages/Ressources";
+import Resources from "./pages/Ressources"; // Changed Ressources to Resources
 import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Logiciel from "./pages/Logiciel";
@@ -10,17 +11,16 @@ import TemplateStep from "./pages/TemplateStep";
 import Dashboard from "./pages/Dashboard";
 import Display from "./components/logiciel/Display";
 import TemplatePreview from "./pages/TemplatePreview";
-import IntegrationTODO from "./components/logiciel/IntegrationTODO/IntegrationTODO"
+import IntegrationTODO from "./components/logiciel/IntegrationTODO/IntegrationTODO";
 import Terms from "./pages/legal/Terms";
 import { StyleProvider } from "./hooks/StyleContext";
 import { ImageHistoryProvider } from "./hooks/ImageHistoryContext";
 import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
 import GetStartedMobile from "./components/website/GetStartedMobile";
-import AnalyticsWrapper from "./hooks/AnalyticsWrapper";
-import ReactGA from 'react-ga';
 import Agency from "./pages/Agency";
 import Builder from "./pages/Builder";
 import Academy from "./pages/Academy";
+
 import About from "./pages/About";
 
 export default function App() {
@@ -37,7 +37,7 @@ export default function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/products" element={<Products />} />
-              <Route path="/resources" element={<Ressources />} />
+              <Route path="/resources" element={<Resources />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/builder" element={<Logiciel />} />
               <Route path="/templates" element={<TemplateStep />} />
@@ -55,13 +55,17 @@ export default function App() {
                 path="/builder/:templateName"
                 element={<Display />}
               />{" "}
-              {/* Add this line for the dynamic route */}
+              {/* Route for dynamic template display */}
               <Route
                 path="/template-preview/:templateName"
                 element={<TemplatePreview />}
               />{" "}
-              {/* Add this route for template preview */}
-              <Route path="/templates/:step" element={<TemplateStep />} />
+              {/* Route for template preview */}
+              <Route
+                path="/share/:projectName"
+                element={<ShareProject />}
+              />{" "}
+              {/* Route for sharing projects */}
               <Route path="*" element={<NoPage />} />
             </Routes>
           </StyleProvider>
