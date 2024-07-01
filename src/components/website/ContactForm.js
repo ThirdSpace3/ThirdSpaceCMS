@@ -13,7 +13,7 @@ const ContactForm = () => {
       return;
     }
     try {
-      await addDoc(collection(db, 'Agency'), {
+      await addDoc(collection(db, 'UserContactInfos', "Contact", "Agency"), {
         method: contactMethod,
         value: contactValue,
         timestamp: serverTimestamp()

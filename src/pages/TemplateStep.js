@@ -99,9 +99,6 @@ export default function TemplateStep() {
   };
 
   const handleNext = () => {
-    if (!isNextEnabled) {
-      return; // Prevent navigation if the next button is not enabled
-    }
     const sessionData = sessionStorage.getItem("stepData")
       ? JSON.parse(sessionStorage.getItem("stepData"))
       : {};
@@ -184,6 +181,7 @@ export default function TemplateStep() {
               selectedButtons={selectedButtons}
               setSelectedButtons={setSelectedButtons}
               currentStep={currentStep}
+              onNext={handleNext} // Pass handleNext to TemplateStep3
             />
           )}
 
@@ -211,7 +209,7 @@ export default function TemplateStep() {
             />
           )}
 
-          {currentStep <= 5 && currentStep !== 4 && (
+          {currentStep <= 5 && currentStep !== 4 && currentStep !== 3 && (
             <TemplateStepsBTN
               onNext={handleNext}
               onIgnore={handleIgnore}

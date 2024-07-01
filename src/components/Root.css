@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 :root {
   /*========== Color ==========*/
-  --menu-bg: #131313;
+  --menu-bg: #030014;
   --not-selected: #64748b;
   --main-color: #9600fa;
   --purple: #9600fa;
@@ -13,12 +13,13 @@
   --dark-grey: #334155;
   --white: #f9f9f9;
   --deep-purple: #421660;
-  --body-purple: #131313;
+  --body-purple: #030014;
   --green: #10843A;
 
   /*========== Font family ==========*/
   --inter: "Inter", sans-serif;
   --montserrat: "Montserrat", sans-serif;
+  --dmsans: "DM Sans", sans-serif;
 }
 
 /*==================== BASE ====================*/
@@ -63,45 +64,87 @@ body {
   padding: 80px 10%;
 }
 .section-title {
-  color: var(--white);
-  font-family: Montserrat;
-  font-size: 2vw;
-  font-weight: 800;
+  color:#B6B2FF;
   text-align: center;
-}
-.section__text {
-  color: #797979;
-  font-family: var(--inter);
-  font-size: 18px;
+  font-family: "DM Sans";
+  font-size: 45px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
+  line-height: normal;
+}
+.section-text {
+  color: #817EB5;
+text-align: center;
+font-family: "DM Sans";
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+max-width: 500px;
+
 }
 .section-label {
-  display: inline-flex;
-  padding: 5px;
-  color: var(--white);
-  font-family: Montserrat;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 800;
-  border-bottom: 1px solid var(--purple);
+  display: flex;
+  padding: 5px 13.75px 7px 15px;
+  align-items: center;
+  gap: 10px;
+  border-radius: 32px;
+border: 1px solid #4D2F8C;
+background: rgba(255, 255, 255, 0.00);
+box-shadow: 0px -7px 11px 0px rgba(164, 143, 255, 0.12) inset;
+color: #FFF;
+font-family: Inter;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: 20px; /* 142.857% */
+}
+.section-label img {
+  width: 18px;
 }
 .purple-btn {
+  border-radius: 11.058px;
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
+  border: 1.382px solid #4D2F8C;
   display: flex;
-  padding: 15px 30px;
-  justify-content: center;
-  align-items: center;
-  color: var(--white);
-  font-family: Montserrat;
-  font-size: 18px;
+  padding: 9.676px 22.337px 12.44px 22.116px;
+  align-items: flex-start;
+  color: #F4F0FF;
+  font-family: Inter;
+  font-size: 19px;
   font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  border-radius: 28px;
-  background: var(--purple);
-  border: none;
+  font-weight: 500;
+  line-height: 27.645px; /* 142.857% */
+
 }
-.purple-light-btn {
+.purple-btn:hover {
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgb(118 79 167 / 32%) 100%), rgba(113, 47, 255, 0.12);
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+.grey-btn {
+  border-radius: 11.058px;
+  background: linear-gradient(180deg, rgba(115, 115, 115, 0.00) 0%, rgba(136, 133, 139, 0.32) 100%), rgba(241, 241, 241, 0.12);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;  border: 1.382px solid #4D2F8C;
+  border: 1.382px solid #676767;
+  display: flex;
+  padding: 9.676px 22.337px 12.44px 22.116px;
+  align-items: flex-start;
+  color: #F4F0FF;
+  font-family: Inter;
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 27.645px; /* 142.857% */
+
+}
+.grey-btn:hover {
+  background: linear-gradient(180deg, rgba(115, 115, 115, 0.00) 0%, rgba(136, 133, 139, 0.62) 100%), rgba(241, 241, 241, 0.12);
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+/* .purple-light-btn {
   display: flex;
   padding: 15px 30px;
   justify-content: center;
@@ -119,7 +162,7 @@ body {
 }
 .purple-light-btn:hover {
   cursor: pointer;
-}
+} */
 .cta-icon {
   width: 27px;
 }
@@ -151,3 +194,30 @@ body {
 .hover-cancel * {
   pointer-events: none;
 }
+
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #c7c7c7;
+  border-radius: 11.058px;
+
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 11.058px;
+  background: linear-gradient(180deg, rgba(28, 4, 59, 0) 0%, rgba(60, 8, 126, 0.52) 100%), rgba(33, 14, 75, 0.52);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgb(118 79 167 / 52%) 100%), rgba(113, 47, 255, 0.52);
+  transition: 0.3s ease;
+  cursor: pointer;}

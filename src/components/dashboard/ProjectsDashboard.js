@@ -207,6 +207,7 @@ export default function ProjectsDashboard({
               className="projects-navbar-btn"
               onClick={handleNewProjectClick}
               disabled={projects.length === 3}
+              id="new-project-btn"
             >
               <i className="bi bi-plus-circle"></i> New Project
             </button>
@@ -240,11 +241,12 @@ export default function ProjectsDashboard({
                   src={recentlyUpdatedProject.favicon || recentlyUpdatedProject.image || `./images/${recentlyUpdatedProject.templateName}screenshot.png`}
                   alt={recentlyUpdatedProject.name}
                   onClick={() => handleProjectClick(recentlyUpdatedProject.templateName)}
+                  id="projects-card"
                 />
                 <div className="projects-content-item-info">
                   <p>{recentlyUpdatedProject.name}</p>
                   <p>Last updated: {new Date(recentlyUpdatedProject.lastUpdated).toLocaleString()}</p>
-                  <div onClick={() => handleProjectSettings(recentlyUpdatedProject)}>
+                  <div onClick={() => handleProjectSettings(recentlyUpdatedProject)} id="settings-project-page">
                     <i className="bi bi-three-dots"></i>
                   </div>
                 </div>
@@ -264,10 +266,11 @@ export default function ProjectsDashboard({
                     src={project.favicon || `./images/${project.templateName}screenshot.png`}
                     alt={project.name}
                     onClick={() => handleProjectClick(project.templateName)}
+                    id="projects-card"
                   />
                   <div className="projects-content-item-info">
                     <p>{project.name}</p>
-                    <div onClick={() => handleProjectSettings(project)}>
+                    <div onClick={() => handleProjectSettings(project)} id="settings-project-page">
                       <i className="bi bi-three-dots"></i>
                     </div>
                   </div>

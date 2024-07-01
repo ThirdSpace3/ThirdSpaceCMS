@@ -77,7 +77,7 @@ export default function PropulsePopup({ generateShareableURL, projectName, setSh
           </div>
         </div>
         <hr className="propulse-popup-hr" />
-        <button className="propule-popup-btn" onClick={handleSaveClick} disabled={isSaving}>
+        <button className="propule-popup-btn" onClick={handleSaveClick} disabled={isSaving} id="done-btn-deploy-popup">
           Propulse to selected domains
         </button>
         {isSaving && (

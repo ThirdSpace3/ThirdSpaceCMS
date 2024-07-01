@@ -55,20 +55,20 @@
 .topbar-propulse-btn {
   font-family: var(--inter);
   font-size: 14px;
-  color: var(--white);
+  color: #F4F0FF;
   display: flex;
   padding: 6px 16px;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  background-color: var(--main-color);
-  border-radius: 30px;
-  border: none;
+  border-radius: 11.058px;
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
+  border: 1.382px solid #4D2F8C;
 }
 .topbar-propulse-btn:hover {
-  color: var(--white);
-  display: flex;
-  background-color: #4f4dd1;
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgb(118 79 167 / 32%) 100%), rgba(113, 47, 255, 0.12);
+  transition: 0.3s ease;
   cursor: pointer;
 }
 .topbar-device-btn {

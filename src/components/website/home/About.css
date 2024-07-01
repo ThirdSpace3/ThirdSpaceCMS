@@ -1,0 +1,114 @@
+.about-section {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.about-header {
+  display: flex;
+flex-direction: column;
+align-items: center;
+gap: 17px;
+
+}
+.about-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.about-content-link-container {
+  margin-top: -150px;
+  display: flex;
+  padding: 25px 35px;
+  align-items: flex-start;
+  flex-shrink: 0;
+  border-radius: 17.163px;
+  border: 1.073px solid rgba(255, 255, 255, 0.10);
+  background: radial-gradient(70.71% 70.71% at 50% 50%, rgba(168, 127, 255, 0.04) 0%, rgba(168, 127, 255, 0.00) 100%), rgba(4, 1, 21, 0.10);
+  backdrop-filter: blur(18.235294342041016px);
+  justify-content: center;
+  width: fit-content;
+
+
+
+}
+.about-content-link-container:hover {
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgb(118 79 167 / 20%) 20%), rgba(113, 47, 255, 0.01);
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+.about-content-link-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+}
+.about-content-link-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+.about-content-link-top-text {
+  color: #FFF;
+font-family: Inter;
+font-size: 16.09px;
+font-style: normal;
+font-weight: 500;
+line-height: 25.744px; /* 160% */
+}
+.about-content-link-top-row {
+  display: flex;
+padding: 1.073px 5.599px 1.073px 6.436px;
+align-items: center;
+gap: 5px;
+
+}
+.about-content-link-top-row-img {
+  width: 25px;
+
+}
+.about-content-link-top-row-text {
+  color: #CFB8FF;
+text-align: center;
+font-family: Inter;
+font-size: 13.945px;
+font-style: normal;
+font-weight: 400;
+line-height: 25.744px; /* 184.615% */
+
+}
+.about-content-link-bottom {
+  display: flex;
+align-items: center;
+gap: 17.163px;
+
+}
+.about-content-link-bottom-box {
+  width: 4.291px;
+  flex-shrink: 0;
+  align-self: stretch;
+  border-radius: 2.145px;
+background: rgba(255, 255, 255, 0.24);
+}
+.about-content-link-bottom-text {
+  color: #FFF;
+font-family: Inter;
+font-size: 13.945px;
+font-style: normal;
+font-weight: 400;
+line-height: 25.744px; /* 184.615% */
+
+}
+
+@media screen and (max-width: 767px) {
+  .about-content-link-container {
+    margin-top: -100px;
+  }
+  .about-content-link-top {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

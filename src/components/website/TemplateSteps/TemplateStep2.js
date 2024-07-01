@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './TemplateSteps.css';
 import '../../Root.css';
 import NavbarSteps from './TemplateNavbar';
+
 const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButtons, currentStep }) => {
     const [inputValue, setInputValue] = useState('');
 
@@ -16,13 +17,13 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
             // Save the inputValue to sessionStorage when the component unmounts
             sessionStorage.setItem(`inputValue-${currentStep}`, inputValue);
             console.log('Session Data Updated:', sessionStorage.getItem('stepData'));
-
         };
     }, [inputValue, currentStep]);
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
     };
+
     const saveDataToSession = (newData) => {
         const sessionData = sessionStorage.getItem('stepData') ? JSON.parse(sessionStorage.getItem('stepData')) : {};
         sessionData[currentStep] = newData;
@@ -45,21 +46,16 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
     const handleButtonClick = (buttonId) => {
         setSelectedButtons((prevSelections) => {
             const updatedSelections = { ...prevSelections };
-            const buttonIndex = updatedSelections[currentStep]?.indexOf(buttonId);
+            const currentSelection = updatedSelections[currentStep] || [];
+            const isSelected = currentSelection.includes(buttonId);
 
-            if (buttonIndex !== -1) {
-                // If the button is already selected, remove it
-                updatedSelections[currentStep].splice(buttonIndex, 1);
-            } else {
-                // If the button is not selected, add it
-                updatedSelections[currentStep] = [...(updatedSelections[currentStep] || []), buttonId];
-            }
+            updatedSelections[currentStep] = isSelected
+                ? currentSelection.filter(id => id !== buttonId)
+                : [...currentSelection, buttonId];
 
             return updatedSelections;
         });
     };
-
-
 
     useEffect(() => {
         const isNextEnabled = selectedButtons[currentStep]?.length > 0 || inputValue.trim() !== '';
@@ -76,8 +72,7 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
 
     return (
         <div id="etape2">
-                  <NavbarSteps />
-
+            <NavbarSteps />
             <div className="step-box">
                 <h2 className="template-title">What are your main objectives?</h2>
                 <p className="template-subtitle">Select all the items that apply...</p>
@@ -89,12 +84,11 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
                                 return (
                                     <button
                                         key={buttonId}
-                                        className={`selectable-button-2 ${selectedButtons[currentStep]?.some(id => id === buttonId) ? 'selected' : ''}`}
+                                        className={`selectable-button-2 ${selectedButtons[currentStep]?.includes(buttonId) ? 'template-selected' : ''}`}
                                         onClick={() => handleButtonClick(buttonId)}
                                     >
                                         {buttonLabel}
                                     </button>
-
                                 );
                             })}
                         </div>
@@ -107,7 +101,7 @@ const TemplateStep2 = ({ updateNextButtonState, selectedButtons, setSelectedButt
                         placeholder="Describe your feature..."
                         value={inputValue}
                         onChange={handleInputChange}
-                        onBlur={handleInputBlur} // Save when the input loses focus
+                        onBlur={handleInputBlur}
                     />
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import "./Footer.css";
 import "../Root.css";
 import React from "react";
+import Newsletter from "./Newsletter";
 
 const Footer = () => {
   return (
@@ -45,6 +46,12 @@ const Footer = () => {
             </li>
             {/* <li className="coming-soon"><a href="">Legal information</a></li> */}
           </ul>
+        </div>
+        <div className="newsletter-section">
+        <h3 className="newsletter-section-title">Stay Updated with Third Space, Join our Newsletter</h3>
+        <Newsletter />
+        <p className="newsletter-section-text">You can unsuscribe at any time. <span><a href="/#/privacy-policy">Privacy Policy</a></span></p>
+
         </div>
       </div>
       <div className="footer-bottom">

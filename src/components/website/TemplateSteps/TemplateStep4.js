@@ -94,7 +94,7 @@ const TemplateStep4 = ({
                     <div className="templates-hover">
                       <div className="templates-hover-content">
                         <Link
-                          className="start-editing-link"
+                          className="purple-btn"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleTemplateSelect(template.id);
@@ -103,7 +103,7 @@ const TemplateStep4 = ({
                           Start Editing
                         </Link>
                         <a
-                          className="start-editing-link"
+                          className="grey-btn"
 
                           onClick={(e) => {
                             e.stopPropagation();
