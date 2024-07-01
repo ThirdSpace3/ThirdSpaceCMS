@@ -7,6 +7,7 @@ import { wait } from "@testing-library/user-event/dist/utils";
 import ReactGA from 'react-ga';
 import UAuth from '@uauth/js';
 import { useNavigate } from 'react-router-dom';
+import Newsletter from "./Newsletter";
 
 // Initialize Google Analytics
 ReactGA.initialize('G-83NKPT3B9E');
@@ -142,7 +143,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     setWalletAvailable(hasWallet);
     console.log(hasWallet);
     if (!hasWallet) {
-      setCustomErrorMessage('To use Third Space, you need to connect via a wallet. We haven’t found one on your browser. Finish the entire profile creation in order to be able to log in!');
+      setCustomErrorMessage('To use Third Space, you need to connect a wallet. Please create one with Phantom and then reload your page.');
     }
     else  {
       return;
@@ -238,29 +239,31 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
           onClick={onClose}
         />
         <div className="popup-wallet-header">
+        <h2>Connect to</h2>
+
           <img
-            src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2F3s-logo-picto.png?alt=media&token=eccaecaa-e624-4bb4-a1ad-54f181d09510"
+            src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904"
             className="popup-wallet-main-img"
           />
-          <h2>Connect to Third Space</h2>
         </div>
         {customErrorMessage && (
           <div className="popup-wallet-warning">
             <p>
              {customErrorMessage}
             </p>
-            <a href="https://phantom.app/" target="_blank">
+            <a className="wallet-btn" id="create-wallet-btn-phantom" href="https://phantom.app/" target="_blank">
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fphantom-logo.png?alt=media&token=5ffe611b-3ccd-4663-81e4-59feeb1dbba7" alt="" />
+
               Create a wallet with Phantom{" "}
-              <i className="bi bi-arrow-right-short"></i>
             </a>
           </div>
         )}
 
-        <div className="wallet-list">
+        <div className={`wallet-list ${customErrorMessage ? 'wallet-hide' : ''}`}>
           {/* Phantom */}
           <button
             id="phantom"
-            className="wallet-btn"
+            className="wallet-btn ga-wallet-btn-phantom"
             onClick={handleLoginWithPhantom}
           >
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fphantom-logo.png?alt=media&token=5ffe611b-3ccd-4663-81e4-59feeb1dbba7" alt="" />
@@ -269,7 +272,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
           {/* Metamask */}
           <button
             id="metamask"
-            className="wallet-btn"
+            className="wallet-btn ga-wallet-btn-metamask"
             onClick={handleLoginWithMetamask}
           >
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmetamask-logo.png?alt=media&token=507097be-0cc4-4d93-a87b-99c67d82cfe5" alt="" />
@@ -278,17 +281,20 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
           {/* Unstoppable */}
           <button
             id="unstoppable"
-            className="wallet-btn"
+            className="wallet-btn ga-wallet-btn-ud"
             onClick={handleLoginWithUnstoppable}
           >
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Funstoppablelogo.png?alt=media&token=60b8c7c0-d644-4954-be2d-7afe3065b876" alt="" />
             Continue with Unstoppable
           </button>
-          {/* Coming Soon */}
-          <button className="wallet-btn wallet-btn-comingsoon">
-            <i className="bi bi-lock-fill"></i>
-            Coming Soon
-          </button>
+          
+        </div>
+        <hr className="newsletter-top-separator"></hr>
+        <div className="newsletter-section">
+        <h3 className="newsletter-section-title">Stay Updated with Third Space, Join our Newsletter</h3>
+        <Newsletter />
+        <p className="newsletter-section-text">You can unsuscribe at any time. <span><a href="/#/privacy-policy">Privacy Policy</a></span></p>
+
         </div>
       </div>
     </div>

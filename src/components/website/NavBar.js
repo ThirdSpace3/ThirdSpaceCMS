@@ -7,15 +7,12 @@ import ReactGA from 'react-ga';
 function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
   const navigate = useNavigate();
 
   const togglePopup = (e) => {
     e.preventDefault(); // Prevent default anchor behavior
-    ReactGA.event({
-      category: 'Button',
-      action: 'Click',
-      label: 'Get Started from Navbar',
-    });
+
 
     if (accounts.length > 0 && !hasWalletData) {
       navigate("/templatestep");
@@ -53,8 +50,11 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
     }
   }, [isMenuOpen]);
 
+
+
+
   return (
-    <nav className="navbar__padding">
+    <nav className={`navbar__padding ${isSticky ? 'sticky-navbar' : ''}`}>
       <div className="navbar__pc">
         <a href="/#/home" className="nav__logo">
           <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
@@ -67,8 +67,8 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/products" className="nav__links-btn">
-                Products
+              <a href="/#/3s-agency" className="nav__links-btn">
+                Agency
               </a>
             </li>
             <li className="coming-soon">
@@ -84,15 +84,15 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
           </ul>
 
           {accounts.length === 0 ? (
-            <a href="#" className="nav__cta nav-bg" onClick={togglePopup}>
+            <a className="purple-btn ga-getstarted-btn-navbar" id='getstarted-btn' onClick={togglePopup}>
               Get Started
             </a>
           ) : (
             <a
               href={hasWalletData ? "#/dashboard" : "#/templatestep"}
-              className="nav__cta nav-bg"
+              className="nav__links nav-bg"
             >
-              <span className="material-symbols-outlined">account_circle</span>
+              <i className="bi bi-person-circle nav__links-cta"></i>
             </a>
           )}
         </div>
@@ -126,8 +126,8 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/products" className="nav__links-btn">
-                Products
+              <a href="/#/3s-agency" className="nav__links-btn">
+              Agency
               </a>
             </li>
             <li className="coming-soon">
@@ -139,6 +139,20 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
               <a href="/#/pricing" className="nav__links-btn">
                 Pricing
               </a>
+            </li>
+            <li>
+              {accounts.length === 0 ? (
+                <a href="#" className="purple-btn" onClick={togglePopup}>
+                  Get Started
+                </a>
+              ) : (
+                <a
+                  href={hasWalletData ? "#/dashboard" : "#/templatestep"}
+                  className="nav__links nav-bg"
+                >
+                  <i className="bi bi-person-circle nav__links-cta"></i>
+                </a>
+              )}
             </li>
           </ul>
         </div>

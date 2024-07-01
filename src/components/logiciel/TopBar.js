@@ -69,8 +69,8 @@ const TopBar = ({
               <i className="bi bi-phone"></i>
             </a>
           </div>
-          <button className="topbar-propulse-btn" onClick={handlePropulseClick}>
-            Save 
+          <button className="topbar-propulse-btn" onClick={handlePropulseClick} id="propulse-project-btn">
+            Propulse 
             <i className="bi bi-rocket-takeoff"></i>
           </button>
         </div>

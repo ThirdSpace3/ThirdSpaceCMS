@@ -1,0 +1,47 @@
+  
+  .privacy-policy,
+  .terms-of-use {
+    line-height: 1.6;
+    padding: 40px 5%;
+  }
+  
+  .legal-text {
+    margin-bottom: 1.5em;
+    font-family: 'Inter', sans-serif;
+  }
+  .sublegal-title,
+  .subsublegal-title {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .main-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 45px;
+    text-align: center;
+  }
+  
+  .legal-title {
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 2em;
+  }
+  
+  .subsection-title {
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 1.5em;
+  }
+  
+  .subsubsection-title {
+    font-family: 'DM Sans', sans-serif;
+    margin-top: 1.2em;
+  }
+  
+  .legal-list {
+    margin-left: 1.5em;
+  }
+  
+  .legal-list-item {
+    margin-bottom: 1em;
+    font-family: 'Inter', sans-serif;
+
+  }
+  
