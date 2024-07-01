@@ -151,6 +151,8 @@ const Footer = ({
             imageHeight="30px"
             handleImageUpload={handleImageUpload}
             onImageChange={(newSrc) => handleImageChange(newSrc, 'twitterSrc')}
+            openImagePanel={openImagePanel}
+
           />
           <ReusableImage
             src={footerContent.linkedInSrc}
@@ -160,6 +162,8 @@ const Footer = ({
             imageHeight="30px"
             handleImageUpload={handleImageUpload}
             onImageChange={(newSrc) => handleImageChange(newSrc, 'linkedInSrc')}
+            openImagePanel={openImagePanel}
+
           />
         </div>
       </div>

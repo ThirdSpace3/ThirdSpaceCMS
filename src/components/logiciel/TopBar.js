@@ -99,7 +99,7 @@ const TopBar = ({
 
             <i className="bi bi-rocket-takeoff"></i>
           </button>
-          <Link
+          {/* <Link
             to={`/share/${encodeURIComponent(projectName)}`}
             className="topbar-share-btn"
             target="_blank"
@@ -107,7 +107,7 @@ const TopBar = ({
           >
             Share Project
             <i className="bi bi-share"></i>
-          </Link>
+          </Link> */}
         </div>
         <div className="topbar-wrapper-bottom">
           <i

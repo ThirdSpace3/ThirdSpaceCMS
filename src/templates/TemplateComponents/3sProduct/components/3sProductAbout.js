@@ -7,7 +7,7 @@ import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
 const AboutSection = ({
-  handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor, onContentChange, handleImageUpload, selectedProjectId, aboutData // Receive the fetched data as props
+  handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor, onContentChange, handleImageUpload, selectedProjectId, aboutData = { title: '', description: '', images: [] }
 }) => {
   const { selectedImage, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
@@ -32,7 +32,7 @@ const AboutSection = ({
       setAboutContent({
         title: aboutData.title || 'The best features to help you create all your projects',
         description: aboutData.description || 'Apsum dolor sit amet consectetur...',
-        images: aboutData.images.length ? aboutData.images : defaultImages
+        images: Array.isArray(aboutData.images) && aboutData.images.length ? aboutData.images : defaultImages
       });
     }
   }, [aboutData]);
@@ -123,11 +123,6 @@ const AboutSection = ({
               identifier={`aboutImage-${index}`}
               handleImageUpload={handleImageUpload}
             />
-             <EditableText
-            text={aboutContent.description}
-            onChange={(text) => handleTextChange(text, 'description')}
-            style={{ ...aboutDescriptionStyles }}
-          />
           </div>
         ))}
       </div>

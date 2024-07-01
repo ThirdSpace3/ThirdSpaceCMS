@@ -20,7 +20,7 @@ import GetStartedMobile from "./components/website/GetStartedMobile";
 import Agency from "./pages/Agency";
 import Builder from "./pages/Builder";
 import Academy from "./pages/Academy";
-
+import ShareProject from './components/logiciel/ShareProject'
 import About from "./pages/About";
 
 export default function App() {
