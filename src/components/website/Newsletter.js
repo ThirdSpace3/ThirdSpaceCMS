@@ -8,6 +8,7 @@ function Newsletter() {
   const [error, setError] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
 
+  
   const handleInputChange = (event) => {
     setEmail(event.target.value);
     setError(false);
