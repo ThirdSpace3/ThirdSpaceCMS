@@ -82,7 +82,7 @@ a.propulse-popup-txt {
 /* Le slider */
 .slider-propulse {
   position: absolute;
-  cursor: pointer;
+  cursor:not-allowed;
   top: 0;
   left: 0;
   right: 0;

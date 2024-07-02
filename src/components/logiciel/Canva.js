@@ -19,7 +19,6 @@ export default function Canva({ handleImageUpload, selectedProjectId, saveSettin
   useEffect(() => {
     setCanvasSize({ width: deviceSize, height: '100vh' });
   }, [deviceSize]);
-  console.log("canva:" + selectedProjectId);
 
   return (
     <div className='canva-wrapper' style={{ width: canvasSize.width, height: canvasSize.height, overflowY: 'auto' }}>

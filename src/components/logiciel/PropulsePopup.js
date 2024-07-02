@@ -52,14 +52,14 @@ export default function PropulsePopup({ generateShareableURL, projectName, setSh
           <div className="propulse-popup-container-box-bottom">
             <p className="propulse-popup-txt">netbook.thirdspace.x</p>
             <label className="switch">
-              <input type="checkbox" />
-              <span className="slider-propulse"></span>
+              <input disabled type="checkbox" />
+              <span disabled  className="slider-propulse" ></span>
             </label>
           </div>
         </div>
         <hr className="propulse-popup-hr" />
         {/*===Live deploy===*/}
-        <div className="propulse-popup-container-box">
+        {/* <div className="propulse-popup-container-box">
           <div className="propulse-popup-container-box-top">
             <p className="propulse-popup-main-txt">Live</p>
             <a href="">
@@ -76,7 +76,7 @@ export default function PropulsePopup({ generateShareableURL, projectName, setSh
             </label>
           </div>
         </div>
-        <hr className="propulse-popup-hr" />
+        <hr className="propulse-popup-hr" /> */}
         <button className="propule-popup-btn" onClick={handleSaveClick} disabled={isSaving} id="done-btn-deploy-popup">
           Propulse to selected domains
         </button>

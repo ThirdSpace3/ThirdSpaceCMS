@@ -44,7 +44,7 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "deploy-test": "deploy-test.bat",
+    "deploy-test": "firebase deploy --only hosting:third-testing",
     "deploy": "firebase deploy"
   },
   "eslintConfig": {

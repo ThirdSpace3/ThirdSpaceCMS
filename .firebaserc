@@ -1,5 +1,26 @@
 {
   "projects": {
     "default": "third--space"
-  }
+  },
+  "targets": {
+    "third--space": {
+      "hosting": {
+        "default": [
+          "default"
+        ],
+        "third-testing": [
+          "third-testing"
+        ]
+      }
+    },
+    "test": {
+      "hosting": {
+        "third-testing": [
+          "third-testing"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

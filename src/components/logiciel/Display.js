@@ -31,7 +31,6 @@ export default function Display() {
   const [TemplateContent, setTemplateContent] = useState({});
 
   const walletId = useMemo(() => sessionStorage.getItem('userAccount') || localStorage.getItem('userAccount'), []);
-  console.log(walletId);
 
   const checkAndSetLogin = useCallback(() => {
     const walletId = sessionStorage.getItem("userAccount");

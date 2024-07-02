@@ -24,7 +24,6 @@ export default function PanelAsset({ selectedProjectId, setVisiblePanel, visible
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Assets");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [draggedImage, setDraggedImage] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const walletId = sessionStorage.getItem("userAccount");
   const dropdownRef = useRef(null);
@@ -78,8 +77,7 @@ export default function PanelAsset({ selectedProjectId, setVisiblePanel, visible
   
   
 
-  const handleFileChange = useCallback(async (event) => {
-    const files = Array.from(event.target.files);
+  const processFiles = useCallback(async (files) => {
     for (const file of files) {
       const mimeType = file.type;
       let category = "Unknown";
@@ -120,15 +118,18 @@ export default function PanelAsset({ selectedProjectId, setVisiblePanel, visible
         addImageToHistory(newImage);
 
         // Add image metadata to Firestore for future reference (if needed)
-        await addDoc(collection(db, `projects/${walletId}/projectData/${selectedProjectId}/Content/Images`), newImage);
+        await addDoc(collection(db, `projects/${walletId}/projectData/${selectedProjectId}/Content`), newImage);
       } catch (error) {
         console.error("Error processing file:", error);
         console.log(`Failed to process the file "${file.name}". Please try again.`);
       }
     }
+  }, [addImageToHistory, imageHistory, handleImageSelect, walletId, selectedProjectId]);
 
-    setIsDragging(false);
-  }, [addImageToHistory, imageHistory, handleImageSelect]);
+  const handleFileChange = useCallback(async (event) => {
+    const files = Array.from(event.target.files);
+    await processFiles(files);
+  }, [processFiles]);
 
   const handleUploadClick = useCallback(() => {
     fileInputRef.current.click();
@@ -169,44 +170,36 @@ export default function PanelAsset({ selectedProjectId, setVisiblePanel, visible
     };
   }, []);
 
-  const handleDragStart = useCallback((e, image) => {
-    setDraggedImage(image);
-  }, []);
-
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
-    setIsDragging(true);
-  }, []);
+    if (!isDragging) setIsDragging(true);
+  }, [isDragging]);
 
-  const handleDrop = useCallback((e) => {
+  const handleDrop = useCallback(async (e) => {
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
-    handleFileChange({ target: { files } });
-    setDraggedImage(null);
+    await processFiles(files);
     setIsDragging(false);
-  }, [handleFileChange]);
+  }, [processFiles]);
 
   const handleDragLeave = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+    if (isDragging) setIsDragging(false);
+  }, [isDragging]);
 
   useEffect(() => {
     const handleWindowDragOver = (e) => {
       e.preventDefault();
-      setIsDragging(true);
+      if (!isDragging) setIsDragging(true);
     };
 
     const handleWindowDrop = (e) => {
       e.preventDefault();
-      const files = Array.from(e.dataTransfer.files);
-      if (files.length > 0) {
-        handleFileChange({ target: { files } });
-      }
+
       setIsDragging(false);
     };
 
     const handleWindowDragLeave = () => {
-      setIsDragging(false);
+      if (isDragging) setIsDragging(false);
     };
 
     window.addEventListener("dragover", handleWindowDragOver);
@@ -218,7 +211,7 @@ export default function PanelAsset({ selectedProjectId, setVisiblePanel, visible
       window.removeEventListener("drop", handleWindowDrop);
       window.removeEventListener("dragleave", handleWindowDragLeave);
     };
-  }, [handleFileChange]);
+  }, [processFiles, isDragging]);
 
   const handleImageError = useCallback((hash) => {
     removeImageFromHistory(hash);
@@ -244,23 +237,12 @@ export default function PanelAsset({ selectedProjectId, setVisiblePanel, visible
         return (
           <i className={`bi bi-file-earmark-text-fill ${previewClass}`} style={{ fontSize: "48px" }}></i>
         );
-      default:
-        return (
-          <i className={`bi bi-file-earmark ${previewClass}`} style={{ fontSize: "48px" }}></i>
-        );
     }
   }, [componentImageUsage, handleImageError]);
 
   return (
     <div className={`navbar-panel sidebar ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`} onDragOver={handleDragOver} onDrop={handleDrop} onDragLeave={handleDragLeave}>
-      <input
-        type="file"
-        ref={fileInputRef}
-        accept="image/*,video/*,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint"
-        multiple
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-      />
+     
       <div className="btn-box">
         <button className="upload-btn" onClick={handleUploadClick}>
           Upload
@@ -283,11 +265,18 @@ export default function PanelAsset({ selectedProjectId, setVisiblePanel, visible
           )}
         </div>
       </div>
-
+      <input
+        type="file"
+        ref={fileInputRef}
+        accept="image/*,video/*,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint"
+        multiple
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
       {!isDragging ? (
         <div className="ImagePreview">
           {filteredHistory.map((image, index) => (
-            <div key={index} className={`image-preview ${image.url === selectedImage ? "selected" : ""}`} onClick={() => handleImageSelect(image)} onDragStart={(e) => handleDragStart(e, image)} draggable>
+            <div key={index} className={`image-preview ${image.url === selectedImage ? "selected" : ""}`} onClick={() => handleImageSelect(image)} draggable>
               {renderPreview(image)}
             </div>
           ))}
