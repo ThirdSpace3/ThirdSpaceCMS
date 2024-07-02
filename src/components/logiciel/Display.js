@@ -8,7 +8,7 @@ import { useImageHistory } from '../../hooks/ImageHistoryContext';
 import Canva from './Canva';
 import ReportBugBTN from '../website/ReportBugBTN';
 import { db, doc, setDoc, getDownloadURL, uploadBytes, ref, storage } from '../../firebaseConfig';
-import { fetchProjects } from '../../hooks/Fetchprojects';
+import { fetchProjects, fetchProjectData } from '../../hooks/Fetchprojects';
 
 export default function Display() {
   const [settings, setSettings] = useState({});
@@ -51,7 +51,20 @@ export default function Display() {
       localStorage.setItem('settings', JSON.stringify(updatedSettings));
       return updatedSettings;
     });
+  
+    setTemplateContent(prevContent => ({
+      ...prevContent,
+      [elementId]: {
+        ...prevContent[elementId],
+        styles: {
+          ...prevContent[elementId]?.styles,
+          ...newSettings
+        }
+      }
+    }));
   }, []);
+  
+  
 
   const undo = useCallback(() => {
     if (currentHistoryIndex > 0) {
@@ -86,8 +99,7 @@ export default function Display() {
   
         const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/${section}`;
         const settingsDoc = doc(db, settingsDocPath);
-        console.log(sectionContent);
-
+  
         // Handle image uploads
         if (sectionContent.imageFile) {
           const file = sectionContent.imageFile;
@@ -99,14 +111,17 @@ export default function Display() {
         }
   
         // Ensure the image URL is being updated
-        await setDoc(settingsDoc, sectionContent, { merge: true });
+        await setDoc(settingsDoc, {
+          ...sectionContent,
+          styles: settings[section] || {} // Include styles in the saved data
+        }, { merge: true });
       }
     } catch (error) {
       console.error("Error saving settings:", error);
       alert("Failed to save settings. See console for more details.");
     }
-  }, [TemplateContent, selectedProjectId]);
-
+  }, [TemplateContent, selectedProjectId, settings]);
+  
   const handleImageUpload = useCallback(async (file, identifier) => {
     try {
       const storageRef = ref(storage, `ImagesUsers/${walletId}/${selectedProjectId}/${file.name}`);
@@ -206,15 +221,22 @@ export default function Display() {
           if (projectsList.length > 0) {
             setSelectedProjectId(projectsList[0].id);
             console.log('Selected project ID:', projectsList[0].id);
+  
+            // Fetch and apply styles
+            const projectData = await fetchProjectData(walletId, projectsList[0].id);
+            setTemplateContent(projectData.content || {});
+            setSettings(projectData.styles || {});
           }
         } catch (error) {
           console.error('Failed to fetch projects:', error);
         }
       }
     };
-
+  
     fetchAndSetProjects();
   }, [walletId]);
+  
+  
 
   useEffect(() => {
     const handleDragEnter = (event) => {

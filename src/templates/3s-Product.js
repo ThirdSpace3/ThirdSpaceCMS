@@ -77,13 +77,6 @@ const SSSProduct = ({
     fetchData();
   }, [selectedProjectId, setTemplateContent]);
 
-  const handleComponentClick = (event, identifier) => {
-    if (!isPreviewMode) {
-      event.preventDefault();
-      setSelectedElement(identifier);
-    }
-  };
-
   const handleContentChange = (section, content) => {
     setTemplateContent(prev => ({
       ...prev,

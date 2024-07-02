@@ -25,7 +25,7 @@ function Newsletter() {
     setError(false); // Clear any previous errors
   
     try {
-      const subscriptionsRef = collection(db, "UserContactInfos", "Contact", "Newsletter");
+      const subscriptionsRef = collection(db, "UserContactInfos", "contact", "Newsletter");
   
       // Check if the email already exists
       const querySnapshot = await getDocs(query(subscriptionsRef, where("email", "==", email)));
