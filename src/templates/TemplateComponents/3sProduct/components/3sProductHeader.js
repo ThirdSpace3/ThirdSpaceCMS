@@ -5,11 +5,11 @@ import ReusableImage from '../../../../components/logiciel/TemplateComponent/Reu
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
 import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
-import { fetchComponentData } from '../../../../hooks/Fetchprojects';
+import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
 const HeaderSection = ({
-  settings,
   handleSettingsChange,
+  settings,
   openImagePanel,
   setSelectedElement,
   setSelectedColor,
@@ -17,44 +17,38 @@ const HeaderSection = ({
   selectedProjectId,
   isPreviewMode,
   saveSettings,
-  handleImageUpload
+  handleImageUpload,
+  headerData = {}
 }) => {
   const { selectedImage, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
-  const [headerContent, setHeaderContent] = useState({
+
+  const defaultHeaderContent = {
     heroTitle: 'The first user-friendly website builder',
     heroDescription: 'Lorem ipsum dolor sit amet consectetur adipiscing elit.',
     herojoinUs: 'Join Us',
     herojoinUsLink: { url: '#', openInNewTab: false },
-    image: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-hero.png?alt=media&token=44a64698-ecd8-4bca-8dea-b522c6505eed"  });
+    image: "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-hero.png?alt=media&token=44a64698-ecd8-4bca-8dea-b522c6505eed"
+  };
+
+  const [headerContent, setHeaderContent] = useState(defaultHeaderContent);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (selectedProjectId) {
-        const walletId = sessionStorage.getItem("userAccount");
-        if (walletId) {
-          try {
-            const data = await fetchComponentData(walletId, selectedProjectId, 'header');
-            console.log('Fetched header data:', data); // Add this line to verify data
-            if (data) {
-              setHeaderContent(prev => ({
-                ...prev,
-                heroTitle: data.heroTitle || prev.heroTitle,
-                heroDescription: data.heroDescription || prev.heroDescription,
-                herojoinUs: data.herojoinUs || prev.herojoinUs,
-                herojoinUsLink: data.herojoinUsLink || prev.herojoinUsLink,
-                image: data.image || prev.image // Ensure the image URL is set correctly
-              }));
-            }
-          } catch (error) {
-            console.error('Error fetching header data:', error);
-          }
-        }
-      }
-    };
+    if (headerData) {
+      setHeaderContent({
+        heroTitle: headerData.heroTitle || defaultHeaderContent.heroTitle,
+        heroDescription: headerData.heroDescription || defaultHeaderContent.heroDescription,
+        herojoinUs: headerData.herojoinUs || defaultHeaderContent.herojoinUs,
+        herojoinUsLink: headerData.herojoinUsLink || defaultHeaderContent.herojoinUsLink,
+        image: headerData.image || defaultHeaderContent.image
+      });
+    }
+  }, [headerData]);
 
-    fetchData();
-  }, [selectedProjectId]);
+  const headerStyles = getComponentStyle('header');
+  const heroTitleStyles = getComponentStyle('heroTitle');
+  const heroDescriptionStyles = getComponentStyle('heroDescription');
+  const herojoinUsStyles = getComponentStyle('herojoinUs');
 
   const handleTextChange = (newText, textType) => {
     setHeaderContent(prev => ({
@@ -62,6 +56,15 @@ const HeaderSection = ({
       [textType]: newText
     }));
     updateStyle(textType, { text: newText });
+    onContentChange(prevContent => ({
+      ...prevContent,
+      [textType]: newText
+    }));
+
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      saveComponentData(walletId, selectedProjectId, 'header', { ...headerContent, [textType]: newText });
+    }
   };
 
   const handleLinkChange = (newLink) => {
@@ -70,6 +73,18 @@ const HeaderSection = ({
       herojoinUsLink: { ...prev.herojoinUsLink, url: newLink }
     }));
     updateStyle('herojoinUs', { link: newLink });
+    onContentChange(prevContent => ({
+      ...prevContent,
+      herojoinUsLink: { ...prevContent.herojoinUsLink, url: newLink }
+    }));
+
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      saveComponentData(walletId, selectedProjectId, 'header', {
+        ...headerContent,
+        herojoinUsLink: { ...headerContent.herojoinUsLink, url: newLink }
+      });
+    }
   };
 
   const handleImageChange = (newSrc) => {
@@ -78,50 +93,59 @@ const HeaderSection = ({
       image: newSrc
     }));
     selectImage(newSrc);
-    onContentChange({
-      ...headerContent,
+    onContentChange(prevContent => ({
+      ...prevContent,
       image: newSrc
-    });
+    }));
+
+    const walletId = sessionStorage.getItem("userAccount");
+    if (walletId && selectedProjectId) {
+      saveComponentData(walletId, selectedProjectId, 'header', { ...headerContent, image: newSrc });
+    }
   };
 
   const handleComponentClick = (event, identifier) => {
     if (!isPreviewMode) {
+      event.stopPropagation(); // Prevent the event from bubbling up
       event.preventDefault();
       setSelectedElement(identifier);
+      console.log(identifier);
     }
   };
 
-  const headerStyle = getComponentStyle('header');
-  const heroTitleStyles = getComponentStyle('heroTitle');
-  const heroDescriptionStyles = getComponentStyle('heroDescription');
-  const herojoinUsStyles = getComponentStyle('herojoinUs');
+  useEffect(() => {
+    const cssVarName = '--header-background-color';
+    const storedColor = localStorage.getItem(cssVarName);
+
+    if (storedColor) {
+      setSelectedColor(storedColor);
+      document.documentElement.style.setProperty(cssVarName, storedColor);
+    }
+  }, [setSelectedColor]);
 
   return (
-    <div className="sss-product-hero" style={headerStyle} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
-      <h1 className="sss-product-hero-title" onClick={(event) => handleComponentClick(event, 'heroTitle')}>
+    <div className="sss-product-hero" style={{...headerStyles}} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
+      <h1 className="sss-product-hero-title" id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')}>
         <EditableText
-          id='heroTitle'
-          style={heroTitleStyles}
           text={headerContent.heroTitle}
           onChange={(newText) => handleTextChange(newText, 'heroTitle')}
+          style={{...heroTitleStyles}}
         />
       </h1>
-      <p className="sss-product-hero-text" onClick={(event) => handleComponentClick(event, 'heroDescription')}>
+      <p className="sss-product-hero-text" id='heroDescription' onClick={(event) => handleComponentClick(event, 'heroDescription')}>
         <EditableText
-          id='heroDescription'
-          style={heroDescriptionStyles}
           text={headerContent.heroDescription}
           onChange={(newText) => handleTextChange(newText, 'heroDescription')}
+          style={{...heroDescriptionStyles}}
         />
       </p>
-      <a href={headerContent.herojoinUsLink.url} target={headerContent.herojoinUsLink.openInNewTab ? "_blank" : "_self"} className='position-relative' onClick={(event) => handleComponentClick(event, 'herojoinUs')}>
+      <a href={headerContent.herojoinUsLink.url} id='herojoinUs' target={headerContent.herojoinUsLink.openInNewTab ? "_blank" : "_self"} className='position-relative' onClick={(event) => handleComponentClick(event, 'herojoinUs')}>
         <EditableButton
-          id='herojoinUs'
           text={headerContent.herojoinUs}
           link={headerContent.herojoinUsLink}
           onChange={(newText) => handleTextChange(newText, 'herojoinUs')}
           onLinkChange={(newLink) => handleLinkChange(newLink.url)}
-          style={herojoinUsStyles}
+          style={{...herojoinUsStyles}}
           className="sss-product-hero-cta"
         />
       </a>

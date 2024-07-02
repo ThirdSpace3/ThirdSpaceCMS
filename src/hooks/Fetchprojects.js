@@ -31,7 +31,7 @@ const fetchComponentData = async (walletId, projectId, component) => {
 
 const saveComponentData = async (walletId, projectId, componentName, data) => {
   try {
-    const docRef = doc(db, `projects/${walletId}/projectData/${projectId}/components`, componentName);
+    const docRef = doc(db, `projects/${walletId}/projectData/${projectId}/Content`, componentName);
     await setDoc(docRef, data, { merge: true });
     console.log(`Saved ${componentName} data for project ${projectId}`);
   } catch (error) {
@@ -61,4 +61,21 @@ const fetchAllTemplateData = async (walletId, projectId) => {
   }
 };
 
-export { fetchComponentData, fetchProjects, saveComponentData, fetchAllTemplateData };
+const fetchProjectData = async (walletId, projectId) => {
+  try {
+    const projectDocRef = doc(db, `projects/${walletId}/projectData/${projectId}`);
+    const projectDocSnap = await getDoc(projectDocRef);
+    if (projectDocSnap.exists()) {
+      return projectDocSnap.data();
+    } else {
+      console.log("No such document!");
+      return { content: {}, styles: {} };
+    }
+  } catch (error) {
+    console.error("Error fetching project data:", error);
+    throw error;
+  }
+};
+
+
+export { fetchComponentData, fetchProjects, saveComponentData, fetchAllTemplateData, fetchProjectData };

@@ -7,7 +7,15 @@ import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
 const AboutSection = ({
-  handleSettingsChange, settings, openImagePanel, setSelectedElement, setSelectedColor, onContentChange, handleImageUpload, selectedProjectId, aboutData = { title: '', description: '', images: [] }
+  handleSettingsChange,
+  settings, 
+  openImagePanel, 
+  setSelectedElement, 
+  setSelectedColor, 
+  onContentChange, 
+  handleImageUpload, 
+  selectedProjectId, 
+  aboutData = { title: '', description: '', images: [] }
 }) => {
   const { selectedImage, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();

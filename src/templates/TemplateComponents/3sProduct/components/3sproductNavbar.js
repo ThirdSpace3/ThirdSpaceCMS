@@ -6,6 +6,7 @@ import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
 import '../css/navbar.css';
+import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
 const Navbar = ({
     openImagePanel,
@@ -15,38 +16,34 @@ const Navbar = ({
     sections,
     selectedProjectId,
     handleImageUpload,
-    navbarData, // Receive navbar data as props
+    navbarData,
     selectedElement
 }) => {
     const { selectedImage, enterReplacementMode } = useImageHistory();
-    const [navbarContent, setNavbarContent] = useState({
+    const { updateStyle, getComponentStyle } = useStyle();
+
+    const defaultNavbarContent = {
         home: 'Home',
         navabout: 'About',
         navfeatures: 'Features',
         joinUsNav: 'Join Us',
         joinUsNavLink: { url: '#', openInNewTab: false },
         image: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-logo.png?alt=media&token=7e46320d-7e7d-45a2-9684-6ac565f97c71'
-    });
+    };
 
+    const [navbarContent, setNavbarContent] = useState(defaultNavbarContent);
     const [imageHeight, setImageHeight] = useState(null);
-
-    const { updateStyle, getComponentStyle } = useStyle();
-    const navbarStyles = getComponentStyle('navbar');
-    const homeStyles = getComponentStyle('home');
-    const navaboutStyles = getComponentStyle('navabout');
-    const featuresStyles = getComponentStyle('navfeatures');
-    const joinUsStylesNav = getComponentStyle('navbar-cta');
 
     useEffect(() => {
         if (navbarData) {
             console.log('Fetched navbar data:', navbarData);
             setNavbarContent({
-                home: navbarData.home || 'Home',
-                navabout: navbarData.navabout || 'About',
-                navfeatures: navbarData.navfeatures || 'Features',
-                joinUsNav: navbarData.joinUsNav || 'Join Us',
-                joinUsNavLink: navbarData.joinUsNavLink || { url: '#', openInNewTab: false },
-                image: navbarData.image || navbarContent.image
+                home: navbarData.home || defaultNavbarContent.home,
+                navabout: navbarData.navabout || defaultNavbarContent.navabout,
+                navfeatures: navbarData.navfeatures || defaultNavbarContent.navfeatures,
+                joinUsNav: navbarData.joinUsNav || defaultNavbarContent.joinUsNav,
+                joinUsNavLink: navbarData.joinUsNavLink || defaultNavbarContent.joinUsNavLink,
+                image: navbarData.image || defaultNavbarContent.image
             });
         }
     }, [navbarData]);
@@ -63,8 +60,8 @@ const Navbar = ({
     }, [navbarContent.image]);
 
     const handleComponentClick = (event, identifier) => {
-        event.preventDefault(); 
-        event.stopPropagation(); 
+        event.preventDefault();
+        event.stopPropagation();
         setSelectedElement(identifier);
         console.log(identifier);
         if (sections[identifier] && sections[identifier].current) {
@@ -82,6 +79,11 @@ const Navbar = ({
             ...navbarContent,
             [textType]: newText
         });
+
+        const walletId = sessionStorage.getItem("userAccount");
+        if (walletId && selectedProjectId) {
+            saveComponentData(walletId, selectedProjectId, 'navbar', { ...navbarContent, [textType]: newText });
+        }
     };
 
     const handleLinkChange = (newLink, linkType) => {
@@ -93,8 +95,8 @@ const Navbar = ({
     };
 
     const handleDoubleClick = (event) => {
-        event.preventDefault(); 
-        event.stopPropagation(); 
+        event.preventDefault();
+        event.stopPropagation();
     };
 
     useEffect(() => {
@@ -106,6 +108,12 @@ const Navbar = ({
             document.documentElement.style.setProperty(cssVarName, storedColor);
         }
     }, [setSelectedColor]);
+
+    const navbarStyles = getComponentStyle('navbar');
+    const homeStyles = getComponentStyle('home');
+    const navaboutStyles = getComponentStyle('navabout');
+    const featuresStyles = getComponentStyle('navfeatures');
+    const joinUsStylesNav = getComponentStyle('navbar-cta');
 
     return (
         <div className="sss-product-navbar-container navbar-element" id='navbar' style={navbarStyles} onClick={(event) => handleComponentClick(event, 'navbar')}>
@@ -126,7 +134,7 @@ const Navbar = ({
                 </div>
                 <ul className="sss-product-navbar-links-box">
                     <li>
-                        <Link className="sss-product-navbar-links" id='navbar-link-header' onDoubleClick={handleDoubleClick} onClick={(event) => handleComponentClick(event, 'navbar-link-header')}>
+                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} onClick={(event) => handleComponentClick(event, 'home')}>
                             <EditableText
                                 text={navbarContent.home}
                                 onChange={(newText) => handleTextChange(newText, 'home')}
@@ -138,7 +146,7 @@ const Navbar = ({
                         </Link>
                     </li>
                     <li>
-                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} onClick={(event) => handleComponentClick(event, 'about')}>
+                        <Link className="sss-product-navbar-links" onDoubleClick={handleDoubleClick} onClick={(event) => handleComponentClick(event, 'navabout')}>
                             <EditableText
                                 id='navabout'
                                 text={navbarContent.navabout}
@@ -150,7 +158,7 @@ const Navbar = ({
                         </Link>
                     </li>
                     <li>
-                        <Link className="sss-product-navbar-links" onClick={(event) => handleComponentClick(event, 'features')}>
+                        <Link className="sss-product-navbar-links" onClick={(event) => handleComponentClick(event, 'navfeatures')}>
                             <EditableText
                                 id='navfeatures'
                                 text={navbarContent.navfeatures}
@@ -162,7 +170,7 @@ const Navbar = ({
                         </Link>
                     </li>
                 </ul>
-                <a href={navbarContent.joinUsNavLink.url} target={navbarContent.joinUsNavLink.openInNewTab ? "_blank" : "_self"} className='position-relative' onClick={(event) => handleComponentClick(event, 'joinUs')}>
+                <a href={navbarContent.joinUsNavLink.url} target={navbarContent.joinUsNavLink.openInNewTab ? "_blank" : "_self"} className='position-relative' onClick={(event) => handleComponentClick(event, 'navbar-cta')}>
                     <EditableButton
                         className="sss-product-navbar-cta"
                         id='navbar-cta'

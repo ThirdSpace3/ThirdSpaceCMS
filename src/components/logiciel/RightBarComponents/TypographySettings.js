@@ -14,7 +14,7 @@ export default function TypographySettings({
     lineThrough: false,
   });
 
-  const { updateStyle } = useStyle(); // Function to update the style
+  const { updateStyle } = useStyle();
 
   const handleTextAlign = (alignType) => {
     const newStyle = {
@@ -28,7 +28,7 @@ export default function TypographySettings({
 
   function rgbToHex(rgb) {
     if (!rgb || !/^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/.test(rgb)) {
-      return "#000000";  // Default color or handle error as needed
+      return "#000000";
     }
     const [r, g, b] = rgb.match(/\d+/g).map(Number);
     return (
@@ -41,8 +41,8 @@ export default function TypographySettings({
     const value = type === "number" ? parseInt(e.target.value, 10) : e.target.value;
     const newStyle = { ...typographyStyle, [styleProperty]: value };
     setTypographyStyle(newStyle);
-    updateStyle(selectedElement, newStyle);  // Propagate the change immediately
-};
+    updateStyle(selectedElement, newStyle);
+  };
 
   const handleTextDecoration = (decorationType) => {
     const newDecorations = { ...selectedDecorations };
@@ -164,7 +164,10 @@ export default function TypographySettings({
             <input
               type="color"
               value={typographyStyle.color ? rgbToHex(typographyStyle.color) : "#000000"}
-              onChange={(e) => handleInputChange(e, "color")}
+              onChange={(e) => {
+                handleInputChange(e, "color");
+                document.documentElement.style.setProperty('--header-text-color', e.target.value);
+              }}
             />
           </div>
 

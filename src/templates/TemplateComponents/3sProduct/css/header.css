@@ -5,10 +5,11 @@
   --header-link-color: #8f9bb7;
   --header-cta-background-color: #7214ff;
   --header-background-color: #200627;
-  /* Add this for header background color */
   --header-background-image: ;
-  
+  --header-text-color: #000000; /* New variable for header text color */
+  --header-title-color: #7214ff;
 }
+
 
 
 .sss-product-hero {
@@ -28,20 +29,19 @@
 }
 
 .sss-product-hero-title {
-  color: #f6f6f7;
   text-align: center;
   font-family: Outfit;
   font-size: 45px;
   font-style: normal;
   font-weight: 700;
   border: 2px solid transparent;
-  /* set default border to transparent */
   padding: 2px 4px;
   border-radius: 3px;
+  color: var(--header-title-color); /* Use the new variable here */
 }
 
 .sss-product-hero-text {
-  color: var(--Neutral-gray-300, var(--navbar-link-color));
+  color: var(--header-text-color);
   text-align: center;
   font-family: Inter;
   font-size: 18px;
@@ -53,11 +53,11 @@
 .sss-product-hero-cta {
   border-radius: 36px;
   background: var(--header-cta-background-color); /* Ensure correct variable is used */
+  color: var(--header-link-color);
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  color: #fff;
   font-family: Outfit;
   font-size: 16px;
   font-style: normal;
@@ -89,7 +89,7 @@
 /* define border styles for when the hero title is selected or focused */
 .sss-product-hero-title.selected,
 .sss-product-hero-title:focus-within {
-  border-color: var(--navbar-border-color);
+  border-color: var(--header-border-color);
   /* use the same color variable as the navbar */
 }
 
