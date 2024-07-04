@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'test-environnement' && github.event.pull_request.head.ref == 'website'
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'Test-Environnement' && github.event.pull_request.head.ref == 'website'
     runs-on: ubuntu-latest
 
     steps:
