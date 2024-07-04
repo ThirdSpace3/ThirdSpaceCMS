@@ -1,0 +1,16 @@
+.displayWrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100%;
+    background-color: white;
+}
+.displayColumnWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+
+}

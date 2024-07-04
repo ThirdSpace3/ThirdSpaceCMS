@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+:root {
+    --joinUs-border-color: #151934;
+    --joinUs-link-color: #8f9bb7;
+    --joinUs-cta-background-color: #7214ff;
+    --joinUs-background-color: #200627;
+    --joinUs-background-image: ;
+  }
+
+
+.sss-product-joinus-main{
+  background-color: var(--joinUs-background-color);
+  background-image: var(--joinUs-background-image);
+
+
+}
+.sss-product-joinus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 10px;
+    border: 1px solid #282d45;
+    background: url("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Ftemplateimages%2F3sproduct-joinus-2.png?alt=media&token=0fc9b6ae-55f7-4f35-bb80-6c045521755c");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 60px 30px;
+    margin: auto;
+  }
+  .sss-product-joinus-logo {
+    max-height: 50px;
+    width: auto;
+  }
+  .sss-product-joinus-title {
+    color: var(--Neutral-white-200, #f6f6f7);
+    text-align: center;
+    font-family: Outfit;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .sss-product-joinus-text {
+    color: var(--Neutral-gray-300, #8f9bb7);
+    text-align: center;
+  
+    /* Subtitle/RG */
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+  }
+  .sss-product-joinus-cta {
+    border-radius: 36px;
+    background: var(--joinUs-cta-background-color);
+    display: inline-flex;
+    padding: 10px 25px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+  }
+  
+  /* Pour les mobiles */
+  @container  (max-width: 767px) {
+    .sss-product-joinus {
+      padding: 20px;
+    }
+    .sss-product-joinus-cta {
+      padding: 10px 20px;
+    }
+    .sss-product-joinus-title {
+      font-size: 30px;
+    }
+    .sss-product-joinus-text {
+      font-size: 14px;
+    }
+    .sss-product-joinus-logo {
+      max-height: 30px;
+    }
+  }
+  

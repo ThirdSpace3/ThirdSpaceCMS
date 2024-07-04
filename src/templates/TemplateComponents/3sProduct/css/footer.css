@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+:root {
+    --footer-border-color: #151934;
+    --footer-link-color: #8f9bb7;
+    --footer-cta-background-color: #7214ff;
+    --footer-background-color: #200627;
+    --footer-background-image: ;
+  
+  }
+
+.sss-product-footer {
+    background-color: var(--footer-background-color);    
+    background-image: var(--footer-background-image);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    min-width: 100%;
+    padding: 50px 70px 5px 70px;
+  }
+  .sss-product-footer-top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 100%;
+  }
+  .sss-product-footer-top-logo {
+    max-height: 30px;
+    width: auto;
+  }
+  .sss-product-footer-top-links-box,
+  .sss-product-footer-top-links-box li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+  }
+  .sss-product-footer-top-links {
+    color: #8f9bb7;
+    font-family: Outfit;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+  }
+  .sss-product-footer-top-rs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .sss-product-footer-top-rs-img {
+    max-width: 25px;
+    height: auto;
+  }
+  .sss-product-footer-bottom {
+    min-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .sss-product-footer-bottom-hr {
+    width: 100%;
+    border: 1px solid #282d45;
+  }
+  .sss-product-footer-bottom-text,
+  .sss-product-footer-bottom-text li,
+  .sss-product-footer-bottom-text a {
+    color: var(--Neutral-gray-300, #8f9bb7);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    text-align: center;
+  }
+  .sss-product-footer-bottom-text a {
+    text-decoration: underline;
+  }
+  /* Pour les écrans de bureau */
+  @container  (min-width: 992px) {
+  }
+  
+  /* Pour les tablettes */
+  @container  (min-width: 768px) and (max-width: 991px) {
+  }
+  
+  /* Pour les mobiles */
+  @container  (max-width: 767px) {
+    .sss-product-footer-top {
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+    .sss-product-footer-bottom-text,
+    .sss-product-footer-bottom-text a {
+      font-size: 12px;
+    }
+    .sss-product-footer {
+      gap: 5px;
+      padding: 20px 5% 5px 5%;
+    }
+  }
+  

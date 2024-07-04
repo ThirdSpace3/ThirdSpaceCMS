@@ -1,0 +1,171 @@
+.propulse-popup-container {
+  position: absolute;
+  top: 45px;
+  right: 30%;
+  border-radius: 10px;
+  background: var(--menu-bg);
+  display: flex;
+  padding: 15px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  z-index: 100;
+}
+.propulse-popup-title {
+  color: var(--white);
+  font-family: var(--inter);
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 14.4px */
+}
+.propulse-popup-hr {
+  width: 100%;
+}
+.propulse-popup-container-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.propulse-popup-container-box-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+}
+.propulse-popup-main-txt,
+.propulse-popup-container-box-top i {
+  color: var(--white);
+  text-align: center;
+  font-family: var(--inter);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 14.4px */
+}
+.propulse-popup-container-box-bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.propulse-popup-txt {
+  color: var(--text-editor);
+  text-align: center;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 12px */
+}
+a.propulse-popup-txt {
+  text-decoration: underline;
+}
+/* Le switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  max-width: 30px;
+  max-height: 14px;
+}
+
+/* Le bouton du switch */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Le slider */
+.slider-propulse {
+  position: absolute;
+  cursor:not-allowed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider-propulse:before {
+  position: absolute;
+  content: "";
+  height: 10px;
+  width: 10px;
+  left: 4px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider-propulse {
+  background-color: var(--main-color);
+}
+
+input:focus + .slider-propulse {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider-propulse:before {
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
+}
+
+/* Arrondir les coins du bouton */
+.slider-propulse {
+  border-radius: 34px;
+}
+
+.slider-propulse:before {
+  border-radius: 50%;
+}
+
+.propule-popup-btn {
+  border-radius: 11.058px;
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
+  border: 1.382px solid #4D2F8C;
+  display: flex;
+  padding: 4px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #F4F0FF;
+  text-align: center;
+  font-family: var(--inter);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 14.4px */
+  width: 100%;
+}
+.propule-popup-btn:hover {
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgb(118 79 167 / 32%) 100%), rgba(113, 47, 255, 0.12);
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+/* ====PROPULSE ONGOING==== */
+.propulse-popup-ongoing,
+.propulse-popup-success {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: var(--white);
+  font-family: var(--inter);
+  font-size: 14px;
+  gap: 5px;
+}
+.propulse-popup-success i {
+  color: #58d7ad;
+  font-size: 16px;
+}

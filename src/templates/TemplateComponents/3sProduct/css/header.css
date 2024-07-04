@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+
+:root {
+  --header-border-color: #151934;
+  --header-link-color: #8f9bb7;
+  --header-cta-background-color: #7214ff;
+  --header-background-color: #200627;
+  --header-background-image: ;
+  --header-text-color: #000000; /* New variable for header text color */
+  --header-title-color: #7214ff;
+}
+
+
+
+.sss-product-hero {
+  background-color: var(--header-background-color);
+  /* Use the new variable here */
+  background-image: var(--header-background-image);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 70px;
+}
+
+.sss-product-hero-title {
+  text-align: center;
+  font-family: Outfit;
+  font-size: 45px;
+  font-style: normal;
+  font-weight: 700;
+  border: 2px solid transparent;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: var(--header-title-color); /* Use the new variable here */
+}
+
+.sss-product-hero-text {
+  color: var(--header-text-color);
+  text-align: center;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  max-width: 800px;
+}
+
+.sss-product-hero-cta {
+  border-radius: 36px;
+  background: var(--header-cta-background-color); /* Ensure correct variable is used */
+  color: var(--header-link-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-family: Outfit;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+
+.sss-product-hero-img {
+  max-width: 800px;
+  width: 80%;
+}
+
+/* Pour les mobiles */
+@container (max-width: 767px) {
+  .sss-product-hero {
+    gap: 20px;
+    padding: 5%;
+  }
+
+  .sss-product-hero-title {
+    font-size: 35px;
+  }
+
+  .sss-product-hero-text {
+    font-size: 15px;
+  }
+}
+
+/* define border styles for when the hero title is selected or focused */
+.sss-product-hero-title.selected,
+.sss-product-hero-title:focus-within {
+  border-color: var(--header-border-color);
+  /* use the same color variable as the navbar */
+}
+
+.join-us-btn{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
