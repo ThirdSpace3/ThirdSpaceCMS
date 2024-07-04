@@ -5,6 +5,7 @@ import Pricing from "./pages/Pricing";
 import Products from "./pages/Products";
 import Resources from "./pages/Ressources"; // Changed Ressources to Resources
 import Contact from "./pages/Contact";
+
 import NoPage from "./pages/NoPage";
 import Logiciel from "./pages/Logiciel";
 import TemplateStep from "./pages/TemplateStep";
