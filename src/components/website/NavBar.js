@@ -13,9 +13,8 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
   const togglePopup = (e) => {
     e.preventDefault(); // Prevent default anchor behavior
 
-
     if (accounts.length > 0 && !hasWalletData) {
-      navigate("/templatestep");
+      navigate("/dashboard"); // Redirect to dashboard instead of templatestep
     } else {
       setShowPopup(true);
     }
@@ -49,9 +48,6 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
       navbarPadding.style.backgroundColor = '';
     }
   }, [isMenuOpen]);
-
-
-
 
   return (
     <nav className={`navbar__padding ${isSticky ? 'sticky-navbar' : ''}`}>
@@ -89,7 +85,7 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
             </a>
           ) : (
             <a
-              href={hasWalletData ? "#/dashboard" : "#/templatestep"}
+              href="#/dashboard"
               className="nav__links nav-bg"
             >
               <i className="bi bi-person-circle nav__links-cta"></i>
@@ -127,7 +123,7 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
             </li>
             <li className="coming-soon">
               <a href="/#/3s-agency" className="nav__links-btn">
-              Agency
+                Agency
               </a>
             </li>
             <li className="coming-soon">
@@ -147,7 +143,7 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
                 </a>
               ) : (
                 <a
-                  href={hasWalletData ? "#/dashboard" : "#/templatestep"}
+                  href="#/dashboard"
                   className="nav__links nav-bg"
                 >
                   <i className="bi bi-person-circle nav__links-cta"></i>
