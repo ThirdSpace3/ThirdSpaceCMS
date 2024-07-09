@@ -31,7 +31,7 @@ function Pricing({ checkWalletData }) {
       setShowWalletPopup(!showWalletPopup); // Toggle wallet popup
     } else {
       // If user is logged in
-      navigate("./templatestep"); // Navigate to './templatestep' route
+      navigate("/dashboard"); // Navigate to '/dashboard' route
     }
   };
 
@@ -128,15 +128,14 @@ function Pricing({ checkWalletData }) {
             Get Started
           </a>
           <div className="pricing-card-content">
-          <p className="pricing-card-text">Everything in freemium + </p>
+            <p className="pricing-card-text">Everything in freemium + </p>
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
                 alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
-              <p className="pricing-card-row-text">1 customized domain
-</p>
+              <p className="pricing-card-row-text">1 customized domain</p>
             </div>
             <div className="pricing-card-row">
               <img
@@ -144,8 +143,7 @@ function Pricing({ checkWalletData }) {
                 alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
-              <p className="pricing-card-row-text">Full access to Third Space
-</p>
+              <p className="pricing-card-row-text">Full access to Third Space</p>
             </div>
             <div className="pricing-card-row">
               <img
@@ -153,8 +151,7 @@ function Pricing({ checkWalletData }) {
                 alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
-              <p className="pricing-card-row-text">5GB cloud storage
-</p>
+              <p className="pricing-card-row-text">5GB cloud storage</p>
             </div>
             <div className="pricing-card-row">
               <img
@@ -163,7 +160,7 @@ function Pricing({ checkWalletData }) {
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">
-              Smart Contracts (30 interactions/month)
+                Smart Contracts (30 interactions/month)
               </p>
             </div>
           </div>
@@ -189,16 +186,14 @@ function Pricing({ checkWalletData }) {
             Get Started
           </a>
           <div className="pricing-card-content">
-          <p className="pricing-card-text">Everything in basic + </p>
-
+            <p className="pricing-card-text">Everything in basic + </p>
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
                 alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
-              <p className="pricing-card-row-text">3 customized domains
-</p>
+              <p className="pricing-card-row-text">3 customized domains</p>
             </div>
             <div className="pricing-card-row">
               <img
@@ -214,8 +209,7 @@ function Pricing({ checkWalletData }) {
                 alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
-              <p className="pricing-card-row-text">10GB cloud storage
-</p>
+              <p className="pricing-card-row-text">10GB cloud storage</p>
             </div>
             <div className="pricing-card-row">
               <img
@@ -224,7 +218,7 @@ function Pricing({ checkWalletData }) {
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">
-              Smart Contracts (60 interactions/month)
+                Smart Contracts (60 interactions/month)
               </p>
             </div>
           </div>
