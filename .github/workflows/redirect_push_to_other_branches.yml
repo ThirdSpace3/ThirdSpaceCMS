@@ -17,20 +17,29 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
+      - name: List branches for debugging
+        run: git branch -a
+
       - name: Merge changes to Dashboard
         run: |
-          git checkout Dashboard
-          git merge Test-Environnement --no-edit
+          git fetch origin
+          git checkout origin/Dashboard
+          git checkout -b Dashboard
+          git merge origin/Test-Environnement --no-edit
           git push origin Dashboard
 
       - name: Merge changes to Logiciel
         run: |
-          git checkout Logiciel
-          git merge Test-Environnement --no-edit
+          git fetch origin
+          git checkout origin/Logiciel
+          git checkout -b Logiciel
+          git merge origin/Test-Environnement --no-edit
           git push origin Logiciel
 
       - name: Merge changes to Website
         run: |
-          git checkout Website
-          git merge Test-Environnement --no-edit
+          git fetch origin
+          git checkout origin/Website
+          git checkout -b Website
+          git merge origin/Test-Environnement --no-edit
           git push origin Website
