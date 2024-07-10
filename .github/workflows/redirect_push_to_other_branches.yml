@@ -39,37 +39,4 @@ jobs:
           git fetch origin
           git checkout -b Website origin/Website
           git merge origin/Test-Environnement -X theirs --no-edit
-          git push origin Website  sync_branches:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-      - name: List branches for debugging
-        run: git branch -a
-
-      - name: Merge changes to Dashboard
-        run: |
-          git fetch origin
-          git checkout -b Dashboard origin/Dashboard
-          git merge origin/Test-Environnement --allow-unrelated-histories --no-edit
-          git push origin Dashboard
-
-      - name: Merge changes to Logiciel
-        run: |
-          git fetch origin
-          git checkout -b Logiciel origin/Logiciel
-          git merge origin/Test-Environnement --allow-unrelated-histories --no-edit
-          git push origin Logiciel
-
-      - name: Merge changes to Website
-        run: |
-          git fetch origin
-          git checkout -b Website origin/Website
-          git merge origin/Test-Environnement --allow-unrelated-histories --no-edit
           git push origin Website
