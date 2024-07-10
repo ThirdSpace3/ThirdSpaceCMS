@@ -54,6 +54,7 @@ const Footer = () => {
 
         </div>
       </div>
+      <a href="https://microlaunch.net/p/thirdspace?utm_source=badge-winner-microlaunch&utm_medium=badge" target="_blank"><img src="https://wild-dust-0517.microlaunch.workers.dev/microlaunch-challenger-badges/ml_challenger_dark_v1.svg" alt="Microlaunch - Launch, get feedback, exposure and first customers over a month" style={{width:"298px",height:"70px"}} width="298" height="70" /></a>
       <div className="footer-bottom">
         <div className="footer-credits">
           <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="" />
