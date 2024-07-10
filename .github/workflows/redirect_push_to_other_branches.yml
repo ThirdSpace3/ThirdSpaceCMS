@@ -23,23 +23,20 @@ jobs:
       - name: Merge changes to Dashboard
         run: |
           git fetch origin
-          git checkout origin/Dashboard
-          git checkout -b Dashboard
-          git merge origin/Test-Environnement --no-edit
+          git checkout -b Dashboard origin/Dashboard
+          git merge origin/Test-Environnement --allow-unrelated-histories --no-edit
           git push origin Dashboard
 
       - name: Merge changes to Logiciel
         run: |
           git fetch origin
-          git checkout origin/Logiciel
-          git checkout -b Logiciel
-          git merge origin/Test-Environnement --no-edit
+          git checkout -b Logiciel origin/Logiciel
+          git merge origin/Test-Environnement --allow-unrelated-histories --no-edit
           git push origin Logiciel
 
       - name: Merge changes to Website
         run: |
           git fetch origin
-          git checkout origin/Website
-          git checkout -b Website
-          git merge origin/Test-Environnement --no-edit
+          git checkout -b Website origin/Website
+          git merge origin/Test-Environnement --allow-unrelated-histories --no-edit
           git push origin Website
