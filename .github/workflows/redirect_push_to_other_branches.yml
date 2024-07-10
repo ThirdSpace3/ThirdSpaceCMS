@@ -44,6 +44,6 @@ jobs:
       - name: Merge changes to Builder
         run: |
           git fetch origin
-          git checkout -b Website origin/Builder
+          git checkout -b Builder origin/Builder
           git merge origin/Test-Environnement --allow-unrelated-histories -X theirs --no-edit || true
           git push origin Builder || true
