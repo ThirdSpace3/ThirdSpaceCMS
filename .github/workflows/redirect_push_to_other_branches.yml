@@ -40,3 +40,10 @@ jobs:
           git checkout -b Website origin/Website
           git merge origin/Test-Environnement --allow-unrelated-histories -X theirs --no-edit || true
           git push origin Website || true
+
+      - name: Merge changes to Builder
+        run: |
+          git fetch origin
+          git checkout -b Website origin/Builder
+          git merge origin/Test-Environnement --allow-unrelated-histories -X theirs --no-edit || true
+          git push origin Builder || true
