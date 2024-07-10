@@ -20,7 +20,7 @@ const HeaderSection = ({
   handleImageUpload,
   headerData = {}
 }) => {
-  const { selectedImage, selectImage } = useImageHistory();
+  const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
 
   const defaultHeaderContent = {
@@ -87,20 +87,16 @@ const HeaderSection = ({
     }
   };
 
-  const handleImageChange = (newSrc) => {
-    setHeaderContent(prev => ({
-      ...prev,
+  const handleImageChange = async (newSrc) => {
+    const updatedContent = {
+      ...headerContent,
       image: newSrc
-    }));
-    selectImage(newSrc);
-    onContentChange(prevContent => ({
-      ...prevContent,
-      image: newSrc
-    }));
-
+    };
+    setHeaderContent(updatedContent);
+    onContentChange(updatedContent);
     const walletId = sessionStorage.getItem("userAccount");
     if (walletId && selectedProjectId) {
-      saveComponentData(walletId, selectedProjectId, 'header', { ...headerContent, image: newSrc });
+      await saveComponentData(walletId, selectedProjectId, 'header', updatedContent);
     }
   };
 
