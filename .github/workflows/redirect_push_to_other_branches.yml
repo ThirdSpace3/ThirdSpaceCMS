@@ -1,0 +1,36 @@
+name: redirect push to other branches
+
+on:
+  push:
+    branches:
+      - Test-Environnement
+
+jobs:
+  sync_branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Merge changes to Dashboard
+        run: |
+          git checkout Dashboard
+          git merge Test-Environnement --no-edit
+          git push origin Dashboard
+
+      - name: Merge changes to Logiciel
+        run: |
+          git checkout Logiciel
+          git merge Test-Environnement --no-edit
+          git push origin Logiciel
+
+      - name: Merge changes to Website
+        run: |
+          git checkout Website
+          git merge Test-Environnement --no-edit
+          git push origin Website

@@ -230,7 +230,7 @@ const fetchProfile = async (walletId) => {
 
             <div className="dashboard-settings-item">
               <div className="dashboard-settings-title">
-                <h2>Wallet Adresse</h2>
+                <h2>Wallet Adress</h2>
               </div>
               <div className="dashboard-settings-wallet-box">
                 <a
