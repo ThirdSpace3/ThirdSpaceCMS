@@ -24,19 +24,19 @@ jobs:
         run: |
           git fetch origin
           git checkout -b Dashboard origin/Dashboard
-          git merge origin/Test-Environnement -X theirs --no-edit
-          git push origin Dashboard
+          git merge origin/Test-Environnement --allow-unrelated-histories -X theirs --no-edit || true
+          git push origin Dashboard || true
 
       - name: Merge changes to Logiciel
         run: |
           git fetch origin
           git checkout -b Logiciel origin/Logiciel
-          git merge origin/Test-Environnement -X theirs --no-edit
-          git push origin Logiciel
+          git merge origin/Test-Environnement --allow-unrelated-histories -X theirs --no-edit || true
+          git push origin Logiciel || true
 
       - name: Merge changes to Website
         run: |
           git fetch origin
           git checkout -b Website origin/Website
-          git merge origin/Test-Environnement -X theirs --no-edit
-          git push origin Website
+          git merge origin/Test-Environnement --allow-unrelated-histories -X theirs --no-edit || true
+          git push origin Website || true
