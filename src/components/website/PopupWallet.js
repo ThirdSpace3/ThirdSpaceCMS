@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./PopupWallet.css";
 import axios from "axios";
 import "../Root.css";
@@ -19,6 +19,47 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
   const [customErrorMessage, setCustomErrorMessage] = useState("");
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
+  const images = [
+    './images/carrouseltest.png',
+    './images/carrouseltest.png',
+    './images/carrouseltest.png',
+    './images/carrouseltest.png',
+    './images/carrouseltest.png',
+    // Add more image paths as needed
+  ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const timeoutRef = useRef(null);
+
+  const handleTransitionEnd = () => {
+    if (currentIndex >= images.length) {
+      setIsTransitioning(false);
+      setCurrentIndex(0);
+    } else if (currentIndex < 0) {
+      setIsTransitioning(false);
+      setCurrentIndex(images.length - 1);
+    } else {
+      setIsTransitioning(true);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setIsTransitioning(true);
+    }, 5000);
+
+    timeoutRef.current = interval;
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (!isTransitioning) {
+      const id = setTimeout(() => setIsTransitioning(true), 50);
+      return () => clearTimeout(id);
+    }
+  }, [isTransitioning]);
 
   const toggleShowMore = (e) => {
     e.preventDefault();
@@ -145,7 +186,7 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
     if (!hasWallet) {
       setCustomErrorMessage('To use Third Space, you need to connect a wallet. Please create one with Phantom and then reload your page.');
     }
-    else  {
+    else {
       return;
     }
   };
@@ -158,14 +199,14 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
         const publicKey = response.publicKey.toString();
         const walletRef = doc(db, 'wallets', publicKey);
         const walletSnap = await getDoc(walletRef);
-  
+
         if (!walletSnap.exists()) {
           await setDoc(walletRef, { walletId: publicKey });
           console.log("Wallet ID saved to Firestore:", publicKey);
         } else {
           console.log("Wallet data retrieved:", walletSnap.data());
         }
-  
+
         authenticateWithSolana(publicKey);
       } catch (error) {
         console.error("Error connecting to Phantom:", error);
@@ -214,87 +255,65 @@ function PopupWallet({ onClose, onUserLogin, checkWalletData, setShowPopup }) {
       navigate('../get-started-mobile');
     }
     checkForWallet();
-    const handleOutsideClick = (e) => {
-      if (e.target.id === "popup") {
-        onClose();
-      }
-    };
-
-    document.addEventListener("click", handleOutsideClick);
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
   }, [onClose, navigate]);
 
   if (isMobile) {
     return null; // Do not render the popup on mobile devices
   }
+
   return (
     <div className="popup" id="popup" style={{ display: "flex" }}>
       <div className="popup-content">
+
         <img
-          src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fnavbar-close.png?alt=media&token=3424048f-f9b6-4779-8229-c671b9d3b7ae"
-          alt="Close"
-          className="close-button"
-          onClick={onClose}
+          src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904"
+          className="popup-wallet-main-img"
         />
-        <div className="popup-wallet-header">
-        <h2>Connect to</h2>
-
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904"
-            className="popup-wallet-main-img"
-          />
+        <div className="Sign-in-header">
+          <h3>Welcome</h3>
+          <p>If this is you first time, we will create a account for you! </p>
         </div>
-        {customErrorMessage && (
-          <div className="popup-wallet-warning">
-            <p>
-             {customErrorMessage}
-            </p>
-            <a className="wallet-btn" id="create-wallet-btn-phantom" href="https://phantom.app/" target="_blank">
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fphantom-logo.png?alt=media&token=5ffe611b-3ccd-4663-81e4-59feeb1dbba7" alt="" />
-
-              Create a wallet with Phantom{" "}
-            </a>
-          </div>
-        )}
-
-        <div className={`wallet-list ${customErrorMessage ? 'wallet-hide' : ''}`}>
-          {/* Phantom */}
-          <button
-            id="phantom"
-            className="wallet-btn ga-wallet-btn-phantom"
-            onClick={handleLoginWithPhantom}
-          >
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fphantom-logo.png?alt=media&token=5ffe611b-3ccd-4663-81e4-59feeb1dbba7" alt="" />
-            Continue with Phantom
-          </button>
-          {/* Metamask */}
-          <button
-            id="metamask"
-            className="wallet-btn ga-wallet-btn-metamask"
-            onClick={handleLoginWithMetamask}
-          >
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmetamask-logo.png?alt=media&token=507097be-0cc4-4d93-a87b-99c67d82cfe5" alt="" />
-            Continue with Metamask
-          </button>
-          {/* Unstoppable */}
-          <button
-            id="unstoppable"
-            className="wallet-btn ga-wallet-btn-ud"
-            onClick={handleLoginWithUnstoppable}
-          >
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Funstoppablelogo.png?alt=media&token=60b8c7c0-d644-4954-be2d-7afe3065b876" alt="" />
-            Continue with Unstoppable
-          </button>
-          
+        <div className="mail-login-method">
+          <input type="email"></input>
+          <button className="wallet-btn">Continue with this email</button>
         </div>
-        <hr className="newsletter-top-separator"></hr>
-        <div className="newsletter-section">
-        <h3 className="newsletter-section-title">Stay Updated with Third Space, Join our Newsletter</h3>
-        <Newsletter />
-        <p className="newsletter-section-text">You can unsuscribe at any time. <span><a href="/#/privacy-policy">Privacy Policy</a></span></p>
+        <div className="seperation-connection-way">
+          <hr></hr>
+          <p>or</p>
+          <hr></hr>
+        </div>
 
+        <button className="wallet-btn">
+          Connect Wallet
+        </button>
+        <p>By sigining in, you're agreeing to the <a href=""><u><b>Terms</b></u></a> and <a><u><b>Privacy Policy</b></u> </a></p>
+      
+      </div>
+      <div className="wallet-carousel-container">
+        <div
+          className="wallet-carousel"
+          style={{
+            transform: `translateY(-${(currentIndex % images.length) * 20}%)`,
+            transition: isTransitioning ? 'transform 1s ease' : 'none'
+          }}
+          onTransitionEnd={handleTransitionEnd}
+        >
+          {[...images, ...images].map((src, index) => (
+            <img
+              key={index}
+              src={src}
+              className={`wallet-carousel-image ${index === currentIndex ? 'active' : 'inactive'}`}
+              alt={`Slide ${index + 1}`}
+            />
+          ))}
+        </div>
+        <div className="carousel-indicators">
+          {images.map((_, index) => (
+            <span
+              key={index}
+              className={`indicator ${index === currentIndex % images.length ? 'active' : ''}`}
+            ></span>
+          ))}
         </div>
       </div>
     </div>

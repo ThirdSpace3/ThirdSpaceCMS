@@ -1,63 +1,93 @@
-/*==================== POPUP WALLET ====================*/
-
 .popup {
-  display: none;
+  display: flex;
   position: fixed;
+  align-items: center;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(3, 0, 20, 0.85);
+  background: #030014;
   z-index: 10;
+  justify-content: center;
+}
+
+.popup-wallet-main-img {
+  height: 28px;
+  width: 165px;
+}
+
+.seperation-connection-way {
+  gap: 15px;
+}
+
+.seperation-connection-way hr {
+  width: 45%;
+  height: 0;
 }
 
 .popup-content {
-  width: 500px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  padding: 50px 25px;
-  align-items: center;
+  align-content: center;
+  padding: 80px;
   gap: 25px;
   border-radius: 10px;
-border: 1px solid #201F30;
-background: rgba(3, 0, 20, 0.40);
-backdrop-filter: blur(27.5px);
 }
 
-.close-button {
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  width: 15px;
-  cursor: pointer;
+.wallet-carousel-container {
+  width: 300px; /* Adjust as needed */
+  height: 600px; /* Adjust as needed */
+  position: relative;
 }
-.popup-wallet-header {
+
+.wallet-carousel {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  align-self: stretch;
-}
-.popup-wallet-main-img {
-  height: 45px;
-  width: auto;
-}
-.popup h2 {
-  color: #F0F0F1;
-  text-align: center;
-  font-family: "DM Sans";
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+  transition: transform 1s ease;
+  gap: 25px;
 }
 
+.wallet-carousel-image {
+  width: 100%;
+  height: 100%;
+  transition: opacity 1s ease;
+}
+
+.wallet-carousel-image.inactive {
+  opacity: 0.5; /* Darken non-selected images */
+}
+
+.wallet-carousel-image.active {
+  opacity: 1;
+}
+
+.carousel-indicators {
+  position: absolute;
+  top: 50%;
+  right: -20px;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  background-color: rgb(255, 255, 255, 0.27);
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 1s ease, height 1s ease, border-radius 1s ease;
+}
+
+.indicator.active {
+  background-color: #FFFFFF;
+  height: 50px;
+  border-radius: 800px;
+}
 
 .wallet-btn {
-  color: #F4F0FF;
+  color: #f4f0ff;
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
@@ -70,18 +100,16 @@ backdrop-filter: blur(27.5px);
   width: 100%;
   gap: 35px;
   border-radius: 11.058px;
-border: 1.382px solid #4D2F8C;
-background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12);
-box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
+  border: 1.382px solid #4d2f8c;
+  background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12);
+  box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
 }
-
 
 .wallet-btn:hover {
   background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgb(118 79 167 / 32%) 100%), rgba(113, 47, 255, 0.12);
   transition: 0.3s ease;
   cursor: pointer;
 }
-
 
 .wallet-list {
   display: flex;
@@ -95,44 +123,13 @@ box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
   height: 35px;
   border-radius: 100px;
 }
-.wallet-hide {
-  display: none;
-}
-.popup-more-btn {
-  color: var(--white);
-  font-family: Montserrat;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-}
-.wallet-btn-comingsoon {
-  cursor: default;
-  color: var(--not-selected);
-}
 
-.popup-wallet-warning {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  align-items: center;
-}
-.popup-wallet-warning p {
-  color: #F4F0FF;
-  font-family: Inter;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 27.645px; /* 172.779% */
-  text-align: center;
-}
 .wallet-hide {
   display: none;
 }
 
-
-
-/* @media screen and (max-width: 600px) {
-  .popup-wallet-header {
+@media screen and (max-width: 600px) {
+  .popup-content {
     scale: 0.9;
   }
   .wallet-btn {
@@ -147,32 +144,8 @@ box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
   .popup h2 {
     font-size: 27px;
   }
-} */
-@media screen and (min-width: 411px) and (max-width: 600px) {
-  .popup-content {
-    width: 100%;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 0%);
-    top: auto;
-    border-radius: 15px 15px 0 0;
-    gap: 15px;
-  }
-
-  .wallet-btn {
-    font-size: 18px;
-  }
-  .wallet-btn img {
-    max-width: 35px;
-  }
-
-  .popup h2 {
-    font-size: 23px;
-  }
-  .popup-wallet-main-img {
-    max-width: 65px;
-  }
 }
+
 @media screen and (max-width: 410px) {
   .popup-content {
     width: 100%;
