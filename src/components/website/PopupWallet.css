@@ -11,13 +11,20 @@
   justify-content: center;
 }
 
+
 .popup-wallet-main-img {
   height: 28px;
   width: 165px;
+  position: absolute;
+  top: 5%;
+
 }
 
 .seperation-connection-way {
-  gap: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 2vh;
 }
 
 .seperation-connection-way hr {
@@ -29,15 +36,17 @@
   display: flex;
   flex-direction: column;
   align-content: center;
-  padding: 80px;
-  gap: 25px;
   border-radius: 10px;
+  margin-right: 8vw;
+  margin-left: -8vw;
+  width: 40%;
 }
 
 .wallet-carousel-container {
-  width: 300px; /* Adjust as needed */
-  height: 600px; /* Adjust as needed */
-  position: relative;
+  width: 300px;
+  /* Adjust as needed */
+  height: 600px;
+  /* Adjust as needed */
 }
 
 .wallet-carousel {
@@ -45,16 +54,19 @@
   flex-direction: column;
   transition: transform 1s ease;
   gap: 25px;
+
 }
 
 .wallet-carousel-image {
   width: 100%;
   height: 100%;
   transition: opacity 1s ease;
+
 }
 
 .wallet-carousel-image.inactive {
-  opacity: 0.5; /* Darken non-selected images */
+  opacity: 0.5;
+  /* Darken non-selected images */
 }
 
 .wallet-carousel-image.active {
@@ -64,7 +76,7 @@
 .carousel-indicators {
   position: absolute;
   top: 50%;
-  right: -20px;
+  right: 15%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
@@ -74,7 +86,7 @@
 .indicator {
   width: 10px;
   height: 10px;
-  background-color: rgb(255, 255, 255, 0.27);
+  background-color: rgba(255, 255, 255, 0.27);
   border-radius: 50%;
   display: inline-block;
   transition: background-color 1s ease, height 1s ease, border-radius 1s ease;
@@ -88,14 +100,17 @@
 
 .wallet-btn {
   color: #f4f0ff;
+  justify-content: center;
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
-  line-height: 27.645px; /* 172.779% */
+  line-height: 27.645px;
+  margin-bottom: 2vh;
+
+  /* 172.779% */
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   padding: 8px 60px;
   width: 100%;
   gap: 35px;
@@ -103,6 +118,32 @@
   border: 1.382px solid #4d2f8c;
   background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12);
   box-shadow: 0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset;
+}
+
+.wallet-btn:disabled {
+  background: grey;
+  cursor: not-allowed;
+  border: none;
+}
+
+.password-toggle-icon {
+  position: relative;
+  top: -45px;
+  left: 95%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .wallet-btn:hover {
@@ -128,19 +169,194 @@
   display: none;
 }
 
+
+.forgot-password{
+  margin-bottom: 3vh;
+  
+  color: #ACB3B9;
+
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  /* 133.333% */
+  letter-spacing: -0.64px;
+  text-decoration-line: underline;
+}
+
+.forgot-password a:hover {
+  text-decoration: none;
+}
+
+.popup input {
+  color: white;
+
+  display: flex;
+  height: 44px;
+  padding: 11px;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+  width: 100%;
+  border-radius: 8px;
+  background: #1A1D21;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+}
+
+
+.popup h1 {
+  color: #F4F0FF;
+  margin-bottom: 2vh;
+  font-family: Inter;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px;
+  /* 125% */
+  letter-spacing: -0.64px;
+}
+
+.Sign-in-header p {
+  color: #ACB3B9;
+  margin-bottom: 2vh;
+
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  /* 142.857% */
+  letter-spacing: -0.64px;
+}
+
+.terms-links {
+  color: #ACB3B9;
+
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  /* 133.333% */
+  letter-spacing: -0.64px;
+}
+
+.terms-links a:hover {
+  cursor: pointer;
+  color: #f6f0ffc0; 
+}
+
+.terms-links a {
+  color: #F4F0FF;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: -0.64px;
+  text-decoration-line: underline;
+}
+
+
+
+.forgot-password-method p{
+  color: #ACB3B9;
+
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.64px;
+}
+
+.verification-code-input {
+  text-align: center;
+}
+
+.verification-code-input h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.verification-code-input p {
+  font-size: 14px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.code-input-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.code-input {
+  background-color: transparent;
+  width: 63px;
+  height: 72px;
+  font-size: 24px;
+  text-align: center;
+  border-radius: 15px;
+  border: 1px solid #FFF;
+}
+
+.sign-in-redirect{
+  color: #ACB3B9;
+
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 133.333% */
+  letter-spacing: -0.64px;
+  margin-bottom: 3vh;
+}
+.sign-in-redirect a {
+  color: #F4F0FF;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: -0.64px;
+  text-decoration-line: underline;
+}
+
+.resend-code{
+  cursor: pointer;
+  color: #ACB3B9;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px; /* 133.333% */
+  letter-spacing: -0.64px;
+  padding-bottom: 2vh;
+}
+
 @media screen and (max-width: 600px) {
   .popup-content {
     scale: 0.9;
   }
+
   .wallet-btn {
     font-size: 18px;
   }
+
   .wallet-btn img {
     max-width: 35px;
   }
+
   .popup-more-btn {
     font-size: 14px;
   }
+
   .popup h2 {
     font-size: 27px;
   }
@@ -161,6 +377,7 @@
   .wallet-btn {
     font-size: 15px;
   }
+
   .wallet-btn img {
     max-width: 25px;
   }
@@ -168,6 +385,7 @@
   .popup h2 {
     font-size: 20px;
   }
+
   .popup-wallet-main-img {
     max-width: 55px;
   }

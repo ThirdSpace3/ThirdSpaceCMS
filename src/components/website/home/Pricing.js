@@ -1,24 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Pricing.css";
 import "../../Root.css";
-import PopupWallet from "../PopupWallet";
+import PopupWallet from "../login/PopupWallet";
 import { useNavigate } from "react-router-dom";
 import ReactGA from "react-ga";
 
-function Pricing({ checkWalletData }) {
-  const [activeTab, setActiveTab] = useState("TabA");
-  const [showWalletPopup, setShowWalletPopup] = useState(false);
+function Pricing({  }) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setActiveTab("TabA");
-  }, []);
-
-  const openTab = (tabName) => {
-    setActiveTab(tabName);
-    setShowWalletPopup(false); // Reset showWalletPopup state
-  };
-
   const userIsLoggedIn = () => {
     const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
     return isLoggedIn;
@@ -28,17 +16,14 @@ function Pricing({ checkWalletData }) {
     console.log(userIsLoggedIn);
     if (!userIsLoggedIn()) {
       // If user is not logged in
-      setShowWalletPopup(!showWalletPopup); // Toggle wallet popup
+      navigate('/login'); // Navigate to the login page
     } else {
       // If user is logged in
       navigate("/dashboard"); // Navigate to '/dashboard' route
     }
   };
 
-  const handleUserLogin = (userAccount) => {
-    // Handle user login here
-    console.log("User logged in:", userAccount);
-  };
+
 
   return (
     <section className="pricing-section section">
@@ -225,13 +210,6 @@ function Pricing({ checkWalletData }) {
         </div>
       </div>
 
-      {showWalletPopup && (
-        <PopupWallet
-          onClose={toggleWalletPopup}
-          onUserLogin={handleUserLogin}
-          checkWalletData={checkWalletData}
-        />
-      )}
     </section>
   );
 }
