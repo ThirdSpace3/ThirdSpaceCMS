@@ -3,8 +3,9 @@ import "../PopupWallet.css";
 import { db, doc, getDoc, setDoc } from '../../../firebaseConfig';
 import UAuth from '@uauth/js';
 
-function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForWallet, onClose, setCustomErrorMessage, walletAvailable, onUserLogin }) {
+function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForWallet, onClose, walletAvailable, onUserLogin }) {
   const [phantomInitiated, setPhantomInitiated] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const authenticateWithEthereum = async (walletId) => {
     try {
@@ -16,6 +17,7 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
       processLogin(walletId, 'Ethereum');
     } catch (error) {
       console.error("Error during Ethereum authentication:", error);
+      setErrorMessage("Ethereum authentication failed. Please try again.");
     }
   };
 
@@ -26,6 +28,7 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
       processLogin(publicKey, 'Solana');
     } catch (error) {
       console.error("Error during Solana authentication:", error);
+      setErrorMessage("Solana authentication failed. Please try again.");
     }
   };
 
@@ -36,7 +39,7 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
       processLogin(userId, 'Unstoppable');
     } catch (error) {
       console.error("Error during Unstoppable authentication:", error);
-      setCustomErrorMessage('Unstoppable authentication failed. Please try again.');
+      setErrorMessage('Unstoppable authentication failed. Please try again.');
     }
   };
 
@@ -72,10 +75,10 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
         authenticateWithEthereum(account);
       } catch (error) {
         console.error("Error with MetaMask login:", error);
-        setCustomErrorMessage('MetaMask authentication failed. Please try again.');
+        setErrorMessage('MetaMask authentication failed. Please try again.');
       }
     } else {
-      setCustomErrorMessage('MetaMask is not installed. Install it and try again.');
+      setErrorMessage('MetaMask is not installed. Install it and try again.');
     }
   };
 
@@ -98,18 +101,18 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
         authenticateWithSolana(publicKey);
       } catch (error) {
         console.error("Error connecting to Phantom:", error);
-        setCustomErrorMessage('Phantom authentication failed. Please try again.');
+        setErrorMessage('Phantom authentication failed. Please try again.');
       }
     } else {
       if (phantomInitiated) {
         checkForWallet();
         if (walletAvailable) {
-          setCustomErrorMessage("Phantom wallet is now available. Please try connecting again.");
+          setErrorMessage("Phantom wallet is now available. Please try connecting again.");
         } else {
-          setCustomErrorMessage('Phantom wallet is not available. Please refresh the page and try again.');
+          setErrorMessage('Phantom wallet is not available. Please refresh the page and try again.');
         }
       } else {
-        setCustomErrorMessage('Phantom wallet installation isn\'t completed or not initiated. Please finish or install the Phantom wallet to continue.');
+        setErrorMessage('Phantom wallet installation isn\'t completed or not initiated. Please finish or install the Phantom wallet to continue.');
         setPhantomInitiated(true);
       }
     }
@@ -128,12 +131,13 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
       authenticateWithUnstoppable(authorization);
     } catch (error) {
       console.error("Error with Unstoppable login:", error);
-      setCustomErrorMessage('Unstoppable login failed. Please try again.');
+      setErrorMessage('Unstoppable login failed. Please try again.');
     }
   };
 
   return (
     <div className="wallet-list">
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
       <button
         id="phantom"
         className="wallet-btn ga-wallet-btn-phantom"

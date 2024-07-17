@@ -241,6 +241,7 @@ function PopupWallet({ onClose, setShowPopup }) {
             setCustomErrorMessage={setCustomErrorMessage}
             walletAvailable={walletAvailable}
             onUserLogin={onUserLogin}
+            customErrorMessage={customErrorMessage}
           />
         ) : (
           <EmailLogin
