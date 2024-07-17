@@ -3,10 +3,12 @@ import LoadingAnimation from './loadingAnimation';
 import "../PopupWallet.css";
 import "../../Root.css";
 
-function VerificationCodeInput({ onVerify, errorMessage, setErrorMessage, setCustomMessage, CustomMessage }) {
+function VerificationCodeInput({ email, onVerify, onResendCode, errorMessage, setErrorMessage, setCustomMessage, CustomMessage }) {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [isCodeComplete, setIsCodeComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isResendDisabled, setIsResendDisabled] = useState(false);
+  const [resendTimer, setResendTimer] = useState(30);
 
   const handleChange = (e, index) => {
     const newCode = [...code];
@@ -41,14 +43,30 @@ function VerificationCodeInput({ onVerify, errorMessage, setErrorMessage, setCus
     }
   };
 
+  const handleResendCode = async () => {
+    setIsLoading(true);
+    await onResendCode(email);
+    setIsLoading(false);
+    setIsResendDisabled(true);
+    setResendTimer(30);
+    const timer = setInterval(() => {
+      setResendTimer((prevTimer) => {
+        if (prevTimer <= 1) {
+          clearInterval(timer);
+          setIsResendDisabled(false);
+          return 30;
+        }
+        return prevTimer - 1;
+      });
+    }, 1000);
+  };
+
   useEffect(() => {
     setErrorMessage('');
   }, []);
 
   return (
     <div className="verification-code-input">
-      <p >{CustomMessage}</p>
-
       <div className="code-input-container" onPaste={handlePaste}>
         {code.map((digit, index) => (
           <input
@@ -59,13 +77,25 @@ function VerificationCodeInput({ onVerify, errorMessage, setErrorMessage, setCus
             value={digit}
             onChange={(e) => handleChange(e, index)}
             className="code-input"
+            style={{ borderColor: errorMessage ? 'red' : 'D8DADC' }}
+
           />
         ))}
       </div>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
+      <div className="resend-code-container">
+        <a 
+          className={`resend-code-btn`} 
+          onClick={!isResendDisabled && !isLoading ? handleResendCode : null} 
+          style={{ cursor: isResendDisabled ? 'not-allowed' : 'pointer' }}
+        >
+          {isResendDisabled ? `Resend the code' (${resendTimer})` : 'Resend the code'}
+        </a>
+      </div>
       <button className="wallet-btn" onClick={handleVerify} disabled={!isCodeComplete || isLoading}>
         {isLoading ? <LoadingAnimation /> : 'Verify'}
       </button>
+     
     </div>
   );
 }

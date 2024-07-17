@@ -88,18 +88,9 @@ function ForgotPassword({ onClose, onHeaderChange }) {
       ) : !isCodeVerified ? (
         <>
           <VerificationCodeInput onVerify={handleVerifyCode} errorMessage={errorMessage} setErrorMessage={setErrorMessage} CustomMessage={CustomMessage} setCustomMessage={setCustomMessage} />
-          <div className="resend-code">
-            {canResendCode ? (
-              <span  onClick={handleSendResetCode}>
-                Resend Code
-              </span>
-            ) : (
-              <span>Send code again in {timer} seconds</span>
-            )}
-          </div>
-        </>
+                </>
       ) : (
-        <ResetPassword email={email} onResetComplete={onClose} setErrorMessage={setErrorMessage} setCustomMessage={setCustomMessage} />
+        <ResetPassword onHeaderChange={onHeaderChange}  email={email} onResetComplete={onClose} setErrorMessage={setErrorMessage} setCustomMessage={setCustomMessage} />
       )}
     </div>
   );
