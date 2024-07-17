@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { db, doc, getDoc, updateDoc } from '../../../firebaseConfig';
 import "../PopupWallet.css";
 
-function ResetPassword({ email, onResetComplete, setErrorMessage }) {
+function ResetPassword({ email, onResetComplete, setErrorMessage, onHeaderChange }) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -24,6 +24,7 @@ function ResetPassword({ email, onResetComplete, setErrorMessage }) {
       if (emailSnap.exists()) {
         await updateDoc(emailRef, { password: newPassword });
         setLoading(false);
+        onHeaderChange("Password changed", "Your password has been changed succesfully")
         setIsResetComplete(true);
       } else {
         setErrorMessage("Email not found.");
