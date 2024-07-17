@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { db, doc, getDoc, setDoc } from '../../../firebaseConfig';
 import "../PopupWallet.css";
 import VerificationCodeInput from "./VerificationCodeInput"; // Import the VerificationCodeInput component
+import LoadingAnimation from "./loadingAnimation";
 
 function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, handleSignUpState, isExistingUser, setIsExistingUser, onForgotPassword, onHeaderChange }) {
   const [email, setEmail] = useState("");
@@ -178,7 +179,7 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
           }}
         >
           {isLoading ? (
-            <span className="loading-dots">...</span>
+            <LoadingAnimation></LoadingAnimation>
           ) : showPasswordField ? (
             isExistingUser ? "Login" : "Sign Up"
           ) : (

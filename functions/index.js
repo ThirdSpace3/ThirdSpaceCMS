@@ -43,15 +43,63 @@ exports.verifyCode = functions.https.onRequest((req, res) => {
       if (isCodeValid) {
         // Optionally, you can delete the verification code document after verification
         await emailRef.delete();
+
+        // Send Welcome Email
+        const welcomeMailOptions = {
+          from: gmailEmail,
+          to: email,
+          subject: 'Welcome to Third Space!',
+          html: `
+            <div style="font-family: Inter, Arial, sans-serif; background: #FFF; padding: 47px 48px; margin: auto; width: 60%; align-items: center; gap: 39px;">
+              <div style="padding: 20px; text-align: justify; align-items: center;">
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmailimage.png?alt=media&token=fa3cbf16-fa97-4da2-a80b-59957e56fbc1" style="width: 583px; height: 200px;" alt="Third Space">
+                <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
+                <h2 style="font-size: 24px; font-weight: 500; line-height: 32px; color: #000;">Hi, Welcome! <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fwave.png?alt=media&token=f0fa4b2b-cd0e-498c-9a73-f5cea175ae53"></img></h2>
+                <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">Welcome to Third Space! We are thrilled to have you join our community of creators. Our mission is to empower creators like you to bring their creative vision to life.</p>
+                <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">To get started, we recommend taking a few moments to explore our platform and familiarize yourself with our features. From our intuitive interface to our robust library of assets, we’ve designed our platform to be as user-friendly as possible.  </p>
+                <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">We are committed to providing our users with the best possible experience on our platform. Our customer support team is available to assist you with any issues that you may encounter, and we encourage you to reach out to us if you need assistance.</p>
+                <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">Thank you for choosing Third Space. We look forward to seeing the amazing content that you will create.</p>
+
+                <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">Best Regards,</p>
+                <p style="font-size: 14px; font-weight: 500; line-height: 22px; color: #892CDC;">3S Team.</p>
+              </div>
+              <hr style="width: 584px; height: 1px; border: none; border-top: 1px solid #EEE; margin: 20px 0;">
+          <div style="text-align: center;">
+            <a href="https://x.com/BuildWith3S">  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fx.png?alt=media&token=55bf09ff-5ae3-419a-ae43-e85c8c6a5982"></img></a>
+            <a href="https://www.linkedin.com/company/thirdspace-3/">  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2FLinkedIn.png?alt=media&token=3023cb89-8f07-4056-8da1-59701877ee5c"></img></a>
+           <a href="https://discord.com/invite/dked3DEngT"> <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2FVector.png?alt=media&token=a541bac4-81cc-4fc6-9e4e-ce22b16db217"></img></a>
+          </div>
+              <hr style="width: 584px; height: 1px; border: none; border-top: 1px solid #EEE; margin: 0 20px;">
+              <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #000; text-align: center;">© 2024 Third Space. All rights reserved.</p>
+              <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #000; text-align: center;">
+                You are receiving this mail because you registered to join the Third Space platform as a user. This also shows that you agree to our Terms of Use and Privacy Policies. If you no longer want to receive emails from us, click the unsubscribe link below to unsubscribe.
+              </p>
+              <p style="text-align: center;">
+            <a href="https://3rd-space.io/#/privacy-policy" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Privacy Policy</a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none">
+              <circle cx="2.5" cy="2.5" r="2" fill="#D9D9D9"/>
+            </svg>
+            <a href="https://3rd-space.io/#/terms" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Terms of Service</a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none">
+              <circle cx="2.5" cy="2.5" r="2" fill="#D9D9D9"/>
+            </svg>
+            <a href="https://3rd-space.io/#/dashboard" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Unsubscribe</a>
+          </p>
+            </div>
+          `
+        };
+
+        await mailTransport.sendMail(welcomeMailOptions);
       }
 
-      res.status(200).send({ success: isCodeValid, message: isCodeValid ? 'Code verified successfully' : 'Invalid code' });
+      res.status(200).send({ success: isCodeValid, message: isCodeValid ? 'Code verified successfully and welcome email sent' : 'Invalid code' });
     } catch (error) {
       console.error('Error verifying code:', error);
       res.status(500).send({ success: false, message: 'Failed to verify code' });
     }
   });
 });
+
 
 
 // Send Verification Code Function
