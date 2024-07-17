@@ -13,7 +13,7 @@ function WalletCarousel() {
 
   useEffect(() => {
     const resetTimeout = setTimeout(() => {
-      if (currentIndex === images.length - 1) {
+      if (currentIndex === images.length * 2 - 1) {
         setCurrentIndex(0);
       }
     }, 5000);
@@ -25,12 +25,12 @@ function WalletCarousel() {
 
   const handleTransitionEnd = () => {
     if (currentIndex === images.length * 2 - 1) {
-      setCurrentIndex(images.length);
+      setCurrentIndex(0);
     }
   };
 
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === images.length * 2 - 1 ? prevIndex : prevIndex + 1));
+    setCurrentIndex((prevIndex) => (prevIndex === images.length * 2 - 1 ? 0 : prevIndex + 1));
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ function WalletCarousel() {
           <img
             key={index}
             src={src}
-            className={`wallet-carousel-image ${index === currentIndex % images.length ? 'active' : 'inactive'}`}
+            className={`wallet-carousel-image ${currentIndex % images.length === index ? 'active' : 'inactive'}`}
             alt={`Slide ${index + 1}`}
           />
         ))}
@@ -63,7 +63,7 @@ function WalletCarousel() {
           <img
             key={index + images.length}
             src={src}
-            className={`wallet-carousel-image ${index === currentIndex % images.length ? 'active' : 'inactive'}`}
+            className={`wallet-carousel-image ${currentIndex - images.length === index ? 'active' : 'inactive'}`}
             alt={`Slide ${index + 1}`}
           />
         ))}
