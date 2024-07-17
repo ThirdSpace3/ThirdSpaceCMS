@@ -47,7 +47,7 @@ function VerificationCodeInput({ onVerify, errorMessage, setErrorMessage, setCus
 
   return (
     <div className="verification-code-input">
-      <p>{CustomMessage}</p>
+      <p >{CustomMessage}</p>
 
       <div className="code-input-container" onPaste={handlePaste}>
         {code.map((digit, index) => (
