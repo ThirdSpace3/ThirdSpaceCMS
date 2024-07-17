@@ -1,44 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import './NavBar.css';
 import { useNavigate } from 'react-router-dom';
-import PopupWallet from './PopupWallet.js';
 import ReactGA from 'react-ga';
 
-function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
+function Navbar({ }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const navigate = useNavigate();
 
   const togglePopup = (e) => {
     e.preventDefault(); // Prevent default anchor behavior
-
-    if (accounts.length > 0 && !hasWalletData) {
-      navigate("/dashboard"); // Redirect to dashboard instead of templatestep
-    } else {
-      setShowPopup(true);
-    }
+      navigate('/login'); // Navigate to the login page
   };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
-  useEffect(() => {
-    const shouldOpenWalletPopup = localStorage.getItem('openWalletPopup');
-    if (shouldOpenWalletPopup === 'true') {
-      setShowPopup(true);
-      localStorage.removeItem('openWalletPopup');
-    }
-
-    ReactGA.pageview(window.location.pathname + window.location.search);
-
-    const userAccount = sessionStorage.getItem("userAccount");
-    if (userAccount) {
-      setAccounts([userAccount]);
-      checkWalletData(userAccount);
-    }
-  }, []);
 
   useEffect(() => {
     const navbarPadding = document.querySelector('.navbar__padding');
@@ -79,18 +56,9 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
             </li>
           </ul>
 
-          {accounts.length === 0 ? (
             <a className="purple-btn ga-getstarted-btn-navbar" id='getstarted-btn' onClick={togglePopup}>
               Get Started
             </a>
-          ) : (
-            <a
-              href="#/dashboard"
-              className="nav__links nav-bg"
-            >
-              <i className="bi bi-person-circle nav__links-cta"></i>
-            </a>
-          )}
         </div>
       </div>
 
@@ -137,24 +105,14 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
               </a>
             </li>
             <li>
-              {accounts.length === 0 ? (
                 <a href="#" className="purple-btn" onClick={togglePopup}>
                   Get Started
                 </a>
-              ) : (
-                <a
-                  href="#/dashboard"
-                  className="nav__links nav-bg"
-                >
-                  <i className="bi bi-person-circle nav__links-cta"></i>
-                </a>
-              )}
             </li>
           </ul>
         </div>
       </div>
 
-      {showPopup && <PopupWallet setShowPopup={setShowPopup} onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />}
     </nav>
   );
 }

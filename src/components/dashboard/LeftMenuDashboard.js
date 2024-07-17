@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./DashboardMain.css";
 import "../Root.css";
-import PopupWallet from "../website/PopupWallet";
+import PopupWallet from "../website/login/PopupWallet";
 import {db, collection, doc, getDoc } from "../../firebaseConfig";
 
 export default function LeftMenuDashboard({
