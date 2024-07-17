@@ -2,7 +2,11 @@ name: Firebase Deploy on PR Merge
 
 on:
   pull_request:
-    types: [pushed]
+<<<<<<< HEAD
+  
+=======
+>>>>>>> parent of bbfc428 (Update firebase_deploy_test.yml)
+    types: [closed]
 
 jobs:
   deploy:
