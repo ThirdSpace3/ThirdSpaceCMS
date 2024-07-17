@@ -2,7 +2,7 @@ name: Firebase Deploy on PR Merge
 
 on:
   pull_request:
-    types: [closed]
+    types: [pushed]
 
 jobs:
   deploy:
