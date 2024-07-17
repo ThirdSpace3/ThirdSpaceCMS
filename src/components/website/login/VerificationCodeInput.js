@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import LoadingAnimation from './loadingAnimation';
 import "../PopupWallet.css";
 import "../../Root.css";
+
 function VerificationCodeInput({ onVerify, errorMessage, setErrorMessage, setCustomMessage, CustomMessage }) {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [isCodeComplete, setIsCodeComplete] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e, index) => {
     const newCode = [...code];
@@ -30,9 +33,11 @@ function VerificationCodeInput({ onVerify, errorMessage, setErrorMessage, setCus
     }
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     if (isCodeComplete) {
-      onVerify(code.join(""));
+      setIsLoading(true);
+      await onVerify(code.join(""));
+      setIsLoading(false);
     }
   };
 
@@ -42,8 +47,7 @@ function VerificationCodeInput({ onVerify, errorMessage, setErrorMessage, setCus
 
   return (
     <div className="verification-code-input">
-            
-        <p >{CustomMessage}</p>
+      <p>{CustomMessage}</p>
 
       <div className="code-input-container" onPaste={handlePaste}>
         {code.map((digit, index) => (
@@ -59,9 +63,8 @@ function VerificationCodeInput({ onVerify, errorMessage, setErrorMessage, setCus
         ))}
       </div>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
-
-      <button className="wallet-btn" onClick={handleVerify} disabled={!isCodeComplete}>
-        Verify
+      <button className="wallet-btn" onClick={handleVerify} disabled={!isCodeComplete || isLoading}>
+        {isLoading ? <LoadingAnimation /> : 'Verify'}
       </button>
     </div>
   );

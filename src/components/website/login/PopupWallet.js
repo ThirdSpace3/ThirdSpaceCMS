@@ -1,3 +1,4 @@
+// src/components/PopupWallet.js
 import React, { useState, useEffect, useRef } from "react";
 import "../PopupWallet.css";
 import "../../Root.css";
@@ -7,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import EmailLogin from "./EmailLogin";
 import WalletConnection from "./WalletConnection";
 import ForgotPassword from "./ForgotPassword";
+import WalletCarousel from "./WalletCarousel"; // Import the new component
 
 // Initialize Google Analytics
 ReactGA.initialize('G-83NKPT3B9E');
@@ -33,16 +35,6 @@ function PopupWallet({ onClose, setShowPopup }) {
   const [headerDescription, setHeaderDescription] = useState("If this is your first time, we will create an account for you!");
 
   const navigate = useNavigate();
-  const images = [
-    './images/carrouseltest.png',
-    './images/carrouseltest.png',
-    './images/carrouseltest.png',
-    './images/carrouseltest.png',
-    './images/carrouseltest.png',
-  ];
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(true);
-  const timeoutRef = useRef(null);
 
   const checkWalletData = async () => {
     const userAccount = sessionStorage.getItem("userAccount");
@@ -80,44 +72,6 @@ function PopupWallet({ onClose, setShowPopup }) {
     console.log("Accounts:", accounts);
     console.log("Has Wallet Data:", hasWalletData);
   }, [accounts, hasWalletData]);
-
-  const handleTransitionEnd = () => {
-    if (currentIndex >= images.length) {
-      setIsTransitioning(false);
-      setCurrentIndex(0);
-    } else if (currentIndex > 5) {
-      setIsTransitioning(false);
-      setCurrentIndex(images.length - 1);
-    } else {
-      setIsTransitioning(true);
-    }
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => prevIndex + 1);
-    }, 5000);
-
-    timeoutRef.current = interval;
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (!isTransitioning) {
-      const id = setTimeout(() => setIsTransitioning(true), 50);
-      return () => clearTimeout(id);
-    }
-  }, [isTransitioning]);
-
-  useEffect(() => {
-    if (currentIndex >= images.length) {
-      setTimeout(() => {
-        setIsTransitioning(false);
-        setCurrentIndex(0);
-      }, 1000); // Delay to let the transition finish
-    }
-  }, [currentIndex, images.length]);
 
   const handleForgotPasswordClick = (event) => {
     event.preventDefault();
@@ -162,6 +116,8 @@ function PopupWallet({ onClose, setShowPopup }) {
     }
 
     console.log("Login event saved to Firestore:", userId);
+    navigate("../dashboard")
+
   };
 
   const checkForWallet = () => {
@@ -307,33 +263,7 @@ function PopupWallet({ onClose, setShowPopup }) {
         
         <p className="terms-links">By signing in, you're agreeing to the <a onClick={handlTermsClick}><u><b>Terms</b></u></a> and <a onClick={handlPolicyClick}><u><b>Privacy Policy</b></u></a></p>
       </div>
-      <div className="wallet-carousel-container">
-        <div
-          className="wallet-carousel"
-          style={{
-            transform: `translateY(-${(currentIndex % images.length) * 9.5}%)`,
-            transition: isTransitioning ? 'transform 1s ease' : 'none'
-          }}
-          onTransitionEnd={handleTransitionEnd}
-        >
-          {[...images, ...images].map((src, index) => (
-            <img
-              key={index}
-              src={src}
-              className={`wallet-carousel-image ${index === currentIndex ? 'active' : 'inactive'}`}
-              alt={`Slide ${index + 1}`}
-            />
-          ))}
-        </div>
-        <div className="carousel-indicators">
-          {images.map((_, index) => (
-            <span
-              key={index}
-              className={`indicator ${index === currentIndex % images.length ? 'active' : ''}`}
-            ></span>
-          ))}
-        </div>
-      </div>
+      <WalletCarousel /> {/* Use the new component */}
     </div>
   );
 }

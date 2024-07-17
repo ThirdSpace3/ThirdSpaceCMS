@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import { db, doc, getDoc, setDoc } from '../../../firebaseConfig';
 import "../PopupWallet.css";
+import VerificationCodeInput from "./VerificationCodeInput"; // Import the VerificationCodeInput component
 
 function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, handleSignUpState, isExistingUser, setIsExistingUser, onForgotPassword, onHeaderChange }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPasswordField, setShowPasswordField] = useState(false);
+  const [showVerificationField, setShowVerificationField] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [verificationCodeSent, setVerificationCodeSent] = useState(false);
 
   const handleEmailSubmit = async () => {
     setIsLoading(true);
-    const emailRef = doc(db, 'emails', email);
+    const emailRef = doc(db, 'users', email);
     const emailSnap = await getDoc(emailRef);
     setIsLoading(false);
     if (emailSnap.exists()) {
       setIsExistingUser(true);
       handleSignUpState(false);
-      onHeaderChange("Welcome", "If this is your first time, we will create an account for you!");
+      onHeaderChange("Welcome Back", "Please enter your password to continue.");
       setShowPasswordField(true);
     } else {
       setIsExistingUser(false);
@@ -28,18 +31,28 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
     }
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    setErrorMessage(""); // Clear error message on password change
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setErrorMessage(""); // Clear error message on email change if needed
+  const sendVerificationCode = async (email) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('https://us-central1-third--space.cloudfunctions.net/sendVerificationCode', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
+      const data = await response.json();
+      if (data.success) {
+        console.log('Verification code sent successfully');
+        setVerificationCodeSent(true);
+      } else {
+        setErrorMessage('Failed to send verification code.');
+      }
+    } catch (error) {
+      console.error('Error sending verification code:', error);
+      setErrorMessage('Failed to send verification code.');
+    }
+    setIsLoading(false);
   };
 
   const handlePasswordSubmit = async () => {
@@ -60,11 +73,50 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
         setErrorMessage("Incorrect password.");
       }
     } else {
-      // Logic for signing up the user
-      await setDoc(emailRef, { email, password });
-      processLogin(email, 'Email');
+      await sendVerificationCode(email); // Send verification code
+      setShowVerificationField(true);
     }
     setIsLoading(false);
+  };
+
+  const verifyCode = async (code) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('https://us-central1-third--space.cloudfunctions.net/verifyCode', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, code })
+      });
+      const data = await response.json();
+      if (data.success) {
+        // Logic for signing up the user
+        const emailRef = doc(db, 'users', email);
+        await setDoc(emailRef, { email, password });
+        processLogin(email, 'Email');
+      } else {
+        setErrorMessage("Invalid verification code.");
+      }
+    } catch (error) {
+      console.error('Error verifying code:', error);
+      setErrorMessage("Failed to verify code.");
+    }
+    setIsLoading(false);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setErrorMessage(""); // Clear error message on password change
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setErrorMessage(""); // Clear error message on email change if needed
   };
 
   const processLogin = (userId, loginType) => {
@@ -87,7 +139,7 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
         onChange={handleEmailChange}
         placeholder="Enter your email"
       />
-      {showPasswordField && (
+      {showPasswordField && !showVerificationField && (
         <div className="password-login-method">
           <div className="password-input-container">
             <input
@@ -105,24 +157,35 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
           </div>
         </div>
       )}
+      {showVerificationField && (
+        <VerificationCodeInput 
+          onVerify={verifyCode} 
+          errorMessage={errorMessage} 
+          setErrorMessage={setErrorMessage} 
+          setCustomMessage={onHeaderChange} 
+          CustomMessage={"Please enter the verification code sent to your email"}
+        />
+      )}
       {errorMessage && <div className="error-message">{errorMessage}</div>}
-      <button
-        className="wallet-btn"
-        onClick={showPasswordField ? handlePasswordSubmit : handleEmailSubmit}
-        disabled={!email || (showPasswordField && !password)}
-        style={{
-          cursor: !email || (showPasswordField && !password) ? "not-allowed" : "pointer",
-          background: !email || (showPasswordField && !password) ? "grey" : "linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12)",
-        }}
-      >
-        {isLoading ? (
-          <span className="loading-dots">...</span>
-        ) : showPasswordField ? (
-          isExistingUser ? "Login" : "Sign Up"
-        ) : (
-          "Continue with this email"
-        )}
-      </button>
+      {!showVerificationField && (
+        <button
+          className="wallet-btn"
+          onClick={showPasswordField ? handlePasswordSubmit : handleEmailSubmit}
+          disabled={!email || (showPasswordField && !password)}
+          style={{
+            cursor: !email || (showPasswordField && !password) ? "not-allowed" : "pointer",
+            background: !email || (showPasswordField && !password) ? "grey" : "linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12)",
+          }}
+        >
+          {isLoading ? (
+            <span className="loading-dots">...</span>
+          ) : showPasswordField ? (
+            isExistingUser ? "Login" : "Sign Up"
+          ) : (
+            "Continue with this email"
+          )}
+        </button>
+      )}
     </div>
   );
 }
