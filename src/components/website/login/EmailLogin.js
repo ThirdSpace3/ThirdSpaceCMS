@@ -22,7 +22,7 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
 
   const handleEmailSubmit = async () => {
     if (!validateEmail(email)) {
-      setErrorMessage("Please enter a valid email address.");
+      setErrorMessage("Please enter a valid email address");
       return;
     }
     setIsLoading(true);
@@ -70,18 +70,18 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
                 });
             }, 1000);
         } else {
-            setErrorMessage('Failed to send verification code.');
+            setErrorMessage('Failed to send verification code');
         }
     } catch (error) {
         console.error('Error sending verification code:', error);
-        setErrorMessage('Failed to send verification code.');
+        setErrorMessage('Failed to send verification code');
     }
     setIsLoading(false);
 };
 
   const handlePasswordSubmit = async () => {
     if (!password) {
-      setErrorMessage("Password cannot be empty.");
+      setErrorMessage("Password cannot be empty");
       return;
     }
 
@@ -94,7 +94,7 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
       if (emailSnap.exists() && emailSnap.data().password === password) {
         processLogin(email, 'Email');
       } else {
-        setErrorMessage("Incorrect password.");
+        setErrorMessage("Incorrect password");
       }
     } else {
       await sendVerificationCode(email); // Send verification code
@@ -120,11 +120,11 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
         await setDoc(emailRef, { email, password });
         processLogin(email, 'Email');
       } else {
-        setErrorMessage("Invalid verification code.");
+        setErrorMessage("Invalid verification code");
       }
     } catch (error) {
       console.error('Error verifying code:', error);
-      setErrorMessage("Failed to verify code.");
+      setErrorMessage("Failed to verify code");
     }
     setIsLoading(false);
   };

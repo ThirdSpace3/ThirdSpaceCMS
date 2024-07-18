@@ -125,7 +125,7 @@ function PopupWallet({ onClose, setShowPopup }) {
     const hasWallet = !!window.ethereum || ("solana" in window && window.solana.isPhantom);
     setWalletAvailable(hasWallet);
     if (!hasWallet) {
-      setCustomErrorMessage('To use Third Space, you need to connect a wallet. Please create one with Phantom and then reload your page.');
+      setCustomErrorMessage('To use Third Space, you need to connect a wallet. Please create one with Phantom and then reload your page');
     }
   };
 

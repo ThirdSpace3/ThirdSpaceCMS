@@ -26,12 +26,20 @@
   justify-content: space-around;
   margin-bottom: 2vh;
   color: #4D545B;
+
+  text-align: center;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.64px;
 }
 
 .seperation-connection-way hr {
   width: 45%;
   height: 0;
-  background-color: #2D3339;
+  border-color: #2D3339;
 }
 
 .popup-content {
@@ -196,6 +204,20 @@
   text-decoration-line: underline;
 }
 
+.forgot-password a{
+  color: #ACB3B9;
+}
+.resset-password-method .wrapper{
+  
+  display: flex;
+  gap: 0;
+
+}
+
+.password-input-container{
+  height: 60px;
+}
+
 .forgot-password a:hover {
   text-decoration: none;
 }
@@ -214,6 +236,8 @@
   background: #1A1D21;
   margin-top: 10px;
   margin-bottom: 10px;
+  border: 1px solid #24292E;
+
 
 }
 
@@ -250,14 +274,12 @@
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  line-height: 16px;
-  /* 133.333% */
+  line-height: 16px; /* 133.333% */
   letter-spacing: -0.64px;
 }
 
 .terms-links a:hover {
   cursor: pointer;
-  color: #f6f0ffc0; 
 }
 
 .terms-links a {
@@ -285,10 +307,10 @@
 }
 
 .verification-code-input {
-  text-align: center;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+  width: 60%;
 }
 
 .verification-code-input h1 {
@@ -325,7 +347,7 @@
   align-self: stretch;
   width: 64px;
   border-radius: 15px;
-  border: 1px solid #D8DADC;
+  border: 1px solid #24292E;
   background: #1A1D21;
   margin-top: 10px;
   margin-bottom: 10px;

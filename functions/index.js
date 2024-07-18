@@ -50,7 +50,7 @@ exports.verifyCode = functions.https.onRequest((req, res) => {
           to: email,
           subject: 'Welcome to Third Space!',
           html: `
-            <div style="font-family: Inter, Arial, sans-serif; background: #FFF; padding: 47px 48px; margin: auto; width: 60%; align-items: center; gap: 39px;">
+            <div style="font-family: Inter, Arial, sans-serif; background: #FFF; padding: 47px 48px; margin: auto; width: 80%; align-items: center; gap: 39px;">
               <div style="padding: 20px; text-align: justify; align-items: center;">
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmailimage.png?alt=media&token=fa3cbf16-fa97-4da2-a80b-59957e56fbc1" style="width: 583px; height: 200px;" alt="Third Space">
                 <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
@@ -99,9 +99,6 @@ exports.verifyCode = functions.https.onRequest((req, res) => {
     }
   });
 });
-
-
-
 // Send Verification Code Function
 exports.sendVerificationCode = functions.https.onRequest((req, res) => {
   cors(req, res, async () => {
@@ -119,40 +116,64 @@ exports.sendVerificationCode = functions.https.onRequest((req, res) => {
       to: email,
       subject: 'Email Verification Code',
       html: `
-        <div style="font-family: Inter, Arial, sans-serif; background: #FFF; padding: 47px 48px; margin: auto; width: 100%; align-items: center; gap: 39px;">
-          <div style="padding: 20px; text-align: center; align-items: center;">
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmailimage.png?alt=media&token=fa3cbf16-fa97-4da2-a80b-59957e56fbc1" style="width: 583px; height: 200px;" alt="Third Space">
-            <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
-            <h2 style="font-size: 24px; font-weight: 500; line-height: 32px; color: #000;">Hi, Welcome! <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fwave.png?alt=media&token=f0fa4b2b-cd0e-498c-9a73-f5cea175ae53"></img></h2>
-            <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">Please enter this code to verify your email address for Third Space:</p>
-            <p style="font-size: 24px; font-weight: 600; line-height: 32px; color: #10241B; margin: 20px 0;">${verificationCode}</p>
-            <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">The code will expire in <span style="font-weight: 600;">5 minutes.</span></p>
-            <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">Best Regards,</p>
-            <p style="font-size: 14px; font-weight: 500; line-height: 22px; color: #892CDC;">3S Team.</p>
-          </div>
-          <hr style="width: 584px; height: 1px; border: none; border-top: 1px solid #EEE; margin: 20px 0;">
-          <div style="text-align: center;">
-            <a href="https://x.com/BuildWith3S">  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fx.png?alt=media&token=55bf09ff-5ae3-419a-ae43-e85c8c6a5982"></img></a>
-            <a href="https://www.linkedin.com/company/thirdspace-3/">  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2FLinkedIn.png?alt=media&token=3023cb89-8f07-4056-8da1-59701877ee5c"></img></a>
-           <a href="https://discord.com/invite/dked3DEngT"> <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2FVector.png?alt=media&token=a541bac4-81cc-4fc6-9e4e-ce22b16db217"></img></a>
-          </div>
-          <hr style="width: 584px; height: 1px; border: none; border-top: 1px solid #EEE; margin: 0 20px;">
-          <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #000; text-align: center;">© 2024 Third Space. All rights reserved.</p>
-          <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #000; text-align: center;">
-            You are receiving this mail because you registered to join the Third Space platform as a user. This also shows that you agree to our Terms of Use and Privacy Policies. If you no longer want to receive emails from us, click the unsubscribe link below to unsubscribe.
-          </p>
-          <p style="text-align: center;">
-            <a href="https://3rd-space.io/#/privacy-policy" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Privacy Policy</a>
-            <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none">
-              <circle cx="2.5" cy="2.5" r="2" fill="#D9D9D9"/>
-            </svg>
-            <a href="https://3rd-space.io/#/terms" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Terms of Service</a>
-            <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none">
-              <circle cx="2.5" cy="2.5" r="2" fill="#D9D9D9"/>
-            </svg>
-            <a href="https://3rd-space.io/#/dashboard" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Unsubscribe</a>
-          </p>
-        </div>
+       <div style="font-family: Inter, Arial, sans-serif; background: #FFF; padding: 47px 48px; margin: auto; width: 100%; max-width: 80%; box-sizing: border-box;">
+  <!-- Header Section -->
+  <div style="text-align: left;">
+    <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmailimage.png?alt=media&token=fa3cbf16-fa97-4da2-a80b-59957e56fbc1" style="width: 80%;" alt="Third Space">
+    <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
+  </div>
+  
+  <!-- Greeting Section -->
+  <h2 style="font-size: 24px; font-weight: 500; line-height: 32px; color: #000; ">
+    Hi, Welcome! <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fwave.png?alt=media&token=f0fa4b2b-cd0e-498c-9a73-f5cea175ae53" alt="Wave">
+  </h2>
+  <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">
+    Please enter this code to verify your email address for Third Space:
+  </p>
+  
+  <!-- Verification Code Section -->
+  <p style="font-size: 24px; font-weight: 600; line-height: 32px; color: #10241B; margin: 20px 0; background-color:rgba(137, 44, 220, 0.05); text-align: center;">
+    ${verificationCode}
+  </p>
+  <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">
+    The code will expire in <span style="font-weight: 600;">5 minutes.</span>
+  </p>
+  
+  <!-- Closing Remarks -->
+  <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">Best Regards,</p>
+  <p style="font-size: 14px; font-weight: 500; line-height: 22px; color: #892CDC;">3S Team.</p>
+
+  <!-- Social Media Links -->
+  <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
+  <div style="text-align: center;">
+    <a href="https://x.com/BuildWith3S"><img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fx.png?alt=media&token=55bf09ff-5ae3-419a-ae43-e85c8c6a5982" style="width: 24px; height: 24px; margin: 0 5px;" alt="Twitter"></a>
+    <a href="https://www.linkedin.com/company/thirdspace-3/"><img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2FLinkedIn.png?alt=media&token=3023cb89-8f07-4056-8da1-59701877ee5c" style="width: 24px; height: 24px; margin: 0 5px;" alt="LinkedIn"></a>
+    <a href="https://discord.com/invite/dked3DEngT"><img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2FVector.png?alt=media&token=a541bac4-81cc-4fc6-9e4e-ce22b16db217" style="width: 24px; height: 24px; margin: 0 5px;" alt="Discord"></a>
+  </div>
+
+  <!-- Footer Section -->
+  <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
+  <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #000; text-align: center;">
+    © 2024 Third Space. All rights reserved.
+  </p>
+  <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-align: center;">
+    You are receiving this mail because you registered to join the Third Space platform as a user. <br>
+    This also shows that you agree to our Terms of Use and Privacy Policies. <br>
+    If you no longer want to receive emails from us, click the unsubscribe link below to unsubscribe.
+  </p>
+  <p style="text-align: center;">
+    <a href="https://3rd-space.io/#/privacy-policy" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Privacy Policy</a>
+    <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none" style="vertical-align: middle; margin: 0 5px;">
+      <circle cx="2.5" cy="2.5" r="2" fill="#D9D9D9"/>
+    </svg>
+    <a href="https://3rd-space.io/#/terms" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Terms of Service</a>
+    <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none" style="vertical-align: middle; margin: 0 5px;">
+      <circle cx="2.5" cy="2.5" r="2" fill="#D9D9D9"/>
+    </svg>
+    <a href="https://3rd-space.io/#/dashboard" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Unsubscribe</a>
+  </p>
+</div>
+
       `
     };
 
@@ -183,44 +204,67 @@ exports.sendResetCode = functions.https.onRequest((req, res) => {
       to: email,
       subject: 'Password Reset Code',
       html: `
-        <div style="font-family: Inter, Arial, sans-serif; background: #FFF; padding: 47px 48px; margin: auto;  width: 100%; align-items: center; gap: 39px;">
-          <div style="padding: 20px; text-align: center; align-items: center;">
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmailimage.png?alt=media&token=fa3cbf16-fa97-4da2-a80b-59957e56fbc1" style="width: 583px; height: 200px;" alt="Third Space">
+       <div style="font-family: Inter, Arial, sans-serif; background: #FFF; padding: 47px 48px; margin: auto; width: 100%; max-width: 80%; box-sizing: border-box;">
+  <!-- Header Section -->
+  <div style="text-align: left;">
+    <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmailimage.png?alt=media&token=fa3cbf16-fa97-4da2-a80b-59957e56fbc1" style="width: 80%;" alt="Third Space">
+    <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
+  </div>
+  
+  <!-- Greeting Section -->
+  <h2 style="font-size: 24px; font-weight: 500; line-height: 32px; color: #000;">
+    Hi, Welcome! <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fwave.png?alt=media&token=f0fa4b2b-cd0e-498c-9a73-f5cea175ae53" alt="Wave">
+  </h2>
+  <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">
+You have requested us to send a link to reset your password for your Third Space account, use the code below to verify your identiy while you edit your password.
+ </p>
+  
+  <!-- Verification Code Section -->
+  <p style="font-size: 24px; font-weight: 600; line-height: 32px; color: #10241B; margin: 20px 0;  background-color:rgba(137, 44, 220, 0.05); text-align: center;">
+    ${verificationCode}
+  </p>
+  <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333; ">
+    The code will expire in <span style="font-weight: 600;">5 minutes.</span> <br/>
+    If you didn’t initiate the request, you can safely ignore the mail
+  </p>
+  
+  <!-- Closing Remarks -->
+  <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">Best Regards,</p>
+  <p style="font-size: 14px; font-weight: 500; line-height: 22px; color: #892CDC; ">3S Team.</p>
 
-            <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
-            <h2 style="font-size: 24px; font-weight: 500; line-height: 32px; color: #000;">Hi, Welcome! <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fwave.png?alt=media&token=f0fa4b2b-cd0e-498c-9a73-f5cea175ae53"></img></h2>
-            <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">Please enter this code to verify your email address for Third Space:</p>
-            <p style="font-size: 24px; font-weight: 600; line-height: 32px; color: #10241B; margin: 20px 0;">${resetCode}</p>
-            <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">The code will expire in <span style="font-weight: 600;">5 minutes.</span></p>
-            <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">Best Regards,</p>
-            <p style="font-size: 14px; font-weight: 500; line-height: 22px; color: #892CDC;">3S Team.</p>
-          </div>
-          <hr style="width: 584px; height: 1px; border: none; border-top: 1px solid #EEE; margin: 20px 0;">
-          <div style="text-align: center;">
-            <a href="https://x.com/BuildWith3S">  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fx.png?alt=media&token=55bf09ff-5ae3-419a-ae43-e85c8c6a5982"></img></a>
-            <a href="https://www.linkedin.com/company/thirdspace-3/">  <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2FLinkedIn.png?alt=media&token=3023cb89-8f07-4056-8da1-59701877ee5c"></img></a>
-           <a href="https://discord.com/invite/dked3DEngT"> <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2FVector.png?alt=media&token=a541bac4-81cc-4fc6-9e4e-ce22b16db217"></img></a>
-          </div>
-          <hr style="width: 584px; height: 1px; border: none; border-top: 1px solid #EEE; margin: 0 20px;">
-          <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #000; text-align: center;">© 2024 Third Space. All rights reserved.</p>
-          <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #000; text-align: center;">
-            You are receiving this mail because you registered to join the Third Space platform as a user. This also shows that you agree to our Terms of Use and Privacy Policies. If you no longer want to receive emails from us, click the unsubscribe link below to unsubscribe.
-          </p>
-          <p style="text-align: center;">
-            <a href="https://3rd-space.io/#/privacy-policy" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Privacy Policy</a>
-            <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none">
-              <circle cx="2.5" cy="2.5" r="2" fill="#D9D9D9"/>
-            </svg>
-            <a href="https://3rd-space.io/#/terms" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Terms of Service</a>
-            <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none">
-              <circle cx="2.5" cy="2.5" r="2" fill="#D9D9D9"/>
-            </svg>
-            <a href="https://3rd-space.io/#/dashboard" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Unsubscribe</a>
-          </p>
-        </div>
+  <!-- Social Media Links -->
+  <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
+  <div style="text-align: center;">
+    <a href="https://x.com/BuildWith3S"><img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fx.png?alt=media&token=55bf09ff-5ae3-419a-ae43-e85c8c6a5982" style="width: 24px; height: 24px; margin: 0 5px;" alt="Twitter"></a>
+    <a href="https://www.linkedin.com/company/thirdspace-3/"><img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2FLinkedIn.png?alt=media&token=3023cb89-8f07-4056-8da1-59701877ee5c" style="width: 24px; height: 24px; margin: 0 5px;" alt="LinkedIn"></a>
+    <a href="https://discord.com/invite/dked3DEngT"><img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2FVector.png?alt=media&token=a541bac4-81cc-4fc6-9e4e-ce22b16db217" style="width: 24px; height: 24px; margin: 0 5px;" alt="Discord"></a>
+  </div>
+
+  <!-- Footer Section -->
+  <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
+  <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #000; text-align: center;">
+    © 2024 Third Space. All rights reserved.
+  </p>
+  <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-align: center;">
+    You are receiving this mail because you registered to join the Third Space platform as a user. <br>
+    This also shows that you agree to our Terms of Use and Privacy Policies. <br>
+    If you no longer want to receive emails from us, click the unsubscribe link below to unsubscribe.
+  </p>
+  <p style="text-align: center;">
+    <a href="https://3rd-space.io/#/privacy-policy" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Privacy Policy</a>
+    <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none" style="vertical-align: middle; margin: 0 5px;">
+      <circle cx="2.5" cy="2.5" r="2" fill="#D9D9D9"/>
+    </svg>
+    <a href="https://3rd-space.io/#/terms" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Terms of Service</a>
+    <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none" style="vertical-align: middle; margin: 0 5px;">
+      <circle cx="2.5" cy="2.5" r="2" fill="#D9D9D9"/>
+    </svg>
+    <a href="https://3rd-space.io/#/dashboard" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Unsubscribe</a>
+  </p>
+</div>
       `
     };
-    
+
 
 
     try {
@@ -242,13 +286,11 @@ exports.sendEmailOnFirestoreWrite = functions.firestore
   .document('reports/{reportId}')
   .onCreate(async (snap, context) => {
     const newData = snap.data();
-
-    // Assuming the image is accessible via a URL stored in newData.imageUrl
     const imageUrl = newData.imageUrl;
 
     const mailOptions = {
       from: gmailEmail,
-      to: gmailEmail,  // Specify the recipient's email address
+      to: gmailEmail,  // Admin email
       subject: 'New Report Notification',
       html: `
         <p>A new report has been submitted:</p>
@@ -281,7 +323,7 @@ exports.sendEmailOnFirestoreWrite = functions.firestore
 
 // Function to send email on new newsletter subscription
 exports.sendEmailsOnSubscription = functions.firestore
-  .document('NewsletterSubscriptions/{subscriptionId}')
+  .document('/UserContactInfos/contact/Newsletter/{subscriptionId}')
   .onCreate(async (snap, context) => {
     const newSubscription = snap.data();
 
@@ -297,34 +339,31 @@ exports.sendEmailsOnSubscription = functions.firestore
       `
     };
 
+    const userMailOptions = {
+      from: gmailEmail,
+      to: newSubscription.email, // User email
+      subject: 'Subscription Confirmation',
+      html: `
+        <p>Thank you for subscribing to our newsletter!</p>
+        <p>We will keep you updated with the latest news and updates.</p>
+      `
+    };
+    await gmail.users.messages.modify({
+      userId: 'me',
+      id: messageId,
+      requestBody: {
+        addLabelIds: ['NewsletterSubscriptions'] // Replace 'LabelId' with the actual ID of the "Feedback" label
+      }
+    });
     try {
       // Send email to admin
       await mailTransport.sendMail(adminMailOptions);
       console.log('Notification email sent to admin');
 
-      // Search for the recently sent email to get its message ID
-      const searchResponse = await gmail.users.messages.list({
-        userId: 'me',
-        q: 'subject:"New Newsletter Subscription"',
-        maxResults: 1
-      });
-
-      if (searchResponse.data.messages && searchResponse.data.messages.length > 0) {
-        const messageId = searchResponse.data.messages[0].id;
-
-        // Apply the Gmail label
-        await gmail.users.messages.modify({
-          userId: 'me',
-          id: messageId,
-          requestBody: {
-            addLabelIds: ['LabelId'] // Replace 'LabelId' with the actual ID of the label
-          }
-        });
-        console.log('Label applied successfully');
-      } else {
-        console.log('No message found to label');
-      }
+      // Send email to user
+      // await mailTransport.sendMail(userMailOptions);
+      console.log('Confirmation email sent to user');
     } catch (error) {
-      console.error('There was an error while sending the emails or applying the label:', error);
+      console.error('There was an error while sending the emails:', error);
     }
   });

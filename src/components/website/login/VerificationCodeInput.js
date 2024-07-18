@@ -7,8 +7,8 @@ function VerificationCodeInput({ email, onVerify, onResendCode, errorMessage, se
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [isCodeComplete, setIsCodeComplete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isResendDisabled, setIsResendDisabled] = useState(false);
-  const [resendTimer, setResendTimer] = useState(30);
+  const [isResendDisabled, setIsResendDisabled] = useState(true);
+  const [resendTimer, setResendTimer] = useState(20);
 
   const handleChange = (e, index) => {
     const newCode = [...code];
@@ -48,13 +48,26 @@ function VerificationCodeInput({ email, onVerify, onResendCode, errorMessage, se
     await onResendCode(email);
     setIsLoading(false);
     setIsResendDisabled(true);
-    setResendTimer(30);
+    setResendTimer(20);
     const timer = setInterval(() => {
       setResendTimer((prevTimer) => {
         if (prevTimer <= 1) {
           clearInterval(timer);
           setIsResendDisabled(false);
-          return 30;
+          return 20;
+        }
+        return prevTimer - 1;
+      });
+    }, 1000);
+  };
+
+  const startTimer = () => {
+    const timer = setInterval(() => {
+      setResendTimer((prevTimer) => {
+        if (prevTimer <= 1) {
+          clearInterval(timer);
+          setIsResendDisabled(false);
+          return 20;
         }
         return prevTimer - 1;
       });
@@ -63,8 +76,8 @@ function VerificationCodeInput({ email, onVerify, onResendCode, errorMessage, se
 
   useEffect(() => {
     setErrorMessage('');
+    startTimer();
   }, []);
-
   return (
     <div className="verification-code-input">
       <div className="code-input-container" onPaste={handlePaste}>
@@ -83,19 +96,24 @@ function VerificationCodeInput({ email, onVerify, onResendCode, errorMessage, se
         ))}
       </div>
       {errorMessage && <div className="error-message">{errorMessage}</div>}
+      
+      <button className="wallet-btn" onClick={handleVerify} disabled={!isCodeComplete || isLoading}
+       style={{ 
+        
+        boxShadow:  isCodeComplete ?'' :'0px 0px 16.587px 0px rgba(191, 151, 255, 0.24) inset',
+        backgroundColor: isCodeComplete ? 'rgba(113, 47, 255, 0.12)'  : '#1A1D21' ,
+      }}>
+        {isLoading ? <LoadingAnimation /> : 'Verify'}
+      </button>
       <div className="resend-code-container">
         <a 
           className={`resend-code-btn`} 
           onClick={!isResendDisabled && !isLoading ? handleResendCode : null} 
           style={{ cursor: isResendDisabled ? 'not-allowed' : 'pointer' }}
         >
-          {isResendDisabled ? `Resend the code' (${resendTimer})` : 'Resend the code'}
+          {isResendDisabled ? `Send code again (${resendTimer})` : 'Send code again'}
         </a>
       </div>
-      <button className="wallet-btn" onClick={handleVerify} disabled={!isCodeComplete || isLoading}>
-        {isLoading ? <LoadingAnimation /> : 'Verify'}
-      </button>
-     
     </div>
   );
 }

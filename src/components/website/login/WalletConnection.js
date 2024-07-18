@@ -17,7 +17,7 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
       processLogin(walletId, 'Ethereum');
     } catch (error) {
       console.error("Error during Ethereum authentication:", error);
-      setErrorMessage("Ethereum authentication failed. Please try again.");
+      setErrorMessage("Ethereum authentication failed. Please try again");
     }
   };
 
@@ -28,7 +28,7 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
       processLogin(publicKey, 'Solana');
     } catch (error) {
       console.error("Error during Solana authentication:", error);
-      setErrorMessage("Solana authentication failed. Please try again.");
+      setErrorMessage("Solana authentication failed. Please try again");
     }
   };
 
@@ -39,7 +39,7 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
       processLogin(userId, 'Unstoppable');
     } catch (error) {
       console.error("Error during Unstoppable authentication:", error);
-      setErrorMessage('Unstoppable authentication failed. Please try again.');
+      setErrorMessage('Unstoppable authentication failed. Please try again');
     }
   };
 
@@ -75,10 +75,10 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
         authenticateWithEthereum(account);
       } catch (error) {
         console.error("Error with MetaMask login:", error);
-        setErrorMessage('MetaMask authentication failed. Please try again.');
+        setErrorMessage('MetaMask authentication failed. Please try again');
       }
     } else {
-      setErrorMessage('MetaMask is not installed. Install it and try again.');
+      setErrorMessage('MetaMask is not installed. Install it and try again');
     }
   };
 
@@ -101,18 +101,18 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
         authenticateWithSolana(publicKey);
       } catch (error) {
         console.error("Error connecting to Phantom:", error);
-        setErrorMessage('Phantom authentication failed. Please try again.');
+        setErrorMessage('Phantom authentication failed. Please try again');
       }
     } else {
       if (phantomInitiated) {
         checkForWallet();
         if (walletAvailable) {
-          setErrorMessage("Phantom wallet is now available. Please try connecting again.");
+          setErrorMessage("Phantom wallet is now available. Please try connecting again");
         } else {
-          setErrorMessage('Phantom wallet is not available. Please refresh the page and try again.');
+          setErrorMessage('Phantom wallet is not available. Please refresh the page and try again');
         }
       } else {
-        setErrorMessage('Phantom wallet installation isn\'t completed or not initiated. Please finish or install the Phantom wallet to continue.');
+        setErrorMessage('Phantom wallet installation isn\'t completed or not initiated. Please finish or install the Phantom wallet to continue');
         setPhantomInitiated(true);
       }
     }
@@ -131,7 +131,7 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
       authenticateWithUnstoppable(authorization);
     } catch (error) {
       console.error("Error with Unstoppable login:", error);
-      setErrorMessage('Unstoppable login failed. Please try again.');
+      setErrorMessage('Unstoppable login failed. Please try again');
     }
   };
 
