@@ -3,6 +3,7 @@ import { db, doc, getDoc } from '../../../firebaseConfig';
 import "../PopupWallet.css";
 import VerificationCodeInput from "./VerificationCodeInput";
 import ResetPassword from "./ResetPassword";
+import LoadingAnimation from "./loadingAnimation";
 
 function ForgotPassword({ onClose, onHeaderChange }) {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ function ForgotPassword({ onClose, onHeaderChange }) {
   const [canResendCode, setCanResendCode] = useState(false);
 
   useEffect(() => {
-    if (isCodeSent ) {
+    if (isCodeSent) {
       const interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
@@ -44,10 +45,10 @@ function ForgotPassword({ onClose, onHeaderChange }) {
         setCanResendCode(false);
         setTimer(30);
       } else {
-        setErrorMessage('Failed to send reset code. Please try again.');
+        setErrorMessage('Failed to send reset code. Please try again');
       }
     } catch (error) {
-      setErrorMessage('Error sending reset code. Please try again.');
+      setErrorMessage('Error sending reset code. Please try again');
     }
     setLoading(false);
   };
@@ -61,7 +62,7 @@ function ForgotPassword({ onClose, onHeaderChange }) {
       setIsCodeVerified(true);
       onHeaderChange("Reset Password", "Please don't forget it this time.");
     } else {
-      setErrorMessage("Invalid reset code. Please try again.");
+      setErrorMessage("Invalid reset code. Please try again");
     }
 
     setLoading(false);
@@ -79,8 +80,10 @@ function ForgotPassword({ onClose, onHeaderChange }) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
           />
-          <button className="wallet-btn" onClick={handleSendResetCode} disabled={loading || !email}>
-            {loading ? "Sending..." : "Send Reset Code"}
+          <button className="wallet-btn" onClick={handleSendResetCode} disabled={loading || !email}
+            style={{ backgroundColor: email ? 'rgba(113, 47, 255, 0.12)' : '#1A1D21' }}
+          >
+            {loading ? <LoadingAnimation/>: "Send Reset Code"}
           </button>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
 
@@ -88,9 +91,9 @@ function ForgotPassword({ onClose, onHeaderChange }) {
       ) : !isCodeVerified ? (
         <>
           <VerificationCodeInput onVerify={handleVerifyCode} errorMessage={errorMessage} setErrorMessage={setErrorMessage} CustomMessage={CustomMessage} setCustomMessage={setCustomMessage} />
-                </>
+        </>
       ) : (
-        <ResetPassword onHeaderChange={onHeaderChange}  email={email} onResetComplete={onClose} setErrorMessage={setErrorMessage} setCustomMessage={setCustomMessage} />
+        <ResetPassword onHeaderChange={onHeaderChange} email={email} onResetComplete={onClose} setErrorMessage={setErrorMessage} setCustomMessage={setCustomMessage} />
       )}
     </div>
   );

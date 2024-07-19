@@ -32,10 +32,9 @@ const ReportBugBTN = () => {
         const bugDescription = bugDescriptionRef.current ? bugDescriptionRef.current.value : '';
 
         try {
-            if (imagePreviewUrl && selectedFile) { // Change this line
-                const imageFile = selectedFile; // Add this line
+            if (imagePreviewUrl && selectedFile) {
                 const storageRef = ref(storage, `reportImages/${bugDescription}`);
-                const uploadTaskSnapshot = await uploadBytes(storageRef, imageFile);
+                const uploadTaskSnapshot = await uploadBytes(storageRef, selectedFile);
                 imageUrl = await getDownloadURL(uploadTaskSnapshot.ref);
                 setImagePreviewUrl('');
             }
@@ -82,7 +81,7 @@ const ReportBugBTN = () => {
         setDragActive(false);
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             handleFileChange(e.dataTransfer.files[0]);
-            setSelectedFile(e.dataTransfer.files[0]); // Add this line
+            setSelectedFile(e.dataTransfer.files[0]);
         }
     };
 
@@ -98,7 +97,7 @@ const ReportBugBTN = () => {
             setImagePreviewUrl(reader.result);
         };
         reader.readAsDataURL(file);
-        setSelectedFile(file); // Add this line
+        setSelectedFile(file);
     };
    
     const handlePaste = (e) => {
@@ -111,7 +110,7 @@ const ReportBugBTN = () => {
                     setImagePreviewUrl(reader.result);
                 };
                 reader.readAsDataURL(file);
-                setSelectedFile(file); // Add this line
+                setSelectedFile(file);
             }
         }
     };
@@ -164,7 +163,7 @@ const ReportBugBTN = () => {
                                     onDragLeave={handleDrag}
                                     onDrop={handleDrop}
                                     onClick={() => document.getElementById('imageUpload').click()}>
-                                    <i class="bi bi-download"></i>
+                                    <i className="bi bi-download"></i>
                                     Paste or Drag & Drop images here or click to select image.
                                 </div>
                             )}
