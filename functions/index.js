@@ -52,7 +52,7 @@ exports.verifyCode = functions.https.onRequest((req, res) => {
           html: `
             <div style="font-family: Inter, Arial, sans-serif; background: #FFF; padding: 47px 48px; margin: auto; width: 80%; align-items: center; gap: 39px;">
               <div style="padding: 20px; text-align: justify; align-items: center;">
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmailimage.png?alt=media&token=fa3cbf16-fa97-4da2-a80b-59957e56fbc1" style="width: 583px; height: 200px;" alt="Third Space">
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fmailimage.png?alt=media&token=fa3cbf16-fa97-4da2-a80b-59957e56fbc1" style="width: 100%;" alt="Third Space">
                 <hr style="border: none; border-top: 1px solid #EEE; margin: 20px 0;">
                 <h2 style="font-size: 24px; font-weight: 500; line-height: 32px; color: #000;">Hi, Welcome! <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2Fwave.png?alt=media&token=f0fa4b2b-cd0e-498c-9a73-f5cea175ae53"></img></h2>
                 <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333;">Welcome to Third Space! We are thrilled to have you join our community of creators. Our mission is to empower creators like you to bring their creative vision to life.</p>
@@ -72,7 +72,7 @@ exports.verifyCode = functions.https.onRequest((req, res) => {
               <hr style="width: 584px; height: 1px; border: none; border-top: 1px solid #EEE; margin: 0 20px;">
               <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #000; text-align: center;">© 2024 Third Space. All rights reserved.</p>
               <p style="font-size: 10px; font-weight: 400; line-height: normal; color: #000; text-align: center;">
-                You are receiving this mail because you registered to join the Third Space platform as a user. This also shows that you agree to our Terms of Use and Privacy Policies. If you no longer want to receive emails from us, click the unsubscribe link below to unsubscribe.
+                You are receiving this mail because you registered to join the Third Space platform as a user. <br/> This also shows that you agree to our Terms of Use and Privacy Policies. <br/> If you no longer want to receive emails from us, click the unsubscribe link below to unsubscribe.
               </p>
               <p style="text-align: center;">
             <a href="https://3rd-space.io/#/privacy-policy" style="font-size: 10px; font-weight: 400; line-height: normal; color: #333; text-decoration: underline; margin: 0 5px;">Privacy Policy</a>
@@ -221,7 +221,7 @@ You have requested us to send a link to reset your password for your Third Space
   
   <!-- Verification Code Section -->
   <p style="font-size: 24px; font-weight: 600; line-height: 32px; color: #10241B; margin: 20px 0;  background-color:rgba(137, 44, 220, 0.05); text-align: center;">
-    ${verificationCode}
+    ${resetCode}
   </p>
   <p style="font-size: 14px; font-weight: 400; line-height: 22px; color: #333; ">
     The code will expire in <span style="font-weight: 600;">5 minutes.</span> <br/>
@@ -265,8 +265,6 @@ You have requested us to send a link to reset your password for your Third Space
       `
     };
 
-
-
     try {
       await mailTransport.sendMail(mailOptions);
 
@@ -281,6 +279,7 @@ You have requested us to send a link to reset your password for your Third Space
     }
   });
 });
+
 // Function to send email on new report creation
 exports.sendEmailOnFirestoreWrite = functions.firestore
   .document('reports/{reportId}')
