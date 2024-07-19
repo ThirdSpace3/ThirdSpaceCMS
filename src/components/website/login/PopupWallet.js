@@ -285,7 +285,7 @@ function PopupWallet({ onClose, setShowPopup }) {
           </p>
         )}
 
-        <p className="terms-links">By signing in, you're agreeing to the <a onClick={handlTermsClick}><u><b>Terms</b></u></a> and <a onClick={handlPolicyClick}><u><b>Privacy Policy</b></u></a></p>
+        <p className="terms-links">By signing in, you're agreeing to the <a onClick={handlTermsClick}><u>Terms</u></a> and <a onClick={handlPolicyClick}><u>Privacy Policy</u></a></p>
       </div>
       <WalletCarousel /> {/* Use the new component */}
     </div>
