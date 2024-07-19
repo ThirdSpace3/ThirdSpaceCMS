@@ -16,7 +16,7 @@ function WalletCarousel() {
   }
   images.length = 100; // Ensure we have exactly 100 items
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(3);
   const timeoutRef = useRef(null);
   const containerRef = useRef(null);
 
