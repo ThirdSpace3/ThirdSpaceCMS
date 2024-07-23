@@ -11,13 +11,13 @@ const Footer = () => {
           <h3 className="footer-column-title">Product</h3>
           <ul className="footer-column-content">
             <li className="coming-soon">
-              <a href="/#/products">Products</a>
+              <a href="/products">Products</a>
             </li>
             <li className="coming-soon">
-              <a href="/#/ressources">Resources</a>
+              <a href="/ressources">Resources</a>
             </li>
             <li className="coming-soon">
-              <a href="/#/pricing">Pricing</a>
+              <a href="/pricing">Pricing</a>
             </li>
             {/* <li><a href="#roadmap">Roadmap</a></li> */}
             {/* <li className="coming-soon"><a href="">Updates</a></li> */}
@@ -35,12 +35,12 @@ const Footer = () => {
           <h3 className="footer-column-title">Legal</h3>
           <ul className="footer-column-content">
             <li className="coming-soon">
-              <a href="/#/terms">
+              <a href="/terms">
                 Terms
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/privacy-policy">
+              <a href="/privacy-policy">
                 Privacy Policy
               </a>
             </li>
@@ -50,10 +50,11 @@ const Footer = () => {
         <div className="newsletter-section">
         <h3 className="newsletter-section-title">Stay Updated with Third Space, Join our Newsletter</h3>
         <Newsletter />
-        <p className="newsletter-section-text">You can unsuscribe at any time. <span><a href="/#/privacy-policy">Privacy Policy</a></span></p>
+        <p className="newsletter-section-text">You can unsuscribe at any time. <span><a href="/privacy-policy">Privacy Policy</a></span></p>
 
         </div>
       </div>
+      <a href="https://microlaunch.net/p/thirdspace?utm_source=badge-winner-microlaunch&utm_medium=badge" target="_blank"><img src="https://wild-dust-0517.microlaunch.workers.dev/microlaunch-challenger-badges/ml_challenger_dark_v1.svg" alt="Microlaunch - Launch, get feedback, exposure and first customers over a month" style={{width:"298px",height:"70px"}} width="298" height="70" /></a>
       <div className="footer-bottom">
         <div className="footer-credits">
           <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="" />

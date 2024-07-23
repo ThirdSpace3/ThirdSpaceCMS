@@ -1,45 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import './NavBar.css';
 import { useNavigate } from 'react-router-dom';
-import PopupWallet from './PopupWallet.js';
 import ReactGA from 'react-ga';
 
-function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
+function Navbar({ }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const navigate = useNavigate();
 
   const togglePopup = (e) => {
     e.preventDefault(); // Prevent default anchor behavior
-
-
-    if (accounts.length > 0 && !hasWalletData) {
-      navigate("/templatestep");
-    } else {
-      setShowPopup(true);
-    }
+      navigate('/login'); // Navigate to the login page
   };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
-  useEffect(() => {
-    const shouldOpenWalletPopup = localStorage.getItem('openWalletPopup');
-    if (shouldOpenWalletPopup === 'true') {
-      setShowPopup(true);
-      localStorage.removeItem('openWalletPopup');
-    }
-
-    ReactGA.pageview(window.location.pathname + window.location.search);
-
-    const userAccount = sessionStorage.getItem("userAccount");
-    if (userAccount) {
-      setAccounts([userAccount]);
-      checkWalletData(userAccount);
-    }
-  }, []);
 
   useEffect(() => {
     const navbarPadding = document.querySelector('.navbar__padding');
@@ -50,57 +26,45 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
     }
   }, [isMenuOpen]);
 
-
-
-
   return (
     <nav className={`navbar__padding ${isSticky ? 'sticky-navbar' : ''}`}>
       <div className="navbar__pc">
-        <a href="/#/home" className="nav__logo">
+        <a href="/home" className="nav__logo">
           <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
         </a>
         <div className="navbar__right">
           <ul className="nav__links nav-bg">
             <li>
-              <a href="/#/home" className="nav__links-btn">
+              <a href="/home" className="nav__links-btn">
                 Home
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/3s-agency" className="nav__links-btn">
+              <a href="/3s-agency" className="nav__links-btn">
                 Agency
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/resources" className="nav__links-btn">
+              <a href="/resources" className="nav__links-btn">
                 Resources
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/pricing" className="nav__links-btn">
+              <a href="/pricing" className="nav__links-btn">
                 Pricing
               </a>
             </li>
           </ul>
 
-          {accounts.length === 0 ? (
             <a className="purple-btn ga-getstarted-btn-navbar" id='getstarted-btn' onClick={togglePopup}>
               Get Started
             </a>
-          ) : (
-            <a
-              href={hasWalletData ? "#/dashboard" : "#/templatestep"}
-              className="nav__links nav-bg"
-            >
-              <i className="bi bi-person-circle nav__links-cta"></i>
-            </a>
-          )}
         </div>
       </div>
 
       <div className="navbar__mobile">
         <div className="navbar__mobile-head">
-          <a href="/#/home" className="nav__logo">
+          <a href="/home" className="nav__logo">
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
           </a>
           <img
@@ -121,44 +85,34 @@ function Navbar({ checkWalletData, hasWalletData, accounts, setAccounts }) {
         >
           <ul className="nav__links">
             <li>
-              <a href="/#/home" className="nav__links-btn">
+              <a href="/home" className="nav__links-btn">
                 Home
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/3s-agency" className="nav__links-btn">
-              Agency
+              <a href="/3s-agency" className="nav__links-btn">
+                Agency
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/resources" className="nav__links-btn">
+              <a href="/resources" className="nav__links-btn">
                 Resources
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/pricing" className="nav__links-btn">
+              <a href="/pricing" className="nav__links-btn">
                 Pricing
               </a>
             </li>
             <li>
-              {accounts.length === 0 ? (
                 <a href="#" className="purple-btn" onClick={togglePopup}>
                   Get Started
                 </a>
-              ) : (
-                <a
-                  href={hasWalletData ? "#/dashboard" : "#/templatestep"}
-                  className="nav__links nav-bg"
-                >
-                  <i className="bi bi-person-circle nav__links-cta"></i>
-                </a>
-              )}
             </li>
           </ul>
         </div>
       </div>
 
-      {showPopup && <PopupWallet setShowPopup={setShowPopup} onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />}
     </nav>
   );
 }

@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./RightBar.css";
 import "../Root.css";
-import { useStyle } from "../../hooks/StyleContext";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import SizeSection from "./RightBarComponents/SizeSettings";
-import SpacingSettings from "./RightBarComponents/SpacingSettings";
 import BorderSettings from "./RightBarComponents/BorderSettings";
 import BackgroundSettings from "./RightBarComponents/BackgroundSettings";
 import TypographySettings from "./RightBarComponents/TypographySettings";
@@ -28,26 +24,6 @@ export default function RightBar({ walletId, handleSettingsChange, selectedEleme
     }));
   };
 
-  const onSettingsChange = (elementId, newStyles) => {
-    const element = document.getElementById(elementId);
-    if (element) {
-      Object.keys(newStyles).forEach(styleKey => {
-        const styleValue = newStyles[styleKey];
-        if (typeof styleValue === 'object') {
-          Object.keys(styleValue).forEach(subKey => {
-            element.style[subKey] = styleValue[subKey];
-          });
-        } else {
-          element.style[styleKey] = styleValue;
-        }
-      });
-      logChange(elementId, newStyles);
-      handleSettingsChange(elementId, newStyles);
-    } else {
-      console.error(`No element found with ID ${elementId}`);
-    }
-  };
-
   return (
     <>
       <div className="rightbar-wrapper">
@@ -56,7 +32,7 @@ export default function RightBar({ walletId, handleSettingsChange, selectedEleme
           {/* <SizeSection
             isOpen={isOpen}
             toggleSection={toggleSection}
-            onSettingsChange={onSettingsChange}
+            onSettingsChange={handleSettingsChange}
             selectedElement={selectedElement}
           /> */}
 
@@ -64,15 +40,15 @@ export default function RightBar({ walletId, handleSettingsChange, selectedEleme
           {/* <SpacingSettings
             isOpen={isOpen}
             toggleSection={toggleSection}
-            onSettingsChange={onSettingsChange}
+            onSettingsChange={handleSettingsChange}
             selectedElement={selectedElement}
           /> */}
-
+ 
           {/* Section Border */}
           <BorderSettings
             isOpen={isOpen}
             toggleSection={toggleSection}
-            onSettingsChange={onSettingsChange}
+            onSettingsChange={handleSettingsChange}
             selectedElement={selectedElement}
           />
 
@@ -82,7 +58,7 @@ export default function RightBar({ walletId, handleSettingsChange, selectedEleme
             toggleSection={toggleSection}
             selectedElement={selectedElement}
             logChange={logChange}
-            onSettingsChange={onSettingsChange}
+            onSettingsChange={handleSettingsChange}
             selectedColor={selectedColor}
             setSelectedColor={setSelectedColor}
           />
@@ -92,7 +68,7 @@ export default function RightBar({ walletId, handleSettingsChange, selectedEleme
             selectedElement={selectedElement}
             toggleSection={toggleSection}
             isOpen={isOpen}
-            onSettingsChange={onSettingsChange}
+            onSettingsChange={handleSettingsChange}
           />
         </div>
       </div>

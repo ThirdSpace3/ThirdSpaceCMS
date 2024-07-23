@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ReactGA from 'react-ga';
 import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
@@ -22,19 +22,21 @@ import Builder from "./pages/Builder";
 import Academy from "./pages/Academy";
 import ShareProject from './components/logiciel/ShareProject'
 import About from "./pages/About";
+import PopupWallet from "./components/website/login/PopupWallet";
 
 export default function App() {
   // const TRACKING_ID = "G-83NKPT3B9E"; 
   // ReactGA.initialize(TRACKING_ID);
-  
+
   return (
     <div>
-      <HashRouter>
+      <Router>
         <ImageHistoryProvider>
           <StyleProvider>
             <Routes>
               <Route index element={<Home />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/login" element={<PopupWallet/>}/>
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/products" element={<Products />} />
               <Route path="/resources" element={<Resources />} />
@@ -70,7 +72,7 @@ export default function App() {
             </Routes>
           </StyleProvider>
         </ImageHistoryProvider>
-      </HashRouter>
+      </Router>
     </div>
   );
 }

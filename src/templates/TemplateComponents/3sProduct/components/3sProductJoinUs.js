@@ -42,9 +42,6 @@ const JoinUsSection = ({
     }
   }, [joinUsData]);
 
-  useEffect(() => {
-    console.log('Join Us content updated:', joinUsContent);
-  }, [joinUsContent]);
 
   const joinUsStyles = getComponentStyle('joinUs');
   const joinUsTitleStyles = getComponentStyle('joinUsTitle');

@@ -110,6 +110,7 @@ const EditableButton = ({ id, text, onChange, link, onLinkChange, style, classNa
 
   return (
     <>
+    
       {isEditing ? (
         <>
           <div

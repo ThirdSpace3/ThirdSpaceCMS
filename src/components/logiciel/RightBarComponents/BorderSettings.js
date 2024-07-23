@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useStyle } from "../../../hooks/StyleContext";
 import "../RightBar.css";
 
-export default function BorderSettings({ toggleSection, isOpen, selectedElement }) {
+export default function BorderSettings({ onSettingsChange, toggleSection, isOpen, selectedElement }) {
   const [selectedBorderStyle, setSelectedBorderStyle] = useState("solid"); // Default to solid
   const [borderColor, setBorderColor] = useState("#000000");
   const [borderRadius, setBorderRadius] = useState(0);
@@ -56,8 +56,10 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
       });
     }
 
+    console.log(`Updating border settings for ${selectedElement}`, borderStyleObject);
     updateStyle(selectedElement, borderStyleObject);
-  }, [selectedBorderStyle, borderSizes, borderColor, borderRadius, selectedElement, isAllSidesSelected]);
+    onSettingsChange(selectedElement, borderStyleObject); // Invoke onSettingsChange here
+  }, [selectedBorderStyle, borderSizes, borderColor, borderRadius, selectedElement, isAllSidesSelected, onSettingsChange]);
 
   useEffect(() => {
     if (!selectedElement) return;
@@ -70,7 +72,7 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
     if (!styles || !styles.borderStyle) {
       updateStyle(selectedElement, { borderStyle: 'solid', borderWidth: '1px' });
     }
-  }, [selectedElement]); // Dependency on selectedElement to detect changes
+  }, [selectedElement, getComponentStyle, updateStyle]); // Dependency on selectedElement to detect changes
 
   useEffect(() => {
     // Call updateBorderSettings only if there's a selected element
@@ -113,6 +115,7 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
                       } else {
                         setBorderSizes((prev) => ({ ...prev, [activeBorderSide]: value }));
                       }
+                      updateBorderSettings(); // Call updateBorderSettings when value changes
                     }}
                   />
                   <span className="px-label">px</span>
@@ -120,12 +123,18 @@ export default function BorderSettings({ toggleSection, isOpen, selectedElement 
               </div>
               <div className="parameters-content-line-row">
                 <p className="parameters-content-line-title">Color</p>
-                <input className="parameters-color-picker" type="color" value={borderColor} onChange={(e) => setBorderColor(e.target.value)} />
+                <input className="parameters-color-picker" type="color" value={borderColor} onChange={(e) => {
+                  setBorderColor(e.target.value);
+                  updateBorderSettings(); // Call updateBorderSettings when value changes
+                }} />
               </div>
               <div className="parameters-content-line-row">
                 <p className="parameters-content-line-title">Radius</p>
                 <div className="parameters-content-line-container">
-                  <input type="number" min="0" max="100" step="1" value={borderRadius} onChange={(e) => setBorderRadius(parseInt(e.target.value, 10))} />
+                  <input type="number" min="0" max="100" step="1" value={borderRadius} onChange={(e) => {
+                    setBorderRadius(parseInt(e.target.value, 10));
+                    updateBorderSettings(); // Call updateBorderSettings when value changes
+                  }} />
                   <span className="px-label">px</span>
                 </div>
               </div>

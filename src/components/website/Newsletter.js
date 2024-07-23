@@ -8,7 +8,6 @@ function Newsletter() {
   const [error, setError] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
 
-  
   const handleInputChange = (event) => {
     setEmail(event.target.value);
     setError(false);
@@ -16,40 +15,34 @@ function Newsletter() {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      setError(true);
+      setError("Please enter a valid email.");
       return;
     }
-  
-    setError(false); // Clear any previous errors
   
     try {
       const subscriptionsRef = collection(db, "UserContactInfos", "contact", "Newsletter");
   
-      // Check if the email already exists
       const querySnapshot = await getDocs(query(subscriptionsRef, where("email", "==", email)));
   
       if (!querySnapshot.empty) {
-        // Email already exists in database
-        setSubscribed(false); // Ensure subscribed state is false
-        setError(true); // Set error to show user is already subscribed
+        setError("This email is already subscribed.");
         return;
       }
   
-      // Add subscription to Firestore
       await addDoc(subscriptionsRef, {
         email: email,
         timestamp: serverTimestamp()
       });
-      
+  
       console.log("Subscription added to Firestore");
-      setSubscribed(true); // Show subscription success message
-      setEmail(""); // Clear the input field
+      setSubscribed(true);
+      setEmail("");
     } catch (error) {
       console.error("Error adding subscription to Firestore: ", error);
-      // Handle error as needed
+      setError("An error occurred. Please try again later.");
     }
   };
   
@@ -74,7 +67,7 @@ function Newsletter() {
       </form>
       {error && (
         <p className="newsletter-component-error-msg">
-          Please enter a valid email.
+          {error}
         </p>
       )}
       {subscribed && (

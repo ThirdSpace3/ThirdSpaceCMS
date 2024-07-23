@@ -7,7 +7,7 @@ import SiteSettingsDashboard from "../components/dashboard/SiteSettingsDashboard
 import ProfileDashboard from "../components/dashboard/ProfileDashboard";
 import BillingDashboard from "../components/dashboard/BillingDashboard";
 import { useNavigate } from "react-router-dom";
-import PopupWallet from "../components/website/PopupWallet";
+import PopupWallet from "../components/website/login/PopupWallet";
 import { db, collection, getDocs } from '../firebaseConfig'; // Assuming Firestore is correctly imported and configured
 import ReportBugBTN from "../components/website/ReportBugBTN";
 export default function Dashboard() {

@@ -1,24 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Pricing.css";
 import "../../Root.css";
-import PopupWallet from "../PopupWallet";
+import PopupWallet from "../login/PopupWallet";
 import { useNavigate } from "react-router-dom";
 import ReactGA from "react-ga";
 
-function Pricing({ checkWalletData }) {
-  const [activeTab, setActiveTab] = useState("TabA");
-  const [showWalletPopup, setShowWalletPopup] = useState(false);
+function Pricing({  }) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setActiveTab("TabA");
-  }, []);
-
-  const openTab = (tabName) => {
-    setActiveTab(tabName);
-    setShowWalletPopup(false); // Reset showWalletPopup state
-  };
-
   const userIsLoggedIn = () => {
     const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
     return isLoggedIn;
@@ -28,17 +16,14 @@ function Pricing({ checkWalletData }) {
     console.log(userIsLoggedIn);
     if (!userIsLoggedIn()) {
       // If user is not logged in
-      setShowWalletPopup(!showWalletPopup); // Toggle wallet popup
+      navigate('/login'); // Navigate to the login page
     } else {
       // If user is logged in
-      navigate("./templatestep"); // Navigate to './templatestep' route
+      navigate("/dashboard"); // Navigate to '/dashboard' route
     }
   };
 
-  const handleUserLogin = (userAccount) => {
-    // Handle user login here
-    console.log("User logged in:", userAccount);
-  };
+
 
   return (
     <section className="pricing-section section">
@@ -128,15 +113,14 @@ function Pricing({ checkWalletData }) {
             Get Started
           </a>
           <div className="pricing-card-content">
-          <p className="pricing-card-text">Everything in freemium + </p>
+            <p className="pricing-card-text">Everything in freemium + </p>
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
                 alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
-              <p className="pricing-card-row-text">1 customized domain
-</p>
+              <p className="pricing-card-row-text">1 customized domain</p>
             </div>
             <div className="pricing-card-row">
               <img
@@ -144,8 +128,7 @@ function Pricing({ checkWalletData }) {
                 alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
-              <p className="pricing-card-row-text">Full access to Third Space
-</p>
+              <p className="pricing-card-row-text">Full access to Third Space</p>
             </div>
             <div className="pricing-card-row">
               <img
@@ -153,8 +136,7 @@ function Pricing({ checkWalletData }) {
                 alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
-              <p className="pricing-card-row-text">5GB cloud storage
-</p>
+              <p className="pricing-card-row-text">5GB cloud storage</p>
             </div>
             <div className="pricing-card-row">
               <img
@@ -163,7 +145,7 @@ function Pricing({ checkWalletData }) {
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">
-              Smart Contracts (30 interactions/month)
+                Smart Contracts (30 interactions/month)
               </p>
             </div>
           </div>
@@ -189,16 +171,14 @@ function Pricing({ checkWalletData }) {
             Get Started
           </a>
           <div className="pricing-card-content">
-          <p className="pricing-card-text">Everything in basic + </p>
-
+            <p className="pricing-card-text">Everything in basic + </p>
             <div className="pricing-card-row">
               <img
                 className="pricing-card-row-img"
                 alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
-              <p className="pricing-card-row-text">3 customized domains
-</p>
+              <p className="pricing-card-row-text">3 customized domains</p>
             </div>
             <div className="pricing-card-row">
               <img
@@ -214,8 +194,7 @@ function Pricing({ checkWalletData }) {
                 alt='third space builder web 3 no-code tools web3 platform'
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
-              <p className="pricing-card-row-text">10GB cloud storage
-</p>
+              <p className="pricing-card-row-text">10GB cloud storage</p>
             </div>
             <div className="pricing-card-row">
               <img
@@ -224,20 +203,13 @@ function Pricing({ checkWalletData }) {
                 src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fcheck-purple.png?alt=media&token=a3b1431f-fe36-446c-90bf-7d182cde9929"
               ></img>
               <p className="pricing-card-row-text">
-              Smart Contracts (60 interactions/month)
+                Smart Contracts (60 interactions/month)
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      {showWalletPopup && (
-        <PopupWallet
-          onClose={toggleWalletPopup}
-          onUserLogin={handleUserLogin}
-          checkWalletData={checkWalletData}
-        />
-      )}
     </section>
   );
 }
