@@ -5,11 +5,11 @@
   "targets": {
     "third--space": {
       "hosting": {
-        "default": [
-          "default"
-        ],
         "third-testing": [
           "third-testing"
+        ],
+        "default": [
+          "third--space"
         ]
       }
     },

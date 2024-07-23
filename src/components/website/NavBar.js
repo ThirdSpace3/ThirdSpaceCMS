@@ -29,28 +29,28 @@ function Navbar({ }) {
   return (
     <nav className={`navbar__padding ${isSticky ? 'sticky-navbar' : ''}`}>
       <div className="navbar__pc">
-        <a href="/#/home" className="nav__logo">
+        <a href="/home" className="nav__logo">
           <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
         </a>
         <div className="navbar__right">
           <ul className="nav__links nav-bg">
             <li>
-              <a href="/#/home" className="nav__links-btn">
+              <a href="/home" className="nav__links-btn">
                 Home
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/3s-agency" className="nav__links-btn">
+              <a href="/3s-agency" className="nav__links-btn">
                 Agency
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/resources" className="nav__links-btn">
+              <a href="/resources" className="nav__links-btn">
                 Resources
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/pricing" className="nav__links-btn">
+              <a href="/pricing" className="nav__links-btn">
                 Pricing
               </a>
             </li>
@@ -64,7 +64,7 @@ function Navbar({ }) {
 
       <div className="navbar__mobile">
         <div className="navbar__mobile-head">
-          <a href="/#/home" className="nav__logo">
+          <a href="/home" className="nav__logo">
             <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
           </a>
           <img
@@ -85,22 +85,22 @@ function Navbar({ }) {
         >
           <ul className="nav__links">
             <li>
-              <a href="/#/home" className="nav__links-btn">
+              <a href="/home" className="nav__links-btn">
                 Home
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/3s-agency" className="nav__links-btn">
+              <a href="/3s-agency" className="nav__links-btn">
                 Agency
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/resources" className="nav__links-btn">
+              <a href="/resources" className="nav__links-btn">
                 Resources
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/pricing" className="nav__links-btn">
+              <a href="/pricing" className="nav__links-btn">
                 Pricing
               </a>
             </li>
