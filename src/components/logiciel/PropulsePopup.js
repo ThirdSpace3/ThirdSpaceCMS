@@ -22,12 +22,16 @@ export default function PropulsePopup({ generateShareableURL, projectName, setSh
   }, [setShowPopup]);
 
   const handleSaveClick = async () => {
+    console.log("handleSaveClick invoked in PropulsePopup");
     setIsSaving(true);
     try {
+      console.log("Calling onSaveClick function from PropulsePopup");
       await onSaveClick();
       setSaveStatus('success');
+      console.log("onSaveClick function executed successfully");
       generateShareableURL();
     } catch (error) {
+      console.error("Error during save:", error);
       setSaveStatus('failure');
     } finally {
       setIsSaving(false);
@@ -41,7 +45,6 @@ export default function PropulsePopup({ generateShareableURL, projectName, setSh
           Where will you propulse your project?
         </h2>
         <hr className="propulse-popup-hr" />
-        {/*===Test deploy===*/}
         <div className="propulse-popup-container-box">
           <div className="propulse-popup-container-box-top">
             <p className="propulse-popup-main-txt">Test</p>
@@ -58,25 +61,6 @@ export default function PropulsePopup({ generateShareableURL, projectName, setSh
           </div>
         </div>
         <hr className="propulse-popup-hr" />
-        {/*===Live deploy===*/}
-        {/* <div className="propulse-popup-container-box">
-          <div className="propulse-popup-container-box-top">
-            <p className="propulse-popup-main-txt">Live</p>
-            <a href="">
-              <i className="bi bi-box-arrow-up-right"></i>
-            </a>
-          </div>
-          <div className="propulse-popup-container-box-bottom">
-            <a className="propulse-popup-txt" href="">
-              Add Custom Domain
-            </a>
-            <label className="switch">
-              <input type="checkbox" />
-              <span className="slider"></span>
-            </label>
-          </div>
-        </div>
-        <hr className="propulse-popup-hr" /> */}
         <button className="propule-popup-btn" onClick={handleSaveClick} disabled={isSaving} id="done-btn-deploy-popup">
           Propulse to selected domains
         </button>

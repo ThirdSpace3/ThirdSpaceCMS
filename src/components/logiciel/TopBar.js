@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./TopBar.css";
 import PropulsePopup from "./PropulsePopup";
-import { Link } from "react-router-dom";
 
 const deviceSizes = {
   tv: "100%",
@@ -46,7 +45,6 @@ const TopBar = ({
     : { top: "35px", transition: "top 0.3s ease-in-out" };
 
   const generateShareableURL = () => {
-    // Modify the base URL as needed
     const baseURL = "https://3rd-space.io/share/";
     return `${baseURL}${encodeURIComponent(projectName)}`;
   };
@@ -96,18 +94,8 @@ const TopBar = ({
 
           <button className="topbar-propulse-btn" onClick={handlePropulseClick} id="propulse-project-btn">
             Propulse 
-
             <i className="bi bi-rocket-takeoff"></i>
           </button>
-          {/* <Link
-            to={`/share/${encodeURIComponent(projectName)}`}
-            className="topbar-share-btn"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Share Project
-            <i className="bi bi-share"></i>
-          </Link> */}
         </div>
         <div className="topbar-wrapper-bottom">
           <i
@@ -121,7 +109,10 @@ const TopBar = ({
           generateShareableURL={generateShareableURL}
           projectName={projectName}
           setShowPopup={setShowPopup}
-          onSaveClick={onSaveClick}
+          onSaveClick={() => {
+            console.log("onSaveClick passed to PropulsePopup");
+            onSaveClick();
+          }}
         />
       )}
     </>

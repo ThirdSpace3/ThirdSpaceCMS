@@ -64,8 +64,6 @@ export default function Display() {
     }));
   }, []);
   
-  
-
   const undo = useCallback(() => {
     if (currentHistoryIndex > 0) {
       setCurrentHistoryIndex(currentHistoryIndex - 1);
@@ -116,6 +114,7 @@ export default function Display() {
           styles: settings[section] || {} // Include styles in the saved data
         }, { merge: true });
       }
+      console.log('Settings saved successfully'); // Debug
     } catch (error) {
       console.error("Error saving settings:", error);
       alert("Failed to save settings. See console for more details.");
@@ -127,14 +126,14 @@ export default function Display() {
       const storageRef = ref(storage, `ImagesUsers/${walletId}/${selectedProjectId}/${file.name}`);
       await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(storageRef);
-  
+
       // Update the image history
       const newImage = { url: downloadURL, category: "Photo", hash: identifier };
       addImageToHistory(newImage);
-  
+
       // Update the ReusableImage local storage
       localStorage.setItem(`imageSrc-${identifier}`, downloadURL);
-  
+
       // Update the TemplateContent state
       setTemplateContent(prevContent => {
         const updatedContent = { ...prevContent };
@@ -144,7 +143,7 @@ export default function Display() {
         updatedContent.header.image = downloadURL;
         return updatedContent;
       });
-  
+
       return downloadURL;
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -221,7 +220,7 @@ export default function Display() {
           if (projectsList.length > 0) {
             setSelectedProjectId(projectsList[0].id);
             console.log('Selected project ID:', projectsList[0].id);
-  
+
             // Fetch and apply styles
             const projectData = await fetchProjectData(walletId, projectsList[0].id);
             setTemplateContent(projectData.content || {});
@@ -232,11 +231,9 @@ export default function Display() {
         }
       }
     };
-  
+
     fetchAndSetProjects();
   }, [walletId]);
-  
-  
 
   useEffect(() => {
     const handleDragEnter = (event) => {
@@ -278,6 +275,7 @@ export default function Display() {
           visiblePanel={activePanel}
           setVisiblePanel={setActivePanel}
           selectedProjectId={selectedProjectId}
+          walletId={walletId}
         />
       )}
       <div className="displayColumnWrapper">
