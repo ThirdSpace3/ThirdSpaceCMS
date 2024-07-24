@@ -95,14 +95,21 @@ const Footer = ({
   };
 
   useEffect(() => {
-    const cssVarName = `--footer-background-color`;
-    const storedColor = localStorage.getItem(cssVarName);
+    const cssVarPrefix = '--';
+    const cssVars = [
+      'footerText-background-color',
+      'homeText-background-color',
+      'aboutText-background-color',
+      'featuresText-background-color',
+    ];
 
-    if (storedColor) {
-      setSelectedColor(storedColor);
-      document.documentElement.style.setProperty(cssVarName, storedColor);
-    }
-  }, [setSelectedColor]);
+    cssVars.forEach(cssVar => {
+      const storedColor = localStorage.getItem(`${cssVarPrefix}${cssVar}`);
+      if (storedColor) {
+        document.documentElement.style.setProperty(`${cssVarPrefix}${cssVar}`, storedColor);
+      }
+    });
+  }, []);
 
   const footerStyles = getComponentStyle('footer');
 
@@ -124,21 +131,21 @@ const Footer = ({
             <EditableText
               text={footerContent.homeText}
               onChange={(text) => handleTextChange(text, 'homeText')}
-              style={{ ...getComponentStyle('homeText') }}
+              style={{ ...getComponentStyle('homeText'), backgroundColor: 'var(--homeText-background-color)' }}
             />
           </li>
           <li className='sss-product-footer-top-links' id='aboutText' onClick={(event) => handleComponentClick(event, 'aboutText')}>
             <EditableText
               text={footerContent.aboutText}
               onChange={(text) => handleTextChange(text, 'aboutText')}
-              style={{ ...getComponentStyle('aboutText') }}
+              style={{ ...getComponentStyle('aboutText'), backgroundColor: 'var(--aboutText-background-color)' }}
             />
           </li>
           <li className='sss-product-footer-top-links' id='featuresText' onClick={(event) => handleComponentClick(event, 'featuresText')}>
             <EditableText
               text={footerContent.featuresText}
               onChange={(text) => handleTextChange(text, 'featuresText')}
-              style={{ ...getComponentStyle('featuresText') }}
+              style={{ ...getComponentStyle('featuresText'), backgroundColor: 'var(--featuresText-background-color)' }}
             />
           </li>
         </ul>
@@ -152,7 +159,6 @@ const Footer = ({
             handleImageUpload={handleImageUpload}
             onImageChange={(newSrc) => handleImageChange(newSrc, 'twitterSrc')}
             openImagePanel={openImagePanel}
-
           />
           <ReusableImage
             src={footerContent.linkedInSrc}
@@ -163,7 +169,6 @@ const Footer = ({
             handleImageUpload={handleImageUpload}
             onImageChange={(newSrc) => handleImageChange(newSrc, 'linkedInSrc')}
             openImagePanel={openImagePanel}
-
           />
         </div>
       </div>
@@ -173,7 +178,7 @@ const Footer = ({
           <EditableText
             text={footerContent.footerText}
             onChange={(text) => handleTextChange(text, 'footerText')}
-            style={{ ...getComponentStyle('footerText') }}
+            style={{ ...getComponentStyle('footerText'), backgroundColor: 'var(--footerText-background-color)' }}
           />
         </p>
       </div>

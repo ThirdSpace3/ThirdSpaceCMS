@@ -58,7 +58,7 @@ export default function BorderSettings({ onSettingsChange, toggleSection, isOpen
 
     console.log(`Updating border settings for ${selectedElement}`, borderStyleObject);
     updateStyle(selectedElement, borderStyleObject);
-    onSettingsChange(selectedElement, borderStyleObject); // Invoke onSettingsChange here
+    // onSettingsChange(selectedElement, borderStyleObject); // Invoke onSettingsChange here
   }, [selectedBorderStyle, borderSizes, borderColor, borderRadius, selectedElement, isAllSidesSelected, onSettingsChange]);
 
   useEffect(() => {

@@ -1,12 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useImageHistory } from "../../../hooks/ImageHistoryContext";
 
+
 const BackgroundSettings = ({
   isOpen,
   toggleSection,
   selectedElement,
   logChange,
   setSelectedColor,
+  saveSettings, // Add saveSettings as a prop
 }) => {
   const fileInputRef = useRef(null);
   const [currentColor, setCurrentColor] = useState("");
@@ -32,35 +34,32 @@ const BackgroundSettings = ({
 
   const handleColorCommit = () => {
     const value = currentColor;
-    // Set color and remove background image when changing color
     document.documentElement.style.setProperty(cssVarName, value);
     document.documentElement.style.setProperty(backgroundImageCssVarName, 'none');
     logChange(selectedElement, { backgroundColor: value });
     setSelectedColor(value);
-    // Store the selected color and reset image in local storage
     localStorage.setItem(cssVarName, value);
     localStorage.setItem(backgroundImageCssVarName, 'none');
+    // saveSettings(); // Save settings after color commit
   };
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
-  
+
     reader.onloadend = () => {
       const imageUrl = reader.result;
-      // Add the "Background" category to the image
       const image = { url: imageUrl, category: "Background" };
-      // Add the image to the history
       addImageToHistory(image);
-      // Set background image and store it
       document.documentElement.style.setProperty(backgroundImageCssVarName, `url(${imageUrl})`);
       logChange(selectedElement, {
         backgroundImage: `url(${imageUrl})`,
-        backgroundColor: 'transparent' // Set background color to transparent
+        backgroundColor: 'transparent',
       });
       localStorage.setItem(backgroundImageCssVarName, `url(${imageUrl})`);
+      // saveSettings(); // Save settings after image upload
     };
-  
+
     if (file) {
       reader.readAsDataURL(file);
     }

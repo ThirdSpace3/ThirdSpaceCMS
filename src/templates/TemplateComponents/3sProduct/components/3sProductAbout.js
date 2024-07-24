@@ -46,8 +46,8 @@ const AboutSection = ({
   }, [aboutData]);
 
   const aboutStyles = getComponentStyle('about');
-  const aboutTitleStyle = getComponentStyle('title');
-  const aboutDescriptionStyles = getComponentStyle('description');
+  const aboutTitleStyle = getComponentStyle('aboutTitle');
+  const aboutDescriptionStyles = getComponentStyle('aboutDescription');
 
   const handleTextChange = (newText, textType, index = null) => {
     let updatedContent = { ...aboutContent };
@@ -95,26 +95,27 @@ const AboutSection = ({
   };
 
   useEffect(() => {
-    const cssVarName = '--about-background-color';
-    const storedColor = localStorage.getItem(cssVarName);
-
-    if (storedColor) {
-      setSelectedColor(storedColor);
-      document.documentElement.style.setProperty(cssVarName, storedColor);
+    const cssVarPrefix = '--aboutImageText-';
+    for (let i = 0; i < aboutContent.images.length; i++) {
+      const cssVarName = `${cssVarPrefix}${i}-background-color`;
+      const storedColor = localStorage.getItem(cssVarName);
+      if (storedColor) {
+        document.documentElement.style.setProperty(cssVarName, storedColor);
+      }
     }
-  }, [setSelectedColor]);
+  }, [aboutContent.images.length]);
 
   return (
     <div className="sss-product-about" style={{ ...aboutStyles }} id='about' onClick={(event) => handleComponentClick(event, 'about')}>
       <div className="sss-product-about-header">
-        <h2 className="sss-product-about-title" id='title' onClick={(event) => handleComponentClick(event, 'title')}>
+        <h2 className="sss-product-about-title" id='aboutTitle' onClick={(event) => handleComponentClick(event, 'aboutTitle')}>
           <EditableText
             text={aboutContent.title}
             onChange={(text) => handleTextChange(text, 'title')}
             style={{ ...aboutTitleStyle }}
           />
         </h2>
-        <p className="sss-product-about-text" id='description' onClick={(event) => handleComponentClick(event, 'description')}>
+        <p className="sss-product-about-text" id='aboutDescription' onClick={(event) => handleComponentClick(event, 'aboutDescription')}>
           <EditableText
             text={aboutContent.description}
             onChange={(text) => handleTextChange(text, 'description')}
@@ -135,14 +136,11 @@ const AboutSection = ({
               identifier={`aboutImage-${index}`}
               handleImageUpload={handleImageUpload}
             />
-            <div className="sss-product-about-item-text">
-
-
-
+            <div className="sss-product-about-item-text" id={`aboutImageText-${index}`} onClick={(event) => handleComponentClick(event, 'aboutImageText', index)}>
               <EditableText
                 text={image.text}
                 onChange={(text) => handleTextChange(text, 'imageText', index)}
-                style={{ marginTop: '10px' }}
+                style={{ backgroundColor: `var(--aboutImageText-${index}-background-color)` }}
               />
             </div>
           </div>

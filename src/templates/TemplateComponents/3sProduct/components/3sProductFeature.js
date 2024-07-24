@@ -8,7 +8,18 @@ import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
 import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
-const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, settings, openImagePanel, setSelectedColor, onContentChange, handleImageUpload, selectedProjectId, featuresData }) => {
+const FeaturesSection = ({
+  handleSettingsChange,
+  setSelectedElement,
+  style,
+  settings,
+  openImagePanel,
+  setSelectedColor,
+  onContentChange,
+  handleImageUpload,
+  selectedProjectId,
+  featuresData
+}) => {
   const { getComponentStyle } = useStyle();
   const { selectedImage, enterReplacementMode, activeComponent } = useImageHistory();
 
@@ -125,14 +136,24 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
   };
 
   useEffect(() => {
-    const cssVarName = `--features-background-color`;
-    const storedColor = localStorage.getItem(cssVarName);
-
-    if (storedColor) {
-      setSelectedColor(storedColor);
-      document.documentElement.style.setProperty(cssVarName, storedColor);
-    }
-  }, [setSelectedColor]);
+    const cssVarPrefix = '--';
+    const cssVars = [
+      'featuresTitle-background-color',
+      'endToEndTitle-background-color',
+      'endToEndDescription-background-color',
+      'mobileAppTitle-background-color',
+      'mobileAppDescription-background-color',
+      'uploadShareTitle-background-color',
+      'uploadShareDescription-background-color',
+    ];
+    
+    cssVars.forEach(cssVar => {
+      const storedColor = localStorage.getItem(`${cssVarPrefix}${cssVar}`);
+      if (storedColor) {
+        document.documentElement.style.setProperty(`${cssVarPrefix}${cssVar}`, storedColor);
+      }
+    });
+  }, []);
 
   return (
     <div className="sss-product-features" style={featureStyles} id='features' onClick={(event) => handleComponentClick(event, 'features')}>
@@ -140,7 +161,7 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
         <EditableText
           text={featuresContent.title}
           onChange={(newText) => handleTextChange(newText, 'title')}
-          style={featureTitleStyles}
+          style={{ ...featureTitleStyles, backgroundColor: 'var(--featuresTitle-background-color)' }}
         />
       </h2>
       <div className="sss-product-features-box">
@@ -150,14 +171,14 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
               <EditableText
                 text={featuresContent.endToEnd.title}
                 onChange={(newText) => handleTextChange(newText, 'endToEnd', 'title')}
-                style={endToEndTitleStyles}
+                style={{ ...endToEndTitleStyles, backgroundColor: 'var(--endToEndTitle-background-color)' }}
               />
             </h3>
             <p className='sss-product-features-box-top-left-text' id='endToEndDescription' onClick={(event) => handleComponentClick(event, 'endToEndDescription')}>
               <EditableText
                 text={featuresContent.endToEnd.description}
                 onChange={(newText) => handleTextChange(newText, 'endToEnd', 'description')}
-                style={endToEndDescriptionStyles}
+                style={{ ...endToEndDescriptionStyles, backgroundColor: 'var(--endToEndDescription-background-color)' }}
               />
             </p>
             <Link to={featuresContent.joinUs.link.url} onClick={(event) => handleComponentClick(event, 'feature-cta')} target={featuresContent.joinUs.link.openInNewTab ? "_blank" : "_self"} className='position-relative'>
@@ -201,14 +222,14 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
               <EditableText
                 text={featuresContent.mobileApps.title}
                 onChange={(newText) => handleTextChange(newText, 'mobileApps', 'title')}
-                style={mobileAppsTitleStyles}
+                style={{ ...mobileAppsTitleStyles, backgroundColor: 'var(--mobileAppTitle-background-color)' }}
               />
             </h3>
             <p className='sss-product-features-box-top-left-text' id='mobileAppDescription' onClick={(event) => handleComponentClick(event, 'mobileAppDescription')}>
               <EditableText
                 text={featuresContent.mobileApps.description}
                 onChange={(newText) => handleTextChange(newText, 'mobileApps', 'description')}
-                style={mobileAppsDescriptionStyles}
+                style={{ ...mobileAppsDescriptionStyles, backgroundColor: 'var(--mobileAppDescription-background-color)' }}
               />
             </p>
           </div>
@@ -217,14 +238,14 @@ const FeaturesSection = ({ handleSettingsChange, setSelectedElement, style, sett
               <EditableText
                 text={featuresContent.uploadShare.title}
                 onChange={(newText) => handleTextChange(newText, 'uploadShare', 'title')}
-                style={uploadShareTitleStyles}
+                style={{ ...uploadShareTitleStyles, backgroundColor: 'var(--uploadShareTitle-background-color)' }}
               />
             </h3>
             <p className='sss-product-features-box-top-left-text' id='uploadShareDescription' onClick={(event) => handleComponentClick(event, 'uploadShareDescription')}>
               <EditableText
                 text={featuresContent.uploadShare.description}
                 onChange={(newText) => handleTextChange(newText, 'uploadShare', 'description')}
-                style={uploadShareDescriptionStyles}
+                style={{ ...uploadShareDescriptionStyles, backgroundColor: 'var(--uploadShareDescription-background-color)' }}
               />
             </p>
             <ReusableImage

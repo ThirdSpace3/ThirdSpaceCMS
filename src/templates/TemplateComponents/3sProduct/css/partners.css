@@ -11,7 +11,7 @@
 
   /*==================== PARTNERS ====================*/
 .sss-product-partners {
-  background-color: var(--partners-background-color);
+  background-color: var(--partners-background-color) !important;
   background-image: var(--partners-background-image);
     display: flex;
     flex-direction: column;
@@ -28,6 +28,7 @@
     font-style: normal;
     font-weight: 400;
     text-align: center;
+    background-color: var(--partnersTitle-background-color) !important;
   }
   .sss-product-partners-box {
     display: flex;

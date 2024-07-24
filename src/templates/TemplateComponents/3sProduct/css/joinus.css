@@ -10,7 +10,7 @@
 
 
 .sss-product-joinus-main{
-  background-color: var(--joinUs-background-color);
+  background-color: var(--joinUs-background-color) !important;
   background-image: var(--joinUs-background-image);
 
 

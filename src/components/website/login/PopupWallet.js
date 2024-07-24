@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../PopupWallet.css";
 import "../../Root.css";
 import { db, doc, getDoc, setDoc, updateDoc } from '../../../firebaseConfig';
@@ -8,11 +8,13 @@ import EmailLogin from "./EmailLogin";
 import WalletConnection from "./WalletConnection";
 import ForgotPassword from "./ForgotPassword";
 import WalletCarousel from "./WalletCarousel";
+import { AuthContext } from "../../../hooks/AuthProvide"; // Ensure the path is correct
 
 // Initialize Google Analytics
 ReactGA.initialize('G-83NKPT3B9E');
 
-function PopupWallet({ onClose, setShowPopup }) {
+function PopupWallet({ onClose }) {
+  const { setIsLoggedIn, setWalletId } = useContext(AuthContext);
   const [hasStepData, setHasStepData] = useState(false);
   const [hasWalletData, setHasWalletData] = useState(false);
   const [accounts, setAccounts] = useState([]);
@@ -31,6 +33,8 @@ function PopupWallet({ onClose, setShowPopup }) {
 
   const onUserLogin = (userAccount) => {
     console.log("User logged in:", userAccount);
+    setWalletId(userAccount);
+    setIsLoggedIn(true);
     navigate('../dashboard');
   };
 
@@ -241,6 +245,11 @@ function PopupWallet({ onClose, setShowPopup }) {
               onUserLogin={onUserLogin}
               customErrorMessage={customErrorMessage}
             />
+             <div className="seperation-connection-way">
+                  <hr></hr>
+                  <p>or</p>
+                  <hr></hr>
+                </div>
             <button className="wallet-btn" onClick={handleConnectWalletClick}>
               Connect via Email
             </button>
@@ -274,8 +283,6 @@ function PopupWallet({ onClose, setShowPopup }) {
             )}
           </>
         )}
-
-      
 
         {!showForgotPassword ? (
           isSignUp ? (

@@ -12,11 +12,11 @@ const HeaderSection = ({
   setSelectedElement,
   setSelectedColor,
   onContentChange,
-  selectedProjectId,
+  selectedElement,
   isPreviewMode,
   saveSettings,
   handleImageUpload,
-  headerData = {heroTitle: '', heroDescription: '',herojoinUs:'', herojoinUsLink: { url: '#', openInNewTab: false }, image: [] }
+  headerData = { heroTitle: '', heroDescription: '', herojoinUs: '', herojoinUsLink: { url: '#', openInNewTab: false }, image: [] }
 }) => {
   const { selectedImage, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
@@ -48,17 +48,14 @@ const HeaderSection = ({
   const handleTextChange = (newText, textType) => {
     const updatedContent = { ...headerContent, [textType]: newText };
     setHeaderContent(updatedContent);
-    console.log('Updated Content:', updatedContent); // Debug
     onContentChange('header', { content: updatedContent });
-  
+
     // Update style context
     updateStyle(textType, { text: newText });
-    console.log('Updated Style:', getComponentStyle(textType)); // Debug
-  
+
     // Save settings
     saveSettings();
   };
-  
 
   const handleLinkChange = (newLink) => {
     const updatedContent = { ...headerContent, herojoinUsLink: { ...headerContent.herojoinUsLink, url: newLink } };
@@ -91,14 +88,20 @@ const HeaderSection = ({
   };
 
   useEffect(() => {
-    const cssVarName = '--header-background-color';
+    console.log(selectedElement);
+    const cssVarName = `--${selectedElement}-background-color`;
     const storedColor = localStorage.getItem(cssVarName);
+    const backgroundImageCssVarName = `--${selectedElement}-background-image`;
+    const storedImageUrl = localStorage.getItem(backgroundImageCssVarName);
 
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);
     }
-  }, [setSelectedColor]);
+    if (storedImageUrl && storedImageUrl !== 'none') {
+      document.documentElement.style.setProperty(backgroundImageCssVarName, storedImageUrl);
+    }
+  }, [setSelectedColor, selectedElement]);
 
   return (
     <div className="sss-product-hero" style={{ ...headerStyles }} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
