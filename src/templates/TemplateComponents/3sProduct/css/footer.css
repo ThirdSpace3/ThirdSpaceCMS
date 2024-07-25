@@ -10,7 +10,7 @@
   }
 
 .sss-product-footer {
-    background-color: var(--footer-background-color);    
+    background-color: var(--footer-background-color) !important;    
     background-image: var(--footer-background-image);
 
     display: flex;

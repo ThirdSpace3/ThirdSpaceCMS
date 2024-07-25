@@ -143,6 +143,12 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
     setErrorMessage(""); // Clear error message on email change if needed
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      showPasswordField ? handlePasswordSubmit() : handleEmailSubmit();
+    }
+  };
+
   const processLogin = (userId, loginType) => {
     if (typeof onUserLogin === "function") {
       onUserLogin(userId);
@@ -168,6 +174,7 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
           type="email"
           value={email}
           onChange={handleEmailChange}
+          onKeyDown={handleKeyDown}
           placeholder="Enter your email"
         />
       )}
@@ -178,6 +185,7 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={handlePasswordChange}
+              onKeyDown={handleKeyDown}
               placeholder="Enter your password"
             />
             <span className="password-toggle-icon" onClick={togglePasswordVisibility}>

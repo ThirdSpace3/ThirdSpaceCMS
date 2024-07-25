@@ -9,15 +9,14 @@ function About() {
         <p className="section-label">About</p>
         <h2 className="section-title">Innovative Minds Behind Third Space</h2>
         <p className="section-text">
-          A passionate team revolutionizing Web 3 with no-code tools for all
-          your projects
+        A passionate team revolutionizing Web 3 with no-code tools for all your projects. Always open to your feedback to create the leading Web 3 platform among builders. 
         </p>
         {/* <a href="/#/about" className="purple-btn">See our values</a> */}
       </div>
 
       <div className="about-content">
         <img className="about-content-img" src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Fabout-img.png?alt=media&token=16000a0e-668f-4ef0-bb35-43334d74a827" alt='third space builder web 3 no-code tools web3 platform'></img>
-        <a href="/#/3s-agency" className="about-content-link-container">
+        <a href="./3s-agency" className="about-content-link-container">
           <div className="about-content-link-box">
             <div className="about-content-link-top">
               <p className="about-content-link-top-text">Need help on a project?</p>

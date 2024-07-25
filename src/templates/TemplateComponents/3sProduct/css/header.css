@@ -3,21 +3,20 @@
 :root {
   --header-border-color: #151934;
   --header-link-color: #8f9bb7;
-  --header-cta-background-color: #7214ff;
+  --herojoinUs-background-color: #7214ff;
   --header-background-color: #200627;
-  --header-background-image: ;
-  --header-text-color: #000000; /* New variable for header text color */
+  --header-background-image: none;
+  --header-text-color: #000000;
   --header-title-color: #7214ff;
+  --heroTitle-background-color: #ffffff; /* Default background color */
+  --heroDescription-background-color: #ffffff; /* Default background color */
+
 }
 
-
-
 .sss-product-hero {
-  background-color: var(--header-background-color);
-  /* Use the new variable here */
+  background-color: var(--header-background-color) !important;
   background-image: var(--header-background-image);
   background-repeat: no-repeat;
-  background-size: cover;
   background-size: cover;
   background-position: center;
   display: flex;
@@ -37,7 +36,8 @@
   border: 2px solid transparent;
   padding: 2px 4px;
   border-radius: 3px;
-  color: var(--header-title-color); /* Use the new variable here */
+  color: var(--header-title-color);
+  background-color: var(--heroTitle-background-color);
 }
 
 .sss-product-hero-text {
@@ -48,11 +48,12 @@
   font-style: normal;
   font-weight: 400;
   max-width: 800px;
+  background-color: var(--heroDescription-background-color);
 }
 
 .sss-product-hero-cta {
   border-radius: 36px;
-  background: var(--header-cta-background-color); /* Ensure correct variable is used */
+  background: var(--herojoinUs-background-color);
   color: var(--header-link-color);
   display: flex;
   justify-content: center;
@@ -64,13 +65,12 @@
   font-weight: 400;
 }
 
-
 .sss-product-hero-img {
   max-width: 800px;
   width: 80%;
 }
 
-/* Pour les mobiles */
+/* Mobile styles */
 @container (max-width: 767px) {
   .sss-product-hero {
     gap: 20px;
@@ -86,15 +86,41 @@
   }
 }
 
-/* define border styles for when the hero title is selected or focused */
+/* Border styles for selected or focused hero title */
 .sss-product-hero-title.selected,
 .sss-product-hero-title:focus-within {
   border-color: var(--header-border-color);
-  /* use the same color variable as the navbar */
 }
 
-.join-us-btn{
+.join-us-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* Editable text styles */
+.editable-text-span {
+  display: inline-block;
+  padding: 5px;
+  background-color: var(--editable-text-background-color);
+}
+
+.editable-text-area {
+  width: 100%;
+  min-height: 30px;
+  border: none;
+  padding: 5px;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  background-color: var(--editable-text-background-color);
+}
+
+.editable-text-area:focus {
+  outline: none;
+}
+
+.error {
+  border-color: red;
 }

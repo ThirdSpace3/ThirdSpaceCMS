@@ -566,7 +566,7 @@ export default function PrivacyPolicy() {
               rel="external nofollow noopener"
               target="_blank"
             >
-              https://3rd-space.io/#/privacy-policy
+              https://3rd-space.io/privacy-policy
             </a>
           </li>
         </ul>

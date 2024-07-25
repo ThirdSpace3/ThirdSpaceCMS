@@ -23,6 +23,7 @@ const SSSProduct = ({
   openImagePanel,
   selectedImage,
   setSelectedImage,
+  selectedElement,
   setSelectedElement,
   selectedProjectId,
   handleImageUpload,
@@ -97,6 +98,8 @@ const SSSProduct = ({
         selectedImage={selectedImage}
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
+        selectedElement={selectedElement}
+
         setSelectedElement={setSelectedElement}
         logChange={logChange}
         selectedColor={selectedColor}
@@ -124,6 +127,8 @@ const SSSProduct = ({
         setSelectedImage={setSelectedImage}
         selectElement={selectElement}
         setSelectedElement={setSelectedElement}
+        selectedElement={selectedElement}
+
         selectedColor={selectedColor}
         setSelectedColor={setSelectedColor}
         onContentChange={(content) => handleContentChange('header', content)}
@@ -137,6 +142,8 @@ const SSSProduct = ({
         <PartnersSection
           openImagePanel={openImagePanel}
           setSelectedElement={setSelectedElement}
+          selectedElement={selectedElement}
+
           onContentChange={(content) => handleContentChange('partners', content)}
           handleImageUpload={handleImageUpload}
           selectedProjectId={selectedProjectId}
@@ -150,6 +157,8 @@ const SSSProduct = ({
           settings={settings}
           openImagePanel={openImagePanel}
           setSelectedElement={setSelectedElement}
+          selectedElement={selectedElement}
+
           setSelectedColor={setSelectedColor}
           onContentChange={(content) => handleContentChange('aboutSection', content)}
           handleImageUpload={handleImageUpload}
@@ -161,6 +170,8 @@ const SSSProduct = ({
       <FeaturesSection
         handleSettingsChange={handleSettingsChange}
         setSelectedElement={setSelectedElement}
+        selectedElement={selectedElement}
+
         style={settings}
         settings={settings}
         openImagePanel={openImagePanel}
@@ -173,6 +184,8 @@ const SSSProduct = ({
 
       <JoinUsSection
         setSelectedElement={setSelectedElement}
+        selectedElement={selectedElement}
+
         openImagePanel={openImagePanel}
         setSelectedColor={setSelectedColor}
         onContentChange={(content) => handleContentChange('joinUsSection', content)}
@@ -183,6 +196,8 @@ const SSSProduct = ({
 
       <Footer
         saveSettings={saveSettings}
+        selectedElement={selectedElement}
+
         ref={footerRef}
         style={settings}
         settings={settings}

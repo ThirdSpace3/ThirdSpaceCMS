@@ -35,7 +35,7 @@ export default function LeftBar({selectedProjectId, handleEditorChange, visibleP
       <div className="navbar-wrapper">
         <div className={mainClass}>
           <div className="navbar-home-btn">
-            <a href="./#/dashboard">
+            <a href="./../dashboard">
               <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2F3s-logo-picto.png?alt=media&token=eccaecaa-e624-4bb4-a1ad-54f181d09510" alt="Home" />
             </a>
             <hr />

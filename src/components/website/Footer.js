@@ -11,13 +11,13 @@ const Footer = () => {
           <h3 className="footer-column-title">Product</h3>
           <ul className="footer-column-content">
             <li className="coming-soon">
-              <a href="/#/products">Products</a>
+              <a href="/products">Products</a>
             </li>
             <li className="coming-soon">
-              <a href="/#/ressources">Resources</a>
+              <a href="/ressources">Resources</a>
             </li>
             <li className="coming-soon">
-              <a href="/#/pricing">Pricing</a>
+              <a href="/pricing">Pricing</a>
             </li>
             {/* <li><a href="#roadmap">Roadmap</a></li> */}
             {/* <li className="coming-soon"><a href="">Updates</a></li> */}
@@ -35,12 +35,12 @@ const Footer = () => {
           <h3 className="footer-column-title">Legal</h3>
           <ul className="footer-column-content">
             <li className="coming-soon">
-              <a href="/#/terms">
+              <a href="/terms">
                 Terms
               </a>
             </li>
             <li className="coming-soon">
-              <a href="/#/privacy-policy">
+              <a href="/privacy-policy">
                 Privacy Policy
               </a>
             </li>
@@ -50,7 +50,7 @@ const Footer = () => {
         <div className="newsletter-section">
         <h3 className="newsletter-section-title">Stay Updated with Third Space, Join our Newsletter</h3>
         <Newsletter />
-        <p className="newsletter-section-text">You can unsuscribe at any time. <span><a href="/#/privacy-policy">Privacy Policy</a></span></p>
+        <p className="newsletter-section-text">You can unsuscribe at any time. <span><a href="/privacy-policy">Privacy Policy</a></span></p>
 
         </div>
       </div>

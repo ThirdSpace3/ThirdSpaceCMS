@@ -5,20 +5,18 @@ import ReusableImage from '../../../../components/logiciel/TemplateComponent/Reu
 import EditableButton from '../../../../components/logiciel/TemplateComponent/EditableButton';
 import { useStyle } from '../../../../hooks/StyleContext';
 import { useImageHistory } from '../../../../hooks/ImageHistoryContext';
-import { fetchComponentData, saveComponentData } from '../../../../hooks/Fetchprojects';
 
 const HeaderSection = ({
   handleSettingsChange,
-  settings,
   openImagePanel,
   setSelectedElement,
   setSelectedColor,
   onContentChange,
-  selectedProjectId,
+  selectedElement,
   isPreviewMode,
   saveSettings,
   handleImageUpload,
-  headerData = {}
+  headerData = { heroTitle: '', heroDescription: '', herojoinUs: '', herojoinUsLink: { url: '#', openInNewTab: false }, image: [] }
 }) => {
   const { selectedImage, selectImage } = useImageHistory();
   const { getComponentStyle, updateStyle } = useStyle();
@@ -36,11 +34,8 @@ const HeaderSection = ({
   useEffect(() => {
     if (headerData) {
       setHeaderContent({
-        heroTitle: headerData.heroTitle || defaultHeaderContent.heroTitle,
-        heroDescription: headerData.heroDescription || defaultHeaderContent.heroDescription,
-        herojoinUs: headerData.herojoinUs || defaultHeaderContent.herojoinUs,
-        herojoinUsLink: headerData.herojoinUsLink || defaultHeaderContent.herojoinUsLink,
-        image: headerData.image || defaultHeaderContent.image
+        ...defaultHeaderContent,
+        ...headerData.content,
       });
     }
   }, [headerData]);
@@ -51,92 +46,77 @@ const HeaderSection = ({
   const herojoinUsStyles = getComponentStyle('herojoinUs');
 
   const handleTextChange = (newText, textType) => {
-    setHeaderContent(prev => ({
-      ...prev,
-      [textType]: newText
-    }));
-    updateStyle(textType, { text: newText });
-    onContentChange(prevContent => ({
-      ...prevContent,
-      [textType]: newText
-    }));
+    const updatedContent = { ...headerContent, [textType]: newText };
+    setHeaderContent(updatedContent);
+    onContentChange('header', { content: updatedContent });
 
-    const walletId = sessionStorage.getItem("userAccount");
-    if (walletId && selectedProjectId) {
-      saveComponentData(walletId, selectedProjectId, 'header', { ...headerContent, [textType]: newText });
-    }
+    // Update style context
+    updateStyle(textType, { text: newText });
+
+    // Save settings
+    saveSettings();
   };
 
   const handleLinkChange = (newLink) => {
-    setHeaderContent(prev => ({
-      ...prev,
-      herojoinUsLink: { ...prev.herojoinUsLink, url: newLink }
-    }));
-    updateStyle('herojoinUs', { link: newLink });
-    onContentChange(prevContent => ({
-      ...prevContent,
-      herojoinUsLink: { ...prevContent.herojoinUsLink, url: newLink }
-    }));
+    const updatedContent = { ...headerContent, herojoinUsLink: { ...headerContent.herojoinUsLink, url: newLink } };
+    setHeaderContent(updatedContent);
+    onContentChange('header', { content: updatedContent });
 
-    const walletId = sessionStorage.getItem("userAccount");
-    if (walletId && selectedProjectId) {
-      saveComponentData(walletId, selectedProjectId, 'header', {
-        ...headerContent,
-        herojoinUsLink: { ...headerContent.herojoinUsLink, url: newLink }
-      });
-    }
+    // Update style context
+    updateStyle('herojoinUs', { link: newLink });
+
+    // Save settings
+    saveSettings();
   };
 
   const handleImageChange = (newSrc) => {
-    setHeaderContent(prev => ({
-      ...prev,
-      image: newSrc
-    }));
+    const updatedContent = { ...headerContent, image: newSrc };
+    setHeaderContent(updatedContent);
     selectImage(newSrc);
-    onContentChange(prevContent => ({
-      ...prevContent,
-      image: newSrc
-    }));
+    onContentChange('header', { content: updatedContent });
 
-    const walletId = sessionStorage.getItem("userAccount");
-    if (walletId && selectedProjectId) {
-      saveComponentData(walletId, selectedProjectId, 'header', { ...headerContent, image: newSrc });
-    }
+    // Save settings
+    saveSettings();
   };
 
   const handleComponentClick = (event, identifier) => {
     if (!isPreviewMode) {
-      event.stopPropagation(); // Prevent the event from bubbling up
+      event.stopPropagation();
       event.preventDefault();
       setSelectedElement(identifier);
-      console.log(identifier);
     }
   };
 
   useEffect(() => {
-    const cssVarName = '--header-background-color';
+    console.log(selectedElement);
+    const cssVarName = `--${selectedElement}-background-color`;
     const storedColor = localStorage.getItem(cssVarName);
+    const backgroundImageCssVarName = `--${selectedElement}-background-image`;
+    const storedImageUrl = localStorage.getItem(backgroundImageCssVarName);
 
     if (storedColor) {
       setSelectedColor(storedColor);
       document.documentElement.style.setProperty(cssVarName, storedColor);
     }
-  }, [setSelectedColor]);
+    if (storedImageUrl && storedImageUrl !== 'none') {
+      document.documentElement.style.setProperty(backgroundImageCssVarName, storedImageUrl);
+    }
+  }, [setSelectedColor, selectedElement]);
 
   return (
-    <div className="sss-product-hero" style={{...headerStyles}} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
+    <div className="sss-product-hero" style={{ ...headerStyles }} id='header' onClick={(event) => handleComponentClick(event, 'header')}>
       <h1 className="sss-product-hero-title" id='heroTitle' onClick={(event) => handleComponentClick(event, 'heroTitle')}>
         <EditableText
           text={headerContent.heroTitle}
           onChange={(newText) => handleTextChange(newText, 'heroTitle')}
-          style={{...heroTitleStyles}}
+          style={{ ...heroTitleStyles }}
         />
       </h1>
       <p className="sss-product-hero-text" id='heroDescription' onClick={(event) => handleComponentClick(event, 'heroDescription')}>
         <EditableText
           text={headerContent.heroDescription}
           onChange={(newText) => handleTextChange(newText, 'heroDescription')}
-          style={{...heroDescriptionStyles}}
+          style={{ ...heroDescriptionStyles }}
         />
       </p>
       <a href={headerContent.herojoinUsLink.url} id='herojoinUs' target={headerContent.herojoinUsLink.openInNewTab ? "_blank" : "_self"} className='position-relative' onClick={(event) => handleComponentClick(event, 'herojoinUs')}>
@@ -145,7 +125,7 @@ const HeaderSection = ({
           link={headerContent.herojoinUsLink}
           onChange={(newText) => handleTextChange(newText, 'herojoinUs')}
           onLinkChange={(newLink) => handleLinkChange(newLink.url)}
-          style={{...herojoinUsStyles}}
+          style={{ ...herojoinUsStyles }}
           className="sss-product-hero-cta"
         />
       </a>

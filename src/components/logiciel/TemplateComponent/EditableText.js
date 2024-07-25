@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './EditableText.css';
 import { useStyle } from '../../../hooks/StyleContext';
 
-const EditableText = ({ text, onChange, style, textType, selectElement, isPreviewMode }) => {
+const EditableText = ({ text, onChange, style, selectElement, isPreviewMode }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text || '');
   const [error, setError] = useState(false);
@@ -37,10 +37,8 @@ const EditableText = ({ text, onChange, style, textType, selectElement, isPrevie
     if (spanRef.current) {
       const styles = window.getComputedStyle(spanRef.current);
       computedStyle.current = {
-        maxWidth: `${spanRef.current.offsetWidth + spanRef.current.offsetWidth}px`, // add 15% to width
-        maxHeight: `${spanRef.current.offsetHeight + spanRef.current.offsetHeight}px`, // add 15% to height
         minWidth: `${spanRef.current.offsetWidth}px`,
-        minHeight: `${spanRef.current.offsetHeight}px`, // use minHeight to allow expansion
+        minHeight: `${spanRef.current.offsetHeight}px`,
         height: styles.height,
         width: styles.width,
         fontFamily: styles.fontFamily,
@@ -50,10 +48,10 @@ const EditableText = ({ text, onChange, style, textType, selectElement, isPrevie
         backgroundColor: styles.backgroundColor,
         border: 'none',
         padding: styles.padding,
-        textAlign: styles.textAlign, // Ensure text alignment is copied
-        lineHeight: styles.lineHeight, // Copy line height for consistent text positioning
-        whiteSpace: 'pre-wrap', // allow text to wrap to next line
-        overflowWrap: 'break-word', // allow long words to break to next line
+        textAlign: styles.textAlign,
+        lineHeight: styles.lineHeight,
+        whiteSpace: 'pre-wrap',
+        overflowWrap: 'break-word',
         textDecorationLine: styles.textDecorationLine,
         fontStyle: styles.fontStyle,
       };
@@ -81,9 +79,8 @@ const EditableText = ({ text, onChange, style, textType, selectElement, isPrevie
         <div
           ref={spanRef}
           onClick={handleSpanClick}
-          style={{ ...style, whiteSpace: 'pre-wrap' }} // add whiteSpace style to div
+          style={{ ...style, whiteSpace: 'pre-wrap' }}
           className={`editable-text-span ${error ? 'error' : ''}`}
-          id={selectElement}
         >
           {currentText}
         </div>

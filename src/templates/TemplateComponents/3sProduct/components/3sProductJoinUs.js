@@ -42,9 +42,6 @@ const JoinUsSection = ({
     }
   }, [joinUsData]);
 
-  useEffect(() => {
-    console.log('Join Us content updated:', joinUsContent);
-  }, [joinUsContent]);
 
   const joinUsStyles = getComponentStyle('joinUs');
   const joinUsTitleStyles = getComponentStyle('joinUsTitle');
@@ -116,6 +113,21 @@ const JoinUsSection = ({
     img.onload = () => setImageHeight(img.height);
   }, [joinUsContent.imageUrl]);
 
+  useEffect(() => {
+    const cssVarPrefix = '--';
+    const cssVars = [
+      'joinUsTitle-background-color',
+      'joinUsDescription-background-color',
+    ];
+    
+    cssVars.forEach(cssVar => {
+      const storedColor = localStorage.getItem(`${cssVarPrefix}${cssVar}`);
+      if (storedColor) {
+        document.documentElement.style.setProperty(`${cssVarPrefix}${cssVar}`, storedColor);
+      }
+    });
+  }, []);
+
   return (
     <div className='sss-product-joinus-main' style={joinUsStyles} id='joinUs' onClick={(event) => handleComponentClick(event, 'joinUs')}>
       <div className="sss-product-joinus">
@@ -134,14 +146,14 @@ const JoinUsSection = ({
           <EditableText
             text={joinUsContent.title}
             onChange={(newText) => handleTextChange(newText, 'title')}
-            style={joinUsTitleStyles}
+            style={{ ...joinUsTitleStyles, backgroundColor: 'var(--joinUsTitle-background-color)' }}
           />
         </h2>
         <p className='sss-product-joinus-text' id='joinUsDescription' onClick={(event) => handleComponentClick(event, 'joinUsDescription')} >
           <EditableText
             text={joinUsContent.description}
             onChange={(newText) => handleTextChange(newText, 'description')}
-            style={joinUsDescriptionStyles}
+            style={{ ...joinUsDescriptionStyles, backgroundColor: 'var(--joinUsDescription-background-color)' }}
           />
         </p>
         <Link onClick={(event) => handleComponentClick(event, 'joinUs-cta')} className='position-relative'>

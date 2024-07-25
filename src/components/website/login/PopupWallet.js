@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../PopupWallet.css";
 import "../../Root.css";
 import { db, doc, getDoc, setDoc, updateDoc } from '../../../firebaseConfig';
@@ -7,22 +7,17 @@ import { useNavigate } from 'react-router-dom';
 import EmailLogin from "./EmailLogin";
 import WalletConnection from "./WalletConnection";
 import ForgotPassword from "./ForgotPassword";
-import WalletCarousel from "./WalletCarousel"; // Import the new component
+import WalletCarousel from "./WalletCarousel";
+import { AuthContext } from "../../../hooks/AuthProvide"; // Ensure the path is correct
 
 // Initialize Google Analytics
 ReactGA.initialize('G-83NKPT3B9E');
 
-function PopupWallet({ onClose, setShowPopup }) {
-  const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
+function PopupWallet({ onClose }) {
+  const { setIsLoggedIn, setWalletId } = useContext(AuthContext);
+  const [hasStepData, setHasStepData] = useState(false);
   const [hasWalletData, setHasWalletData] = useState(false);
   const [accounts, setAccounts] = useState([]);
-
-  const onUserLogin = (userAccount) => {
-    // Handle user login here
-    console.log("User logged in:", userAccount);
-    navigate('../dashboard');
-  };
-
   const [walletAvailable, setWalletAvailable] = useState(true);
   const [isExistingUser, setIsExistingUser] = useState(false);
   const [customErrorMessage, setCustomErrorMessage] = useState("");
@@ -32,22 +27,29 @@ function PopupWallet({ onClose, setShowPopup }) {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [headerTitle, setHeaderTitle] = useState("Welcome");
   const [headerDescription, setHeaderDescription] = useState("If this is your first time, we will create an account for you!");
-  const [showVerificationField, setShowVerificationField] = useState(false); // New state
+  const [showVerificationField, setShowVerificationField] = useState(false);
 
   const navigate = useNavigate();
+
+  const onUserLogin = (userAccount) => {
+    console.log("User logged in:", userAccount);
+    setWalletId(userAccount);
+    setIsLoggedIn(true);
+    navigate('../dashboard');
+  };
 
   const checkWalletData = async () => {
     const userAccount = sessionStorage.getItem("userAccount");
     if (userAccount) {
       try {
-        const docRef = doc(db, 'users', userAccount); // Correctly reference the document
-        const docSnap = await getDoc(docRef); // Use getDoc to fetch the document snapshot
+        const docRef = doc(db, 'users', userAccount);
+        const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
           const data = docSnap.data();
           if (data.selectedButtons && Object.keys(data.selectedButtons).length > 0) {
             setHasWalletData(true);
-            setHasStepData(true); // Assume step data availability correlates with wallet data
+            setHasStepData(true);
           } else {
             setHasWalletData(false);
             setHasStepData(false);
@@ -61,11 +63,12 @@ function PopupWallet({ onClose, setShowPopup }) {
         setHasWalletData(false);
         setHasStepData(false);
       }
-      setAccounts([userAccount]); // Ensure user account is set
+      setAccounts([userAccount]);
     }
   };
+
   useEffect(() => {
-    checkWalletData(); // Fetch wallet data on component mount
+    checkWalletData();
   }, []);
 
   useEffect(() => {
@@ -116,8 +119,7 @@ function PopupWallet({ onClose, setShowPopup }) {
     }
 
     console.log("Login event saved to Firestore:", userId);
-    navigate("../dashboard")
-
+    navigate("../dashboard");
   };
 
   const checkForWallet = () => {
@@ -162,7 +164,7 @@ function PopupWallet({ onClose, setShowPopup }) {
     setShowWalletOptions(false);
     setHeaderTitle("Welcome");
     setHeaderDescription("If this is your first time, we will create an account for you!");
-    setShowVerificationField(false); // Reset verification field
+    setShowVerificationField(false);
   };
 
   const handleSignInClick = (event) => {
@@ -206,7 +208,7 @@ function PopupWallet({ onClose, setShowPopup }) {
   const headerText = renderHeaderText();
 
   if (isMobile) {
-    return null; // Do not render the popup on mobile devices
+    return null;
   }
 
   const handleHeaderChange = (title, description) => {
@@ -220,8 +222,8 @@ function PopupWallet({ onClose, setShowPopup }) {
         <img
           src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904"
           className="popup-wallet-main-img"
-          onClick={handleLogoClick} // Added onClick handler
-          style={{ cursor: 'pointer' }} // Change cursor to pointer to indicate clickable
+          onClick={handleLogoClick}
+          style={{ cursor: 'pointer' }}
         />
         <div className="Sign-in-header">
           <h1>{headerTitle}</h1>
@@ -231,39 +233,55 @@ function PopupWallet({ onClose, setShowPopup }) {
         {showForgotPassword ? (
           <ForgotPassword onClose={handleBackToLogin} onHeaderChange={handleHeaderChange} />
         ) : showWalletOptions ? (
-          <WalletConnection
-            saveLoginEvent={saveLoginEvent}
-            logEvent={logEvent}
-            checkForWallet={checkForWallet}
-            onClose={onClose}
-            checkWalletData={checkWalletData}
-            setCustomErrorMessage={setCustomErrorMessage}
-            walletAvailable={walletAvailable}
-            onUserLogin={onUserLogin}
-            customErrorMessage={customErrorMessage}
-          />
-        ) : (
-          <EmailLogin
-            onUserLogin={onUserLogin}
-            checkWalletData={checkWalletData}
-            saveLoginEvent={saveLoginEvent}
-            onClose={onClose}
-            handleSignUpState={handleSignUpState}
-            setIsExistingUser={setIsExistingUser}
-            isExistingUser={isExistingUser}
-            onForgotPassword={handleForgotPasswordClick} // Pass the forgot password handler
-            onHeaderChange={handleHeaderChange}
-            setShowVerificationField={setShowVerificationField} // Pass state setter
-            showVerificationField={showVerificationField}
-          />
-        )}
-
-        {!showForgotPassword && (
-          <div className="seperation-connection-way">
-            <hr></hr>
-            <p>or</p>
-            <hr></hr>
-          </div>
+          <>
+            <WalletConnection
+              saveLoginEvent={saveLoginEvent}
+              logEvent={logEvent}
+              checkForWallet={checkForWallet}
+              onClose={onClose}
+              checkWalletData={checkWalletData}
+              setCustomErrorMessage={setCustomErrorMessage}
+              walletAvailable={walletAvailable}
+              onUserLogin={onUserLogin}
+              customErrorMessage={customErrorMessage}
+            />
+             <div className="seperation-connection-way">
+                  <hr></hr>
+                  <p>or</p>
+                  <hr></hr>
+                </div>
+            <button className="wallet-btn" onClick={handleConnectWalletClick}>
+              Connect via Email
+            </button>
+          </>
+        ): (
+          <>
+            <EmailLogin
+              onUserLogin={onUserLogin}
+              checkWalletData={checkWalletData}
+              saveLoginEvent={saveLoginEvent}
+              onClose={onClose}
+              handleSignUpState={handleSignUpState}
+              setIsExistingUser={setIsExistingUser}
+              isExistingUser={isExistingUser}
+              onForgotPassword={handleForgotPasswordClick}
+              onHeaderChange={handleHeaderChange}
+              setShowVerificationField={setShowVerificationField}
+              showVerificationField={showVerificationField}
+            />
+            {!showForgotPassword && (
+              <>
+                <div className="seperation-connection-way">
+                  <hr></hr>
+                  <p>or</p>
+                  <hr></hr>
+                </div>
+                <button className="wallet-btn" onClick={handleConnectWalletClick}>
+                  Connect via Wallet
+                </button>
+              </>
+            )}
+          </>
         )}
 
         {!showForgotPassword ? (
@@ -287,7 +305,7 @@ function PopupWallet({ onClose, setShowPopup }) {
 
         <p className="terms-links">By signing in, you're agreeing to the <a onClick={handlTermsClick}><u>Terms</u></a> and <a onClick={handlPolicyClick}><u>Privacy Policy</u></a></p>
       </div>
-      <WalletCarousel /> {/* Use the new component */}
+      <WalletCarousel />
     </div>
   );
 }
