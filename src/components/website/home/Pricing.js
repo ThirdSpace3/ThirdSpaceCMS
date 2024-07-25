@@ -31,8 +31,7 @@ function Pricing({  }) {
         <p className="section-label">Pricing</p>
         <h2 className="section-title">The Perfect Plan For You</h2>
         <p className="section-text">
-          Discover affordable plans that empower you to create and innovate
-          effortlessly with no-code Web 3 tools.
+        Discover affordable plans that empower you to create and innovate effortlessly with no-code Web 3 tools. Choose the plan that meets all your needs.
         </p>
       </div>
       <div className="pricing-content">

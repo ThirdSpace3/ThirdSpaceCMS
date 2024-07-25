@@ -9,6 +9,7 @@ import '../components/website/agency.css';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles
 import CarouselPortfolio from '../components/website/CarouselPortfolio';
+import { Helmet } from "react-helmet";
 
 export default function Agency() {
   const [hasWalletData, setHasWalletData] = useState(false);
@@ -60,6 +61,10 @@ export default function Agency() {
 
   return (
     <>
+     <Helmet>
+        <title>3S Agency | We Create Unique Websites Tailored to Your Vision</title>
+        <meta name="description" content="Create a unique digital presence with 3S Agency. We specialize in crafting stunning, responsive websites, innovative designs, robust development, and seamless transitions, ensuring your brand shines online." />
+      </Helmet>
       <div className="agency-content">
         <div className="agency-header">
           <NavBar
