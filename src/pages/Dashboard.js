@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../components/dashboard/DashboardMain.css";
 import "../components/Root.css";
 import LeftMenuDashboard from "../components/dashboard/LeftMenuDashboard";
@@ -6,11 +7,9 @@ import ProjectsDashboard from "../components/dashboard/ProjectsDashboard";
 import SiteSettingsDashboard from "../components/dashboard/SiteSettingsDashboard";
 import ProfileDashboard from "../components/dashboard/ProfileDashboard";
 import BillingDashboard from "../components/dashboard/BillingDashboard";
-import { useNavigate } from "react-router-dom";
 import PopupWallet from "../components/website/login/PopupWallet";
 import { db, collection, getDocs, doc, getDoc } from '../firebaseConfig';
 import ReportBugBTN from "../components/website/ReportBugBTN";
-import DashboardAdmin from "../components/dashboard/Admin/DashboardAdmin";
 import ConnectAdmin from "../components/dashboard/Admin/ConnectAdmin";
 
 export default function Dashboard() {
@@ -33,6 +32,7 @@ export default function Dashboard() {
   const selectedTemplate = sessionStorage.getItem("selectedTemplateId");
   const projectName = sessionStorage.getItem("projectName");
   const savedProjects = JSON.parse(localStorage.getItem("projects") || '[]');
+  console.log(walletId);
 
   useEffect(() => {
     if (walletId) {
@@ -134,9 +134,9 @@ export default function Dashboard() {
 
   const handleAdminVerified = (isAdmin) => {
     if (isAdmin) {
-      navigate("/dashboard-admin");
+      navigate("/dashboard-admin", { state: { walletId } });
     } else {
-      navigate("/dashboard");
+      navigate("/dashboard", { state: { walletId } });
     }
   };
 

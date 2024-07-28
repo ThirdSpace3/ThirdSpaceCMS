@@ -86,14 +86,22 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <div>
+            <div className="admin-projects-container">
+                <div className="projects-box">
+                    <div className="projects-summary">
+                        <p className='projects-summary-title'> <FontAwesomeIcon icon={faFolder} /> Loading... </p>
+                    </div>
+                </div>
+            </div>
+        </div>;
     }
 
     return (
         <div className="admin-projects-container">
             <div className="projects-box">
                 <div className="projects-summary">
-                    <p className='projects-summary-title'> <FontAwesomeIcon icon={faFolder} /> New Projects Created </p>
+                    <p className='projects-summary-title'> <FontAwesomeIcon icon={faFolder} /> Projects Created </p>
                     <div className='projects-summary-count'>
                         <p className='projects-count'>{projectsInRange}</p>
                         <p className={`project-growth ${getGrowthClass(growthPercentage)}`}>

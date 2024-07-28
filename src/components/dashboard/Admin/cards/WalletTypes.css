@@ -10,12 +10,10 @@
     border-radius: 8px;
     border: 0.6px solid var(--Secondary-Colors-Color-4, #343B4F);
     background: var(--Secondary-Colors-Color-1, #0B1739);
-    padding: 20px;
     width: 300px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-height: 300px;
-    overflow-y: auto;
     position: relative;
   }
   
@@ -23,14 +21,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 2vh;
+    gap: 2vh;
   }
   
-  .wallet-summary-title {
+  .wallettypes-summary-title {
     color: #AEB9E1;
     font-family: "DM Sans";
     font-size: 14px;
     font-weight: 500;
-    margin-bottom: 10px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -85,7 +85,7 @@ const NewsletterSubscription = ({ dateOption, preciseDate, startDate, endDate })
         <div className="newsletter-container">
             <div className="newsletter-box">
                 <div className="newsletter-summary">
-                    <p className='newsletter-summary-title'><FontAwesomeIcon icon={faPlusCircle} /> Newsletters Subscribed </p>
+                    <p className='newsletter-summary-title'><FontAwesomeIcon icon={faPlusCircle} /> Newsletter sign ups </p>
                     <div className='newsletter-summary-count'>
                         <p className='newsletter-count'>{newslettersInRange}</p>
                         <p className={`wallet-growth ${getGrowthClass(growthPercentage)}`}>

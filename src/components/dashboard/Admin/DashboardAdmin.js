@@ -16,13 +16,12 @@ const DashboardAdmin = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [preciseDate, setPreciseDate] = useState(new Date());
-  const [dateOption, setDateOption] = useState('range');
+  const [dateOption, setDateOption] = useState('today');
   const [userType, setUserType] = useState({ value: 'walletId', label: 'Wallet ID' });
   const walletId = localStorage.getItem("userAccount");
 
   const fetchProfile = async (walletId) => {
     try {
-      console.log(walletId);
       const userDocRef = doc(db, "users", walletId);
       const userDocSnap = await getDoc(userDocRef);
       if (userDocSnap.exists()) {
@@ -72,14 +71,12 @@ const DashboardAdmin = () => {
           <NewUsers dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
           <NewsletterSubscription dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
           <SolutionSubscriptions dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
-
         </div>
         <div className='admin-dashboard-card'>
           <Projects dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
           <DeployedProjects dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
         </div>
       </div>
-
       <div className='admin-dashboard-header'>
         <h2>Wallet Overview</h2>
         <div className="filter-container">
@@ -98,7 +95,13 @@ const DashboardAdmin = () => {
       </div>
       <div className='admin-dashboard-content center'>
         <div className='admin-dashboard-card'>
-        <WalletTypes/>
+          <WalletTypes
+            dateOption={dateOption}
+            preciseDate={preciseDate}
+            startDate={startDate}
+            endDate={endDate}
+            userType={userType.value}
+          />
         </div>        
       </div>
       <img className='SSS-logo-admin-dashboard' src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904'/>

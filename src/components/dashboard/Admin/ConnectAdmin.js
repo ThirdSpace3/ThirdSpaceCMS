@@ -5,7 +5,7 @@ import './ConnectAdmin.css'
 const ConnectAdmin = () => {
   const navigate = useNavigate();
   const walletId = localStorage.getItem("userAccount");
-
+  
   const checkAdminRole = async () => {
     if (!walletId) {
       console.log("No wallet ID found.");

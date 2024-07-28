@@ -91,14 +91,22 @@ const DeployedProjects = ({ dateOption, preciseDate, startDate, endDate }) => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>;
-    }
+        return (
+            <div className="deployed-projects-container">
+                <div className="deployed-projects-box">
+                    <div className="deployed-projects-summary">
+                        <p className='deployed-projects-summary-title'> <FontAwesomeIcon icon={faRocket} /> Loading...</p>
+                    </div>
+                </div>
+            </div>
+        );
+        }
 
     return (
         <div className="deployed-projects-container">
             <div className="deployed-projects-box">
                 <div className="deployed-projects-summary">
-                    <p className='deployed-projects-summary-title'> <FontAwesomeIcon icon={faRocket} /> Deployed Projects </p>
+                    <p className='deployed-projects-summary-title'> <FontAwesomeIcon icon={faRocket} /> Projects Deployed </p>
                     <div className='deployed-projects-summary-count'>
                         <p className='deployed-projects-count'>{deployedProjectsInRange}</p>
                         <p className={`new-users-growth ${getGrowthClass(growthPercentage)}`}>

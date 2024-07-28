@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './DateDropdown.css';
@@ -15,6 +15,8 @@ const presetOptions = [
 
 const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, endDate, setEndDate, dateOption, setDateOption }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     // Set default date option to "today"
@@ -24,6 +26,20 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
     setStartDate(today);
     setEndDate(today);
   }, [setDateOption, setPreciseDate, setStartDate, setEndDate]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+        setIsDatePickerOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleDateOptionChange = (selectedOption) => {
     setDateOption(selectedOption.value);
@@ -59,11 +75,21 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
   };
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    if (!isDatePickerOpen) {
+      setIsOpen(!isOpen);
+    }
+  };
+
+  const handleDatePickerFocus = () => {
+    setIsDatePickerOpen(true);
+  };
+
+  const handleDatePickerBlur = () => {
+    setIsDatePickerOpen(false);
   };
 
   return (
-    <div className="date-dropdown-custom-dropdown">
+    <div className="date-dropdown-custom-dropdown" ref={dropdownRef}>
       <div className="date-dropdown-header" onClick={toggleDropdown}>
         <span>{presetOptions.find(option => option.value === dateOption)?.label || 'Select Date Option'}</span>
         <i className={`date-dropdown-icon ${isOpen ? 'open' : ''}`}></i>
@@ -82,44 +108,85 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
         </div>
       )}
       {dateOption === 'precise' && (
-        <div className="date-picker">
-          <label>Precise Date:</label>
+        <div className="date-picker precise-picker">
           <DatePicker
             selected={preciseDate}
-            onChange={(date) => setPreciseDate(date)}
+            onChange={(date) => {
+              setPreciseDate(date);
+              setIsOpen(false);
+              setIsDatePickerOpen(false);
+            }}
+            onFocus={handleDatePickerFocus}
+            onBlur={handleDatePickerBlur}
             dateFormat="yyyy/MM/dd"
             className="custom-datepicker"
+            popperPlacement="bottom-start"
+            popperModifiers={{
+              preventOverflow: {
+                enabled: true,
+                escapeWithReference: false,
+                boundariesElement: 'viewport'
+              }
+            }}
           />
         </div>
       )}
       {dateOption === 'range' && (
-        <>
-          <div className="date-picker">
+        <div className="date-picker-range">
+          <div class="custom-datepicker">
             <label>Start Date:</label>
             <DatePicker
               selected={startDate}
-              onChange={(date) => setStartDate(date)}
+              onChange={(date) => {
+                setStartDate(date);
+                setIsOpen(false);
+                setIsDatePickerOpen(false);
+              }}
               selectsStart
               startDate={startDate}
               endDate={endDate}
+              onFocus={handleDatePickerFocus}
+              onBlur={handleDatePickerBlur}
               dateFormat="yyyy/MM/dd"
               className="custom-datepicker"
+              popperPlacement="bottom-start"
+              popperModifiers={{
+                preventOverflow: {
+                  enabled: true,
+                  escapeWithReference: false,
+                  boundariesElement: 'viewport'
+                }
+              }}
             />
           </div>
-          <div className="date-picker">
+          <div class="custom-datepicker">
             <label>End Date:</label>
             <DatePicker
               selected={endDate}
-              onChange={(date) => setEndDate(date)}
+              onChange={(date) => {
+                setEndDate(date);
+                setIsOpen(false);
+                setIsDatePickerOpen(false);
+              }}
               selectsEnd
               startDate={startDate}
               endDate={endDate}
               minDate={startDate}
+              onFocus={handleDatePickerFocus}
+              onBlur={handleDatePickerBlur}
               dateFormat="yyyy/MM/dd"
               className="custom-datepicker"
+              popperPlacement="bottom-start"
+              popperModifiers={{
+                preventOverflow: {
+                  enabled: true,
+                  escapeWithReference: false,
+                  boundariesElement: 'viewport'
+                }
+              }}
             />
           </div>
-        </>
+        </div>
       )}
     </div>
   );

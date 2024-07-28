@@ -1,22 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './UserType.css';
 
 const userTypeOptions = [
   { value: 'walletId', label: 'Wallet ID' },
   { value: 'email', label: 'Email' },
   { value: 'all', label: 'All' }
+
 ];
 
 const UserType = ({ value, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(value);
-
-  useEffect(() => {
-    // Set default user type to "all"
-    const defaultOption = userTypeOptions.find(option => option.value === 'all');
-    setSelectedOption(defaultOption);
-    onChange(defaultOption);
-  }, [onChange]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);

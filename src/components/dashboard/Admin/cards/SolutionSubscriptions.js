@@ -86,7 +86,7 @@ const SolutionSubscriptions = ({ dateOption, preciseDate, startDate, endDate }) 
         <div className="subscription-container">
             <div className="subscription-box">
                 <div className="subscription-summary">
-                    <p className='subscription-summary-title'> <FontAwesomeIcon icon={faStar} /> Solution Subscriptions </p>
+                    <p className='subscription-summary-title'> <FontAwesomeIcon icon={faStar} /> Subscriptions </p>
                     <div className='subscription-summary-count'>
                         <p className='subscription-count'>In Coming...</p>
                         {/* <p className={`project-growth ${getGrowthClass(growthPercentage)}`}>
