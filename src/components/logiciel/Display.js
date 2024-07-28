@@ -96,7 +96,10 @@ export default function Display() {
         if (Object.keys(sectionContent).length === 0) continue; // Skip empty content
   
         const settingsDocPath = `projects/${walletId}/projectData/${selectedProjectId}/Content/${section}`;
+        const ProjectSettingsPath = `projects/${walletId}/projectData/${selectedProjectId}`;
         const settingsDoc = doc(db, settingsDocPath);
+        const projectSettingsDoc = doc(db, ProjectSettingsPath);
+        const timestamp = new Date().toISOString();
   
         // Handle image uploads
         if (sectionContent.imageFile) {
@@ -107,19 +110,21 @@ export default function Display() {
           sectionContent.image = downloadURL;
           delete sectionContent.imageFile;
         }
+        await setDoc(projectSettingsDoc, { timestamp }, { merge: true });
   
         // Ensure the image URL is being updated
         await setDoc(settingsDoc, {
           ...sectionContent,
-          styles: settings[section] || {} // Include styles in the saved data
+          styles: settings[section] || {}, // Include styles in the saved data
         }, { merge: true });
       }
-      console.log('Settings saved successfully'); // Debug
+      console.log('Settings saved successfully');
     } catch (error) {
       console.error("Error saving settings:", error);
       alert("Failed to save settings. See console for more details.");
     }
   }, [TemplateContent, selectedProjectId, settings]);
+  
   
   const handleImageUpload = useCallback(async (file, identifier) => {
     try {

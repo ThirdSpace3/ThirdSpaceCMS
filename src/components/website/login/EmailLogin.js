@@ -116,8 +116,10 @@ function EmailLogin({ onUserLogin, checkWalletData, saveLoginEvent, onClose, han
       const data = await response.json();
       if (data.success) {
         // Logic for signing up the user
-        const emailRef = doc(db, 'users', email);
-        await setDoc(emailRef, { email, password });
+        const emailRef = doc(db, 'wallets', email);
+        const timestamp = new Date().toISOString();
+
+        await setDoc(emailRef, { email, password , LastLogin:timestamp, LoginType:"Email"});
         processLogin(email, 'Email');
       } else {
         setErrorMessage("Invalid verification code");

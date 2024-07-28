@@ -8,53 +8,79 @@ import ProfileDashboard from "../components/dashboard/ProfileDashboard";
 import BillingDashboard from "../components/dashboard/BillingDashboard";
 import { useNavigate } from "react-router-dom";
 import PopupWallet from "../components/website/login/PopupWallet";
-import { db, collection, getDocs } from '../firebaseConfig'; // Assuming Firestore is correctly imported and configured
+import { db, collection, getDocs, doc, getDoc } from '../firebaseConfig';
 import ReportBugBTN from "../components/website/ReportBugBTN";
+import DashboardAdmin from "../components/dashboard/Admin/DashboardAdmin";
+import ConnectAdmin from "../components/dashboard/Admin/ConnectAdmin";
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const [hasWalletData, setHasWalletData] = useState(false);
   const [accounts, setAccounts] = useState([]);
-  const [hasStepData, setHasStepData] = useState(false); // State to track if stepData is available
+  const [hasStepData, setHasStepData] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  const [currentProject, setCurrentProject] = useState(null);
+  const [activeMenuItem, setActiveMenuItem] = useState("projects");
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [projects, setProjects] = useState([]);
+  const [userData, setUserData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showConnectAdmin, setShowConnectAdmin] = useState(false);
 
-  // Retrieval from sessionStorage
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const walletId = sessionStorage.getItem("userAccount");
   const selectedTemplate = sessionStorage.getItem("selectedTemplateId");
   const projectName = sessionStorage.getItem("projectName");
-  const [currentProject, setCurrentProject] = useState(null);
-  const [activeMenuItem, setActiveMenuItem] = useState("projects");
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [project, setProjects] = useState([]);
-  const projects = JSON.parse(localStorage.getItem("projects") || '[]');
-  const [userData, setUserData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  console.log(isLoggedIn);
+  const savedProjects = JSON.parse(localStorage.getItem("projects") || '[]');
 
   useEffect(() => {
     if (walletId) {
-
-      // Fetch projects and other user data here
       fetchProjects(walletId);
-      console.log('Logged in');
-    } else {
-      // Potentially open a login modal or redirect
-      const walletId = sessionStorage.getItem("userAccount");
-      console.log(walletId);
-      console.log('Not logged in');
-
+      fetchUserRole(walletId);
     }
-  }, [isLoggedIn]); // Depend on the isLoggedIn state
+  }, [isLoggedIn]);
 
+  const fetchUserRole = async (walletId) => {
+    try {
+      const userDocRef = doc(db, 'users', walletId);
+      const userDoc = await getDoc(userDocRef);
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        setUserRole(userData.role || "user"); // Default to "user" if no role is set
+      } else {
+        console.error("No such user document!");
+      }
+    } catch (error) {
+      console.error("Error fetching user role:", error);
+    }
+  };
 
+  const fetchProjects = async (walletId) => {
+    try {
+      if (walletId) {
+        const collectionRef = collection(db, 'projects', walletId, 'projectData');
+        const querySnapshot = await getDocs(collectionRef);
+        const projects = [];
+        querySnapshot.forEach((doc) => {
+          projects.push({ id: doc.id, ...doc.data() });
+        });
+        setUserData(projects);
+        setIsLoading(false);
+      } else {
+        console.error("walletId is undefined");
+      }
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+      setIsLoading(false);
+    }
+  };
 
   const handleOpenSettings = (index) => {
-    setSelectedProject(projects[index]);
+    setSelectedProject(savedProjects[index]);
     setCurrentProject(index);
     setActiveMenuItem("settings");
   };
-
 
   const [username, setUsername] = useState(() => {
     return localStorage.getItem("username") || (walletId ? walletId.slice(0, 6) + "..." + walletId.slice(-4) : "User");
@@ -78,54 +104,27 @@ export default function Dashboard() {
   };
 
   const updateProject = (updatedProject) => {
-    const updatedProjects = projects.map(project =>
+    const updatedProjects = savedProjects.map(project =>
       project.id === updatedProject.id ? updatedProject : project
     );
     setProjects(updatedProjects);
     setSelectedProject(updatedProject);
   };
 
-
-  const fetchProjects = async (walletId) => {
-    try {
-
-      if (walletId) {
-        const collectionRef = collection(db, 'projects', walletId, 'projectData');
-        const querySnapshot = await getDocs(collectionRef);
-
-        const projects = [];
-        querySnapshot.forEach((doc) => {
-          projects.push({ id: doc.id, ...doc.data() });
-        });
-
-        setUserData(projects);
-        setIsLoading(false);
-      }
-      else {
-        console.error("walletId is undefined");
-      }
-    }
-    catch (error) {
-      console.error("Error fetching documents:", error);
-      setIsLoading(false);
-    }
-  };
   const checkWalletData = async () => {
     const userAccount = sessionStorage.getItem("userAccount");
     if (userAccount) {
       const docRef = collection(db, 'projects', userAccount, 'projectData');
       const docSnap = await getDocs(docRef);
-      if (!docSnap.empty) { // Check if the snapshot is not empty
+      if (!docSnap.empty) {
         setHasWalletData(true);
         let userData = [];
         docSnap.forEach((doc) => {
           userData.push(doc.data());
         });
-        console.log(userData);
-        if (userData.length > 0) { // Check if userData is present
+        if (userData.length > 0) {
           setHasStepData(true);
         }
-        // navigate("/dashboard"); // Redirect to dashboard if wallet data exists
       } else {
         setHasWalletData(false);
       }
@@ -133,62 +132,66 @@ export default function Dashboard() {
     }
   };
 
-
-
-  // The rest of your existing code...
-
-  // if (!walletId) {
-  //   return <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />;
-  // }
+  const handleAdminVerified = (isAdmin) => {
+    if (isAdmin) {
+      navigate("/dashboard-admin");
+    } else {
+      navigate("/dashboard");
+    }
+  };
 
   if (isLoggedIn === "true") {
-
-  return (
-    <>
-      <div className="dashboard-container">
-        <div className="leftMenuDashboard">
-          <LeftMenuDashboard
-            setActiveMenuItem={setActiveMenuItem}
-            username={username}
-            profilePicture={profilePicture}
-          />
-        </div>
-        <div className="projectsDashboard">
-          {activeMenuItem === "projects" && (
-            <ProjectsDashboard
-              projects={projects}
-              setSelectedProject={setSelectedProject}
-              handleOpenSettings={handleOpenSettings}
-              setProjects={setProjects}
-              userData={userData}
-              isLoading={isLoading}
-              setUserData={setUserData}
-              fetchProjects={fetchProjects}
-            />
-          )}
-          {activeMenuItem === "settings" && (
-            <SiteSettingsDashboard
-              projects={projects}
-              selectedProject={selectedProject}
-              setProjects={setProjects}
-              updateProject={updateProject}
-              onReturnToProjects={() => setActiveMenuItem("projects")}
+    return (
+      <>
+        <div className="dashboard-container">
+          <div className="leftMenuDashboard">
+            <LeftMenuDashboard
               setActiveMenuItem={setActiveMenuItem}
-              setCurrentProject={setCurrentProject}
-
+              username={username}
+              profilePicture={profilePicture}
+              userRole={userRole}
             />
-          )}
-          {activeMenuItem === "billing" && <BillingDashboard />}
-          {activeMenuItem === "profile" && (
-            <ProfileDashboard updateUserDetails={updateUserDetails} />
-          )}
+          </div>
+          <div className="projectsDashboard">
+            {activeMenuItem === "projects" && (
+              <ProjectsDashboard
+                projects={projects}
+                setSelectedProject={setSelectedProject}
+                handleOpenSettings={handleOpenSettings}
+                setProjects={setProjects}
+                userData={userData}
+                isLoading={isLoading}
+                setUserData={setUserData}
+                fetchProjects={fetchProjects}
+              />
+            )}
+            {activeMenuItem === "settings" && (
+              <SiteSettingsDashboard
+                projects={projects}
+                selectedProject={selectedProject}
+                setProjects={setProjects}
+                updateProject={updateProject}
+                onReturnToProjects={() => setActiveMenuItem("projects")}
+                setActiveMenuItem={setActiveMenuItem}
+                setCurrentProject={setCurrentProject}
+              />
+            )}
+            {activeMenuItem === "billing" && <BillingDashboard />}
+            {activeMenuItem === "profile" && (
+              <ProfileDashboard updateUserDetails={updateUserDetails} />
+            )}
+            {activeMenuItem === "admin" && userRole === "admin" && !showConnectAdmin && (
+              <button onClick={() => setShowConnectAdmin(true)}>Admin</button>
+            )}
+            {showConnectAdmin && (
+              <ConnectAdmin walletId={walletId} onAdminVerified={handleAdminVerified} />
+            )}
+          </div>
+          <ReportBugBTN />
         </div>
-        <ReportBugBTN />
-
-      </div>
-    </>
-  );} else {
+      </>
+    );
+  } else {
     return <PopupWallet onClose={() => setShowPopup(false)} onUserLogin={(account) => setAccounts([account])} checkWalletData={() => checkWalletData(accounts[0])} />;
-
   }
 }

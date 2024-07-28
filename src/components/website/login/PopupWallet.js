@@ -97,10 +97,11 @@ function PopupWallet({ onClose, setShowPopup }) {
   const saveLoginEvent = async (userId, loginType) => {
     const userRef = doc(db, 'users', userId);
     const userDoc = await getDoc(userRef);
-
+    const timestamp = new Date().toISOString();
+  
     if (userDoc.exists()) {
       await updateDoc(userRef, {
-        lastLogin: new Date().toISOString(),
+        lastLogin: timestamp,
         loginType,
         clicks: userDoc.data().clicks ? userDoc.data().clicks + 1 : 1
       });
@@ -108,15 +109,16 @@ function PopupWallet({ onClose, setShowPopup }) {
       await setDoc(userRef, {
         userId,
         loginType,
-        firstLogin: new Date().toISOString(),
-        lastLogin: new Date().toISOString(),
+        firstLogin: timestamp,
+        lastLogin: timestamp,
         clicks: 1
       });
     }
-
+  
     console.log("Login event saved to Firestore:", userId);
     navigate("../dashboard");
   };
+  
 
   const checkForWallet = () => {
     const hasWallet = !!window.ethereum || ("solana" in window && window.solana.isPhantom);

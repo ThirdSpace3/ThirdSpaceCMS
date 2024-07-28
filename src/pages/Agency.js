@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import NavBar from '../components/website/NavBar';
 import Footer from '../components/website/Footer';
 import ContactForm from '../components/website/ContactForm';
-import NewsletterForm from '../components/website/NewsletterForm'
 import '../components/website/agency.css';
 import { Carousel } from 'react-responsive-carousel';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Import carousel styles

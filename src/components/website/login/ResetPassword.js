@@ -56,7 +56,7 @@ function ResetPassword({ email, onResetComplete, setErrorMessage, onHeaderChange
         </div>
       ) : (
         <>
-        <div className="wrapper">
+        <div className="wrapper-password">
           <div className="password-input-container">
             <input
               type={showNewPassword ? "text" : "password"}

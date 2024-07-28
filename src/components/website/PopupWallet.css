@@ -310,8 +310,8 @@
 .verification-code-input {
   display: flex;
   align-items: flex-start;
+  padding: 0 20%;
   flex-direction: column;
-  width: 60%;
 }
 
 .verification-code-input h1 {

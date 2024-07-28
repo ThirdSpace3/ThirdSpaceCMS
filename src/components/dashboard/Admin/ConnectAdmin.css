@@ -1,0 +1,35 @@
+.admin-connect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    flex-shrink: 0;
+    height: 100vh;
+    justify-content: center;
+    background-color: #081028;
+}
+
+.admin-connect-image {
+    width: 443px;
+}
+
+.admin-connect-button {
+    width: 212.598px;
+    height: 61px;
+    border-radius: 12.373px;
+    background: linear-gradient(180deg, rgba(60, 8, 126, 0.00) 0%, rgba(60, 8, 126, 0.32) 100%), rgba(113, 47, 255, 0.12);
+    box-shadow: 0px 0px 18.56px 0px rgba(191, 151, 255, 0.24) inset;
+    color: #F4F0FF;
+    font-family: Inter, sans-serif; /* Added 'sans-serif' as a fallback */
+    font-size: 24.617px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 30.933px;
+    /* 125.657% */
+    border: none;
+}
+
+.admin-connect-button:hover {
+    cursor: pointer;
+    /* Add any additional hover styles here */
+}

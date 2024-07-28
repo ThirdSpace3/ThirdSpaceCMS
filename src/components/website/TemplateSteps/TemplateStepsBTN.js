@@ -23,6 +23,7 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
           };
           const collectionPath = 'projects';
           const docPath = `${walletId}/projectData/${newProject.id}`;
+          const timestamp = new Date().toISOString();
 
           try {
             await setDoc(doc(db, `${collectionPath}/${docPath}`), {
@@ -33,7 +34,7 @@ const TemplateStepsBTN = ({ onNext, onIgnore, isNextEnabled, selectedButtons, wa
             console.error("Failed to write document:", error);
           }
 
-          await setDoc(doc(db, 'wallets', walletId), { selectedButtons });
+          await setDoc(doc(db, 'wallets', walletId), { selectedButtons , lastLogin:timestamp});
 
           setRedirectToRoot(true);
           sessionStorage.setItem('isLoggedIn', true);

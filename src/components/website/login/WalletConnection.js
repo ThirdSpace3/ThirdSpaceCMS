@@ -49,12 +49,13 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
       sessionStorage.setItem("isLoggedIn", "true");
       sessionStorage.setItem("userAccount", userId);
       checkWalletData(userId);
-      saveLoginEvent(userId, walletType);
+      saveLoginEvent(userId, walletType); // Save the login event here
     } else {
       console.error("onUserLogin is not a function");
     }
     onClose();
   };
+  
 
   const handleLoginWithMetamask = async () => {
     logEvent('Click', 'Metamask Login Attempt');
@@ -64,9 +65,10 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
         const account = accounts[0];
         const walletRef = doc(db, 'wallets', account);
         const walletSnap = await getDoc(walletRef);
+        const timestamp = new Date().toISOString();
 
         if (!walletSnap.exists()) {
-          await setDoc(walletRef, { walletId: account });
+          await setDoc(walletRef, { walletId: account, lastLogin: timestamp, walletType:'Ethereum' });
           console.log("Wallet ID saved to Firestore:", account);
         } else {
           console.log("Wallet data retrieved:", walletSnap.data());
@@ -90,9 +92,10 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
         const publicKey = response.publicKey.toString();
         const walletRef = doc(db, 'wallets', publicKey);
         const walletSnap = await getDoc(walletRef);
+        const timestamp = new Date().toISOString();
 
         if (!walletSnap.exists()) {
-          await setDoc(walletRef, { walletId: publicKey });
+          await setDoc(walletRef, { walletId: publicKey, lastLogin: timestamp, walletType:'Solana' });
           console.log("Wallet ID saved to Firestore:", publicKey);
         } else {
           console.log("Wallet data retrieved:", walletSnap.data());

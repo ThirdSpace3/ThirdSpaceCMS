@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+
 import ReactGA from 'react-ga';
 import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
@@ -23,17 +25,31 @@ import Academy from "./pages/Academy";
 import ShareProject from './components/logiciel/ShareProject'
 import About from "./pages/About";
 import PopupWallet from "./components/website/login/PopupWallet";
-
+import ConnectAdmin from "./components/dashboard/Admin/ConnectAdmin";
+import DashboardAdmin from "./components/dashboard/Admin/DashboardAdmin";
 export default function App() {
   // const TRACKING_ID = "G-83NKPT3B9E"; 
   // ReactGA.initialize(TRACKING_ID);
+  const [isAdminSubdomain, setIsAdminSubdomain] = useState(false);
 
+  useEffect(() => {
+    const subdomain = window.location.hostname.split('.')[0];
+    if (subdomain === 'admin') {
+      setIsAdminSubdomain(true);
+    }
+  }, []);
   return (
     <div>
       <Router>
         <ImageHistoryProvider>
           <StyleProvider>
-            <Routes>
+            
+            {isAdminSubdomain ? (
+          <Routes>
+            <Route path="*" element={<DashboardAdmin />} />
+          </Routes>
+        ) : (
+          <Routes>
               <Route index element={<Home />} />
               <Route path="/home" element={<Home />} />
               <Route path="/login" element={<PopupWallet/>}/>
@@ -45,6 +61,8 @@ export default function App() {
               <Route path="/templates" element={<TemplateStep />} />
               <Route path="/templatestep" element={<TemplateStep />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard-admin" element={<DashboardAdmin />} />
+              <Route path="/connect-admin" element={<ConnectAdmin />} />
               <Route path="/IntegrationTODO" element={<IntegrationTODO />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -69,7 +87,9 @@ export default function App() {
               />{" "}
               {/* Route for sharing projects */}
               <Route path="*" element={<NoPage />} />
+              
             </Routes>
+          )}
           </StyleProvider>
         </ImageHistoryProvider>
       </Router>

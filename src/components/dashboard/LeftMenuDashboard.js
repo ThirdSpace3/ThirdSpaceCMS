@@ -2,20 +2,23 @@ import React, { useEffect, useState } from "react";
 import "./DashboardMain.css";
 import "../Root.css";
 import PopupWallet from "../website/login/PopupWallet";
-import {db, collection, doc, getDoc } from "../../firebaseConfig";
+import { db, doc, getDoc } from "../../firebaseConfig";
+import { useNavigate } from "react-router-dom";
 
 export default function LeftMenuDashboard({
+  userRole,
   setActiveMenuItem,
   username,
   profilePicture,
 }) {
+  const navigate = useNavigate();
   const [userAccount, setUserAccount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
   const [localUsername, setLocalUsername] = useState("");
   const [localProfilePicture, setLocalProfilePicture] = useState("");
 
-  useEffect(() => { 
+  useEffect(() => {
     const isLoggedIn = sessionStorage.getItem("isLoggedIn");
     const account = sessionStorage.getItem("userAccount");
     if (account) {
@@ -29,7 +32,7 @@ export default function LeftMenuDashboard({
     try {
       const userRef = doc(db, "users", walletId);
       const userDoc = await getDoc(userRef);
-  
+
       if (userDoc.exists()) {
         const userData = userDoc.data();
         setLocalUsername(userData.username || "");
@@ -42,7 +45,6 @@ export default function LeftMenuDashboard({
     }
   };
 
-
   const handleLogin = (account) => {
     setUserAccount(account);
     setShowPopup(false);
@@ -54,7 +56,11 @@ export default function LeftMenuDashboard({
 
   const handleMenuItemClick = (menuItem, event) => {
     event.preventDefault();
-    setActiveMenuItem(menuItem);
+    if (menuItem === "admin") {
+      navigate("/connect-admin");
+    } else {
+      setActiveMenuItem(menuItem);
+    }
   };
 
   const handleCopyAddress = () => {
@@ -68,6 +74,7 @@ export default function LeftMenuDashboard({
         console.error("Failed to copy the address: ", err);
       });
   };
+
   return (
     <>
       {/* {showPopup && (
@@ -93,8 +100,6 @@ export default function LeftMenuDashboard({
               </div>
             )}
           </div>
-
-
           <div className="left-menu-links">
             <a
               className="left-menu-item"
@@ -119,6 +124,16 @@ export default function LeftMenuDashboard({
               <i className="bi bi-person"></i>
               <p>Profile</p>
             </a>
+            {userRole === "admin" && (
+              <a
+                className="left-menu-item"
+                onClick={(event) => handleMenuItemClick("admin", event)}
+                id="admin-page"
+              >
+                <i className="bi bi-person"></i>
+                <p>Admin Button</p>
+              </a>
+            )}
           </div>
         </div>
         <div className="left-menu-bottom">
@@ -130,14 +145,12 @@ export default function LeftMenuDashboard({
             {/* <a
               href="https://discord.gg/kehHCkUGRU" target="_blank"
               className="left-menu-item"
-
             >
               <i className="bi bi-bug"></i>
               <p>Report Bug</p>
             </a> */}
             {/* <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("settings", event)}> */}
           </div>
-
         </div>
       </div>
     </>

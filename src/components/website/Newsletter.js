@@ -23,7 +23,7 @@ function Newsletter() {
     }
   
     try {
-      const subscriptionsRef = collection(db, "UserContactInfos", "contact", "Newsletter");
+      const subscriptionsRef = collection(db, "UserContactInfos", "Contact", "Newsletter");
   
       const querySnapshot = await getDocs(query(subscriptionsRef, where("email", "==", email)));
   
