@@ -160,7 +160,6 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
               <p className={`wallet-growth ${growthPercentages[walletType] >= 0 ? 'positive' : 'negative'}`}>
               {growthPercentages[walletType]}%<FontAwesomeIcon icon={getGrowthIcon(growthPercentages)} />
               </p>
-
             </div>
           </div>
         </div>

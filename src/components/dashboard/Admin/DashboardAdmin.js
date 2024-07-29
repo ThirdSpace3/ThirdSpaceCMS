@@ -18,7 +18,7 @@ const DashboardAdmin = () => {
   const [preciseDate, setPreciseDate] = useState(new Date());
   const [dateOption, setDateOption] = useState('all');
   const [userType, setUserType] = useState({ value: 'all', label: 'All' });
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const walletId = localStorage.getItem("userAccount");
 
   const fetchProfile = async (walletId) => {
@@ -36,6 +36,8 @@ const DashboardAdmin = () => {
       }
     } catch (err) {
       console.error("Error fetching profile data from Firestore:", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -43,9 +45,18 @@ const DashboardAdmin = () => {
     fetchProfile(walletId);
   }, [walletId]);
 
+  useEffect(() => {
+    if (isLoading) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+  }, [isLoading]);
+
   const handleUserTypeChange = (selectedOption) => {
     setIsLoading(true);
     setUserType(selectedOption);
+    setTimeout(() => setIsLoading(false), 1000); // Simulate data fetch delay
   };
 
   const handleDateChange = (newDateOption, newPreciseDate, newStartDate, newEndDate) => {
@@ -54,75 +65,78 @@ const DashboardAdmin = () => {
     setPreciseDate(newPreciseDate);
     setStartDate(newStartDate);
     setEndDate(newEndDate);
+    setTimeout(() => setIsLoading(false), 1000); // Simulate data fetch delay
   };
 
-  useEffect(() => {
-    setIsLoading(false);
-  }, [username, startDate, endDate, preciseDate, dateOption, userType]);
-
   return (
-    <div className='admin-dashboard'>
-      {isLoading && <div className="loading-overlay">Loading...</div>}
-      <h1>Welcome back, {username}</h1>
-      <div className='admin-dashboard-header'>
-        <h2>Reports Overview</h2>
-        <div className="filter-container">
-          <DateDropdown
-            preciseDate={preciseDate}
-            setPreciseDate={setPreciseDate}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-            dateOption={dateOption}
-            setDateOption={setDateOption}
-            onChange={handleDateChange}
-          />
-          <UserType value={userType} onChange={handleUserTypeChange} />
+    <>
+      {isLoading && <div className="loading-overlay">
+        <div className="spinner-wrapper">
+          <div className="spinner"></div>
+          <img className='static-image' src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2F3s-logo-picto.png?alt=media&token=eccaecaa-e624-4bb4-a1ad-54f181d09510' alt='Loading'/>
         </div>
-      </div>
-      <div className={`admin-dashboard-content ${isLoading ? 'loading' : ''}`}>
-        <div className='admin-dashboard-card'>
-          <Wallets dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
-          <NewUsers dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
-          <NewsletterSubscription dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
-          <SolutionSubscriptions dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
+      </div>}
+
+      <div className='admin-dashboard'>
+        <h1>Welcome back, {username}</h1>
+        <div className='admin-dashboard-header'>
+          <h2>Reports Overview</h2>
+          <div className="filter-container">
+            <DateDropdown
+              preciseDate={preciseDate}
+              setPreciseDate={setPreciseDate}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              dateOption={dateOption}
+              setDateOption={setDateOption}
+              onChange={handleDateChange}
+            />
+            <UserType value={userType} onChange={handleUserTypeChange} />
+          </div>
         </div>
-        <div className='admin-dashboard-card'>
-          <Projects dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
-          <DeployedProjects dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
+        <div className={`admin-dashboard-content ${isLoading ? 'loading' : ''}`}>
+          <div className='admin-dashboard-card-container'>
+            <Wallets dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
+            <NewUsers dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
+            <NewsletterSubscription dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
+            <SolutionSubscriptions dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
+            <Projects dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
+            <DeployedProjects dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
+          </div>
         </div>
-      </div>
-      <div className='admin-dashboard-header'>
-        <h2>Wallet Overview</h2>
-        <div className="filter-container">
-          <DateDropdown
-            preciseDate={preciseDate}
-            setPreciseDate={setPreciseDate}
-            startDate={startDate}
-            setStartDate={setStartDate}
-            endDate={endDate}
-            setEndDate={setEndDate}
-            dateOption={dateOption}
-            setDateOption={setDateOption}
-            onChange={handleDateChange}
-          />
-          <UserType value={userType} onChange={handleUserTypeChange} />
+        <div className='admin-dashboard-header'>
+          <h2>Wallet Overview</h2>
+          <div className="filter-container">
+            <DateDropdown
+              preciseDate={preciseDate}
+              setPreciseDate={setPreciseDate}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              dateOption={dateOption}
+              setDateOption={setDateOption}
+              onChange={handleDateChange}
+            />
+            <UserType value={userType} onChange={handleUserTypeChange} />
+          </div>
         </div>
+        <div className='admin-dashboard-content center'>
+          <div className='admin-dashboard-card-container'>
+            <WalletTypes
+              dateOption={dateOption}
+              preciseDate={preciseDate}
+              startDate={startDate}
+              endDate={endDate}
+              userType={userType.value}
+            />
+          </div>        
+        </div>
+        <img className='SSS-logo-admin-dashboard' src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904' alt='Logo'/>
       </div>
-      <div className='admin-dashboard-content center'>
-        <div className='admin-dashboard-card'>
-          <WalletTypes
-            dateOption={dateOption}
-            preciseDate={preciseDate}
-            startDate={startDate}
-            endDate={endDate}
-            userType={userType.value}
-          />
-        </div>        
-      </div>
-      <img className='SSS-logo-admin-dashboard' src='https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904'/>
-    </div>
+    </>
   );
 };
 

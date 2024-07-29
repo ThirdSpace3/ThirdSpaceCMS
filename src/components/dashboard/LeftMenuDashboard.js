@@ -58,8 +58,7 @@ export default function LeftMenuDashboard({
     event.preventDefault();
     if (menuItem === "admin") {
       // Redirect to the admin subdomain with walletId as a query parameter
-      window.location.href = `https://admin.3rd-space.io?walletId=${userAccount}`;
-    } else {
+navigate(('../connect-admin'))    } else {
       setActiveMenuItem(menuItem);
     }
   };
