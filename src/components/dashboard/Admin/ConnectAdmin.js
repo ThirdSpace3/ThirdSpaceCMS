@@ -1,11 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { db, doc, getDoc } from "../../../firebaseConfig";
-import './ConnectAdmin.css'
+import './ConnectAdmin.css';
+
 const ConnectAdmin = () => {
   const navigate = useNavigate();
   const walletId = localStorage.getItem("userAccount");
-  
+
   const checkAdminRole = async () => {
     if (!walletId) {
       console.log("No wallet ID found.");
@@ -30,8 +31,12 @@ const ConnectAdmin = () => {
 
   return (
     <div className="admin-connect">
-          <img className="admin-connect-image" src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
-          <button className="admin-connect-button" onClick={checkAdminRole}>Connect</button>
+      <img
+        className="admin-connect-image"
+        src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904"
+        alt="thirdspace logo"
+      />
+      <button className="admin-connect-button" onClick={checkAdminRole}>Connect</button>
     </div>
   );
 };

@@ -13,11 +13,12 @@ import WalletTypes from './cards/WalletTypes';
 
 const DashboardAdmin = () => {
   const [username, setUsername] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [preciseDate, setPreciseDate] = useState(new Date());
-  const [dateOption, setDateOption] = useState('today');
-  const [userType, setUserType] = useState({ value: 'walletId', label: 'Wallet ID' });
+  const [dateOption, setDateOption] = useState('all');
+  const [userType, setUserType] = useState({ value: 'all', label: 'All' });
+  const [isLoading, setIsLoading] = useState(false);
   const walletId = localStorage.getItem("userAccount");
 
   const fetchProfile = async (walletId) => {
@@ -43,11 +44,25 @@ const DashboardAdmin = () => {
   }, [walletId]);
 
   const handleUserTypeChange = (selectedOption) => {
+    setIsLoading(true);
     setUserType(selectedOption);
   };
 
+  const handleDateChange = (newDateOption, newPreciseDate, newStartDate, newEndDate) => {
+    setIsLoading(true);
+    setDateOption(newDateOption);
+    setPreciseDate(newPreciseDate);
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+  };
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [username, startDate, endDate, preciseDate, dateOption, userType]);
+
   return (
     <div className='admin-dashboard'>
+      {isLoading && <div className="loading-overlay">Loading...</div>}
       <h1>Welcome back, {username}</h1>
       <div className='admin-dashboard-header'>
         <h2>Reports Overview</h2>
@@ -61,11 +76,12 @@ const DashboardAdmin = () => {
             setEndDate={setEndDate}
             dateOption={dateOption}
             setDateOption={setDateOption}
+            onChange={handleDateChange}
           />
           <UserType value={userType} onChange={handleUserTypeChange} />
         </div>
       </div>
-      <div className='admin-dashboard-content'>
+      <div className={`admin-dashboard-content ${isLoading ? 'loading' : ''}`}>
         <div className='admin-dashboard-card'>
           <Wallets dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
           <NewUsers dateOption={dateOption} preciseDate={preciseDate} startDate={startDate} endDate={endDate} userType={userType.value} />
@@ -89,6 +105,7 @@ const DashboardAdmin = () => {
             setEndDate={setEndDate}
             dateOption={dateOption}
             setDateOption={setDateOption}
+            onChange={handleDateChange}
           />
           <UserType value={userType} onChange={handleUserTypeChange} />
         </div>

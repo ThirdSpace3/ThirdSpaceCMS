@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './UserType.css';
 
 const userTypeOptions = [
+  { value: 'all', label: 'All' },
   { value: 'walletId', label: 'Wallet ID' },
   { value: 'email', label: 'Email' },
-  { value: 'all', label: 'All' }
-
 ];
 
-const UserType = ({ value, onChange }) => {
+const UserType = ({ value = { value: 'all', label: 'All' }, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(value);
+
+  useEffect(() => {
+    if (selectedOption.value === 'all') {
+      onChange(selectedOption);
+    }
+  }, [selectedOption, onChange]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);

@@ -19,10 +19,10 @@ export default function LeftMenuDashboard({
   const [localProfilePicture, setLocalProfilePicture] = useState("");
 
   useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
     const account = sessionStorage.getItem("userAccount");
     if (account) {
       fetchUserProfile(account);
+      setUserAccount(account);
     } else {
       setShowPopup(true);
     }
@@ -57,7 +57,8 @@ export default function LeftMenuDashboard({
   const handleMenuItemClick = (menuItem, event) => {
     event.preventDefault();
     if (menuItem === "admin") {
-      navigate("/connect-admin");
+      // Redirect to the admin subdomain with walletId as a query parameter
+      window.location.href = `https://admin.3rd-space.io?walletId=${userAccount}`;
     } else {
       setActiveMenuItem(menuItem);
     }
@@ -77,22 +78,22 @@ export default function LeftMenuDashboard({
 
   return (
     <>
-      {/* {showPopup && (
+      {showPopup && (
         <PopupWallet
           onClose={() => setShowPopup(false)}
           onUserLogin={handleLogin}
         />
-      )} */}
+      )}
       <div className="left-menu-container">
         <div className="left-menu-top">
           <div className="profile-container">
             <img
-              src={localProfilePicture} // Fallback to default avatar if profilePicture is not available
+              src={localProfilePicture || "../images/avatar-placeholder.png"} // Fallback to default avatar if profilePicture is not available
               alt="Profile avatar"
               className="profile-picture" // Apply a CSS class for styling
             />
             <p className="profile-name" onClick={handleCopyAddress}>
-              {localUsername || userAccount}
+              {localUsername || shortenAddress(userAccount)}
             </p>
             {showCopiedMessage && (
               <div className="dashboard-settings-wallet-copied">
@@ -138,18 +139,7 @@ export default function LeftMenuDashboard({
         </div>
         <div className="left-menu-bottom">
           <div className="left-menu-links">
-            {/* <a href="/#/home" className="left-menu-item">
-              <i class="bi bi-house-door"></i>
-              <p>Back Home</p>
-            </a> */}
-            {/* <a
-              href="https://discord.gg/kehHCkUGRU" target="_blank"
-              className="left-menu-item"
-            >
-              <i className="bi bi-bug"></i>
-              <p>Report Bug</p>
-            </a> */}
-            {/* <a href="" className="left-menu-item" onClick={(event) => handleMenuItemClick("settings", event)}> */}
+            {/* Add any additional bottom menu links here */}
           </div>
         </div>
       </div>

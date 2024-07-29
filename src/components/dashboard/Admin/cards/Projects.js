@@ -30,12 +30,14 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
                 });
             }
 
+            // console.log('All projects:', allProjects);
+
             const totalProjectsCount = allProjects.length;
             const projectsInRangeCount = calculateProjectsInRange(allProjects);
 
             setTotalProjects(totalProjectsCount);
             setProjectsInRange(projectsInRangeCount);
-            setGrowthPercentage(calculateGrowthPercentage(totalProjectsCount, projectsInRangeCount));
+            setGrowthPercentage(calculateGrowthPercentage(projectsInRangeCount, totalProjectsCount));
             setIsLoading(false);
         } catch (error) {
             console.error("Error fetching projects data:", error);
@@ -44,23 +46,28 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
     };
 
     const calculateProjectsInRange = (projectsData) => {
-        const preciseDateStart = preciseDate ? new Date(preciseDate.setHours(0, 0, 0, 0)) : null;
-        const preciseDateEnd = preciseDate ? new Date(preciseDate.setHours(23, 59, 59, 999)) : null;
-        if (dateOption === 'precise' && preciseDateStart && preciseDateEnd) {
+        // console.log('Calculating projects in range with date option:', dateOption);
+        // console.log('Precise date:', preciseDate, 'Start date:', startDate, 'End date:', endDate);
+
+        if (dateOption === 'precise' && preciseDate) {
+            const preciseDateStart = new Date(preciseDate);
+            preciseDateStart.setHours(0, 0, 0, 0);
+            const preciseDateEnd = new Date(preciseDate);
+            preciseDateEnd.setHours(23, 59, 59, 999);
             return projectsData.filter(project => {
                 const projectDate = new Date(project.createdAt);
                 return projectDate >= preciseDateStart && projectDate <= preciseDateEnd;
             }).length;
-        } else if (dateOption === 'range' && startDate && endDate) {
+        } else if ((dateOption === 'range' || dateOption === 'last7days' || dateOption === 'last30days') && startDate && endDate) {
             return projectsData.filter(project => {
                 const projectDate = new Date(project.createdAt);
-                return projectDate >= startDate && projectDate <= endDate;
+                return projectDate >= new Date(startDate) && projectDate <= new Date(endDate);
             }).length;
         }
         return projectsData.length;
     };
 
-    const calculateGrowthPercentage = (totalProjects, projectsInRange) => {
+    const calculateGrowthPercentage = (projectsInRange, totalProjects) => {
         if (totalProjects === 0) return 0;
         return ((projectsInRange / totalProjects) * 100).toFixed(2);
     };
@@ -86,15 +93,15 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
     };
 
     if (isLoading) {
-        return <div>
+        return (
             <div className="admin-projects-container">
                 <div className="projects-box">
                     <div className="projects-summary">
-                        <p className='projects-summary-title'> <FontAwesomeIcon icon={faFolder} /> Loading... </p>
+                        <p className='projects-summary-title'><FontAwesomeIcon icon={faFolder} /> Loading... </p>
                     </div>
                 </div>
             </div>
-        </div>;
+        );
     }
 
     return (
@@ -103,7 +110,7 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
                 <div className="projects-summary">
                     <p className='projects-summary-title'> <FontAwesomeIcon icon={faFolder} /> Projects Created </p>
                     <div className='projects-summary-count'>
-                        <p className='projects-count'>{projectsInRange}</p>
+                        <p className='projects-count'>{projectsInRange} / {totalProjects}</p>
                         <p className={`project-growth ${getGrowthClass(growthPercentage)}`}>
                             {growthPercentage}% <FontAwesomeIcon icon={getGrowthIcon(growthPercentage)} />
                         </p>

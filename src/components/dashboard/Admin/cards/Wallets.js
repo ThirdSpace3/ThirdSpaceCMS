@@ -27,7 +27,6 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
       }
 
       const querySnapshot = await getDocs(q);
-
       const walletsData = [];
       querySnapshot.forEach((doc) => {
         walletsData.push({ id: doc.id, ...doc.data() });
@@ -35,12 +34,12 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
 
       const totalWalletsCount = walletsData.length;
       const walletsInRangeCount = calculateWalletsInRange(walletsData);
-      const previousWalletsInRangeCount = calculatePreviousWalletsInRange(walletsData);
+      const previousWalletsInRangeCount = await calculatePreviousWalletsInRange(walletsData);
 
       setWallets(walletsData);
       setTotalWallets(totalWalletsCount);
       setWalletsInRange(walletsInRangeCount);
-      setGrowthPercentage(calculateGrowthPercentage(walletsInRangeCount, previousWalletsInRangeCount));
+      setGrowthPercentage(calculateGrowthPercentage(walletsInRangeCount, totalWalletsCount));
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching wallets data:", error);
@@ -50,21 +49,21 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
 
   const calculateWalletsInRange = (walletsData) => {
     if (dateOption === 'precise') {
-      return walletsData.filter(wallet => new Date(wallet.createdAt).toDateString() === preciseDate.toDateString()).length;
+      return walletsData.filter(wallet => new Date(wallet.lastLogin).toDateString() === preciseDate.toDateString()).length;
     } else if (dateOption === 'all') {
       return walletsData.length;
     } else {
-      return walletsData.filter(wallet => new Date(wallet.createdAt) >= startDate && new Date(wallet.createdAt) <= endDate).length;
+      return walletsData.filter(wallet => new Date(wallet.lastLogin) >= startDate && new Date(wallet.lastLogin) <= endDate).length;
     }
   };
 
-  const calculatePreviousWalletsInRange = (walletsData) => {
+  const calculatePreviousWalletsInRange = async (walletsData) => {
     if (dateOption === 'all') {
       return 0;
     }
 
-    const previousStartDate = new Date(startDate);
-    const previousEndDate = new Date(endDate);
+    let previousStartDate = new Date(startDate);
+    let previousEndDate = new Date(endDate);
 
     switch (dateOption) {
       case 'today':
@@ -80,6 +79,7 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
         previousEndDate.setDate(endDate.getDate() - 30);
         break;
       case 'lastYear':
+      case 'range':
         previousStartDate.setFullYear(startDate.getFullYear() - 1);
         previousEndDate.setFullYear(endDate.getFullYear() - 1);
         break;
@@ -87,12 +87,14 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
         return 0;
     }
 
-    return walletsData.filter(wallet => new Date(wallet.createdAt) >= previousStartDate && new Date(wallet.createdAt) <= previousEndDate).length;
+    const previousQuery = query(collection(db, 'wallets'), where('lastLogin', '>=', previousStartDate), where('lastLogin', '<=', previousEndDate));
+    const previousSnapshot = await getDocs(previousQuery);
+    return previousSnapshot.size;
   };
 
-  const calculateGrowthPercentage = (currentCount, previousCount) => {
-    if (previousCount === 0) return currentCount === 0 ? 0 : 100;
-    return (((currentCount - previousCount) / previousCount) * 100).toFixed(2);
+  const calculateGrowthPercentage = (walletsInRangeCount, totalWalletsCount) => {
+    if (totalWalletsCount === 0) return 0;
+    return ((walletsInRangeCount / totalWalletsCount) * 100).toFixed(2);
   };
 
   const getGrowthClass = (growthPercentage) => {
@@ -125,7 +127,7 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
         <div className="wallets-summary">
           <p className='wallet-summary-title'><FontAwesomeIcon icon={faUserGroup} />Total Users </p>
           <div className='wallet-summary-count'>
-            <p className='wallet-count'>{totalWallets}</p>
+            <p className='wallet-count'>{walletsInRange} / {totalWallets}</p>
             <p className={`wallet-growth ${getGrowthClass(growthPercentage)}`}>
               {growthPercentage}% <FontAwesomeIcon icon={getGrowthIcon(growthPercentage)} />
             </p>

@@ -46,7 +46,7 @@ export default function App() {
             
             {isAdminSubdomain ? (
           <Routes>
-            <Route path="*" element={<DashboardAdmin />} />
+            <Route path="*" element={<ConnectAdmin />} />
           </Routes>
         ) : (
           <Routes>

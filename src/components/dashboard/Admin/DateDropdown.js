@@ -19,13 +19,12 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    // Set default date option to "today"
-    setDateOption('today');
-    const today = new Date();
-    setPreciseDate(today);
-    setStartDate(today);
-    setEndDate(today);
-  }, [setDateOption, setPreciseDate, setStartDate, setEndDate]);
+    if (dateOption === 'all') {
+      setDateOption('all');
+      setStartDate(null);
+      setEndDate(null);
+    }
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -133,7 +132,7 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
       )}
       {dateOption === 'range' && (
         <div className="date-picker-range">
-          <div class="custom-datepicker">
+          <div className="custom-datepicker">
             <label>Start Date:</label>
             <DatePicker
               selected={startDate}
@@ -159,7 +158,7 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
               }}
             />
           </div>
-          <div class="custom-datepicker">
+          <div className="custom-datepicker">
             <label>End Date:</label>
             <DatePicker
               selected={endDate}

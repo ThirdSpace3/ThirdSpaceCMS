@@ -40,6 +40,10 @@ const NewsletterSubscription = ({ dateOption, preciseDate, startDate, endDate })
     };
 
     const calculateNewslettersInRange = (newslettersData) => {
+        if (dateOption === 'all') {
+            return newslettersData.length;
+        }
+
         if (dateOption === 'precise') {
             return newslettersData.filter(newsletter => {
                 const newsletterDate = new Date(newsletter.timestamp.seconds * 1000); // convert Firestore timestamp to Date

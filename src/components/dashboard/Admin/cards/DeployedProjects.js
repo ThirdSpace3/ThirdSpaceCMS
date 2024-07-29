@@ -55,6 +55,10 @@ const DeployedProjects = ({ dateOption, preciseDate, startDate, endDate }) => {
     };
 
     const calculateDeployedProjectsInRange = (projectsData) => {
+        if (dateOption === 'all') {
+            return projectsData.length;
+        }
+
         if (dateOption === 'precise') {
             return projectsData.filter(project => new Date(project.timestamp).toDateString() === preciseDate.toDateString()).length;
         } else {
@@ -100,7 +104,7 @@ const DeployedProjects = ({ dateOption, preciseDate, startDate, endDate }) => {
                 </div>
             </div>
         );
-        }
+    }
 
     return (
         <div className="deployed-projects-container">

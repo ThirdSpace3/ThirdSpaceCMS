@@ -70,7 +70,6 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
         } else {
           counts.others += 1;
         }
-        console.log(counts.others)
       });
 
       setWalletCounts({
