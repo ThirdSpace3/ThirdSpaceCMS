@@ -24,13 +24,15 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
   const authenticateWithSolana = async (publicKey) => {
     try {
       const message = new TextEncoder().encode("Please sign this message to confirm your identity.");
-      const signedMessage = await window.solana.signMessage(message, "utf8");
+      const { signature } = await window.solana.signMessage(message);
+      const signedMessage = Buffer.from(signature).toString('hex');
       processLogin(publicKey, 'Solana');
     } catch (error) {
       console.error("Error during Solana authentication:", error);
       setErrorMessage("Solana authentication failed. Please try again");
     }
   };
+  
 
   const authenticateWithUnstoppable = async (authorization) => {
     try {
@@ -53,7 +55,6 @@ function WalletConnection({ saveLoginEvent, logEvent, checkWalletData, checkForW
     } else {
       console.error("onUserLogin is not a function");
     }
-    onClose();
   };
   
 

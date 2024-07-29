@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { setDoc, doc, db, getDoc } from "../../../firebaseConfig";
+import {  useLocation } from "react-router-dom";
+
 import Wallets from './cards/Wallets';
 import Projects from './cards/Projects';
 import './DashboardAdmin.css';
@@ -26,7 +28,14 @@ const DashboardAdmin = () => {
   const [usertypechoose, setusertypechoose] = useState('');
   const [userType, setUserType] = useState({ value: 'all', label: 'All' });
   const [isLoading, setIsLoading] = useState(true);
-  const walletId = localStorage.getItem("userAccount");
+  const location = useLocation();
+
+  const getWalletIdFromQuery = () => {
+    const params = new URLSearchParams(location.search);
+    return params.get('walletId');
+  };
+
+  const walletId = getWalletIdFromQuery();
 
   const fetchProfile = async (walletId) => {
     try {

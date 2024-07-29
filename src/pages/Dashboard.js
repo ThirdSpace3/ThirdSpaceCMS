@@ -150,6 +150,7 @@ export default function Dashboard() {
               username={username}
               profilePicture={profilePicture}
               userRole={userRole}
+              walletId={walletId}
             />
           </div>
           <div className="projectsDashboard">

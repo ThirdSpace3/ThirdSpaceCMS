@@ -10,6 +10,7 @@ export default function LeftMenuDashboard({
   setActiveMenuItem,
   username,
   profilePicture,
+  walletId
 }) {
   const navigate = useNavigate();
   const [userAccount, setUserAccount] = useState("");
@@ -24,6 +25,7 @@ export default function LeftMenuDashboard({
       fetchUserProfile(account);
       setUserAccount(account);
     } else {
+      fetchUserProfile(walletId);
       setShowPopup(true);
     }
   }, [userAccount]);
@@ -54,11 +56,15 @@ export default function LeftMenuDashboard({
     return address.slice(0, 6) + "..." + address.slice(-4);
   };
 
-  const handleMenuItemClick = (menuItem, event) => {
+  const handleMenuItemClick = (menuItem, event, walletId) => {
     event.preventDefault();
     if (menuItem === "admin") {
-      // Redirect to the admin subdomain with walletId as a query parameter
-navigate(('../connect-admin'))    } else {
+      if (walletId) {
+        window.location.href = `https://admin.3rd-space.io/?walletId=${walletId}`;
+      } else {
+        console.error("No wallet ID found in localStorage.");
+      }
+    } else {
       setActiveMenuItem(menuItem);
     }
   };
@@ -127,7 +133,7 @@ navigate(('../connect-admin'))    } else {
             {userRole === "admin" && (
               <a
                 className="left-menu-item"
-                onClick={(event) => handleMenuItemClick("admin", event)}
+                onClick={(event) => handleMenuItemClick("admin", event, walletId)}
                 id="admin-page"
               >
                 <i className="bi bi-person"></i>

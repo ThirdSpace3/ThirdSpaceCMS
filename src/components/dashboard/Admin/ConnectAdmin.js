@@ -1,12 +1,19 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { db, doc, getDoc } from "../../../firebaseConfig";
 import './ConnectAdmin.css';
 
 const ConnectAdmin = () => {
   const navigate = useNavigate();
-  const walletId = localStorage.getItem("userAccount");
+  const location = useLocation();
 
+  const getWalletIdFromQuery = () => {
+    const params = new URLSearchParams(location.search);
+    return params.get('walletId');
+  };
+
+  const walletId = getWalletIdFromQuery();
+  
   const checkAdminRole = async () => {
     if (!walletId) {
       console.log("No wallet ID found.");
@@ -18,8 +25,8 @@ const ConnectAdmin = () => {
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists() && userDoc.data().role === "admin") {
-        console.log("Admin role verified.");
-        navigate("/dashboard-admin"); // Redirect to admin dashboard if user is admin
+        console.log("Admin role verified." + userDoc.data().username);
+        navigate(`/dashboard-admin/?walletId=${walletId}`); // Redirect to admin dashboard if user is admin
       } else {
         console.log("User is not an admin.");
         // Optionally handle non-admin case here
@@ -28,6 +35,7 @@ const ConnectAdmin = () => {
       console.error("Error checking user role:", error);
     }
   };
+
 
   return (
     <div className="admin-connect">
