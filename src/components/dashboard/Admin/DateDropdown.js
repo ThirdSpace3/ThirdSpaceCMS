@@ -13,7 +13,7 @@ const presetOptions = [
   { value: 'precise', label: 'Precise Date' }
 ];
 
-const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, endDate, setEndDate, dateOption, setDateOption }) => {
+const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, endDate, setEndDate, dateOption, setDateOption, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -31,6 +31,7 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
         setIsDatePickerOpen(false);
+        document.body.classList.remove('no-scroll');
       }
     };
 
@@ -40,36 +41,55 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
     };
   }, []);
 
+  useEffect(() => {
+    if (isOpen || isDatePickerOpen) {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+  }, [isOpen, isDatePickerOpen]);
+
   const handleDateOptionChange = (selectedOption) => {
     setDateOption(selectedOption.value);
     const today = new Date();
+    let newStartDate = null;
+    let newEndDate = null;
+    let newPreciseDate = today;
+
     switch (selectedOption.value) {
       case 'today':
-        setPreciseDate(today);
-        setStartDate(today);
-        setEndDate(today);
+        newStartDate = today;
+        newEndDate = today;
+        newPreciseDate = today;
         break;
       case 'last7days':
-        setStartDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7));
-        setEndDate(today);
+        newStartDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+        newEndDate = today;
         break;
       case 'last30days':
-        setStartDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 30));
-        setEndDate(today);
+        newStartDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 30);
+        newEndDate = today;
         break;
       case 'lastYear':
-        setStartDate(new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()));
-        setEndDate(today);
+        newStartDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+        newEndDate = today;
         break;
       case 'all':
-        setStartDate(null);
-        setEndDate(null);
+        newStartDate = null;
+        newEndDate = null;
         break;
       case 'range':
       case 'precise':
       default:
         break;
     }
+
+    setPreciseDate(newPreciseDate);
+    setStartDate(newStartDate);
+    setEndDate(newEndDate);
+
+    // Call the onChange handler passed from DashboardAdmin
+    onChange(selectedOption.value, newPreciseDate, newStartDate, newEndDate);
     setIsOpen(false);
   };
 
@@ -114,6 +134,7 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
               setPreciseDate(date);
               setIsOpen(false);
               setIsDatePickerOpen(false);
+              onChange('precise', date, null, null); // Call onChange with the precise date
             }}
             onFocus={handleDatePickerFocus}
             onBlur={handleDatePickerBlur}
@@ -140,6 +161,7 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
                 setStartDate(date);
                 setIsOpen(false);
                 setIsDatePickerOpen(false);
+                onChange('range', null, date, endDate); // Call onChange with the range start date
               }}
               selectsStart
               startDate={startDate}
@@ -166,6 +188,7 @@ const DateDropdown = ({ preciseDate, setPreciseDate, startDate, setStartDate, en
                 setEndDate(date);
                 setIsOpen(false);
                 setIsDatePickerOpen(false);
+                onChange('range', null, startDate, date); // Call onChange with the range end date
               }}
               selectsEnd
               startDate={startDate}

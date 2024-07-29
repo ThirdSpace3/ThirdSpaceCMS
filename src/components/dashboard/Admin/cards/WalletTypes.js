@@ -2,25 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { db, collection, getDocs, query, where, Timestamp } from '../../../../firebaseConfig';
 import './WalletTypes.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolder, faAngleUp, faAngleDown, faEquals, faRocket } from '@fortawesome/free-solid-svg-icons';
+import { faAngleUp, faAngleDown, faEquals } from '@fortawesome/free-solid-svg-icons';
 
 const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [walletCounts, setWalletCounts] = useState({
     solana: 0,
     metamask: 0,
-    unstoppabledomains: 0
+    unstoppabledomains: 0,
+    emailUsers: 0
   });
-  const [totalWalletCounts, setTotalWalletCounts] = useState({
+  const [previousWalletCounts, setPreviousWalletCounts] = useState({
     solana: 0,
     metamask: 0,
-    unstoppabledomains: 0
+    unstoppabledomains: 0,
+    emailUsers: 0
   });
   const [growthPercentages, setGrowthPercentages] = useState({
     solana: 0,
     metamask: 0,
-    unstoppabledomains: 0
+    unstoppabledomains: 0,
+    emailUsers: 0
   });
-  const [isLoading, setIsLoading] = useState(true);
 
   const walletImages = {
     solana: 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageDashboard%2FAdmin%2Fphantomprovider.png?alt=media&token=c2477ff5-11df-4477-bcb0-0af9d4a08eac',
@@ -30,10 +33,11 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
 
   useEffect(() => {
     fetchWalletTypes();
-    fetchTotalWalletTypes();
+    fetchPreviousWalletTypes();
   }, [dateOption, preciseDate, startDate, endDate, userType]);
 
   const fetchWalletTypes = async () => {
+    setIsLoading(true);
     try {
       const walletsCollectionRef = collection(db, 'wallets');
       let q;
@@ -56,7 +60,7 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
         solana: 0,
         metamask: 0,
         unstoppabledomains: 0,
-        others: 0
+        emailUsers: 0
       };
 
       querySnapshot.forEach((doc) => {
@@ -67,17 +71,14 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
           counts.metamask += 1;
         } else if (data.walletType === 'Unstoppable') {
           counts.unstoppabledomains += 1;
-        } else {
-          counts.others += 1;
+        }
+        if (data.email) {
+          counts.emailUsers += 1;
         }
       });
 
-      setWalletCounts({
-        solana: counts.solana,
-        metamask: counts.metamask,
-        unstoppabledomains: counts.unstoppabledomains
-      });
-      calculateGrowthPercentages(counts, totalWalletCounts);
+      setWalletCounts(counts);
+      calculateGrowthPercentages(counts, previousWalletCounts);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching wallet types data:", error);
@@ -85,85 +86,150 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
     }
   };
 
-  const fetchTotalWalletTypes = async () => {
+  const fetchPreviousWalletTypes = async () => {
     try {
       const walletsCollectionRef = collection(db, 'wallets');
-      const querySnapshot = await getDocs(walletsCollectionRef);
+      let q;
 
-      let counts = {
+      let previousStartDate = new Date(startDate);
+      let previousEndDate = new Date(endDate);
+
+      switch (dateOption) {
+        case 'today':
+          previousStartDate.setDate(startDate.getDate() - 1);
+          previousEndDate.setDate(endDate.getDate() - 1);
+          break;
+        case 'last7days':
+          previousStartDate.setDate(startDate.getDate() - 7);
+          previousEndDate.setDate(endDate.getDate() - 7);
+          break;
+        case 'last30days':
+          previousStartDate.setDate(startDate.getDate() - 30);
+          previousEndDate.setDate(endDate.getDate() - 30);
+          break;
+        case 'range':
+        case 'lastYear':
+          previousStartDate.setFullYear(startDate.getFullYear() - 1);
+          previousEndDate.setFullYear(endDate.getFullYear() - 1);
+          break;
+        default:
+          break;
+      }
+
+      const previousStartDateObj = Timestamp.fromDate(previousStartDate);
+      const previousEndDateObj = Timestamp.fromDate(previousEndDate);
+
+      if (dateOption === 'range' || dateOption === 'lastYear') {
+        q = query(walletsCollectionRef, where('lastLogin', '>=', previousStartDateObj), where('lastLogin', '<=', previousEndDateObj));
+      } else if (dateOption === 'precise') {
+        q = query(walletsCollectionRef, where('lastLogin', '==', preciseDate));
+      } else {
+        q = walletsCollectionRef;
+      }
+
+      const querySnapshot = await getDocs(q);
+
+      let previousCounts = {
         solana: 0,
         metamask: 0,
         unstoppabledomains: 0,
-        others: 0
+        emailUsers: 0
       };
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         if (data.walletType === 'Solana' || data.walletType === 'phantom') {
-          counts.solana += 1;
+          previousCounts.solana += 1;
         } else if (data.walletType === 'Ethereum' || data.walletType === 'metamask') {
-          counts.metamask += 1;
+          previousCounts.metamask += 1;
         } else if (data.walletType === 'Unstoppable') {
-          counts.unstoppabledomains += 1;
-        } else {
-          counts.others += 1;
+          previousCounts.unstoppabledomains += 1;
+        }
+        if (data.email) {
+          previousCounts.emailUsers += 1;
         }
       });
 
-      setTotalWalletCounts({
-        solana: counts.solana,
-        metamask: counts.metamask,
-        unstoppabledomains: counts.unstoppabledomains
-      });
+      setPreviousWalletCounts(previousCounts);
+      calculateGrowthPercentages(walletCounts, previousCounts);
     } catch (error) {
-      console.error("Error fetching total wallet types data:", error);
+      console.error("Error fetching previous wallet types data:", error);
     }
   };
 
-  const calculateGrowthPercentages = (currentCounts, totalCounts) => {
-    const calculateGrowth = (current, total) => {
-      if (total === 0) return 0;
-      return ((current / total) * 100).toFixed(2);
+  const calculateGrowthPercentages = (currentCounts, previousCounts) => {
+    const calculateGrowth = (current, previous) => {
+      if (previous === 0) return current > 0 ? 100 : 0;
+      return (((current - previous) / previous) * 100).toFixed(2);
     };
 
     const growth = {
-      solana: calculateGrowth(currentCounts.solana, totalCounts.solana),
-      metamask: calculateGrowth(currentCounts.metamask, totalCounts.metamask),
-      unstoppabledomains: calculateGrowth(currentCounts.unstoppabledomains, totalCounts.unstoppabledomains)
+      solana: calculateGrowth(currentCounts.solana, previousCounts.solana),
+      metamask: calculateGrowth(currentCounts.metamask, previousCounts.metamask),
+      unstoppabledomains: calculateGrowth(currentCounts.unstoppabledomains, previousCounts.unstoppabledomains),
+      emailUsers: calculateGrowth(currentCounts.emailUsers, previousCounts.emailUsers)
     };
 
     setGrowthPercentages(growth);
   };
+
   const getGrowthIcon = (growthPercentage) => {
     if (growthPercentage > 0) {
-        return faAngleUp;
+      return faAngleUp;
     } else if (growthPercentage < 0) {
-        return faAngleDown;
+      return faAngleDown;
     } else {
-        return faEquals;
+      return faEquals;
     }
-};
+  };
+
+  const getGrowthClass = (growthPercentage) => {
+    if (growthPercentage > 0) {
+      return 'wallet-growth-positive';
+    } else if (growthPercentage < 0) {
+      return 'wallet-growth-negative';
+    } else {
+      return 'wallet-growth-null';
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="wallet-types-container">
-      {['solana', 'metamask', 'unstoppabledomains'].map((walletType) => (
-        <div className="wallet-box" key={walletType}>
+      {userType === 'email' ? (
+        <div className="wallet-box">
           <div className="wallet-summary">
             <div className='wallettypes-summary-title'>
-              <img src={walletImages[walletType]} alt={`${walletType} logo`} className='wallet-logo' />
+              <span className='wallet-logo'>Email Users</span>
             </div>
             <div className='wallet-summary-count'>
-              <p className='wallet-count'>{walletCounts[walletType]}</p>
-              <p className={`wallet-growth ${growthPercentages[walletType] >= 0 ? 'positive' : 'negative'}`}>
-              {growthPercentages[walletType]}%<FontAwesomeIcon icon={getGrowthIcon(growthPercentages)} />
+              <p className='wallet-count'>{walletCounts.emailUsers}</p>
+              <p className={`wallet-growth ${getGrowthClass(growthPercentages.emailUsers)}`}>
+                {growthPercentages.emailUsers}% <FontAwesomeIcon icon={getGrowthIcon(growthPercentages.emailUsers)} />
               </p>
             </div>
           </div>
         </div>
-      ))}
+      ) : (
+        ['solana', 'metamask', 'unstoppabledomains'].map((walletType) => (
+          <div className="wallet-box" key={walletType}>
+            <div className="wallet-summary">
+              <div className='wallettypes-summary-title'>
+                <img src={walletImages[walletType]} alt={`${walletType} logo`} className='wallet-logo' />
+              </div>
+              <div className='wallet-summary-count'>
+                <p className='wallet-count'>{walletCounts[walletType]}</p>
+                <p className={`wallet-growth ${getGrowthClass(growthPercentages[walletType])}`}>
+                  {growthPercentages[walletType]}% <FontAwesomeIcon icon={getGrowthIcon(growthPercentages[walletType])} />
+                </p>
+              </div>
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 };

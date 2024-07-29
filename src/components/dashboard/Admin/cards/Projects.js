@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { db, collection, getDocs } from '../../../../firebaseConfig'; // Adjust path as necessary
+import { db, collection, getDocs, query, where } from '../../../../firebaseConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faAngleUp, faAngleDown, faEquals } from '@fortawesome/free-solid-svg-icons';
 import './Projects.css';
 
-const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
+const Projects = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [totalProjects, setTotalProjects] = useState(0);
     const [projectsInRange, setProjectsInRange] = useState(0);
@@ -12,17 +12,27 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
 
     useEffect(() => {
         fetchProjects();
-    }, [dateOption, preciseDate, startDate, endDate]);
+    }, [dateOption, preciseDate, startDate, endDate, userType]);
 
     const fetchProjects = async () => {
+        setIsLoading(true); // Ensure loading state is updated here
         try {
-            const usersCollectionRef = collection(db, 'wallets');
-            const userDocs = await getDocs(usersCollectionRef);
+            const walletsCollectionRef = collection(db, 'wallets');
+            let walletsQuery = walletsCollectionRef;
+
+            // Apply user type filter
+            if (userType === 'email') {
+                walletsQuery = query(walletsCollectionRef, where('email', '!=', null));
+            } else if (userType === 'walletId') {
+                walletsQuery = query(walletsCollectionRef, where('walletId', '!=', null));
+            }
+
+            const userDocs = await getDocs(walletsQuery);
 
             const allProjects = [];
             for (const userDoc of userDocs.docs) {
                 const userId = userDoc.id;
-                const projectsCollectionRef = collection(db, `projects/${userId}/projectData`);
+                const projectsCollectionRef = collection(db, `projects/${userId}/projectData/`);
                 const querySnapshot = await getDocs(projectsCollectionRef);
 
                 querySnapshot.forEach((doc) => {
@@ -30,14 +40,13 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
                 });
             }
 
-            // console.log('All projects:', allProjects);
-
             const totalProjectsCount = allProjects.length;
             const projectsInRangeCount = calculateProjectsInRange(allProjects);
+            const previousProjectsInRangeCount = await calculatePreviousProjectsInRange(allProjects);
 
             setTotalProjects(totalProjectsCount);
             setProjectsInRange(projectsInRangeCount);
-            setGrowthPercentage(calculateGrowthPercentage(projectsInRangeCount, totalProjectsCount));
+            setGrowthPercentage(calculateGrowthPercentage(projectsInRangeCount, previousProjectsInRangeCount));
             setIsLoading(false);
         } catch (error) {
             console.error("Error fetching projects data:", error);
@@ -46,9 +55,6 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
     };
 
     const calculateProjectsInRange = (projectsData) => {
-        // console.log('Calculating projects in range with date option:', dateOption);
-        // console.log('Precise date:', preciseDate, 'Start date:', startDate, 'End date:', endDate);
-
         if (dateOption === 'precise' && preciseDate) {
             const preciseDateStart = new Date(preciseDate);
             preciseDateStart.setHours(0, 0, 0, 0);
@@ -58,7 +64,7 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
                 const projectDate = new Date(project.createdAt);
                 return projectDate >= preciseDateStart && projectDate <= preciseDateEnd;
             }).length;
-        } else if ((dateOption === 'range' || dateOption === 'last7days' || dateOption === 'last30days') && startDate && endDate) {
+        } else if (startDate && endDate) {
             return projectsData.filter(project => {
                 const projectDate = new Date(project.createdAt);
                 return projectDate >= new Date(startDate) && projectDate <= new Date(endDate);
@@ -67,9 +73,45 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
         return projectsData.length;
     };
 
-    const calculateGrowthPercentage = (projectsInRange, totalProjects) => {
-        if (totalProjects === 0) return 0;
-        return ((projectsInRange / totalProjects) * 100).toFixed(2);
+    const calculatePreviousProjectsInRange = async (projectsData) => {
+        if (dateOption === 'all') {
+            return 0;
+        }
+
+        let previousStartDate = new Date(startDate);
+        let previousEndDate = new Date(endDate);
+
+        switch (dateOption) {
+            case 'today':
+                previousStartDate.setDate(startDate.getDate() - 1);
+                previousEndDate.setDate(endDate.getDate() - 1);
+                break;
+            case 'last7days':
+                previousStartDate.setDate(startDate.getDate() - 7);
+                previousEndDate.setDate(endDate.getDate() - 7);
+                break;
+            case 'last30days':
+                previousStartDate.setDate(startDate.getDate() - 30);
+                previousEndDate.setDate(endDate.getDate() - 30);
+                break;
+            case 'range':
+            case 'lastYear':
+                previousStartDate.setFullYear(startDate.getFullYear() - 1);
+                previousEndDate.setFullYear(endDate.getFullYear() - 1);
+                break;
+            default:
+                return 0;
+        }
+
+        return projectsData.filter(project => {
+            const projectDate = new Date(project.createdAt);
+            return projectDate >= previousStartDate && projectDate <= previousEndDate;
+        }).length;
+    };
+
+    const calculateGrowthPercentage = (currentCount, previousCount) => {
+        if (previousCount === 0) return currentCount > 0 ? 100 : 0;
+        return (((currentCount - previousCount) / previousCount) * 100).toFixed(2);
     };
 
     const getGrowthClass = (growthPercentage) => {
@@ -110,7 +152,7 @@ const Projects = ({ dateOption, preciseDate, startDate, endDate }) => {
                 <div className="projects-summary">
                     <p className='projects-summary-title'> <FontAwesomeIcon icon={faFolder} /> Projects Created </p>
                     <div className='projects-summary-count'>
-                        <p className='projects-count'>{projectsInRange} / {totalProjects}</p>
+                        <p className='projects-count'>{projectsInRange} </p>
                         <p className={`project-growth ${getGrowthClass(growthPercentage)}`}>
                             {growthPercentage}% <FontAwesomeIcon icon={getGrowthIcon(growthPercentage)} />
                         </p>

@@ -5,10 +5,10 @@ import { faAngleUp, faAngleDown, faEquals, faUserGroup } from '@fortawesome/free
 import './Wallets.css';
 
 const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
-  const [wallets, setWallets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalWallets, setTotalWallets] = useState(0);
   const [walletsInRange, setWalletsInRange] = useState(0);
+  const [previousWalletsInRange, setPreviousWalletsInRange] = useState(0);
   const [growthPercentage, setGrowthPercentage] = useState(0);
 
   useEffect(() => {
@@ -16,19 +16,22 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
   }, [dateOption, preciseDate, startDate, endDate, userType]);
 
   const fetchWallets = async () => {
+    setIsLoading(true);
     try {
       const walletsCollectionRef = collection(db, 'wallets');
-      let q = walletsCollectionRef;
+      let walletsQuery = walletsCollectionRef;
 
+      // Apply user type filter
       if (userType === 'email') {
-        q = query(walletsCollectionRef, where('email', '!=', null));
+        walletsQuery = query(walletsCollectionRef, where('email', '!=', null));
       } else if (userType === 'walletId') {
-        q = query(walletsCollectionRef, where('walletId', '!=', null));
+        walletsQuery = query(walletsCollectionRef, where('walletId', '!=', null));
       }
 
-      const querySnapshot = await getDocs(q);
+      const userDocs = await getDocs(walletsQuery);
+
       const walletsData = [];
-      querySnapshot.forEach((doc) => {
+      userDocs.forEach((doc) => {
         walletsData.push({ id: doc.id, ...doc.data() });
       });
 
@@ -36,10 +39,10 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
       const walletsInRangeCount = calculateWalletsInRange(walletsData);
       const previousWalletsInRangeCount = await calculatePreviousWalletsInRange(walletsData);
 
-      setWallets(walletsData);
       setTotalWallets(totalWalletsCount);
       setWalletsInRange(walletsInRangeCount);
-      setGrowthPercentage(calculateGrowthPercentage(walletsInRangeCount, totalWalletsCount));
+      setPreviousWalletsInRange(previousWalletsInRangeCount);
+      setGrowthPercentage(calculateGrowthPercentage(walletsInRangeCount, previousWalletsInRangeCount));
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching wallets data:", error);
@@ -49,12 +52,21 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
 
   const calculateWalletsInRange = (walletsData) => {
     if (dateOption === 'precise') {
-      return walletsData.filter(wallet => new Date(wallet.lastLogin).toDateString() === preciseDate.toDateString()).length;
-    } else if (dateOption === 'all') {
-      return walletsData.length;
-    } else {
-      return walletsData.filter(wallet => new Date(wallet.lastLogin) >= startDate && new Date(wallet.lastLogin) <= endDate).length;
+      const preciseDateStart = new Date(preciseDate);
+      preciseDateStart.setHours(0, 0, 0, 0);
+      const preciseDateEnd = new Date(preciseDate);
+      preciseDateEnd.setHours(23, 59, 59, 999);
+      return walletsData.filter(wallet => {
+        const walletDate = new Date(wallet.lastLogin);
+        return walletDate >= preciseDateStart && walletDate <= preciseDateEnd;
+      }).length;
+    } else if (startDate && endDate) {
+      return walletsData.filter(wallet => {
+        const walletDate = new Date(wallet.lastLogin);
+        return walletDate >= new Date(startDate) && walletDate <= new Date(endDate);
+      }).length;
     }
+    return walletsData.length;
   };
 
   const calculatePreviousWalletsInRange = async (walletsData) => {
@@ -78,8 +90,8 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
         previousStartDate.setDate(startDate.getDate() - 30);
         previousEndDate.setDate(endDate.getDate() - 30);
         break;
-      case 'lastYear':
       case 'range':
+      case 'lastYear':
         previousStartDate.setFullYear(startDate.getFullYear() - 1);
         previousEndDate.setFullYear(endDate.getFullYear() - 1);
         break;
@@ -87,14 +99,15 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
         return 0;
     }
 
-    const previousQuery = query(collection(db, 'wallets'), where('lastLogin', '>=', previousStartDate), where('lastLogin', '<=', previousEndDate));
-    const previousSnapshot = await getDocs(previousQuery);
-    return previousSnapshot.size;
+    return walletsData.filter(wallet => {
+      const walletDate = new Date(wallet.lastLogin);
+      return walletDate >= previousStartDate && walletDate <= previousEndDate;
+    }).length;
   };
 
-  const calculateGrowthPercentage = (walletsInRangeCount, totalWalletsCount) => {
-    if (totalWalletsCount === 0) return 0;
-    return ((walletsInRangeCount / totalWalletsCount) * 100).toFixed(2);
+  const calculateGrowthPercentage = (currentCount, previousCount) => {
+    if (previousCount === 0) return currentCount > 0 ? 100 : 0;
+    return ((( previousCount) / currentCount) * 100).toFixed(2);
   };
 
   const getGrowthClass = (growthPercentage) => {
@@ -127,7 +140,7 @@ const Wallets = ({ dateOption, preciseDate, startDate, endDate, userType }) => {
         <div className="wallets-summary">
           <p className='wallet-summary-title'><FontAwesomeIcon icon={faUserGroup} />Total Users </p>
           <div className='wallet-summary-count'>
-            <p className='wallet-count'>{walletsInRange} / {totalWallets}</p>
+            <p className='wallet-count'>{totalWallets}</p>
             <p className={`wallet-growth ${getGrowthClass(growthPercentage)}`}>
               {growthPercentage}% <FontAwesomeIcon icon={getGrowthIcon(growthPercentage)} />
             </p>

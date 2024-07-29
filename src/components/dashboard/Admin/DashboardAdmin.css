@@ -103,11 +103,18 @@
   gap: 16px;
 }
 
+.admin-dashboard-card-container2 {
+  display: grid;
+  gap: 16px;
+}
+
 .admin-dashboard-content {
   display: flex;
   flex-direction: column;
   gap: 25px;
   margin-bottom: 7vh;
+  align-items: center;
+
 }
 
 .SSS-logo-admin-dashboard {
@@ -133,3 +140,5 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+
