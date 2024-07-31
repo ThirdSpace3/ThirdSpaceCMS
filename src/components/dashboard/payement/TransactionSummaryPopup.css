@@ -1,0 +1,30 @@
+.transaction-summary-popup {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5); /* Add background blur */
+    backdrop-filter: blur(10px); /* Integrate background blur */
+  }
+  
+  .transaction-summary-content {
+    background-color: black;
+    padding: 5vh 10vh;
+    border-radius: 25px;
+    color: white;
+  }
+  
+  .loader-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .loader {
+    color: white;
+  }
+  

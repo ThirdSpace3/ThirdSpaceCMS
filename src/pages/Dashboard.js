@@ -177,7 +177,7 @@ export default function Dashboard() {
                 setCurrentProject={setCurrentProject}
               />
             )}
-            {activeMenuItem === "billing" && <BillingDashboard />}
+            {activeMenuItem === "billing" && <BillingDashboard walletId={walletId} />}
             {activeMenuItem === "profile" && (
               <ProfileDashboard updateUserDetails={updateUserDetails} />
             )}
