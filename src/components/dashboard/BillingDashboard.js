@@ -15,6 +15,7 @@ export default function BillingDashboard({ walletId }) {
   const [showSummary, setShowSummary] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [transactionError, setTransactionError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     // Validate walletId on component mount
@@ -48,36 +49,41 @@ export default function BillingDashboard({ walletId }) {
   const confirmPurchase = async () => {
     setIsProcessing(true);
     setTransactionError(null);
+    setSuccessMessage(null); // Reset success message
     try {
       console.log("walletId:", walletId);
       const userPublicKey = new PublicKey(walletId);
       const planCost = getPlanCost(selectedPlan);
-
+  
       const fromWallet = window.solana;
       console.log(fromWallet, userPublicKey, planCost);
-
+  
       if (!fromWallet || !fromWallet.publicKey) {
         await connectWallet();
         if (!fromWallet || !fromWallet.publicKey) {
           throw new Error("Wallet not connected or invalid");
         }
       }
-
+  
       // Use the corporate wallet address as the recipient
       const signature = await sendUsdcTransaction(fromWallet, CORPORATE_WALLET_ADDRESS, planCost);
-
+  
       setTransactionStatus(`Transaction successful! Signature: ${signature}`);
       console.log("Transaction successful! Signature:", signature);
+      setSuccessMessage("Process successful, initiating refresh of the browser");
       setTimeout(() => {
         window.location.reload();
       }, 3000);
     } catch (error) {
-      setTransactionError(error.message);
+      setTransactionError("Process Unsuccessful");
       console.error("Transaction failed:", error);
     } finally {
       setIsProcessing(false);
+      console.log(transactionError);
     }
   };
+  
+  
 
   const getPlanCost = (plan) => {
     switch(plan) {
@@ -91,11 +97,12 @@ export default function BillingDashboard({ walletId }) {
         return 0;
     }
   };
-
+  
   const resetTransactionState = () => {
     setTransactionError(null);
-    setShowSummary(true);
+    setIsProcessing(false);
   };
+  
 
   const featuresFreemium = [
     {
@@ -352,6 +359,8 @@ export default function BillingDashboard({ walletId }) {
             closePopup={() => setShowSummary(false)}
             transactionError={transactionError}
             resetTransactionState={resetTransactionState}
+            transactionStatus={transactionStatus}
+            successMessage={successMessage}
           />
         )}
       </div>

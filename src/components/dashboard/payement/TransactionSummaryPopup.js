@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import './TransactionSummaryPopup.css';
 
 const TransactionSummaryPopup = ({
@@ -10,21 +10,17 @@ const TransactionSummaryPopup = ({
   isProcessing,
   closePopup,
   transactionError,
-  resetTransactionState
+  resetTransactionState,
+  successMessage // Receive the success message prop
 }) => {
   const popupRef = useRef();
 
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       closePopup();
-    }
-  };
-
-  useEffect(() => {
-    if (!isProcessing && transactionError) {
       resetTransactionState();
     }
-  }, [isProcessing, transactionError, resetTransactionState]);
+  };
 
   return (
     <div className="transaction-summary-popup" onClick={handleClickOutside}>
@@ -38,6 +34,11 @@ const TransactionSummaryPopup = ({
             <h2>Transaction Failed</h2>
             <p>{transactionError}</p>
             <button onClick={resetTransactionState}>Try Again</button>
+          </div>
+        ) : successMessage ? (
+          <div>
+            <h2>Transaction Successful</h2>
+            <p>{successMessage}</p>
           </div>
         ) : (
           <div>

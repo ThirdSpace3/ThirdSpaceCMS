@@ -12,7 +12,7 @@ const ALCHEMY_API_KEY = 'Ft-2Cy1lx36awBSOI_VexPLkfkZJB1YF';
 const connection = new Connection(`https://solana-devnet.g.alchemy.com/v2/${ALCHEMY_API_KEY}`, 'confirmed');
 
 // USDC Devnet Mint Address
-const USDC_DEVNET_MINT_ADDRESS = new PublicKey('DSf4DStZjMeFbEM1i9VfSKbzxrJReog6wXqC9UegYeZ3');
+const USDC_DEVNET_MINT_ADDRESS = new PublicKey('4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU');
 
 async function createAndInitializeAssociatedTokenAccount(wallet, mint) {
   const associatedTokenAddress = await getAssociatedTokenAddress(
