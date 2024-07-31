@@ -7,6 +7,7 @@ import ReactGA from "react-ga";
 
 function Pricing({  }) {
   const navigate = useNavigate();
+  
   const userIsLoggedIn = () => {
     const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
     return isLoggedIn;

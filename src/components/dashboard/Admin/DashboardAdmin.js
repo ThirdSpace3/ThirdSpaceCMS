@@ -43,9 +43,9 @@ const DashboardAdmin = () => {
       const userDocSnap = await getDoc(userDocRef);
       if (userDocSnap.exists()) {
         const data = userDocSnap.data();
-        setUsername(data.username || "My Username");
+        setUsername(data.profile.username || "My Username");
       } else {
-        await setDoc(userDocRef, {
+        await setDoc(userDocRef.profile, {
           username: walletId,
         });
         setUsername(walletId);

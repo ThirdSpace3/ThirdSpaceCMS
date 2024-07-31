@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./DashboardMain.css";
 import "../Root.css";
 import PopupWallet from "../website/login/PopupWallet";
 import { db, doc, getDoc } from "../../firebaseConfig";
 import { useNavigate } from "react-router-dom";
+import ReportBugBTN from "../website/ReportBugBTN";
 
 export default function LeftMenuDashboard({
   userRole,
   setActiveMenuItem,
   username,
   profilePicture,
-  walletId
+  walletId,
+  isCollapsed,
+  toggleMenu
 }) {
   const navigate = useNavigate();
   const [userAccount, setUserAccount] = useState("");
@@ -18,6 +21,8 @@ export default function LeftMenuDashboard({
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
   const [localUsername, setLocalUsername] = useState("");
   const [localProfilePicture, setLocalProfilePicture] = useState("");
+  const [selectedMenuItem, setSelectedMenuItem] = useState("projects");
+  const reportBugBtnRef = useRef(null);
 
   useEffect(() => {
     const account = sessionStorage.getItem("userAccount");
@@ -58,11 +63,17 @@ export default function LeftMenuDashboard({
 
   const handleMenuItemClick = (menuItem, event, walletId) => {
     event.preventDefault();
+    setSelectedMenuItem(menuItem);
+
     if (menuItem === "admin") {
       if (walletId) {
         window.location.href = `https://admin.3rd-space.io/?walletId=${walletId}`;
       } else {
         console.error("No wallet ID found in localStorage.");
+      }
+    } else if (menuItem === "bug") {
+      if (reportBugBtnRef.current) {
+        reportBugBtnRef.current.openModal();
       }
     } else {
       setActiveMenuItem(menuItem);
@@ -73,8 +84,8 @@ export default function LeftMenuDashboard({
     navigator.clipboard
       .writeText(userAccount)
       .then(() => {
-        setShowCopiedMessage(true); // Show the copied message
-        setTimeout(() => setShowCopiedMessage(false), 3000); // Hide the message after 3 seconds
+        setShowCopiedMessage(true);
+        setTimeout(() => setShowCopiedMessage(false), 3000);
       })
       .catch((err) => {
         console.error("Failed to copy the address: ", err);
@@ -89,65 +100,77 @@ export default function LeftMenuDashboard({
           onUserLogin={handleLogin}
         />
       )}
-      <div className="left-menu-container">
+      <div className={`left-menu-container ${isCollapsed ? 'collapsed' : ''}`}>
+        <button className="toggle-button" onClick={toggleMenu}>
+          {isCollapsed ? <i className="bi bi-chevron-compact-right"></i> : <i className="bi bi-chevron-compact-left"></i>}
+        </button>
         <div className="left-menu-top">
-          <div className="profile-container">
-            <img
-              src={localProfilePicture || "../images/avatar-placeholder.png"} // Fallback to default avatar if profilePicture is not available
-              alt="Profile avatar"
-              className="profile-picture" // Apply a CSS class for styling
-            />
-            <p className="profile-name" onClick={handleCopyAddress}>
-              {localUsername || shortenAddress(userAccount)}
-            </p>
-            {showCopiedMessage && (
-              <div className="dashboard-settings-wallet-copied">
-                Address Copied!
-              </div>
-            )}
-          </div>
+          {isCollapsed ?  <img className="left-menu-header-image" src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2F3s-logo-picto.png?alt=media&token=eccaecaa-e624-4bb4-a1ad-54f181d09510" alt="thirdspace logo" /> :           <img className="left-menu-header-image" src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
+          }
           <div className="left-menu-links">
             <a
-              className="left-menu-item"
+              className={`left-menu-item ${selectedMenuItem === "projects" ? "selected" : ""}`}
               onClick={(event) => handleMenuItemClick("projects", event)}
             >
               <i className="bi bi-folder"></i>
               <p>Projects</p>
             </a>
             <a
-              className="left-menu-item"
+              className={`left-menu-item ${selectedMenuItem === "billing" ? "selected" : ""}`}
               onClick={(event) => handleMenuItemClick("billing", event)}
               id="billing-page"
             >
-              <i className="bi bi-wallet2"></i>
+              <i className="bi bi-currency-dollar"></i>
               <p>Billing</p>
             </a>
             <a
-              className="left-menu-item"
-              onClick={(event) => handleMenuItemClick("profile", event)}
-              id="profile-page"
+              className={`left-menu-item ${selectedMenuItem === "features" ? "selected" : ""}`}
+              onClick={(event) => handleMenuItemClick("features", event)}
+              id="features-page"
             >
-              <i className="bi bi-person"></i>
-              <p>Profile</p>
+              <i className="bi bi-boxes"></i>
+              <p>Features</p>
+            </a>
+            <a
+              className={`left-menu-item ${selectedMenuItem === "help-center" ? "selected" : ""}`}
+              onClick={(event) => handleMenuItemClick("help-center", event)}
+              id="help-center-page"
+            >
+              <i className="bi bi-question-circle"></i>
+              <p>Help Center</p>
             </a>
             {userRole === "admin" && (
               <a
-                className="left-menu-item"
+                className={`left-menu-item ${selectedMenuItem === "admin" ? "selected" : ""}`}
                 onClick={(event) => handleMenuItemClick("admin", event, walletId)}
                 id="admin-page"
               >
                 <i className="bi bi-person"></i>
-                <p>Admin Button</p>
+                <p>Panel Admin</p>
               </a>
             )}
           </div>
         </div>
         <div className="left-menu-bottom">
-          <div className="left-menu-links">
-            {/* Add any additional bottom menu links here */}
+          <div className={`left-menu-links left-menu-item${selectedMenuItem === "bug" ? "selected" : ""}`} onClick={(event) => handleMenuItemClick("bug", event)} >
+            <i className="bi bi-bug"></i>
+            <p>Report Bug</p>
+          </div>
+
+          <div className="profile-container" onClick={(event) => handleMenuItemClick("profile", event)} >
+            <img
+              src={localProfilePicture || "../images/avatar-placeholder.png"}
+              alt="Profile avatar"
+              className="profile-picture"
+            />
+            <p className="profile-name">
+              {localUsername || shortenAddress(userAccount)} <br /> view Profile            <i className="bi bi-three-dots"></i>
+
+            </p>
           </div>
         </div>
       </div>
+      <ReportBugBTN ref={reportBugBtnRef} />
     </>
   );
 }

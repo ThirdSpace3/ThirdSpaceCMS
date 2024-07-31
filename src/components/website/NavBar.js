@@ -7,10 +7,17 @@ function Navbar({ }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const navigate = useNavigate();
-
+  
+  const userIsLoggedIn = () => {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    return isLoggedIn;
+  }
   const togglePopup = (e) => {
-    e.preventDefault(); // Prevent default anchor behavior
+    if (!userIsLoggedIn()) {
       navigate('/login'); // Navigate to the login page
+    } else {
+      navigate('/dashboard'); // Navigate to the dashboard page
+    }
   };
 
   const toggleMenu = () => {

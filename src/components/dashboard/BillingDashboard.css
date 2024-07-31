@@ -378,7 +378,7 @@ input:checked + label:before {
   align-items: center;
 }
 
-@media only screen and (min-width: 961px) and (max-width: 1286px) {
+@media only screen and (min-width: 961px) and (max-width: 1264px) {
   .dashboard-billing-plans-box-more {
     display: flex;
     justify-content: flex-start;

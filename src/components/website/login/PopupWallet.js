@@ -243,6 +243,11 @@ function PopupWallet({ onClose, setShowPopup }) {
               onUserLogin={onUserLogin}
               customErrorMessage={customErrorMessage}
             />
+              <div className="seperation-connection-way">
+                  <hr></hr>
+                  <p>or</p>
+                  <hr></hr>
+                </div>
             <button className="wallet-btn" onClick={handleConnectWalletClick}>
               Connect via Email
             </button>

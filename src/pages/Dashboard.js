@@ -11,6 +11,8 @@ import PopupWallet from "../components/website/login/PopupWallet";
 import { db, collection, getDocs, doc, getDoc } from '../firebaseConfig';
 import ReportBugBTN from "../components/website/ReportBugBTN";
 import ConnectAdmin from "../components/dashboard/Admin/ConnectAdmin";
+import FeaturesDashboard from '../components/dashboard/FeaturesDashboard';
+import HelpCenter from '../components/dashboard/HelpCenter';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -26,6 +28,7 @@ export default function Dashboard() {
   const [userData, setUserData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showConnectAdmin, setShowConnectAdmin] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const walletId = sessionStorage.getItem("userAccount");
@@ -140,20 +143,26 @@ export default function Dashboard() {
     }
   };
 
+  const toggleMenu = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   if (isLoggedIn === "true") {
     return (
       <>
         <div className="dashboard-container">
-          <div className="leftMenuDashboard">
+          <div className={`leftMenuDashboard ${isCollapsed ? 'collapsed' : ''}`}>
             <LeftMenuDashboard
               setActiveMenuItem={setActiveMenuItem}
               username={username}
               profilePicture={profilePicture}
               userRole={userRole}
               walletId={walletId}
+              isCollapsed={isCollapsed}
+              toggleMenu={toggleMenu}
             />
           </div>
-          <div className="projectsDashboard">
+          <div className={`projectsDashboard ${isCollapsed ? 'expanded' : ''}`}>
             {activeMenuItem === "projects" && (
               <ProjectsDashboard
                 projects={projects}
@@ -178,6 +187,8 @@ export default function Dashboard() {
               />
             )}
             {activeMenuItem === "billing" && <BillingDashboard walletId={walletId} />}
+            {activeMenuItem === "features" && <FeaturesDashboard walletId={walletId} />}
+            {activeMenuItem === "help-center" && <HelpCenter walletId={walletId} />}
             {activeMenuItem === "profile" && (
               <ProfileDashboard updateUserDetails={updateUserDetails} />
             )}

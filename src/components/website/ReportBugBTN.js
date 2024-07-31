@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import './ReportBugBTN.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { db, storage, ref, uploadBytes, getDownloadURL, setDoc, doc, collection } from '../../firebaseConfig';
@@ -15,7 +15,7 @@ const Modal = ({ isOpen, handleClose, children }) => {
     );
 };
 
-const ReportBugBTN = () => {
+const ReportBugBTN = forwardRef((props, ref) => {
     const [isModalOpen, setModalOpen] = useState(false);
     const [dragActive, setDragActive] = useState(false);
     const [imagePreviewUrl, setImagePreviewUrl] = useState('');
@@ -23,6 +23,10 @@ const ReportBugBTN = () => {
     const imageUploadRef = useRef(null);
     const bugDescriptionRef = useRef(null);
     const [selectedFile, setSelectedFile] = useState(null);
+
+    useImperativeHandle(ref, () => ({
+        openModal
+    }));
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -99,7 +103,7 @@ const ReportBugBTN = () => {
         reader.readAsDataURL(file);
         setSelectedFile(file);
     };
-   
+
     const handlePaste = (e) => {
         const items = e.clipboardData.items;
         for (const item of items) {
@@ -175,6 +179,6 @@ const ReportBugBTN = () => {
             </Modal>
         </>
     );
-};
+});
 
 export default ReportBugBTN;
