@@ -32,12 +32,18 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
   };
 
   useEffect(() => {
-    fetchWalletTypes();
-    fetchPreviousWalletTypes();
+    fetchWalletData();
   }, [dateOption, preciseDate, startDate, endDate, userType]);
 
-  const fetchWalletTypes = async () => {
+  const fetchWalletData = async () => {
     setIsLoading(true);
+    const currentCounts = await fetchWalletTypes();
+    const previousCounts = await fetchPreviousWalletTypes();
+    calculateGrowthPercentages(currentCounts, previousCounts);
+    setIsLoading(false);
+  };
+
+  const fetchWalletTypes = async () => {
     try {
       const walletsCollectionRef = collection(db, 'wallets');
       let q;
@@ -78,8 +84,7 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
       });
 
       setWalletCounts(counts);
-      calculateGrowthPercentages(counts, previousWalletCounts);
-      setIsLoading(false);
+      return counts;
     } catch (error) {
       console.error("Error fetching wallet types data:", error);
       setIsLoading(false);
@@ -91,37 +96,45 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
       const walletsCollectionRef = collection(db, 'wallets');
       let q;
 
-      let previousStartDate = new Date(startDate);
-      let previousEndDate = new Date(endDate);
+      let previousStartDate = startDate ? new Date(startDate) : null;
+      let previousEndDate = endDate ? new Date(endDate) : null;
 
       switch (dateOption) {
         case 'today':
-          previousStartDate.setDate(startDate.getDate() - 1);
-          previousEndDate.setDate(endDate.getDate() - 1);
+          if (previousStartDate && previousEndDate) {
+            previousStartDate.setDate(previousStartDate.getDate() - 1);
+            previousEndDate.setDate(previousEndDate.getDate() - 1);
+          }
           break;
         case 'last7days':
-          previousStartDate.setDate(startDate.getDate() - 7);
-          previousEndDate.setDate(endDate.getDate() - 7);
+          if (previousStartDate && previousEndDate) {
+            previousStartDate.setDate(previousStartDate.getDate() - 7);
+            previousEndDate.setDate(previousEndDate.getDate() - 7);
+          }
           break;
         case 'last30days':
-          previousStartDate.setDate(startDate.getDate() - 30);
-          previousEndDate.setDate(endDate.getDate() - 30);
+          if (previousStartDate && previousEndDate) {
+            previousStartDate.setDate(previousStartDate.getDate() - 30);
+            previousEndDate.setDate(previousEndDate.getDate() - 30);
+          }
           break;
         case 'range':
         case 'lastYear':
-          previousStartDate.setFullYear(startDate.getFullYear() - 1);
-          previousEndDate.setFullYear(endDate.getFullYear() - 1);
+          if (previousStartDate && previousEndDate) {
+            previousStartDate.setFullYear(previousStartDate.getFullYear() - 1);
+            previousEndDate.setFullYear(previousEndDate.getFullYear() - 1);
+          }
           break;
         default:
           break;
       }
 
-      const previousStartDateObj = Timestamp.fromDate(previousStartDate);
-      const previousEndDateObj = Timestamp.fromDate(previousEndDate);
+      const previousStartDateObj = previousStartDate ? Timestamp.fromDate(previousStartDate) : null;
+      const previousEndDateObj = previousEndDate ? Timestamp.fromDate(previousEndDate) : null;
 
-      if (dateOption === 'range' || dateOption === 'lastYear') {
+      if ((dateOption === 'range' || dateOption === 'lastYear') && previousStartDateObj && previousEndDateObj) {
         q = query(walletsCollectionRef, where('lastLogin', '>=', previousStartDateObj), where('lastLogin', '<=', previousEndDateObj));
-      } else if (dateOption === 'precise') {
+      } else if (dateOption === 'precise' && preciseDate) {
         q = query(walletsCollectionRef, where('lastLogin', '==', preciseDate));
       } else {
         q = walletsCollectionRef;
@@ -151,7 +164,7 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
       });
 
       setPreviousWalletCounts(previousCounts);
-      calculateGrowthPercentages(walletCounts, previousCounts);
+      return previousCounts;
     } catch (error) {
       console.error("Error fetching previous wallet types data:", error);
     }
@@ -223,7 +236,8 @@ const WalletTypes = ({ dateOption, preciseDate, startDate, endDate, userType }) 
               <div className='wallet-summary-count'>
                 <p className='wallet-count'>{walletCounts[walletType]}</p>
                 <p className={`wallet-growth ${getGrowthClass(growthPercentages[walletType])}`}>
-                  {growthPercentages[walletType]}% <FontAwesomeIcon icon={getGrowthIcon(growthPercentages[walletType])} />
+                  {/* {growthPercentages[walletType]}% <FontAwesomeIcon icon={getGrowthIcon(growthPercentages[walletType])} /> */}
+                  on do
                 </p>
               </div>
             </div>

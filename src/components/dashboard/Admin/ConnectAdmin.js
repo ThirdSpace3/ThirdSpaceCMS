@@ -24,8 +24,8 @@ const ConnectAdmin = () => {
       const userDocRef = doc(db, "users", walletId);
       const userDoc = await getDoc(userDocRef);
 
-      if (userDoc.exists() && userDoc.profile.data().role === "admin") {
-        console.log("Admin role verified." + userDoc.profile.data().username);
+      if (userDoc.exists() && userDoc.data().profile.role === "admin") {
+        console.log("Admin role verified." + userDoc.data().profile.username);
         navigate(`/dashboard-admin/?walletId=${walletId}`); // Redirect to admin dashboard if user is admin
       } else {
         console.log("User is not an admin.");

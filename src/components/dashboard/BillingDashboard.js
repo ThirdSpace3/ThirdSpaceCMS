@@ -31,7 +31,6 @@ export default function BillingDashboard({ walletId }) {
     fetchUserPlan();
   }, [walletId]);
 
-
   const fetchUserPlan = async () => {
     const userDocRef = doc(db, "users", walletId);
     const userDoc = await getDoc(userDocRef);
@@ -68,7 +67,6 @@ export default function BillingDashboard({ walletId }) {
       console.log("Default Freemium plan set for new user.");
     }
   };
-
 
   const connectWallet = async () => {
     if (window.solana && window.solana.isPhantom) {
@@ -145,8 +143,6 @@ export default function BillingDashboard({ walletId }) {
     }
   };
 
-
-
   const updateUserPlan = async (plan, planCost, hasExtension, extensionCost) => {
     const quotas = getPlanQuotas(plan).map(feature => feature.text);
     const extensionQuotas = hasExtension ? getPlanQuotas('extension').map(feature => feature.text) : [];
@@ -184,15 +180,17 @@ export default function BillingDashboard({ walletId }) {
             quotas: quotas
           },
           extension: hasExtension ? {
+            check: true,
             cost: extensionCost,
             quotas: extensionQuotas
-          } : null
+          } : {
+            check: false,            
+          }
         }
       });
       console.log("User plan created with:", plan, hasExtension ? "and Extension Pack" : "");
     }
   };
-
 
   const getPlanQuotas = (plan) => {
     const features = {
@@ -241,7 +239,7 @@ export default function BillingDashboard({ walletId }) {
       ]
     };
 
-    return features[plan].filter(feature => feature.icon === "bi bi-check");
+    return features[plan] ? features[plan].filter(feature => feature.icon === "bi bi-check") : [];
   };
 
   const getPlanCost = (plan) => {
@@ -365,7 +363,6 @@ export default function BillingDashboard({ walletId }) {
   const getExtensionCrossTextClass = () => {
     return currentExtension ? "cross-text-purplecard" : "cross-text";
   };
-
 
   const getButtonText = (plan, isExtension = false) => {
     if (isExtension) {

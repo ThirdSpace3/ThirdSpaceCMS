@@ -152,12 +152,13 @@ export default function LeftMenuDashboard({
           </div>
         </div>
         <div className="left-menu-bottom">
-          <div className={`left-menu-links left-menu-item${selectedMenuItem === "bug" ? "selected" : ""}`} onClick={(event) => handleMenuItemClick("bug", event)} >
+          <div className={`left-menu-links left-menu-item ${selectedMenuItem === "bug" ? "selected" : ""}`} onClick={(event) => handleMenuItemClick("bug", event)} >
             <i className="bi bi-bug"></i>
             <p>Report Bug</p>
           </div>
 
-          <div className="profile-container" onClick={(event) => handleMenuItemClick("profile", event)} >
+          <div className={`profile-container ${selectedMenuItem === "profile" ? "selected" : ""}`} onClick={(event) => handleMenuItemClick("profile", event)} >
+
             <img
               src={localProfilePicture || "../images/avatar-placeholder.png"}
               alt="Profile avatar"

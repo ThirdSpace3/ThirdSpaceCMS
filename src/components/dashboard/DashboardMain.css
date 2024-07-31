@@ -8,7 +8,6 @@
   justify-content: space-between;
   align-items: flex-start;
   padding: 30px;
-  position: relative;
 }
 .dashboard-page-content-left {
   display: flex;
@@ -417,6 +416,8 @@
   align-items: center;
   gap: 20px;
   justify-content: center;
+  cursor: pointer;
+  padding: 1vh 0 ;
 }
 
 .left-menu-container.collapsed .profile-container{
