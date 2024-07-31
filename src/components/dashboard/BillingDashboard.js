@@ -142,7 +142,7 @@ export default function BillingDashboard({ walletId }) {
         window.location.reload();
       }, 3000);
     } catch (error) {
-      setTransactionError("Process Unsuccessful");
+      setTransactionError("Process Unsuccessful, mais tkt brother click en dehors et ca va faire le meme effet.");
       console.error("Transaction failed:", error);
       setCurrentPlan(selectedPlan); // Update the currentPlan state
   
@@ -594,10 +594,10 @@ export default function BillingDashboard({ walletId }) {
                   ) : null}
                   <tr className="features-checkers">
                     <td className="feature-name-title">{feature.text}</td>
-                    <td>{feature.freemium ? <i className="bi bi-check-circle"></i> : <i className="bi bi-x-circle"></i>}</td>
-                    <td>{feature.basic ? <i className="bi bi-check-circle"></i> : <i className="bi bi-x-circle"></i>}</td>
-                    <td>{feature.pro ? <i className="bi bi-check-circle"></i> : <i className="bi bi-x-circle"></i>}</td>
-                    <td>{feature.student ? <i className="bi bi-check-circle"></i> : <i className="bi bi-x-circle"></i>}</td>
+                    <td>{feature.freemium ? <i className="bi bi-check-circle purple"></i> : <i className="bi bi-x-circle"></i>}</td>
+                    <td>{feature.basic ? <i className="bi bi-check-circle purple"></i> : <i className="bi bi-x-circle"></i>}</td>
+                    <td>{feature.pro ? <i className="bi bi-check-circle purple"></i> : <i className="bi bi-x-circle"></i>}</td>
+                    <td>{feature.student ? <i className="bi bi-check-circle purple"></i> : <i className="bi bi-x-circle"></i>}</td>
                   </tr>
                 </React.Fragment>
               ))}
