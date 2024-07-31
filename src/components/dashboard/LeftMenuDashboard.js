@@ -37,8 +37,8 @@ export default function LeftMenuDashboard({
 
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        setLocalUsername(userData.username || "");
-        setLocalProfilePicture(userData.profilePicture || "");
+        setLocalUsername(userData.profile.username || "");
+        setLocalProfilePicture(userData.profile.profilePicture || "");
       } else {
         console.error("User document does not exist.");
       }

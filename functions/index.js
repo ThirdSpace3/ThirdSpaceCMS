@@ -280,6 +280,9 @@ You have requested us to send a link to reset your password for your Third Space
   });
 });
 
+
+//#region EMAILS NEWSLETTER
+
 // Function to send email on new report creation
 exports.sendEmailOnFirestoreWrite = functions.firestore
   .document('reports/{reportId}')
@@ -366,3 +369,6 @@ exports.sendEmailsOnSubscription = functions.firestore
       console.error('There was an error while sending the emails:', error);
     }
   });
+//#endregion
+
+

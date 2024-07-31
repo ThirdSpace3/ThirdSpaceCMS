@@ -283,6 +283,13 @@
   flex-direction: row;
   align-items: center;
   gap: 15px;
+  color: var(--black, #131313);
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: var(--inter);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 
 /*==== Dashboard ====*/

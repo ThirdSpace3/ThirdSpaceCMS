@@ -47,7 +47,7 @@ export default function Dashboard() {
       const userDoc = await getDoc(userDocRef);
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        setUserRole(userData.role || "user"); // Default to "user" if no role is set
+        setUserRole(userData.profile.role || "user"); // Default to "user" if no role is set
       } else {
         console.error("No such user document!");
       }
