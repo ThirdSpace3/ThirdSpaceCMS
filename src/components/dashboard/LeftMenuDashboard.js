@@ -22,6 +22,7 @@ export default function LeftMenuDashboard({
   const [localUsername, setLocalUsername] = useState("");
   const [localProfilePicture, setLocalProfilePicture] = useState("");
   const [selectedMenuItem, setSelectedMenuItem] = useState("projects");
+  const [headerImage, setHeaderImage] = useState(""); // State for the header image
   const reportBugBtnRef = useRef(null);
 
   useEffect(() => {
@@ -34,6 +35,15 @@ export default function LeftMenuDashboard({
       setShowPopup(true);
     }
   }, [userAccount]);
+
+  useEffect(() => {
+    // Update the header image based on the collapsed state
+    if (isCollapsed) {
+      setHeaderImage("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2F3s-logo-picto.png?alt=media&token=eccaecaa-e624-4bb4-a1ad-54f181d09510");
+    } else {
+      setHeaderImage("https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904");
+    }
+  }, [isCollapsed]);
 
   const fetchUserProfile = async (walletId) => {
     try {
@@ -104,9 +114,11 @@ export default function LeftMenuDashboard({
         <button className="toggle-button" onClick={toggleMenu}>
           {isCollapsed ? <i className="bi bi-chevron-compact-right"></i> : <i className="bi bi-chevron-compact-left"></i>}
         </button>
+
         <div className="left-menu-top">
-          {isCollapsed ?  <img className="left-menu-header-image" src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2FPopup%2F3s-logo-picto.png?alt=media&token=eccaecaa-e624-4bb4-a1ad-54f181d09510" alt="thirdspace logo" /> :           <img className="left-menu-header-image" src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2F3s-logo.png?alt=media&token=8a69bcce-2e9f-463e-8cba-f4c2fec1a904" alt="thirdspace logo" />
-          }
+          <div className="left-menu-header">
+          <img className="left-menu-header-image" src={headerImage} alt="thirdspace logo" />
+          </div>
           <div className="left-menu-links">
             <a
               className={`left-menu-item ${selectedMenuItem === "projects" ? "selected" : ""}`}
@@ -158,15 +170,14 @@ export default function LeftMenuDashboard({
           </div>
 
           <div className={`profile-container ${selectedMenuItem === "profile" ? "selected" : ""}`} onClick={(event) => handleMenuItemClick("profile", event)} >
-
             <img
               src={localProfilePicture || "../images/avatar-placeholder.png"}
               alt="Profile avatar"
               className="profile-picture"
             />
             <p className="profile-name">
-              {localUsername || shortenAddress(userAccount)} <br /> view Profile            <i className="bi bi-three-dots"></i>
-
+              {localUsername || shortenAddress(userAccount)} <br /> view Profile
+              <i className="bi bi-three-dots"></i>
             </p>
           </div>
         </div>

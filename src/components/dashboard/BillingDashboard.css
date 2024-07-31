@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+
+
 .dashboard-page-content-view-more {
   display: flex;
   padding: 5px 15px;
@@ -16,6 +19,7 @@
   line-height: normal;
   cursor: pointer;
 }
+
 .dashboard-billing-plans {
   display: flex;
   flex-direction: column;
@@ -23,6 +27,7 @@
   gap: 25px;
   width: 100%;
 }
+
 .dashboard-billing-header {
   display: flex;
   justify-content: center;
@@ -30,6 +35,7 @@
   gap: 50px;
   align-self: stretch;
 }
+
 .dashboard-billing-header-warning {
   color: red;
   text-align: center;
@@ -43,6 +49,7 @@
   gap: 10px;
   padding-right: 15px;
 }
+
 .dashboard-billing-left {
   display: flex;
   flex-direction: column;
@@ -50,21 +57,25 @@
   gap: 10px;
   flex: 1 0 0;
 }
+
 .dashboard-billing-left h2 {
   color: var(--black, #131313);
   font-family: var(--montserrat);
   font-size: 25px;
   font-style: normal;
   font-weight: 700;
-  line-height: 110%; /* 33px */
+  line-height: 110%;
+  /* 33px */
 }
+
 .dashboard-billing-left p {
   color: var(--black, #131313);
   font-family: var(--montserrat);
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
-  line-height: 157.4%; /* 31.48px */
+  line-height: 157.4%;
+  /* 31.48px */
 }
 
 .switch {
@@ -104,15 +115,15 @@
   transition: 0.4s;
 }
 
-input:checked + label {
+input:checked+label {
   background-color: #2196f3;
 }
 
-input:focus + label {
+input:focus+label {
   box-shadow: 0 0 1px #2196f3;
 }
 
-input:checked + label:before {
+input:checked+label:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -141,15 +152,27 @@ input:checked + label:before {
   flex-basis: 0;
   min-width: 220px;
 }
+
 .dashboard-billing-plans-box-purple {
   background: var(--purple);
 }
+
+.dashboard-billing-plans-box-purple button {
+  background:rgba(77, 47, 140, 1);
+}
+
+.dashboard-billing-plans-box-purple button:hover {
+  cursor: not-allowed;
+  background:rgba(77, 47, 140, 1);
+}
+
 .dashboard-billing-plans-box-row {
   display: flex;
   align-items: stretch;
   gap: 24.1px;
   flex-wrap: nowrap;
 }
+
 .dashboard-billing-plans-box-left {
   display: flex;
   flex-direction: column;
@@ -164,6 +187,7 @@ input:checked + label:before {
   gap: 15px;
   width: 250px;
 }
+
 .dashboard-billing-plans-box-more {
   display: flex;
   justify-content: flex-start;
@@ -172,6 +196,7 @@ input:checked + label:before {
   width: 100%;
   gap: 10px;
 }
+
 .dashboard-billing-plans-cta-more {
   color: var(--purple, #9600fa);
   font-family: var(--montserrat);
@@ -182,6 +207,7 @@ input:checked + label:before {
   border-bottom: 0.852px solid var(--purple, #9600fa);
   text-align: left;
 }
+
 .dashboard-billing-plans-cta-more-soon {
   color: var(--not-selected);
   border-bottom: 0.852px solid var(--not-selected);
@@ -195,6 +221,7 @@ input:checked + label:before {
   gap: 20.083px;
   align-self: stretch;
 }
+
 .dashboard-billing-plans-box-header-title {
   color: var(--black, #131313);
   font-family: var(--montserrat);
@@ -205,6 +232,7 @@ input:checked + label:before {
   width: 100%;
   text-align: left;
 }
+
 .dashboard-billing-plans-box-header-title-white {
   color: var(--white);
   font-family: var(--montserrat);
@@ -222,9 +250,11 @@ input:checked + label:before {
   gap: 4.017px;
   align-self: stretch;
 }
+
 .dashboard-billing-plans-price img {
   max-width: 30px;
 }
+
 .dashboard-billing-plans-price-tag {
   color: var(--black, #131313);
   font-family: var(--montserrat);
@@ -233,6 +263,7 @@ input:checked + label:before {
   font-weight: 600;
   line-height: normal;
 }
+
 .dashboard-billing-plans-price-tag-white {
   color: var(--white);
   font-family: var(--montserrat);
@@ -241,6 +272,7 @@ input:checked + label:before {
   font-weight: 600;
   line-height: normal;
 }
+
 .dashboard-billing-plans-price-label {
   color: var(--black, #131313);
   font-family: var(--montserrat);
@@ -249,6 +281,7 @@ input:checked + label:before {
   font-weight: 300;
   line-height: normal;
 }
+
 .dashboard-billing-plans-price-label-white {
   color: var(--white);
   font-family: var(--montserrat);
@@ -257,6 +290,7 @@ input:checked + label:before {
   font-weight: 300;
   line-height: normal;
 }
+
 .dashboard-billing-plans-cta {
   border-radius: 15.273px;
   border: 1.215px solid #9542ff;
@@ -277,6 +311,7 @@ input:checked + label:before {
   line-height: normal;
   width: 100%;
 }
+
 .dashboard-billing-plans-cta-diasbled {
   cursor: not-allowed;
   background-color: var(--not-selected);
@@ -290,12 +325,14 @@ input:checked + label:before {
   gap: 12.05px;
   align-self: stretch;
 }
+
 .dashboard-billing-plans-feature {
   display: flex;
   align-items: center;
   gap: 17.071px;
   align-self: stretch;
 }
+
 .check-icon {
   display: flex;
   padding: 4px;
@@ -305,6 +342,7 @@ input:checked + label:before {
   background: rgba(255, 255, 255, 0.6);
   color: var(--purple);
 }
+
 .cross-icon {
   display: flex;
   padding: 4px;
@@ -314,6 +352,7 @@ input:checked + label:before {
   background: rgba(19, 19, 19, 0.2);
   color: var(--white);
 }
+
 .check-text {
   color: var(--black, #131313);
   font-family: var(--montserrat);
@@ -322,6 +361,7 @@ input:checked + label:before {
   font-weight: 500;
   line-height: normal;
 }
+
 .cross-text {
   color: #a0abbb;
   font-family: var(--montserrat);
@@ -330,6 +370,7 @@ input:checked + label:before {
   font-weight: 500;
   line-height: normal;
 }
+
 .check-icon-purplecard {
   display: flex;
   padding: 4px;
@@ -339,6 +380,7 @@ input:checked + label:before {
   background: var(--white);
   color: var(--purple);
 }
+
 .cross-icon-purplecard {
   display: flex;
   padding: 4px;
@@ -348,6 +390,7 @@ input:checked + label:before {
   background: rgba(255, 255, 255, 0.5);
   color: var(--white);
 }
+
 .check-text-purplecard {
   color: var(--white);
   font-family: var(--montserrat);
@@ -356,6 +399,7 @@ input:checked + label:before {
   font-weight: 500;
   line-height: normal;
 }
+
 .cross-text-purplecard {
   color: rgba(255, 255, 255, 0.7);
 
@@ -365,6 +409,7 @@ input:checked + label:before {
   font-weight: 500;
   line-height: normal;
 }
+
 .dashboard-billing-plans-feature-or {
   color: var(--black, #131313);
   font-family: var(--montserrat);
@@ -373,6 +418,7 @@ input:checked + label:before {
   font-weight: 500;
   line-height: normal;
 }
+
 .dashboard-billing-plans-box-features-column {
   gap: 5px;
   align-items: center;
@@ -387,6 +433,7 @@ input:checked + label:before {
     width: 100%;
     gap: 10px;
   }
+
   .dashboard-billing-plans-box-left {
     flex-direction: row;
   }
@@ -409,12 +456,122 @@ input:checked + label:before {
   justify-content: space-between;
   width: 100%;
 }
+
 .dashboard-billing-plans-student-text {
   color: var(--black, #131313);
   font-family: var(--montserrat);
   font-size: 15px;
   font-style: normal;
   font-weight: 500;
-  line-height: 157.4%; /* 42.925px */
+  line-height: 157.4%;
+  /* 42.925px */
 }
+
+/* COMPARAISON TABLE */
+
+
+/* COMPARISON TABLE */
+.compare-pricing-title{
+  color: var(--black, #131313);
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 110%; /* 33px */
+  margin: 30px;
+
+}
+.dashboard-pricing-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5vh;
+  margin: 30px;
+
+}
+
+.comparison-table {
+  width: 100%;
+
+}
+
+.table-container {
+  overflow: hidden; /* Ensure child elements don't overflow */
+  border-radius: 50px;
+  width: 100%;
+  margin-top: 20px;
+
+}
+
+
+.comparison-table-head th {
+  text-align: center;
+  padding: 10px;
+  background-color: #f4f4f4;
+  color: var(--black, #131313);
+  font-family: 'Nunito', sans-serif;
+
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 110%;
+  /* 44px */
+  
+}
+
+.comparison-table-pricing {
+  color: var(--black, #131313);
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 110%;
+  /* 22px */
+}
+
+
+
+.comparison-table-body td {
+  text-align: left;
+  padding: 10px;
+  color: var(--purple, #4D2F8C);
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 110%;
+  height: 96px;
+  /* 22px */
+}
+
+.category-row td {
+  font-weight: bold;
+  padding-left: 30px;
+}
+
+.features-checkers td {
+  text-align: center;
+  color: var(--black, #131313);
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  height: 96px;
+
+}
+.features-checkers { 
+  background: rgba(0, 0, 0, 0.05);  
+}
+.features-checkers .feature-name-title {
+  text-align: start;
+  padding-left: 30px;
+}
+
+
+
+.dashboard-billing-plans-cta:hover {
+  background-color:rgba(77, 47, 140, 1);
+}
+
 

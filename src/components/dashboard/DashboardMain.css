@@ -301,20 +301,21 @@
 }
 
 .leftMenuDashboard {
-  width: 20%; /* Exemple de largeur */
-  height: 100%; /* Pour s'assurer qu'il s'étend sur toute la hauteur du conteneur */
+  width: 240px; /* Pour s'assurer qu'il s'étend sur toute la hauteur du conteneur */
   transition: width 0.3s; /* Smooth transition for expanding/collapsing menu */
 }
 
 .leftMenuDashboard.collapsed {
   width: 60px; /* Adjust this width to match your collapsed menu width */
+  transition: width 0.3s; /* Smooth transition for expanding/collapsing menu */
+
 }
 
 .projectsDashboard {
-  width: 80%; /* Adjust according to the initial left menu width */
   height: 100%;
   transition: width 0.3s; /* Smooth transition for expanding/collapsing menu */
   overflow-y: auto;
+  width: 100%;
 }
 
 .projectsDashboard.expanded {
@@ -399,7 +400,9 @@
   font-size: 22px;
 }
 
-.left-menu-header-image {
+.left-menu-header{
+  min-height: 15%;
+  max-height: 15%;
   width: 80%;
 }
 

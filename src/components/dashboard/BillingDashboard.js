@@ -8,7 +8,17 @@ import "./DashboardMain.css";
 import "../Root.css";
 
 const CORPORATE_WALLET_ADDRESS = new PublicKey('96Rtfsv5dca3SU8TVNNktjiz4hzEKGBxGTFFZkMTjnmW');
-
+const features = [
+  { category: "Analytics", text: "Realtime analytics", freemium: true, basic: true, pro: true, student: true },
+  { category: "Analytics", text: "User analytics", freemium: false, basic: true, pro: true, student: true },
+  { category: "Analytics", text: "Funnel optimization", freemium: false, basic: true, pro: true, student: true },
+  { category: "Report", text: "Automated", freemium: false, basic: true, pro: true, student: true },
+  { category: "Report", text: "AI data predictions", freemium: true, basic: true, pro: true, student: true },
+  { category: "Report", text: "Advanced charts", freemium: false, basic: true, pro: true, student: true },
+  { category: "Security", text: "Real-time team reports", freemium: false, basic: true, pro: true, student: true },
+  { category: "Security", text: "Easy-to-share results", freemium: true, basic: true, pro: true, student: true },
+  { category: "Security", text: "Team goal setting", freemium: false, basic: true, pro: true, student: true },
+];
 export default function BillingDashboard({ walletId }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(null);
@@ -27,10 +37,10 @@ export default function BillingDashboard({ walletId }) {
     } catch (error) {
       console.error("Invalid wallet ID:", walletId, error);
     }
-
+  
     fetchUserPlan();
   }, [walletId]);
-
+  
   const fetchUserPlan = async () => {
     const userDocRef = doc(db, "users", walletId);
     const userDoc = await getDoc(userDocRef);
@@ -38,6 +48,11 @@ export default function BillingDashboard({ walletId }) {
       const userData = userDoc.data();
       if (userData.billing && userData.billing.mainPlan) {
         setCurrentPlan(userData.billing.mainPlan.plan);
+        if (userData.billing.extension && userData.billing.extension.bought) {
+          setCurrentExtension(true);
+          setSelectedExtension(true);  // Update this line
+        }
+        else{console.log("not found");}
       } else {
         // If no plan is found, set Freemium as the default plan
         setCurrentPlan('freemium');
@@ -67,7 +82,7 @@ export default function BillingDashboard({ walletId }) {
       console.log("Default Freemium plan set for new user.");
     }
   };
-
+  
   const connectWallet = async () => {
     if (window.solana && window.solana.isPhantom) {
       try {
@@ -90,7 +105,7 @@ export default function BillingDashboard({ walletId }) {
     }
     setShowSummary(true);
   };
-
+  
   const confirmPurchase = async () => {
     setIsProcessing(true);
     setTransactionError(null);
@@ -99,7 +114,7 @@ export default function BillingDashboard({ walletId }) {
       const planCost = getPlanCost(selectedPlan);
       const extensionCost = selectedExtension ? getPlanCost('extension') : 0;
       const totalCost = planCost + extensionCost;
-
+  
       const fromWallet = window.solana;
       if (!fromWallet || !fromWallet.publicKey) {
         await connectWallet();
@@ -107,21 +122,21 @@ export default function BillingDashboard({ walletId }) {
           throw new Error("Wallet not connected or invalid");
         }
       }
-
+  
       const signature = await sendUsdcTransaction(fromWallet, CORPORATE_WALLET_ADDRESS, totalCost);
       setTransactionStatus(`Transaction successful! Signature: ${signature}`);
       console.log("Transaction successful! Signature:", signature);
-
+  
       // Update user's profile with the selected plan and its quotas
       await updateUserPlan(selectedPlan, planCost, selectedExtension, extensionCost);
       setCurrentPlan(selectedPlan); // Update the currentPlan state
-
+  
       if (selectedExtension) {
         setCurrentExtension(true); // Update the currentExtension state
       } else {
         setCurrentExtension(false); // Reset the currentExtension state if no extension
       }
-
+  
       setSuccessMessage("Process successful, initiating refresh of the browser");
       setTimeout(() => {
         window.location.reload();
@@ -130,11 +145,11 @@ export default function BillingDashboard({ walletId }) {
       setTransactionError("Process Unsuccessful");
       console.error("Transaction failed:", error);
       setCurrentPlan(selectedPlan); // Update the currentPlan state
-
+  
       const planCost = getPlanCost(selectedPlan);
       const extensionCost = selectedExtension ? getPlanCost('extension') : 0;
       await updateUserPlan(selectedPlan, planCost, selectedExtension, extensionCost);
-
+  
       if (selectedExtension) {
         setCurrentExtension(true); // Ensure the currentExtension state is updated in case of error
       }
@@ -142,12 +157,12 @@ export default function BillingDashboard({ walletId }) {
       setIsProcessing(false);
     }
   };
-
+  
   const updateUserPlan = async (plan, planCost, hasExtension, extensionCost) => {
     const quotas = getPlanQuotas(plan).map(feature => feature.text);
     const extensionQuotas = hasExtension ? getPlanQuotas('extension').map(feature => feature.text) : [];
     const userDocRef = doc(db, "users", walletId);
-
+  
     const userDoc = await getDoc(userDocRef);
     if (userDoc.exists()) {
       const userData = userDoc.data();
@@ -159,16 +174,21 @@ export default function BillingDashboard({ walletId }) {
           quotas: quotas
         }
       };
-
+  
+      // Preserve existing extension data if it exists and hasExtension is false
+      if (userData.billing.extension && !hasExtension) {
+        updatedBilling.extension = userData.billing.extension;
+      }
+  
+      // If the extension is being updated, overwrite the existing extension data
       if (hasExtension) {
         updatedBilling.extension = {
+          bought: true,
           cost: extensionCost,
           quotas: extensionQuotas
         };
-      } else {
-        delete updatedBilling.extension;
       }
-
+  
       await setDoc(userDocRef, { billing: updatedBilling }, { merge: true });
       console.log("User plan updated to:", plan, hasExtension ? "with Extension Pack" : "");
     } else {
@@ -180,18 +200,19 @@ export default function BillingDashboard({ walletId }) {
             quotas: quotas
           },
           extension: hasExtension ? {
-            check: true,
+            bought: true,
             cost: extensionCost,
             quotas: extensionQuotas
-          } : {
-            check: false,            
-          }
+          } : null
         }
       });
       console.log("User plan created with:", plan, hasExtension ? "and Extension Pack" : "");
     }
   };
-
+  
+  
+  
+  
   const getPlanQuotas = (plan) => {
     const features = {
       freemium: [
@@ -548,6 +569,83 @@ export default function BillingDashboard({ walletId }) {
             />
           )}
         </div>
+
+        <h2 className="compare-pricing-title">Compare pricing packages</h2>
+
+        <div className="dashboard-pricing-details">
+          <div className="table-container">
+          <table className="comparison-table">
+            <thead className="comparison-table-header">
+              <tr className="comparison-table-head">
+                <th>Feature</th>
+                <th>Freemium <br /><p className="comparison-table-pricing">$0 / month</p></th>
+                <th>Basic <br /><p className="comparison-table-pricing">$10.99 / month</p></th>
+                <th>Professional <br /><p className="comparison-table-pricing">$15.99 / month</p></th>
+                <th>Student <br /><p className="comparison-table-pricing">$15.99 / month</p></th>
+              </tr>
+            </thead>
+            <tbody className="comparison-table-body">
+              {features.map((feature, index) => (
+                <React.Fragment key={index}>
+                  {index === 0 || features[index - 1].category !== feature.category ? (
+                    <tr className="category-row">
+                      <td colSpan="5">{feature.category}</td>
+                    </tr>
+                  ) : null}
+                  <tr className="features-checkers">
+                    <td className="feature-name-title">{feature.text}</td>
+                    <td>{feature.freemium ? <i className="bi bi-check-circle"></i> : <i className="bi bi-x-circle"></i>}</td>
+                    <td>{feature.basic ? <i className="bi bi-check-circle"></i> : <i className="bi bi-x-circle"></i>}</td>
+                    <td>{feature.pro ? <i className="bi bi-check-circle"></i> : <i className="bi bi-x-circle"></i>}</td>
+                    <td>{feature.student ? <i className="bi bi-check-circle"></i> : <i className="bi bi-x-circle"></i>}</td>
+                  </tr>
+                </React.Fragment>
+              ))}
+              <tr className="features-checkers">
+                <td></td>
+                <td>
+                  <button
+                    className="dashboard-billing-plans-cta"
+                    onClick={() => handlePurchase('freemium')}
+                    disabled={isProcessing}
+                  >
+                    {getButtonText('freemium')}
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="dashboard-billing-plans-cta"
+                    onClick={() => handlePurchase('basic')}
+                    disabled={isProcessing}
+                  >
+                    {getButtonText('basic')}
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="dashboard-billing-plans-cta"
+                    onClick={() => handlePurchase('pro')}
+                    disabled={isProcessing}
+                  >
+                    {getButtonText('pro')}
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="dashboard-billing-plans-cta"
+                    onClick={() => handlePurchase('student')}
+                    disabled={isProcessing}
+                  >
+                    {getButtonText('student')}
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+
+
       </div>
     </>
   );
