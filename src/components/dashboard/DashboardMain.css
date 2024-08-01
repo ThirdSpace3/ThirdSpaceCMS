@@ -316,6 +316,7 @@
   transition: width 0.3s; /* Smooth transition for expanding/collapsing menu */
   overflow-y: auto;
   width: 100%;
+  padding:0  5% ;
 }
 
 .projectsDashboard.expanded {
@@ -381,7 +382,7 @@
 .left-menu-container .toggle-button {
   position: absolute;
   cursor: pointer;
-  right: -1.5vh;
+  right: -20px;
   top: 6%;
   background-color: #030014;
   color: white;
@@ -431,7 +432,10 @@
   height: 35px;
   border-radius: 50px;
 }
-
+.profile-name-content{
+  display: flex;
+  flex-direction: column;
+}
 .profile-name {
   color: var(--white, #fff);
   font-family: var(--inter);
@@ -444,7 +448,7 @@
   gap: 25px;
 }
 
-.profile-name i {
+.profile-container i {
   rotate: -90deg;
   font-size: 20px;
 }
@@ -473,7 +477,6 @@
 }
 
 .selected {
-  border: 1px solid rgba(77, 47, 140, 1);
   border-right: solid 5px rgba(77, 47, 140, 1);
   background: rgba(255, 255, 255, 0.15);
 }
@@ -559,4 +562,7 @@
   padding-bottom: 2px;
   border-bottom: 1px solid red;
   cursor: pointer;
+}
+.profile-details{
+  display: flex;
 }

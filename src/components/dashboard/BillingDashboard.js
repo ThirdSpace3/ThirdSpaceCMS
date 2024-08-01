@@ -9,16 +9,15 @@ import "../Root.css";
 
 const CORPORATE_WALLET_ADDRESS = new PublicKey('96Rtfsv5dca3SU8TVNNktjiz4hzEKGBxGTFFZkMTjnmW');
 const features = [
-  { category: "Analytics", text: "Realtime analytics", freemium: true, basic: true, pro: true, student: true },
-  { category: "Analytics", text: "User analytics", freemium: false, basic: true, pro: true, student: true },
-  { category: "Analytics", text: "Funnel optimization", freemium: false, basic: true, pro: true, student: true },
-  { category: "Report", text: "Automated", freemium: false, basic: true, pro: true, student: true },
-  { category: "Report", text: "AI data predictions", freemium: true, basic: true, pro: true, student: true },
-  { category: "Report", text: "Advanced charts", freemium: false, basic: true, pro: true, student: true },
-  { category: "Security", text: "Real-time team reports", freemium: false, basic: true, pro: true, student: true },
-  { category: "Security", text: "Easy-to-share results", freemium: true, basic: true, pro: true, student: true },
-  { category: "Security", text: "Team goal setting", freemium: false, basic: true, pro: true, student: true },
+  { category: "CMS Access", text: "Developer Mode", freemium: true, professional: true, business: true, entreprise: true },
+  { category: "CMS Access", text: "Custom Domains", freemium: "-", professional: "1", business: "3", entreprise: "Unlimited" },
+  { category: "CMS Access", text: "Testing Environments", freemium: true, professional: true, business: true, entreprise: true },
+  { category: "CMS Access", text: "Access to Beta Features", freemium: "-", professional: "-", business: true, entreprise: true },
+  { category: "Storage", text: "Cloud Storage", freemium: "10GB", professional: "20GB", business: "50GB", entreprise: "Unlimited" },
+  { category: "Storage", text: "Smart Contracts Utilisation", freemium: true, professional: true, business: true, entreprise: true },
+  // Add other features as necessary
 ];
+
 export default function BillingDashboard({ walletId }) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [transactionStatus, setTransactionStatus] = useState(null);
@@ -29,6 +28,7 @@ export default function BillingDashboard({ walletId }) {
   const [successMessage, setSuccessMessage] = useState(null);
   const [currentPlan, setCurrentPlan] = useState(null);
   const [currentExtension, setCurrentExtension] = useState(false);
+  const [isYearly, setIsYearly] = useState(false);
 
   useEffect(() => {
     try {
@@ -37,10 +37,10 @@ export default function BillingDashboard({ walletId }) {
     } catch (error) {
       console.error("Invalid wallet ID:", walletId, error);
     }
-  
+
     fetchUserPlan();
   }, [walletId]);
-  
+
   const fetchUserPlan = async () => {
     const userDocRef = doc(db, "users", walletId);
     const userDoc = await getDoc(userDocRef);
@@ -52,7 +52,7 @@ export default function BillingDashboard({ walletId }) {
           setCurrentExtension(true);
           setSelectedExtension(true);  // Update this line
         }
-        else{console.log("not found");}
+        else { console.log("not found"); }
       } else {
         // If no plan is found, set Freemium as the default plan
         setCurrentPlan('freemium');
@@ -82,7 +82,7 @@ export default function BillingDashboard({ walletId }) {
       console.log("Default Freemium plan set for new user.");
     }
   };
-  
+
   const connectWallet = async () => {
     if (window.solana && window.solana.isPhantom) {
       try {
@@ -105,7 +105,7 @@ export default function BillingDashboard({ walletId }) {
     }
     setShowSummary(true);
   };
-  
+
   const confirmPurchase = async () => {
     setIsProcessing(true);
     setTransactionError(null);
@@ -114,7 +114,7 @@ export default function BillingDashboard({ walletId }) {
       const planCost = getPlanCost(selectedPlan);
       const extensionCost = selectedExtension ? getPlanCost('extension') : 0;
       const totalCost = planCost + extensionCost;
-  
+
       const fromWallet = window.solana;
       if (!fromWallet || !fromWallet.publicKey) {
         await connectWallet();
@@ -122,21 +122,21 @@ export default function BillingDashboard({ walletId }) {
           throw new Error("Wallet not connected or invalid");
         }
       }
-  
+
       const signature = await sendUsdcTransaction(fromWallet, CORPORATE_WALLET_ADDRESS, totalCost);
       setTransactionStatus(`Transaction successful! Signature: ${signature}`);
       console.log("Transaction successful! Signature:", signature);
-  
+
       // Update user's profile with the selected plan and its quotas
       await updateUserPlan(selectedPlan, planCost, selectedExtension, extensionCost);
       setCurrentPlan(selectedPlan); // Update the currentPlan state
-  
+
       if (selectedExtension) {
         setCurrentExtension(true); // Update the currentExtension state
       } else {
         setCurrentExtension(false); // Reset the currentExtension state if no extension
       }
-  
+
       setSuccessMessage("Process successful, initiating refresh of the browser");
       setTimeout(() => {
         window.location.reload();
@@ -145,11 +145,11 @@ export default function BillingDashboard({ walletId }) {
       setTransactionError("Process Unsuccessful, mais tkt brother click en dehors et ca va faire le meme effet.");
       console.error("Transaction failed:", error);
       setCurrentPlan(selectedPlan); // Update the currentPlan state
-  
+
       const planCost = getPlanCost(selectedPlan);
       const extensionCost = selectedExtension ? getPlanCost('extension') : 0;
       await updateUserPlan(selectedPlan, planCost, selectedExtension, extensionCost);
-  
+
       if (selectedExtension) {
         setCurrentExtension(true); // Ensure the currentExtension state is updated in case of error
       }
@@ -157,12 +157,12 @@ export default function BillingDashboard({ walletId }) {
       setIsProcessing(false);
     }
   };
-  
+
   const updateUserPlan = async (plan, planCost, hasExtension, extensionCost) => {
     const quotas = getPlanQuotas(plan).map(feature => feature.text);
     const extensionQuotas = hasExtension ? getPlanQuotas('extension').map(feature => feature.text) : [];
     const userDocRef = doc(db, "users", walletId);
-  
+
     const userDoc = await getDoc(userDocRef);
     if (userDoc.exists()) {
       const userData = userDoc.data();
@@ -174,12 +174,12 @@ export default function BillingDashboard({ walletId }) {
           quotas: quotas
         }
       };
-  
+
       // Preserve existing extension data if it exists and hasExtension is false
       if (userData.billing.extension && !hasExtension) {
         updatedBilling.extension = userData.billing.extension;
       }
-  
+
       // If the extension is being updated, overwrite the existing extension data
       if (hasExtension) {
         updatedBilling.extension = {
@@ -188,7 +188,7 @@ export default function BillingDashboard({ walletId }) {
           quotas: extensionQuotas
         };
       }
-  
+
       await setDoc(userDocRef, { billing: updatedBilling }, { merge: true });
       console.log("User plan updated to:", plan, hasExtension ? "with Extension Pack" : "");
     } else {
@@ -209,10 +209,7 @@ export default function BillingDashboard({ walletId }) {
       console.log("User plan created with:", plan, hasExtension ? "and Extension Pack" : "");
     }
   };
-  
-  
-  
-  
+
   const getPlanQuotas = (plan) => {
     const features = {
       freemium: [
@@ -257,6 +254,12 @@ export default function BillingDashboard({ walletId }) {
         { icon: "bi bi-check", text: "1 customized domain name" },
         { icon: "bi bi-check", text: "15 additional Smart Contract interactions" },
         { icon: "bi bi-check", text: "1 additional collaborator" }
+      ],
+      entreprise: [
+        { icon: "bi bi-check", text: "Custom features based on requirements" },
+        { icon: "bi bi-check", text: "Unlimited cloud storage" },
+        { icon: "bi bi-check", text: "Dedicated support team" },
+        { icon: "bi bi-check", text: "Unlimited custom domains" },
       ]
     };
 
@@ -271,6 +274,8 @@ export default function BillingDashboard({ walletId }) {
         return 29.99;
       case 'extension':
         return 9.99;
+      case 'entreprise':
+        return 0; // Custom pricing
       default:
         return 0;
     }
@@ -319,6 +324,13 @@ export default function BillingDashboard({ walletId }) {
     { icon: "bi bi-check", text: "Collaborative solution" },
     { icon: "bi bi-check", text: "Access to Beta features" },
     { icon: "bi bi-x", text: "Custom Features" },
+  ];
+
+  const featuresEntreprise = [
+    { icon: "bi bi-check", text: "Custom features based on requirements" },
+    { icon: "bi bi-check", text: "Unlimited cloud storage" },
+    { icon: "bi bi-check", text: "Dedicated support team" },
+    { icon: "bi bi-check", text: "Unlimited custom domains" },
   ];
 
   const getCardClass = (plan) => {
@@ -393,12 +405,21 @@ export default function BillingDashboard({ walletId }) {
     }
   };
 
+  const togglePaymentFrequency = () => {
+    setIsYearly(!isYearly);
+  };
+
+  const getPrice = (price) => {
+    return isYearly ? (price * 12 * 0.85).toFixed(2) : price.toFixed(2); // 15% discount for yearly payment
+  };
+
   return (
     <>
       <div className={`dashboard-page-container ${showSummary ? 'blurred' : ''}`}>
         <div className="projects-header-sticky">
           <div className="dashboard-header">
             <h1>Billing</h1>
+            <button className="transactions-history-button"> View Transactions History</button>
           </div>
         </div>
 
@@ -449,8 +470,8 @@ export default function BillingDashboard({ walletId }) {
                   <h3 className={getHeaderClass('basic')}>Basic</h3>
                   <div className="dashboard-billing-plans-price">
                     <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Fmain%2Ficon-usdc.png?alt=media&token=61dea3a4-ca19-411a-bd5e-b93bafae1717" />
-                    <p className={getPriceTagClass('basic')}>12.49</p>
-                    <p className={getPriceLabelClass('basic')}>/ Month (HT)</p>
+                    <p className={getPriceTagClass('basic')}>{getPrice(12.49)}</p>
+                    <p className={getPriceLabelClass('basic')}>{isYearly ? " / year" : " / month"} (HT)</p>
                   </div>
                   <button
                     className="dashboard-billing-plans-cta"
@@ -476,8 +497,8 @@ export default function BillingDashboard({ walletId }) {
                   <h3 className={getHeaderClass('pro')}>Professional</h3>
                   <div className="dashboard-billing-plans-price">
                     <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Fmain%2Ficon-usdc.png?alt=media&token=61dea3a4-ca19-411a-bd5e-b93bafae1717" />
-                    <p className={getPriceTagClass('pro')}>29.99</p>
-                    <p className={getPriceLabelClass('pro')}>/ Month (HT)</p>
+                    <p className={getPriceTagClass('pro')}>{getPrice(29.99)}</p>
+                    <p className={getPriceLabelClass('pro')}>{isYearly ? " / year" : " / month"} (HT)</p>
                   </div>
                   <button
                     className="dashboard-billing-plans-cta"
@@ -497,42 +518,62 @@ export default function BillingDashboard({ walletId }) {
                 </div>
               </div>
 
-              {/* EXTENSION */}
-              <div className={getExtensionCardClass()}>
-                <div className="dashboard-billing-plans-box-left">
+              <div className="bashboard-billing-plans-container-columns">
+                {/* ENTREPRISE */}
+                <div className={getCardClass('entreprise')}>
                   <div className="dashboard-billing-plans-box-header">
-                    <h3 className={getExtensionHeaderClass()}>Extension Pack</h3>
+                    <h3 className={getHeaderClass('entreprise')}>Entreprise</h3>
                     <div className="dashboard-billing-plans-price">
                       <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Fmain%2Ficon-usdc.png?alt=media&token=61dea3a4-ca19-411a-bd5e-b93bafae1717" />
-                      <p className={getExtensionPriceTagClass()}>9.99</p>
-                      <p className={getExtensionPriceLabelClass()}>/ Month (HT)</p>
+                      <p className={getPriceTagClass('entreprise')}>Custom</p>
+                      <p className={getPriceLabelClass('entreprise')}>Pricing</p>
                     </div>
                     <button
                       className="dashboard-billing-plans-cta"
-                      onClick={() => handlePurchase('extension', true)}
+                      onClick={() => handlePurchase('entreprise')}
                       disabled={isProcessing}
                     >
-                      {getButtonText('extension', true)}
+                      Ask for an estimation                    
                     </button>
                   </div>
-                  <div className="dashboard-billing-plans-box-features dashboard-billing-plans-box-features-column">
-                    {getPlanQuotas('extension').map((feature, index) => (
+                  <div className="dashboard-billing-plans-box-features">
+                    {featuresEntreprise.map((feature, index) => (
                       <div key={index} className="dashboard-billing-plans-feature">
-                        <i className={`${feature.icon} ${feature.icon === "bi bi-check" ? getExtensionCheckIconClass() : getExtensionCrossIconClass()}`}></i>
-                        <p className={`feature-text ${feature.icon === "bi bi-check" ? getExtensionCheckTextClass() : getExtensionCrossTextClass()}`}>{feature.text}</p>
+                        <i className={`${feature.icon} ${feature.icon === "bi bi-check" ? getCheckIconClass('entreprise') : getCrossIconClass('entreprise')}`}></i>
+                        <p className={`feature-text ${feature.icon === "bi bi-check" ? getCheckTextClass('entreprise') : getCrossTextClass('entreprise')}`}>{feature.text}</p>
                       </div>
                     ))}
                   </div>
                 </div>
-              </div>
-              {/* ENTERPRISE */}
-              <div className="dashboard-billing-plans-box-more">
-                <div className="dashboard-billing-plans-box-header">
-                  <h3 className="dashboard-billing-plans-box-header-title dashboard-billing-plans-box-more-title">Looking for more?</h3>
+
+                {/* EXTENSION */}
+                <div className={getExtensionCardClass()}>
+                  <div className="dashboard-billing-plans-box-left">
+                    <div className="dashboard-billing-plans-box-header">
+                      <h3 className={getExtensionHeaderClass()}>Extension Pack</h3>
+                      <div className="dashboard-billing-plans-price">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Fmain%2Ficon-usdc.png?alt=media&token=61dea3a4-ca19-411a-bd5e-b93bafae1717" />
+                        <p className={getExtensionPriceTagClass()}>9.99</p>
+                        <p className={getExtensionPriceLabelClass()}>/ Month (HT)</p>
+                      </div>
+                      <button
+                        className="dashboard-billing-plans-cta"
+                        onClick={() => handlePurchase('extension', true)}
+                        disabled={isProcessing}
+                      >
+                        {getButtonText('extension', true)}
+                      </button>
+                    </div>
+                    <div className="dashboard-billing-plans-box-features dashboard-billing-plans-box-features-column">
+                      {getPlanQuotas('extension').map((feature, index) => (
+                        <div key={index} className="dashboard-billing-plans-feature">
+                          <i className={`${feature.icon} ${feature.icon === "bi bi-check" ? getExtensionCheckIconClass() : getExtensionCrossIconClass()}`}></i>
+                          <p className={`feature-text ${feature.icon === "bi bi-check" ? getExtensionCheckTextClass() : getExtensionCrossTextClass()}`}>{feature.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <a href="" className="dashboard-billing-plans-cta-more dashboard-billing-plans-cta-more-soon">
-                  <i className="bi bi-lock-fill"></i> Get an Estimate Soon <i className="bi bi-arrow-right"></i>
-                </a>
               </div>
             </div>
 
@@ -570,82 +611,96 @@ export default function BillingDashboard({ walletId }) {
           )}
         </div>
 
-        <h2 className="compare-pricing-title">Compare pricing packages</h2>
-
+        <div className="compare-pricing-header">
+          <div className="compare-pricing-header-text">
+            <h2 className="compare-pricing-title">Feature Table</h2>
+            <p className="compare-pricing-description">Choose the perfect plan for your business needs</p>
+          </div>
+          <div className="toggle-container">
+            <p><span>Save 15% </span>on yearly plan!</p>
+            <div className="toggle-switch" onClick={togglePaymentFrequency}>
+              <div className={`toggle-option ${isYearly ? 'toggle-selected' : 'toggle-unselected'}`}>Yearly</div>
+              <div className={`toggle-option ${!isYearly ? 'toggle-selected' : 'toggle-unselected'}`}>Monthly</div>
+            </div>
+          </div>
+        </div>
         <div className="dashboard-pricing-details">
           <div className="table-container">
-          <table className="comparison-table">
-            <thead className="comparison-table-header">
-              <tr className="comparison-table-head">
-                <th>Feature</th>
-                <th>Freemium <br /><p className="comparison-table-pricing">$0 / month</p></th>
-                <th>Basic <br /><p className="comparison-table-pricing">$10.99 / month</p></th>
-                <th>Professional <br /><p className="comparison-table-pricing">$15.99 / month</p></th>
-                <th>Student <br /><p className="comparison-table-pricing">$15.99 / month</p></th>
-              </tr>
-            </thead>
-            <tbody className="comparison-table-body">
-              {features.map((feature, index) => (
-                <React.Fragment key={index}>
-                  {index === 0 || features[index - 1].category !== feature.category ? (
-                    <tr className="category-row">
-                      <td colSpan="5">{feature.category}</td>
+            <table className="comparison-table">
+              <thead className="comparison-table-header">
+                <tr className="comparison-table-head">
+                  <th style={{ border: "none" }}></th>
+                  <th>Freemium <br /><p className="comparison-table-pricing">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
+                    <span className="comparison-table-pricing-solution-price">0</span>
+                    / month</p>
+                    <button
+                      className="dashboard-billing-comparison-table-plans-cta"
+                      onClick={() => handlePurchase('freemium')}
+                      disabled={isProcessing}
+                    >
+                      Get Started
+                    </button></th>
+
+                  <th>Basic <br /><p className="comparison-table-pricing">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
+                    <span className="comparison-table-pricing-solution-price">{getPrice(10.99)}</span>
+                    {isYearly ? " / year" : " / month"}
+                  </p>
+                    <button
+                      className="dashboard-billing-comparison-table-plans-cta"
+                      onClick={() => handlePurchase('basic')}
+                      disabled={isProcessing}
+                    >
+                      Get Started
+                    </button></th>
+
+                  <th>Professional <br /><p className="comparison-table-pricing">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
+                    <span className="comparison-table-pricing-solution-price">{getPrice(15.99)}</span>
+                    {isYearly ? " / year" : " / month"}
+                  </p>
+                    <button
+                      className="dashboard-billing-comparison-table-plans-cta"
+                      onClick={() => handlePurchase('pro')}
+                      disabled={isProcessing}
+                    >
+                      Get Started
+                    </button></th>
+
+                  <th>Entreprise <br /><p className="comparison-table-pricing">
+                    <span className="comparison-table-pricing-solution-price">Custom</span>
+                  </p>
+                    <button
+                      className="dashboard-billing-comparison-table-plans-cta"
+                      onClick={() => handlePurchase('entreprise')}
+                      disabled={isProcessing}
+                    >
+                      Get Started
+                    </button></th>
+                </tr>
+              </thead>
+              <tbody className="comparison-table-body">
+                {features.map((feature, index) => (
+                  <React.Fragment key={index}>
+                    {index === 0 || features[index - 1].category !== feature.category ? (
+                      <tr className="category-row">
+                        <td colSpan="5">{feature.category}</td>
+                      </tr>
+                    ) : null}
+                    <tr className="features-checkers">
+                      <td className="feature-name-title">{feature.text} <span className="features-checker-more-info"><i className="bi bi-question"></i></span></td>
+                      <td>{typeof feature.freemium === 'boolean' ? (feature.freemium ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.freemium}</td>
+                      <td>{typeof feature.professional === 'boolean' ? (feature.professional ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.professional}</td>
+                      <td>{typeof feature.business === 'boolean' ? (feature.business ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.business}</td>
+                      <td>{typeof feature.entreprise === 'boolean' ? (feature.entreprise ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.entreprise}</td>
                     </tr>
-                  ) : null}
-                  <tr className="features-checkers">
-                    <td className="feature-name-title">{feature.text}</td>
-                    <td>{feature.freemium ? <i className="bi bi-check-circle purple"></i> : <i className="bi bi-x-circle"></i>}</td>
-                    <td>{feature.basic ? <i className="bi bi-check-circle purple"></i> : <i className="bi bi-x-circle"></i>}</td>
-                    <td>{feature.pro ? <i className="bi bi-check-circle purple"></i> : <i className="bi bi-x-circle"></i>}</td>
-                    <td>{feature.student ? <i className="bi bi-check-circle purple"></i> : <i className="bi bi-x-circle"></i>}</td>
-                  </tr>
-                </React.Fragment>
-              ))}
-              <tr className="features-checkers">
-                <td></td>
-                <td>
-                  <button
-                    className="dashboard-billing-plans-cta"
-                    onClick={() => handlePurchase('freemium')}
-                    disabled={isProcessing}
-                  >
-                    {getButtonText('freemium')}
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="dashboard-billing-plans-cta"
-                    onClick={() => handlePurchase('basic')}
-                    disabled={isProcessing}
-                  >
-                    {getButtonText('basic')}
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="dashboard-billing-plans-cta"
-                    onClick={() => handlePurchase('pro')}
-                    disabled={isProcessing}
-                  >
-                    {getButtonText('pro')}
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="dashboard-billing-plans-cta"
-                    onClick={() => handlePurchase('student')}
-                    disabled={isProcessing}
-                  >
-                    {getButtonText('student')}
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-        </div>
-
-
       </div>
     </>
   );

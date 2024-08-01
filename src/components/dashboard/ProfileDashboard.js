@@ -166,7 +166,7 @@ const fetchProfile = async (walletId) => {
       const data = userDocSnap.data();
       setUsername(data.profile.username || "My Username");
       setDescription(data.profile.description || "");
-      setProfilePicture(data.profile.profilePicture || ''); // Set default value to empty string if profile picture doesn't exist
+      setProfilePicture(data.profile.profilePicture || 'https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageDashboard%2FAdmin%2Fplaceholderprofilepicture.png?alt=media&token=c4eb30d5-47c9-44c3-9232-95d254c7c2ea'); // Set default value to empty string if profile picture doesn't exist
       setbillingCost(data.billing.mainPlan.cost);
       setbillingPlan(data.billing.mainPlan.plan);
       console.log(data);

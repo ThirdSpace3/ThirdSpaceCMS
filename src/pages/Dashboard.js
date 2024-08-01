@@ -28,7 +28,7 @@ export default function Dashboard() {
   const [userData, setUserData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showConnectAdmin, setShowConnectAdmin] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const isLoggedIn = sessionStorage.getItem("isLoggedIn");
   const walletId = sessionStorage.getItem("userAccount");

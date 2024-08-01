@@ -18,7 +18,6 @@ export default function LeftMenuDashboard({
   const navigate = useNavigate();
   const [userAccount, setUserAccount] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-  const [showCopiedMessage, setShowCopiedMessage] = useState(false);
   const [localUsername, setLocalUsername] = useState("");
   const [localProfilePicture, setLocalProfilePicture] = useState("");
   const [selectedMenuItem, setSelectedMenuItem] = useState("projects");
@@ -53,7 +52,7 @@ export default function LeftMenuDashboard({
       if (userDoc.exists()) {
         const userData = userDoc.data();
         setLocalUsername(userData.profile.username || "");
-        setLocalProfilePicture(userData.profile.profilePicture || "");
+        setLocalProfilePicture(userData.profile.profilePicture || "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageDashboard%2FAdmin%2Fplaceholderprofilepicture.png?alt=media&token=c4eb30d5-47c9-44c3-9232-95d254c7c2ea");
       } else {
         console.error("User document does not exist.");
       }
@@ -90,17 +89,7 @@ export default function LeftMenuDashboard({
     }
   };
 
-  const handleCopyAddress = () => {
-    navigator.clipboard
-      .writeText(userAccount)
-      .then(() => {
-        setShowCopiedMessage(true);
-        setTimeout(() => setShowCopiedMessage(false), 3000);
-      })
-      .catch((err) => {
-        console.error("Failed to copy the address: ", err);
-      });
-  };
+
 
   return (
     <>
@@ -171,14 +160,23 @@ export default function LeftMenuDashboard({
 
           <div className={`profile-container ${selectedMenuItem === "profile" ? "selected" : ""}`} onClick={(event) => handleMenuItemClick("profile", event)} >
             <img
-              src={localProfilePicture || "../images/avatar-placeholder.png"}
+              src={localProfilePicture || "https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageDashboard%2FAdmin%2Fplaceholderprofilepicture.png?alt=media&token=c4eb30d5-47c9-44c3-9232-95d254c7c2ea"}
               alt="Profile avatar"
               className="profile-picture"
             />
-            <p className="profile-name">
-              {localUsername || shortenAddress(userAccount)} <br /> view Profile
-              <i className="bi bi-three-dots"></i>
+            <div className="profile-name">
+            <p className="profile-name-content" style={{ fontWeight: 600 }}>
+              {localUsername || shortenAddress(userAccount)} 
+              
+              <br /> 
+              <span style={{ fontWeight: 400 }}>
+              View profile
+              </span>
+
             </p>
+            </div>
+            <i className="bi bi-three-dots"></i>
+
           </div>
         </div>
       </div>
