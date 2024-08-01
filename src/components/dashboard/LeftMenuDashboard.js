@@ -174,8 +174,9 @@ export default function LeftMenuDashboard({
               </span>
 
             </p>
-            </div>
             <i className="bi bi-three-dots"></i>
+
+            </div>
 
           </div>
         </div>

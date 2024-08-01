@@ -9,6 +9,7 @@
     justify-content: center;
     background: rgba(0, 0, 0, 0.5); /* Add background blur */
     backdrop-filter: blur(10px); /* Integrate background blur */
+    z-index: 10;
   }
   
   .transaction-summary-content {

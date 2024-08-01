@@ -50,11 +50,10 @@ export default function BillingDashboard({ walletId }) {
         setCurrentPlan(userData.billing.mainPlan.plan);
         if (userData.billing.extension && userData.billing.extension.bought) {
           setCurrentExtension(true);
-          setSelectedExtension(true);  // Update this line
+          setSelectedExtension(true);
         }
         else { console.log("not found"); }
       } else {
-        // If no plan is found, set Freemium as the default plan
         setCurrentPlan('freemium');
         await setDoc(userDocRef, {
           billing: {
@@ -68,7 +67,6 @@ export default function BillingDashboard({ walletId }) {
         console.log("Default Freemium plan set for user.");
       }
     } else {
-      // If the document does not exist, create it with the Freemium plan
       setCurrentPlan('freemium');
       await setDoc(userDocRef, {
         billing: {
@@ -127,14 +125,13 @@ export default function BillingDashboard({ walletId }) {
       setTransactionStatus(`Transaction successful! Signature: ${signature}`);
       console.log("Transaction successful! Signature:", signature);
 
-      // Update user's profile with the selected plan and its quotas
       await updateUserPlan(selectedPlan, planCost, selectedExtension, extensionCost);
-      setCurrentPlan(selectedPlan); // Update the currentPlan state
+      setCurrentPlan(selectedPlan);
 
       if (selectedExtension) {
-        setCurrentExtension(true); // Update the currentExtension state
+        setCurrentExtension(true);
       } else {
-        setCurrentExtension(false); // Reset the currentExtension state if no extension
+        setCurrentExtension(false);
       }
 
       setSuccessMessage("Process successful, initiating refresh of the browser");
@@ -144,14 +141,14 @@ export default function BillingDashboard({ walletId }) {
     } catch (error) {
       setTransactionError("Process Unsuccessful, mais tkt brother click en dehors et ca va faire le meme effet.");
       console.error("Transaction failed:", error);
-      setCurrentPlan(selectedPlan); // Update the currentPlan state
+      setCurrentPlan(selectedPlan);
 
       const planCost = getPlanCost(selectedPlan);
       const extensionCost = selectedExtension ? getPlanCost('extension') : 0;
       await updateUserPlan(selectedPlan, planCost, selectedExtension, extensionCost);
 
       if (selectedExtension) {
-        setCurrentExtension(true); // Ensure the currentExtension state is updated in case of error
+        setCurrentExtension(true);
       }
     } finally {
       setIsProcessing(false);
@@ -175,12 +172,10 @@ export default function BillingDashboard({ walletId }) {
         }
       };
 
-      // Preserve existing extension data if it exists and hasExtension is false
       if (userData.billing.extension && !hasExtension) {
         updatedBilling.extension = userData.billing.extension;
       }
 
-      // If the extension is being updated, overwrite the existing extension data
       if (hasExtension) {
         updatedBilling.extension = {
           bought: true,
@@ -275,7 +270,7 @@ export default function BillingDashboard({ walletId }) {
       case 'extension':
         return 9.99;
       case 'entreprise':
-        return 0; // Custom pricing
+        return 0;
       default:
         return 0;
     }
@@ -286,132 +281,22 @@ export default function BillingDashboard({ walletId }) {
     setIsProcessing(false);
   };
 
-  const featuresFreemium = [
-    { icon: "bi bi-check", text: "Limited CMS access (Templates)" },
-    { icon: "bi bi-check", text: "Developer Mode" },
-    { icon: "bi bi-x", text: "Custom Domain" },
-    { icon: "bi bi-check", text: "Test environments" },
-    { icon: "bi bi-check", text: "1GB cloud storage" },
-    { icon: "bi bi-check", text: "Basic uses of Smart Contract Solana" },
-    { icon: "bi bi-x", text: "Support (internal messaging, e-mail)" },
-    { icon: "bi bi-x", text: "Accès complet à Third Space" },
-    { icon: "bi bi-x", text: "Collaborative solution" },
-    { icon: "bi bi-x", text: "Access to Beta Features" },
-    { icon: "bi bi-x", text: "Custom Features" },
-  ];
-
-  const featuresBasic = [
-    { icon: "bi bi-check", text: "Full access to Third Space" },
-    { icon: "bi bi-check", text: "Developer Mode" },
-    { icon: "bi bi-check", text: "1 personalized domain" },
-    { icon: "bi bi-check", text: "Test environments" },
-    { icon: "bi bi-check", text: "5GB cloud storage" },
-    { icon: "bi bi-check", text: "Advanced use of Solana Smart Contracts (30 interactions/month)" },
-    { icon: "bi bi-check", text: "Support (internal messaging system, e-mail, 24-hour platform)" },
-    { icon: "bi bi-x", text: "Collaborative solution" },
-    { icon: "bi bi-x", text: "Access to Beta features" },
-    { icon: "bi bi-x", text: "Custom Features" },
-  ];
-
-  const featuresPro = [
-    { icon: "bi bi-check", text: "Full access to Third Space" },
-    { icon: "bi bi-check", text: "Developer Mode" },
-    { icon: "bi bi-check", text: "3 customized domains" },
-    { icon: "bi bi-check", text: "Test environments" },
-    { icon: "bi bi-check", text: "10GB cloud storage" },
-    { icon: "bi bi-check", text: "Advanced use of Solana Smart Contracts (60 interactions/month)" },
-    { icon: "bi bi-check", text: "24-hour priority support via email or direct chat" },
-    { icon: "bi bi-check", text: "Collaborative solution" },
-    { icon: "bi bi-check", text: "Access to Beta features" },
-    { icon: "bi bi-x", text: "Custom Features" },
-  ];
-
-  const featuresEntreprise = [
-    { icon: "bi bi-check", text: "Custom features based on requirements" },
-    { icon: "bi bi-check", text: "Unlimited cloud storage" },
-    { icon: "bi bi-check", text: "Dedicated support team" },
-    { icon: "bi bi-check", text: "Unlimited custom domains" },
-  ];
-
-  const getCardClass = (plan) => {
-    return currentPlan === plan ? "dashboard-billing-plans-box dashboard-billing-plans-box-purple" : "dashboard-billing-plans-box";
-  };
-
-  const getHeaderClass = (plan) => {
-    return currentPlan === plan ? "dashboard-billing-plans-box-header-title-white" : "dashboard-billing-plans-box-header-title";
-  };
-
-  const getPriceTagClass = (plan) => {
-    return currentPlan === plan ? "dashboard-billing-plans-price-tag-white" : "dashboard-billing-plans-price-tag";
-  };
-
-  const getPriceLabelClass = (plan) => {
-    return currentPlan === plan ? "dashboard-billing-plans-price-label-white" : "dashboard-billing-plans-price-label";
-  };
-
-  const getCheckIconClass = (plan) => {
-    return currentPlan === plan ? "check-icon-purplecard" : "check-icon";
-  };
-
-  const getCheckTextClass = (plan) => {
-    return currentPlan === plan ? "check-text-purplecard" : "check-text";
-  };
-
-  const getCrossIconClass = (plan) => {
-    return currentPlan === plan ? "cross-icon-purplecard" : "cross-icon";
-  };
-
-  const getCrossTextClass = (plan) => {
-    return currentPlan === plan ? "cross-text-purplecard" : "cross-text";
-  };
-
-  const getExtensionCardClass = () => {
-    return currentExtension ? "dashboard-billing-plans-box dashboard-billing-plans-box-purple" : "dashboard-billing-plans-box";
-  };
-
-  const getExtensionHeaderClass = () => {
-    return currentExtension ? "dashboard-billing-plans-box-header-title-white" : "dashboard-billing-plans-box-header-title";
-  };
-
-  const getExtensionPriceTagClass = () => {
-    return currentExtension ? "dashboard-billing-plans-price-tag-white" : "dashboard-billing-plans-price-tag";
-  };
-
-  const getExtensionPriceLabelClass = () => {
-    return currentExtension ? "dashboard-billing-plans-price-label-white" : "dashboard-billing-plans-price-label";
-  };
-
-  const getExtensionCheckIconClass = () => {
-    return currentExtension ? "check-icon-purplecard" : "check-icon";
-  };
-
-  const getExtensionCheckTextClass = () => {
-    return currentExtension ? "check-text-purplecard" : "check-text";
-  };
-
-  const getExtensionCrossIconClass = () => {
-    return currentExtension ? "cross-icon-purplecard" : "cross-icon";
-  };
-
-  const getExtensionCrossTextClass = () => {
-    return currentExtension ? "cross-text-purplecard" : "cross-text";
-  };
-
-  const getButtonText = (plan, isExtension = false) => {
-    if (isExtension) {
-      return currentExtension ? "Extension Pack Activated" : "Choose your Extension";
-    } else {
-      return currentPlan === plan ? `${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan Activated` : `Purchase ${plan.charAt(0).toUpperCase() + plan.slice(1)}`;
-    }
-  };
-
   const togglePaymentFrequency = () => {
     setIsYearly(!isYearly);
   };
 
   const getPrice = (price) => {
-    return isYearly ? (price * 12 * 0.85).toFixed(2) : price.toFixed(2); // 15% discount for yearly payment
+    const originalPrice = (price * 12).toFixed(2);
+    const discountedPrice = (price * 12 * 0.85).toFixed(2);
+    return isYearly ? { originalPrice, discountedPrice } : { originalPrice: price.toFixed(2), discountedPrice: price.toFixed(2) };
   };
+
+  const getPourcentageReduction = (price) => {
+    const originalPrice = (price * 12).toFixed(2);
+    const discountedPrice = (price * 12 * 0.85).toFixed(2);
+    const pourcentage = ((discountedPrice - originalPrice) / originalPrice) * 100;
+    return pourcentage.toFixed(2);
+  }
 
   return (
     <>
@@ -423,7 +308,265 @@ export default function BillingDashboard({ walletId }) {
           </div>
         </div>
 
-        <div className="dashboard-page-content">
+        {transactionStatus && <div className="transaction-status">{transactionStatus}</div>}
+
+        {showSummary && (
+          <TransactionSummaryPopup
+            selectedPlan={selectedPlan}
+            walletId={walletId}
+            corporateWallet={CORPORATE_WALLET_ADDRESS}
+            getPlanCost={getPlanCost}
+            confirmPurchase={confirmPurchase}
+            isProcessing={isProcessing}
+            closePopup={() => setShowSummary(false)}
+            transactionError={transactionError}
+            resetTransactionState={resetTransactionState}
+            transactionStatus={transactionStatus}
+            successMessage={successMessage}
+          />
+        )}
+        <div className="compare-pricing-header">
+          <div className="compare-pricing-header-text">
+            <h2 className="compare-pricing-title">Feature Table</h2>
+            <p className="compare-pricing-description">Choose the perfect plan for your business needs</p>
+          </div>
+          <div className="toggle-container">
+            <p><span>Save 15% </span>on yearly plan!</p>
+            <div className="toggle-switch" onClick={togglePaymentFrequency}>
+              <div className={`toggle-option ${isYearly ? 'toggle-selected' : 'toggle-unselected'}`}>Yearly</div>
+              <div className={`toggle-option ${!isYearly ? 'toggle-selected' : 'toggle-unselected'}`}>Monthly</div>
+            </div>
+          </div>
+        </div>
+        <div className="dashboard-pricing-details">
+          <div className="table-container">
+            <table className="comparison-table table-margin-columns">
+              <thead className="comparison-table-header">
+                <tr className="comparison-table-head">
+                  <th style={{ border: "none", background: "none" }}></th>
+                  <th>Freemium <br />
+                    <p className="comparison-table-pricing">
+                      <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b" alt="usdc-logo" />
+                      <span className="comparison-table-pricing-solution-price">0</span>
+                      <span className="comparison-table-timespan">/ month</span>
+                    </p>
+                    <button
+                      className="dashboard-billing-comparison-table-plans-cta"
+                      onClick={() => handlePurchase('freemium')}
+                      disabled={isProcessing}
+                    >
+                      Get Started
+                    </button>
+                  </th>
+
+                  <th>Basic <br />
+                    <p className="comparison-table-pricing">
+                      <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b" alt="usdc-logo" />
+                      <div className="price-group">
+                        <span className="comparison-table-pricing-solution-price">{getPrice(12.49).discountedPrice}</span>
+                        {isYearly && <p className="comparison-table-original-price"><span className="comparison-table-original-price" style={{ color: 'red', textDecoration: 'line-through' }}>{getPrice(12.49).originalPrice}</span> or {getPourcentageReduction(12.49)}%</p>}
+                      </div>
+                      <span className="comparison-table-timespan">{isYearly ? "/ year" : "/ month"}</span>
+                    </p>
+                    <button
+                      className="dashboard-billing-comparison-table-plans-cta"
+                      onClick={() => handlePurchase('basic')}
+                      disabled={isProcessing}
+                    >
+                      Get Started
+                    </button>
+                  </th>
+
+                  <th>Professional <br />
+                    <p className="comparison-table-pricing">
+                      <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b" alt="usdc-logo" />
+                      <div className="price-group">
+                        <span className="comparison-table-pricing-solution-price">{getPrice(29.99).discountedPrice}</span>
+                        {isYearly && <p className="comparison-table-original-price"><span className="comparison-table-original-price" style={{ color: 'red', textDecoration: 'line-through' }}>{getPrice(29.99).originalPrice}</span> or {getPourcentageReduction(29.99)}%</p>}
+                      </div>
+                      <span className="comparison-table-timespan">{isYearly ? "/ year" : "/ month"}</span>
+                    </p>
+                    <button
+                      className="dashboard-billing-comparison-table-plans-cta"
+                      onClick={() => handlePurchase('pro')}
+                      disabled={isProcessing}
+                    >
+                      Get Started
+                    </button>
+                  </th>
+
+                  <th>Entreprise <br />
+                    <p className="comparison-table-pricing">
+                      <span className="comparison-table-pricing-solution-price">Custom</span>
+                      <span className="comparison-table-timespan"></span>
+                    </p>
+                    <button
+                      className="dashboard-billing-comparison-table-plans-cta"
+                      onClick={() => handlePurchase('entreprise')}
+                      disabled={isProcessing}
+                    >
+                      Get Started
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="comparison-table-body">
+                {features.map((feature, index) => (
+                  <React.Fragment key={index}>
+                    {index === 0 || features[index - 1].category !== feature.category ? (
+                      <tr className="category-row">
+                        <td colSpan="5">{feature.category}</td>
+                      </tr>
+                    ) : null}
+                    <tr className="features-checkers">
+                      <td className="feature-name-title">{feature.text} <span className="features-checker-more-info"><i className="bi bi-question"></i></span></td>
+                      <td>{typeof feature.freemium === 'boolean' ? (feature.freemium ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.freemium}</td>
+                      <td>{typeof feature.professional === 'boolean' ? (feature.professional ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.professional}</td>
+                      <td>{typeof feature.business === 'boolean' ? (feature.business ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.business}</td>
+                      <td>{typeof feature.entreprise === 'boolean' ? (feature.entreprise ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.entreprise}</td>
+                    </tr>
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+
+
+
+
+//#region 
+// const featuresFreemium = [
+//   { icon: "bi bi-check", text: "Limited CMS access (Templates)" },
+//   { icon: "bi bi-check", text: "Developer Mode" },
+//   { icon: "bi bi-x", text: "Custom Domain" },
+//   { icon: "bi bi-check", text: "Test environments" },
+//   { icon: "bi bi-check", text: "1GB cloud storage" },
+//   { icon: "bi bi-check", text: "Basic uses of Smart Contract Solana" },
+//   { icon: "bi bi-x", text: "Support (internal messaging, e-mail)" },
+//   { icon: "bi bi-x", text: "Accès complet à Third Space" },
+//   { icon: "bi bi-x", text: "Collaborative solution" },
+//   { icon: "bi bi-x", text: "Access to Beta Features" },
+//   { icon: "bi bi-x", text: "Custom Features" },
+// ];
+
+// const featuresBasic = [
+//   { icon: "bi bi-check", text: "Full access to Third Space" },
+//   { icon: "bi bi-check", text: "Developer Mode" },
+//   { icon: "bi bi-check", text: "1 personalized domain" },
+//   { icon: "bi bi-check", text: "Test environments" },
+//   { icon: "bi bi-check", text: "5GB cloud storage" },
+//   { icon: "bi bi-check", text: "Advanced use of Solana Smart Contracts (30 interactions/month)" },
+//   { icon: "bi bi-check", text: "Support (internal messaging system, e-mail, 24-hour platform)" },
+//   { icon: "bi bi-x", text: "Collaborative solution" },
+//   { icon: "bi bi-x", text: "Access to Beta features" },
+//   { icon: "bi bi-x", text: "Custom Features" },
+// ];
+
+// const featuresPro = [
+//   { icon: "bi bi-check", text: "Full access to Third Space" },
+//   { icon: "bi bi-check", text: "Developer Mode" },
+//   { icon: "bi bi-check", text: "3 customized domains" },
+//   { icon: "bi bi-check", text: "Test environments" },
+//   { icon: "bi bi-check", text: "10GB cloud storage" },
+//   { icon: "bi bi-check", text: "Advanced use of Solana Smart Contracts (60 interactions/month)" },
+//   { icon: "bi bi-check", text: "24-hour priority support via email or direct chat" },
+//   { icon: "bi bi-check", text: "Collaborative solution" },
+//   { icon: "bi bi-check", text: "Access to Beta features" },
+//   { icon: "bi bi-x", text: "Custom Features" },
+// ];
+
+// const featuresEntreprise = [
+//   { icon: "bi bi-check", text: "Custom features based on requirements" },
+//   { icon: "bi bi-check", text: "Unlimited cloud storage" },
+//   { icon: "bi bi-check", text: "Dedicated support team" },
+//   { icon: "bi bi-check", text: "Unlimited custom domains" },
+// ];
+
+// const getCardClass = (plan) => {
+//   return currentPlan === plan ? "dashboard-billing-plans-box dashboard-billing-plans-box-purple" : "dashboard-billing-plans-box";
+// };
+
+// const getHeaderClass = (plan) => {
+//   return currentPlan === plan ? "dashboard-billing-plans-box-header-title-white" : "dashboard-billing-plans-box-header-title";
+// };
+
+// const getPriceTagClass = (plan) => {
+//   return currentPlan === plan ? "dashboard-billing-plans-price-tag-white" : "dashboard-billing-plans-price-tag";
+// };
+
+// const getPriceLabelClass = (plan) => {
+//   return currentPlan === plan ? "dashboard-billing-plans-price-label-white" : "dashboard-billing-plans-price-label";
+// };
+
+// const getCheckIconClass = (plan) => {
+//   return currentPlan === plan ? "check-icon-purplecard" : "check-icon";
+// };
+
+// const getCheckTextClass = (plan) => {
+//   return currentPlan === plan ? "check-text-purplecard" : "check-text";
+// };
+
+// const getCrossIconClass = (plan) => {
+//   return currentPlan === plan ? "cross-icon-purplecard" : "cross-icon";
+// };
+
+// const getCrossTextClass = (plan) => {
+//   return currentPlan === plan ? "cross-text-purplecard" : "cross-text";
+// };
+
+// const getExtensionCardClass = () => {
+//   return currentExtension ? "dashboard-billing-plans-box dashboard-billing-plans-box-purple" : "dashboard-billing-plans-box";
+// };
+
+// const getExtensionHeaderClass = () => {
+//   return currentExtension ? "dashboard-billing-plans-box-header-title-white" : "dashboard-billing-plans-box-header-title";
+// };
+
+// const getExtensionPriceTagClass = () => {
+//   return currentExtension ? "dashboard-billing-plans-price-tag-white" : "dashboard-billing-plans-price-tag";
+// };
+
+// const getExtensionPriceLabelClass = () => {
+//   return currentExtension ? "dashboard-billing-plans-price-label-white" : "dashboard-billing-plans-price-label";
+// };
+
+// const getExtensionCheckIconClass = () => {
+//   return currentExtension ? "check-icon-purplecard" : "check-icon";
+// };
+
+// const getExtensionCheckTextClass = () => {
+//   return currentExtension ? "check-text-purplecard" : "check-text";
+// };
+
+// const getExtensionCrossIconClass = () => {
+//   return currentExtension ? "cross-icon-purplecard" : "cross-icon";
+// };
+
+// const getExtensionCrossTextClass = () => {
+//   return currentExtension ? "cross-text-purplecard" : "cross-text";
+// };
+
+// const getButtonText = (plan, isExtension = false) => {
+//   if (isExtension) {
+//     return currentExtension ? "Extension Pack Activated" : "Choose your Extension";
+//   } else {
+//     return currentPlan === plan ? `${plan.charAt(0).toUpperCase() + plan.slice(1)} Plan Activated` : `Purchase ${plan.charAt(0).toUpperCase() + plan.slice(1)}`;
+//   }
+// };
+
+
+
+//#endregion
+
+{/*//
+      #region OLD PRICINGS
+         <div className="dashboard-page-content">
           <div className="dashboard-billing-plans">
             <div className="dashboard-billing-header">
               <div className="dashboard-billing-left">
@@ -437,7 +580,6 @@ export default function BillingDashboard({ walletId }) {
             </p>
 
             <div className="dashboard-billing-plans-container">
-              {/* FREEMIUM */}
               <div className={getCardClass('freemium')}>
                 <div className="dashboard-billing-plans-box-header">
                   <h3 className={getHeaderClass('freemium')}>Freemium</h3>
@@ -464,7 +606,6 @@ export default function BillingDashboard({ walletId }) {
                 </div>
               </div>
 
-              {/* BASIC */}
               <div className={getCardClass('basic')}>
                 <div className="dashboard-billing-plans-box-header">
                   <h3 className={getHeaderClass('basic')}>Basic</h3>
@@ -491,7 +632,6 @@ export default function BillingDashboard({ walletId }) {
                 </div>
               </div>
 
-              {/* PRO */}
               <div className={getCardClass('pro')}>
                 <div className="dashboard-billing-plans-box-header">
                   <h3 className={getHeaderClass('pro')}>Professional</h3>
@@ -519,7 +659,6 @@ export default function BillingDashboard({ walletId }) {
               </div>
 
               <div className="bashboard-billing-plans-container-columns">
-                {/* ENTREPRISE */}
                 <div className={getCardClass('entreprise')}>
                   <div className="dashboard-billing-plans-box-header">
                     <h3 className={getHeaderClass('entreprise')}>Entreprise</h3>
@@ -545,7 +684,6 @@ export default function BillingDashboard({ walletId }) {
                   </div>
                 </div>
 
-                {/* EXTENSION */}
                 <div className={getExtensionCardClass()}>
                   <div className="dashboard-billing-plans-box-left">
                     <div className="dashboard-billing-plans-box-header">
@@ -591,116 +729,6 @@ export default function BillingDashboard({ walletId }) {
               </div>
             </div>
           </div>
-          {transactionStatus && <div className="transaction-status">{transactionStatus}</div>}
-
-          {showSummary && (
-            <TransactionSummaryPopup
-              selectedPlan={selectedPlan}
-              walletId={walletId}
-              corporateWallet={CORPORATE_WALLET_ADDRESS}
-              getPlanCost={getPlanCost}
-              confirmPurchase={confirmPurchase}
-              isProcessing={isProcessing}
-              closePopup={() => setShowSummary(false)}
-              transactionError={transactionError}
-              resetTransactionState={resetTransactionState}
-              transactionStatus={transactionStatus}
-              successMessage={successMessage}
-            />
-          )}
+         
         </div>
-
-        <div className="compare-pricing-header">
-  <div className="compare-pricing-header-text">
-    <h2 className="compare-pricing-title">Feature Table</h2>
-    <p className="compare-pricing-description">Choose the perfect plan for your business needs</p>
-  </div>
-  <div className="toggle-container">
-    <p><span>Save 15% </span>on yearly plan!</p>
-    <div className="toggle-switch" onClick={togglePaymentFrequency}>
-      <div className={`toggle-option ${isYearly ? 'toggle-selected' : 'toggle-unselected'}`}>Yearly</div>
-      <div className={`toggle-option ${!isYearly ? 'toggle-selected' : 'toggle-unselected'}`}>Monthly</div>
-    </div>
-  </div>
-</div>
-<div className="dashboard-pricing-details">
-  <div className="table-container">
-    <table className="comparison-table table-margin-columns">
-      <thead className="comparison-table-header">
-        <tr className="comparison-table-head">
-          <th style={{ border: "none", background:"none" }}></th>
-          <th >Freemium <br /><p className="comparison-table-pricing">
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
-            <span className="comparison-table-pricing-solution-price">0</span>
-            / month</p>
-            <button
-              className="dashboard-billing-comparison-table-plans-cta"
-              onClick={() => handlePurchase('freemium')}
-              disabled={isProcessing}
-            >
-              Get Started
-            </button></th >
-
-          <th>Basic <br /><p className="comparison-table-pricing">
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
-            <span className="comparison-table-pricing-solution-price">{getPrice(10.99)}</span>
-            {isYearly ? " / year" : " / month"}
-          </p>
-            <button
-              className="dashboard-billing-comparison-table-plans-cta"
-              onClick={() => handlePurchase('basic')}
-              disabled={isProcessing}
-            >
-              Get Started
-            </button></th>
-
-          <th>Professional <br /><p className="comparison-table-pricing">
-            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
-            <span className="comparison-table-pricing-solution-price">{getPrice(15.99)}</span>
-            {isYearly ? " / year" : " / month"}
-          </p>
-            <button
-              className="dashboard-billing-comparison-table-plans-cta"
-              onClick={() => handlePurchase('pro')}
-              disabled={isProcessing}
-            >
-              Get Started
-            </button></th>
-
-          <th>Entreprise <br /><p className="comparison-table-pricing">
-            <span className="comparison-table-pricing-solution-price">Custom</span>
-          </p>
-            <button
-              className="dashboard-billing-comparison-table-plans-cta"
-              onClick={() => handlePurchase('entreprise')}
-              disabled={isProcessing}
-            >
-              Get Started
-            </button></th>
-        </tr>
-      </thead>
-      <tbody className="comparison-table-body">
-        {features.map((feature, index) => (
-          <React.Fragment key={index}>
-            {index === 0 || features[index - 1].category !== feature.category ? (
-              <tr className="category-row">
-                <td colSpan="5">{feature.category}</td>
-              </tr>
-            ) : null}
-            <tr className="features-checkers">
-              <td className="feature-name-title">{feature.text} <span className="features-checker-more-info"><i className="bi bi-question"></i></span></td>
-              <td>{typeof feature.freemium === 'boolean' ? (feature.freemium ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.freemium}</td>
-              <td>{typeof feature.professional === 'boolean' ? (feature.professional ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.professional}</td>
-              <td>{typeof feature.business === 'boolean' ? (feature.business ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.business}</td>
-              <td>{typeof feature.entreprise === 'boolean' ? (feature.entreprise ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.entreprise}</td>
-            </tr>
-          </React.Fragment>
-        ))}
-      </tbody>
-    </table>
-  </div>
-</div>
-      </div>
-    </>
-  );
-}
+        //#endregion */}

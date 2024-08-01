@@ -471,23 +471,22 @@ input:checked+label:before {
 /* COMPARISON TABLE */
 
 .compare-pricing-title {
-  color: var(--black, #131313);
-  font-family: Montserrat;
-  font-size: 20px;
+  color: var(--black, #030014);
+  font-family: Inter;
+  font-size: 28px;
   font-style: normal;
-  font-weight: 800;
-  line-height: 110%;
-  margin: 30px;
+  font-weight: 600;
+  line-height: 115%; /* 32.2px */
 }
 
 .compare-pricing-description {
-  color: var(--black, #131313);
-  font-family: Montserrat;
-  font-size: 14px;
+  color: var(--black, #030014);
+  font-family: Inter;
+  font-size: 18.342px;
   font-style: normal;
-  line-height: 110%;
-  margin: 30px;
-  margin-top: -15px;
+  font-weight: 400;
+  line-height: 125%; /* 22.927px */
+  margin-top: 15px;
 }
 
 .dashboard-pricing-details {
@@ -515,7 +514,8 @@ input:checked+label:before {
   background-color: #f4f4f4;
   color: var(--black, #131313);
   font-family: 'Nunito', sans-serif;
-  font-size: 18px; /* Reduced from 35px */
+  font-size: 18px;
+  /* Reduced from 35px */
   font-style: normal;
   font-weight: 800;
   line-height: 110%;
@@ -525,11 +525,15 @@ input:checked+label:before {
   border-left: 1.019px solid #E4E4E7;
   border-top: 2.038px solid var(--light-purple, #B6B2FF);
   background: #FFF;
+  width: 227.742px;
+
 
 }
+
 .table-margin-columns {
   border-collapse: separate;
-  border-spacing: 34px; /* Adjust the spacing value as needed */
+  border-spacing: 34px;
+  /* Adjust the spacing value as needed */
 }
 
 .comparison-table-pricing {
@@ -541,8 +545,25 @@ input:checked+label:before {
   line-height: 115%;
   padding: 40.759px 0;
   display: flex;
+  flex-direction: row;
+
   align-items: center;
   gap: 4px;
+}
+
+.price-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 20px;
+
+}
+.comparison-table-original-price {
+  font-size: 0.8em;
+}
+
+.comparison-table-timespan {
+  font-size: 0.9em;
 }
 
 .comparison-table-pricing-solution-price {
@@ -587,6 +608,7 @@ input:checked+label:before {
   font-weight: 600;
   line-height: 115%;
   padding: 16.304px 12.228px;
+  justify-content: space-between
 }
 
 .features-checkers td i {
@@ -602,6 +624,8 @@ input:checked+label:before {
   font-style: normal;
   font-weight: 500;
   line-height: 115%;
+  display: flex;
+  align-items: center;
 }
 
 .dashboard-billing-plans-cta:hover {
@@ -609,10 +633,16 @@ input:checked+label:before {
 }
 
 .features-checker-more-info i {
-  font-size: 14px !important;
+  font-size: 15px !important;
   background-color: rgba(206, 206, 206, 1);
   border-radius: 5000px;
   color: var(--white);
+  width: 14px;
+  height: 14px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
 }
 
 .toggle-container {
@@ -623,7 +653,7 @@ input:checked+label:before {
 }
 
 .toggle-container p {
-  color: var(--purple, #4D2F8C);
+  color: #4D2F8C;
   font-family: Inter;
   font-size: 12.228px;
   font-style: normal;
@@ -633,17 +663,17 @@ input:checked+label:before {
 }
 
 .toggle-container span {
-  color: var(--purple, #4D2F8C);
+  color: #4D2F8C;
   font-family: Inter;
   font-size: 12.228px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 125%;
 }
 
 .toggle-switch {
   display: flex;
-  border: 2px solid #d3c6f3;
+  border: 2px solid #B6B2FF;
   border-radius: 30px;
   overflow: hidden;
   align-items: center;
@@ -661,13 +691,15 @@ input:checked+label:before {
   padding: 8.152px 16.304px;
   cursor: pointer;
   font-weight: bold;
-  color: #b3a2db;
+  color:var(--light-purple, #B6B2FF);
   margin: 4px;
 }
 
 .toggle-option.toggle-selected {
   background-color: #6a3da7;
   color: white;
+  font-family: Inter;
+
   border-radius: 25px;
   margin: 4px;
   padding: 8.152px 16.304px;
@@ -688,6 +720,7 @@ input:checked+label:before {
   flex-direction: column;
   gap: 50px;
   max-width: 400px;
+  
 }
 
 .transactions-history-button {
@@ -701,11 +734,12 @@ input:checked+label:before {
   border-radius: 10px;
   border: 1.215px solid rgba(77, 47, 140, 1);
   cursor: pointer;
+
 }
 
 .transactions-history-button p {
   text-align: center;
-  font-family: Liga;
+  font-family: Inter;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -728,4 +762,37 @@ input:checked+label:before {
   font-weight: 600;
   line-height: 115%;
   border: none;
+}
+
+.dashboard-billing-comparison-table-plans-cta:hover {
+  cursor: pointer;
+}
+
+.empty {
+  display: flex;
+  padding: 12.228px 20.38px;
+  justify-content: center;
+  align-items: center;
+  gap: 10.19px;
+  align-self: stretch;
+  border-radius: 4.076px;
+  border: 1.019px solid rgba(77, 47, 140, 1);
+  background: none;
+  color: rgba(77, 47, 140, 1);
+  font-family: Inter;
+  font-size: 16.304px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 115%;
+  cursor: not-allowed;
+  /* 18.749px */
+}
+
+.empty:hover{
+  cursor: not-allowed;
+}
+
+.comparison-table-original-price{
+  color: red;
+  font-size: 12.8px;
 }
