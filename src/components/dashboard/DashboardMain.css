@@ -478,7 +478,10 @@
 }
 
 .selected {
-  border-right: solid 5px rgba(77, 47, 140, 1);
+  border-right: solid 5px rgba(77, 47, 140, 1) !important;
+  border-left: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
   background: rgba(255, 255, 255, 0.15);
 }
 
