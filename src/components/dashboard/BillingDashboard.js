@@ -526,7 +526,6 @@ export default function BillingDashboard({ walletId }) {
                     <div className="dashboard-billing-plans-price">
                       <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageLogiciel%2Fmain%2Ficon-usdc.png?alt=media&token=61dea3a4-ca19-411a-bd5e-b93bafae1717" />
                       <p className={getPriceTagClass('entreprise')}>Custom</p>
-                      <p className={getPriceLabelClass('entreprise')}>Pricing</p>
                     </div>
                     <button
                       className="dashboard-billing-plans-cta"
@@ -612,95 +611,95 @@ export default function BillingDashboard({ walletId }) {
         </div>
 
         <div className="compare-pricing-header">
-          <div className="compare-pricing-header-text">
-            <h2 className="compare-pricing-title">Feature Table</h2>
-            <p className="compare-pricing-description">Choose the perfect plan for your business needs</p>
-          </div>
-          <div className="toggle-container">
-            <p><span>Save 15% </span>on yearly plan!</p>
-            <div className="toggle-switch" onClick={togglePaymentFrequency}>
-              <div className={`toggle-option ${isYearly ? 'toggle-selected' : 'toggle-unselected'}`}>Yearly</div>
-              <div className={`toggle-option ${!isYearly ? 'toggle-selected' : 'toggle-unselected'}`}>Monthly</div>
-            </div>
-          </div>
-        </div>
-        <div className="dashboard-pricing-details">
-          <div className="table-container">
-            <table className="comparison-table">
-              <thead className="comparison-table-header">
-                <tr className="comparison-table-head">
-                  <th style={{ border: "none" }}></th>
-                  <th>Freemium <br /><p className="comparison-table-pricing">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
-                    <span className="comparison-table-pricing-solution-price">0</span>
-                    / month</p>
-                    <button
-                      className="dashboard-billing-comparison-table-plans-cta"
-                      onClick={() => handlePurchase('freemium')}
-                      disabled={isProcessing}
-                    >
-                      Get Started
-                    </button></th>
+  <div className="compare-pricing-header-text">
+    <h2 className="compare-pricing-title">Feature Table</h2>
+    <p className="compare-pricing-description">Choose the perfect plan for your business needs</p>
+  </div>
+  <div className="toggle-container">
+    <p><span>Save 15% </span>on yearly plan!</p>
+    <div className="toggle-switch" onClick={togglePaymentFrequency}>
+      <div className={`toggle-option ${isYearly ? 'toggle-selected' : 'toggle-unselected'}`}>Yearly</div>
+      <div className={`toggle-option ${!isYearly ? 'toggle-selected' : 'toggle-unselected'}`}>Monthly</div>
+    </div>
+  </div>
+</div>
+<div className="dashboard-pricing-details">
+  <div className="table-container">
+    <table className="comparison-table table-margin-columns">
+      <thead className="comparison-table-header">
+        <tr className="comparison-table-head">
+          <th style={{ border: "none", background:"none" }}></th>
+          <th >Freemium <br /><p className="comparison-table-pricing">
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
+            <span className="comparison-table-pricing-solution-price">0</span>
+            / month</p>
+            <button
+              className="dashboard-billing-comparison-table-plans-cta"
+              onClick={() => handlePurchase('freemium')}
+              disabled={isProcessing}
+            >
+              Get Started
+            </button></th >
 
-                  <th>Basic <br /><p className="comparison-table-pricing">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
-                    <span className="comparison-table-pricing-solution-price">{getPrice(10.99)}</span>
-                    {isYearly ? " / year" : " / month"}
-                  </p>
-                    <button
-                      className="dashboard-billing-comparison-table-plans-cta"
-                      onClick={() => handlePurchase('basic')}
-                      disabled={isProcessing}
-                    >
-                      Get Started
-                    </button></th>
+          <th>Basic <br /><p className="comparison-table-pricing">
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
+            <span className="comparison-table-pricing-solution-price">{getPrice(10.99)}</span>
+            {isYearly ? " / year" : " / month"}
+          </p>
+            <button
+              className="dashboard-billing-comparison-table-plans-cta"
+              onClick={() => handlePurchase('basic')}
+              disabled={isProcessing}
+            >
+              Get Started
+            </button></th>
 
-                  <th>Professional <br /><p className="comparison-table-pricing">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
-                    <span className="comparison-table-pricing-solution-price">{getPrice(15.99)}</span>
-                    {isYearly ? " / year" : " / month"}
-                  </p>
-                    <button
-                      className="dashboard-billing-comparison-table-plans-cta"
-                      onClick={() => handlePurchase('pro')}
-                      disabled={isProcessing}
-                    >
-                      Get Started
-                    </button></th>
+          <th>Professional <br /><p className="comparison-table-pricing">
+            <img src="https://firebasestorage.googleapis.com/v0/b/third--space.appspot.com/o/ImageWebSite%2Flogo-usdc.png?alt=media&token=d0094e84-48ac-4b7b-952f-72b50499ba4b"></img>
+            <span className="comparison-table-pricing-solution-price">{getPrice(15.99)}</span>
+            {isYearly ? " / year" : " / month"}
+          </p>
+            <button
+              className="dashboard-billing-comparison-table-plans-cta"
+              onClick={() => handlePurchase('pro')}
+              disabled={isProcessing}
+            >
+              Get Started
+            </button></th>
 
-                  <th>Entreprise <br /><p className="comparison-table-pricing">
-                    <span className="comparison-table-pricing-solution-price">Custom</span>
-                  </p>
-                    <button
-                      className="dashboard-billing-comparison-table-plans-cta"
-                      onClick={() => handlePurchase('entreprise')}
-                      disabled={isProcessing}
-                    >
-                      Get Started
-                    </button></th>
-                </tr>
-              </thead>
-              <tbody className="comparison-table-body">
-                {features.map((feature, index) => (
-                  <React.Fragment key={index}>
-                    {index === 0 || features[index - 1].category !== feature.category ? (
-                      <tr className="category-row">
-                        <td colSpan="5">{feature.category}</td>
-                      </tr>
-                    ) : null}
-                    <tr className="features-checkers">
-                      <td className="feature-name-title">{feature.text} <span className="features-checker-more-info"><i className="bi bi-question"></i></span></td>
-                      <td>{typeof feature.freemium === 'boolean' ? (feature.freemium ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.freemium}</td>
-                      <td>{typeof feature.professional === 'boolean' ? (feature.professional ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.professional}</td>
-                      <td>{typeof feature.business === 'boolean' ? (feature.business ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.business}</td>
-                      <td>{typeof feature.entreprise === 'boolean' ? (feature.entreprise ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.entreprise}</td>
-                    </tr>
-                  </React.Fragment>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+          <th>Entreprise <br /><p className="comparison-table-pricing">
+            <span className="comparison-table-pricing-solution-price">Custom</span>
+          </p>
+            <button
+              className="dashboard-billing-comparison-table-plans-cta"
+              onClick={() => handlePurchase('entreprise')}
+              disabled={isProcessing}
+            >
+              Get Started
+            </button></th>
+        </tr>
+      </thead>
+      <tbody className="comparison-table-body">
+        {features.map((feature, index) => (
+          <React.Fragment key={index}>
+            {index === 0 || features[index - 1].category !== feature.category ? (
+              <tr className="category-row">
+                <td colSpan="5">{feature.category}</td>
+              </tr>
+            ) : null}
+            <tr className="features-checkers">
+              <td className="feature-name-title">{feature.text} <span className="features-checker-more-info"><i className="bi bi-question"></i></span></td>
+              <td>{typeof feature.freemium === 'boolean' ? (feature.freemium ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.freemium}</td>
+              <td>{typeof feature.professional === 'boolean' ? (feature.professional ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.professional}</td>
+              <td>{typeof feature.business === 'boolean' ? (feature.business ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.business}</td>
+              <td>{typeof feature.entreprise === 'boolean' ? (feature.entreprise ? <i className="bi bi-check-circle-fill purple"></i> : <i className="bi bi-x-circle"></i>) : feature.entreprise}</td>
+            </tr>
+          </React.Fragment>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
       </div>
     </>
   );
